@@ -3,29 +3,125 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+<!DOCTYPE html>
+<html lang="en">
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Login</title>
+
+    
+    <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+      .image-container {
+    text-align: center;
+    margin: 20px;
+    background-image: url('img/poul3.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    }
+    </style>
+
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+       
+        <div class="row justify-content-center " >
+
+            <div class="col-xl-10 col-lg-12 col-md-9 ">
+
+                <div class="card o-hidden border-0 shadow-lg my-5 image-container">
+                    <div class="card-body p-0">
+                       
+                        <div class="row">
+                            
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-white mb-4 ">Welcome Back!</h1>
+                                    </div>
+                                    <form class="user"  method="post">
+                                        {% if error %}
+                                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                        {% endif %}
+
+                                        {% if app.user %}
+                                            <div class="mb-3">
+                                                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-group">
+                                            <label for="inputEmail">Email</label>
+                                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword">Password</label>
+                                            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                                <label class="custom-control-label text-white" for="customCheck">Remember
+                                                    Me</label>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-lg btn-primary" type="submit">
+                                            Sign in
+                                        </button>
+                                        
+                                        <hr>
+                                        <a href="home.html" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                        </a>
+                                        <a href="home.html" class="btn btn-facebook btn-user btn-block">
+                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                                        </a>
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="{{ path('app_forgot') }}">Forgot Password?</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="{{ path('app_register') }}">Create Account</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
-    {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+    </div>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+    
+    <script src="(vendor/jquery/jquery.min.js)"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+   
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+     
+    <script src="js/sb-admin-2.min.js"></script>
+
+</body>
+</html>  
+
 {% endblock %}
