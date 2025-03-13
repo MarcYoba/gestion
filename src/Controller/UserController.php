@@ -29,4 +29,14 @@ class UserController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+
+    #[Route(path: "/user/fotgot-password", name: "app_forgot")]
+     
+    public function fotgotPassword() :Response {
+        
+        return $this->render('security/fotgot_password.html.twig',[
+            'form' => 'form',
+        ]);
+    }
 }
