@@ -10,3 +10,10 @@ import './styles/app.css';
 
 // start the Stimulus application
 import './bootstrap';
+// Importez le CSS de Font Awesome
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
+// Importez les fichiers de polices (nécessaire pour Webpack)
+import '@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2';
+import '@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2';
+// ... autres variantes si nécessaires
