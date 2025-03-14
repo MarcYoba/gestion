@@ -27,6 +27,12 @@ class Agence
     #[ORM\ManyToMany(targetEntity: Employer::class, mappedBy: 'idagence')]
     private Collection $employers;
 
+    #[ORM\ManyToOne(inversedBy: 'agences')]
+    private ?user $user = null;
+
+    #[ORM\Column]
+    private ?int $createdBY = null;
+
     public function __construct()
     {
         
@@ -89,6 +95,30 @@ class Agence
         if ($this->employers->removeElement($employer)) {
             $employer->removeIdagence($this);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?user
+    {
+        return $this->user;
+    }
+
+    public function setUser(?user $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCreatedBY(): ?int
+    {
+        return $this->createdBY;
+    }
+
+    public function setCreatedBY(int $createdBY): static
+    {
+        $this->createdBY = $createdBY;
 
         return $this;
     }

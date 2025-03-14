@@ -38,7 +38,7 @@ class RegistrationController extends AbstractController
             } else {
                 $user->setRoles(['ROLE_CLIENTS']);
             }
-            
+            $user->getClients()->setNom($form->get('username')->getData());
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
