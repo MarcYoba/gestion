@@ -41,6 +41,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Clients $idclient = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $username = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $telephone = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $speculation = null;
+
     public function __construct()
     {
         $this->agance = new ArrayCollection();
@@ -165,6 +174,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIdclient(Clients $idclient): static
     {
         $this->idclient = $idclient;
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): static
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getSpeculation(): ?string
+    {
+        return $this->speculation;
+    }
+
+    public function setSpeculation(?string $speculation): static
+    {
+        $this->speculation = $speculation;
 
         return $this;
     }
