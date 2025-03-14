@@ -19,8 +19,7 @@ class Clients
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\OneToOne(mappedBy: 'idclient', cascade: ['persist', 'remove'])]
-    private ?User $user = null;
+    
 
     public function getId(): ?int
     {
@@ -51,20 +50,7 @@ class Clients
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
+    
 
-    public function setUser(User $user): static
-    {
-        // set the owning side of the relation if necessary
-        if ($user->getIdclient() !== $this) {
-            $user->setIdclient($this);
-        }
-
-        $this->user = $user;
-
-        return $this;
-    }
+    
 }

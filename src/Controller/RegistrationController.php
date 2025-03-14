@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\UserAuthenticator;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,14 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
+            $userRepository = $entityManager->getRepository(User::class);
+            $nbuser = $userRepository->findAll();
+            if (count($nbuser)<=0) {
+                $user->setRoles(['ROLE_ADMIN_ADMIN']);
+            } else {
+                $user->setRoles(['ROLE_CLIENTS']);
+            }
+            
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email

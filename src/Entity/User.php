@@ -31,15 +31,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\ManyToMany(targetEntity: agence::class, inversedBy: 'users')]
-    private Collection $agance;
+    
 
-    #[ORM\OneToOne(mappedBy: 'iduser', cascade: ['persist', 'remove'])]
-    private ?Employer $employer = null;
-
-    #[ORM\OneToOne(inversedBy: 'yes', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Clients $idclient = null;
+    
 
     #[ORM\Column(length: 100)]
     private ?string $username = null;
@@ -50,10 +44,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $speculation = null;
 
-    public function __construct()
-    {
-        $this->agance = new ArrayCollection();
-    }
+    #[ORM\Column(length: 255)]
+    private ?string $localisation = null;
+
+    
 
     public function getId(): ?int
     {
@@ -125,59 +119,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection<int, agence>
-     */
-    public function getAgance(): Collection
-    {
-        return $this->agance;
-    }
-
-    public function addAgance(agence $agance): static
-    {
-        if (!$this->agance->contains($agance)) {
-            $this->agance->add($agance);
-        }
-
-        return $this;
-    }
-
-    public function removeAgance(agence $agance): static
-    {
-        $this->agance->removeElement($agance);
-
-        return $this;
-    }
-
-    public function getEmployer(): ?Employer
-    {
-        return $this->employer;
-    }
-
-    public function setEmployer(Employer $employer): static
-    {
-        // set the owning side of the relation if necessary
-        if ($employer->getIduser() !== $this) {
-            $employer->setIduser($this);
-        }
-
-        $this->employer = $employer;
-
-        return $this;
-    }
-
-    public function getIdclient(): ?Clients
-    {
-        return $this->idclient;
-    }
-
-    public function setIdclient(Clients $idclient): static
-    {
-        $this->idclient = $idclient;
-
-        return $this;
-    }
-
     public function getUsername(): ?string
     {
         return $this->username;
@@ -210,6 +151,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSpeculation(?string $speculation): static
     {
         $this->speculation = $speculation;
+
+        return $this;
+    }
+
+    public function getLocalisation(): ?string
+    {
+        return $this->localisation;
+    }
+
+    public function setLocalisation(string $localisation): static
+    {
+        $this->localisation = $localisation;
 
         return $this;
     }

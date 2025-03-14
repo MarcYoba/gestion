@@ -15,4 +15,12 @@ class AgenceController extends AbstractController
             'controller_name' => 'AgenceController',
         ]);
     }
+
+    #[Route('/agence', name: 'app_client')]
+    public function client(): Response
+    {
+        return $this->render('agence/index.html.twig', [
+            'controller_name' => 'AgenceController',
+        ]);
+    }
 }

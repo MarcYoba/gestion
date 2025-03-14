@@ -22,15 +22,14 @@ class Agence
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $datecreation = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'agance')]
-    private Collection $users;
+   
 
     #[ORM\ManyToMany(targetEntity: Employer::class, mappedBy: 'idagence')]
     private Collection $employers;
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        
         $this->employers = new ArrayCollection();
     }
 
@@ -66,29 +65,6 @@ class Agence
     /**
      * @return Collection<int, User>
      */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->addAgance($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            $user->removeAgance($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Employer>
