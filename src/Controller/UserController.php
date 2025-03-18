@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\UserType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
@@ -31,12 +36,43 @@ class UserController extends AbstractController
     }
 
 
-    #[Route(path: "/user/fotgot-password", name: "app_forgot")]
+    #[Route("/user/fotgot-password", name: "app_forgot")]
      
-    public function fotgotPassword() :Response {
+    public function fotgotPassword(Request $request, EntityManagerInterface $entityManager,UserPasswordHasherInterface $userPasswordHasher) :Response {
         
+        $user = new User();
+        $form = $this->createForm(UserType::class);
+        $form->handleRequest($request);
+        $userExite = 0;
+        //dd($request->request->get('email'));
+        if ($form->isSubmitted() && $form->isValid()) {
+            dd("bonjour");
+            $data = $form->getData();
+            $email = $form->get('email')->getData();
+            dd($email);
+            $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+            if ($user) {
+                $userExite = 1;
+            } else {
+                $this->addFlash('error', 'Aucun utilisateur trouvé avec cet email.');
+                $userExite = 0;
+            }
+
+            if (!empty($data['password'])) {
+                // Hachage et mise à jour du mot de passe
+                $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
+                $user->setPassword($hashedPassword);
+                
+                $entityManager->flush();
+    
+                $this->addFlash('success', 'Mot de passe mis à jour avec succès !');
+                return $this->redirectToRoute('app_login');
+            }
+
+        }
         return $this->render('security/fotgot_password.html.twig',[
-            'form' => 'form',
+            'form' => $form->createView(),
+            'user' => $userExite,
         ]);
     }
 }
