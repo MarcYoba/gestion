@@ -28,7 +28,7 @@ class AgenceController extends AbstractController
             $entityManager->persist($agence);
             $entityManager->flush();
 
-            $this->redirectToRoute("app_employer");
+            $this->redirectToRoute("app_home");
         }
 
         if (count($nbagence) <= 0) {
@@ -36,12 +36,13 @@ class AgenceController extends AbstractController
                 'form' => $form->createView(),
             ]);
         }
-        return $this->render('client/index.html.twig', [
-            'controller_name' => 'AgenceController',
+        $agence = $entityManager->getRepository(Agence::class)->findAll();
+        return $this->render('home/index.html.twig', [
+            'agence' => $agence,
         ]);
     }
 
-    #[Route('/agence', name: 'app_client')]
+    #[Route('/agence/client/', name: 'app_client')]
     public function client(): Response
     {
         return $this->render('agence/index.html.twig', [

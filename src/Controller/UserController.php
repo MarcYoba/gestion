@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class UserController extends AbstractController
 {
@@ -75,4 +76,6 @@ class UserController extends AbstractController
             'user' => $userExite,
         ]);
     }
+
+    
 }

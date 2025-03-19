@@ -28,10 +28,13 @@ class Agence
     private Collection $employers;
 
     #[ORM\ManyToOne(inversedBy: 'agences')]
-    private ?user $user = null;
+    private ?User $user = null;
 
     #[ORM\Column]
     private ?int $createdBY = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $adress = null;
 
     public function __construct()
     {
@@ -99,12 +102,12 @@ class Agence
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
@@ -119,6 +122,18 @@ class Agence
     public function setCreatedBY(int $createdBY): static
     {
         $this->createdBY = $createdBY;
+
+        return $this;
+    }
+
+    public function getAdress(): ?string
+    {
+        return $this->adress;
+    }
+
+    public function setAdress(string $adress): static
+    {
+        $this->adress = $adress;
 
         return $this;
     }
