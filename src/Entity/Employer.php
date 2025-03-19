@@ -18,10 +18,6 @@ class Employer
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\OneToOne(inversedBy: 'employer', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?user $iduser = null;
-
     #[ORM\ManyToMany(targetEntity: Agence::class, inversedBy: 'employers')]
     private Collection $idagence;
 
@@ -47,17 +43,9 @@ class Employer
         return $this;
     }
 
-    public function getIduser(): ?user
-    {
-        return $this->iduser;
-    }
+    
 
-    public function setIduser(user $iduser): static
-    {
-        $this->iduser = $iduser;
-
-        return $this;
-    }
+    
 
     /**
      * @return Collection<int, Agence>

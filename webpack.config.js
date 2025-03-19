@@ -20,7 +20,17 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/app.js')
+    .addEntry('app', [
+        './assets/app.js',
+        './node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
+        './node_modules/startbootstrap-sb-admin-2/js/sb-admin-2.min.js'
+      ])
+      
+      // Ajout spécifique pour SB Admin 2
+      .addStyleEntry('sb-admin-2', [
+        './node_modules/startbootstrap-sb-admin-2/css/sb-admin-2.min.css',
+        './node_modules/@fortawesome/fontawesome-free/css/all.min.css'
+      ])
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -71,6 +81,11 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+    .copyFiles({
+        from: './node_modules/font-awesome/fonts',
+        to: 'fonts/[name].[hash:8].[ext]'
+    });
+    
 ;
 
 module.exports = Encore.getWebpackConfig();

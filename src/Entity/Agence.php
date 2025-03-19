@@ -22,15 +22,23 @@ class Agence
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $datecreation = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'agance')]
-    private Collection $users;
+   
 
     #[ORM\ManyToMany(targetEntity: Employer::class, mappedBy: 'idagence')]
     private Collection $employers;
 
+    #[ORM\ManyToOne(inversedBy: 'agences')]
+    private ?User $user = null;
+
+    #[ORM\Column]
+    private ?int $createdBY = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $adress = null;
+
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        
         $this->employers = new ArrayCollection();
     }
 
@@ -66,29 +74,6 @@ class Agence
     /**
      * @return Collection<int, User>
      */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->addAgance($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            $user->removeAgance($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Employer>
@@ -113,6 +98,42 @@ class Agence
         if ($this->employers->removeElement($employer)) {
             $employer->removeIdagence($this);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCreatedBY(): ?int
+    {
+        return $this->createdBY;
+    }
+
+    public function setCreatedBY(int $createdBY): static
+    {
+        $this->createdBY = $createdBY;
+
+        return $this;
+    }
+
+    public function getAdress(): ?string
+    {
+        return $this->adress;
+    }
+
+    public function setAdress(string $adress): static
+    {
+        $this->adress = $adress;
 
         return $this;
     }
