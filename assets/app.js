@@ -9,11 +9,11 @@
 import './styles/app.css';
 // Import CSS
 import 'animate.css';
-
+import 'animate.css/animate.min.css';
 // Import et initialisation de WOW.js
 import WOW from 'wow.js';
 new WOW().init();
-
+import 'jquery';
 // start the Stimulus application
 import './bootstrap';
 // Import des dépendances
@@ -49,6 +49,11 @@ $(function () {
 })
 // Importez le CSS de Font Awesome
 import '@fortawesome/fontawesome-free/css/all.min.css';
+// Import CSS
+import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
+
+// Import JS (optionnel - seulement si besoin des fonctionnalités JS)
+import '@fortawesome/fontawesome-free/js/all.min.js';
 
 // Importez les fichiers de polices (nécessaire pour Webpack)
 import '@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2';
@@ -64,4 +69,13 @@ window.$ = window.jQuery = $; // Rend jQuery disponible globalement
 //import 'bootstrap';
 // Importez jQuery Easing
 import 'jquery.easing';
+
+import Chart from 'chart.js';
+//import { Chart } from 'chart.js';
+// Ou version personnalisée avec plugins
+// import { Chart, LineController, LinearScale } from 'chart.js';
+// Chart.register(LineController, LinearScale);
+
+// Activer l'accès global si nécessaire
+window.Chart = Chart;
 

@@ -55,7 +55,7 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-white mb-4 ">Welcome Back!</h1>
                                     </div>
-                                    <form class="user"  method="post">
+                                    <form class="user"  method="post" action="{{ path('app_login') }}">
                                         {% if error %}
                                             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                                         {% endif %}

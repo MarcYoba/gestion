@@ -13,7 +13,8 @@ Encore
     .setPublicPath('/build')
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
-
+    // <-- Ceci est crucial
+    
     /*
      * ENTRY CONFIG
      *
@@ -21,16 +22,29 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', [
+        'jquery',
+        'popper.js/dist/umd/popper',
+        'bootstrap/dist/js/bootstrap.min.js',
+        'startbootstrap-sb-admin-2/js/sb-admin-2.min.js',
+        'chart.js/dist/Chart.bundle.min.js',
+        'jquery.easing/jquery.easing.min.js',
+        'jquery-backstretch',
+        'waypoints/lib/noframework.waypoints.min.js',
+        'wow.js/dist/wow.min.js',
+
+        // Votre code
         './assets/app.js',
-        './node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-        './node_modules/startbootstrap-sb-admin-2/js/sb-admin-2.min.js'
-      ])
+        './assets/js/demo/chart-area-semaine.js',
+        './assets/js/demo/chart-pie-semaine.js', // Correction du nom de fichier (semain → semaine)
+        './assets/js/demo/chart-bar-semaine.js'
+    ])
+    .autoProvidejQuery() 
       
       // Ajout spécifique pour SB Admin 2
-      .addStyleEntry('sb-admin-2', [
+    .addStyleEntry('sb-admin-2', [
         './node_modules/startbootstrap-sb-admin-2/css/sb-admin-2.min.css',
         './node_modules/@fortawesome/fontawesome-free/css/all.min.css'
-      ])
+    ])
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
