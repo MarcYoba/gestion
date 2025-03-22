@@ -49,6 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Agence::class)]
     private Collection $agences;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Employer $Employer = null;
+
     public function __construct() {
         $this->clients = new Clients(); // Crée un Client automatiquement
         $this->clients->setUser($this); 
@@ -217,6 +220,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $agence->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmployer(): ?Employer
+    {
+        return $this->Employer;
+    }
+
+    public function setEmployer(Employer $Employer): static
+    {
+        // set the owning side of the relation if necessary
+        if ($Employer->getUser() !== $this) {
+            $Employer->setUser($this);
+        }
+
+        $this->Employer = $Employer;
 
         return $this;
     }
