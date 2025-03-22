@@ -4,6 +4,11 @@
 
 {% block body %}
 
+<?php 
+session_start(); 
+require_once("php/historique/historiqueStock.php");
+$_SESSION["route"] = "provenderie";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,13 +109,13 @@
                                         <div class="col mr-2">
                                             <a href="php/achat/liste.php">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    ACHAT
+                                                    ACHAT (MONTANT)</div>
+                                                
                                             </div>
-                                            </a>
-                                        
-                                            <div class="col-auto">
-                                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                            </div>
+                                        </a>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -123,31 +128,8 @@
                                         <div class="col mr-2">
                                         <a href="php/vente/liste.php" >
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                {# VENTE (MONTANT)</div>
-                                                    <?php 
-                                                    global $conn;
-                                                    if (($_SESSION["route"] == "cabinet")) {
-                                                        $sql = "SELECT SUM(prix) as montant FROM ventephamacie  WHERE MONTH(datevente) = MONTH(NOW()) AND typevente ='CASH'";
-
-                                                    } else {
-                                                        $sql = "SELECT SUM(prix) as montant FROM vente WHERE MONTH(datevente) = MONTH(NOW()) AND typevente ='CASH'";
-
-                                                    }
-                                                    $result = $conn->query($sql);
-                                                    $row = mysqli_fetch_assoc($result);
-                                                    $nbetoile = 10;
-                                                    $etoile = "*";
-                                                    for ($i=0; $i <$nbetoile ; $i++) { 
-                                                        $etoile .= "*";
-                                                    }
-                                                    $montant = 0;
-                                                    if (!empty($row["montant"])) {
-                                                        $montant = $row["montant"];
-                                                    }
-                                                    echo '<span  id="vente">'.$etoile.'</span>';
-                                                    echo '<div class="h5 mb-0 font-weight-bold text-gray-800 amount" id="montantvente">'.ceil($montant).' FCFA'.'</div>'; 
-                                                        //var_dump($row);
-                                                    ?> #}
+                                                VENTE (MONTANT)</div>
+                                                    
                                             </div>
                                         </a>
                                         <div class="col-auto">
@@ -166,28 +148,8 @@
                                         <div class="col mr-2">
                                         <a href="php/dette/dette.php">
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                {# DETTE (MONTANT)</div>
-                                                <?php 
-                                                global $conn;
-                                                if (($_SESSION["route"] == "cabinet")) {
-                                                    $sql = "SELECT SUM(prix) as montant FROM ventephamacie WHERE MONTH(datevente) = MONTH(NOW()) AND typevente ='CREDIT'";
-
-                                                } else {
-                                                    $sql = "SELECT SUM(prix) as montant FROM vente WHERE MONTH(datevente) = MONTH(NOW()) AND typevente ='CREDIT'";
-
-                                                }
-                                                $result = $conn->query($sql);
-                                                $row = mysqli_fetch_assoc($result);
-                                                $nbetoile = 10;
-                                                    $etoile = "*";
-                                                    for ($i=0; $i <$nbetoile ; $i++) { 
-                                                        $etoile .= "*";
-                                                    }
-                                                    
-                                                    echo '<span  id="dette">'.$etoile.'</span>';
-                                                echo '<div class="h5 mb-0 font-weight-bold text-gray-800 text-danger amount " id="montantdette">'.$row["montant"].' FCFA'.'</div>'; 
-                                                    //var_dump($row);
-                                            ?> #}
+                                                DETTE (MONTANT)</div>
+                                                
                                         </div>
                                         </a>
                                         <div class="col-auto">
@@ -206,31 +168,8 @@
                                         <div class="col mr-2">
                                         <a href="php/dette/dette.php">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                {# VERSEMENT (MONTANT)</div>
-                                                <?php 
-                                                global $conn;
-                                                if (($_SESSION["route"] == "cabinet")) {
-                                                    $sql = "SELECT SUM(montant) as montant FROM versementphamacie  WHERE MONTH(dateversement) = MONTH(NOW())";
-
-                                                } else {
-                                                    $sql = "SELECT SUM(montant) as montant FROM versement WHERE MONTH(dateversement) = MONTH(NOW())";
-
-                                                }
-                                                $result = $conn->query($sql);
-                                                $row = mysqli_fetch_assoc($result);
-                                                $nbetoile = 10;
-                                                    $etoile = "*";
-                                                    for ($i=0; $i <$nbetoile ; $i++) { 
-                                                        $etoile .= "*";
-                                                    }
-                                                    $montant = 0;
-                                                    if (!empty($row["montant"])) {
-                                                        $montant = $row["montant"];
-                                                    }
-                                                    echo '<span  id="verse">'.$etoile.'</span>';
-                                                echo '<div class="h5 mb-0 font-weight-bold text-gray-800 text-danger amount" id="monversement">'.ceil($montant).' FCFA'.'</div>'; 
-                                                    //var_dump($row);
-                                            ?> #}
+                                                VERSEMENT (MONTANT)</div>
+                                                
                                         </div>
                                         </a>
                                         <div class="col-auto">
@@ -249,31 +188,8 @@
                                         <div class="col mr-2">
                                             <a href="php/caisse/liste.php">
                                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                                    {# CAISSE (MONTANT)</div>
-                                                    <?php 
-                                                        global $conn;
-                                                        if (($_SESSION["route"] == "cabinet")) {
-                                                            $sql = "SELECT SUM(montant) as montant FROM caissePhamacie WHERE MONTH(dateoperation) = MONTH(NOW())";
-
-                                                        } else {
-                                                            $sql = "SELECT SUM(montant) as montant FROM caisse WHERE MONTH(dateoperation) = MONTH(NOW())";
-
-                                                        }
-                                                        $result = $conn->query($sql);
-                                                        $row = mysqli_fetch_assoc($result);
-                                                        $nbetoile = 10;
-                                                        $etoile = "*";
-                                                        for ($i=0; $i <$nbetoile ; $i++) { 
-                                                            $etoile .= "*";
-                                                        }
-                                                        $montant = 0;
-                                                    if (!empty($row["montant"])) {
-                                                        $montant = $row["montant"];
-                                                    }
-                                                        echo '<span  id="caise">'.$etoile.'</span>';
-                                                        echo '<div class="h5 mb-0 font-weight-bold text-gray-800 text-danger amount"  id="montcaise">'.ceil($montant).' FCFA'.'</div>'; 
-                                                            //var_dump($row);
-                                                    ?> #}
+                                                    CAISSE (MONTANT)</div>
+                                                    
                                                 </div>
                                             </a>
                                         <div class="col-auto">
@@ -291,27 +207,8 @@
                                         <div class="col mr-2">
                                             <a href="php/depenses/liste.php">
                                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                                    {# DEPENSE (MONTANT)</div>
-                                                    <?php 
-                                                        global $conn;
-                                                        if (($_SESSION["route"] == "cabinet")) {
-                                                            $sql = "SELECT SUM(montant) as montant FROM depensephamacie  WHERE MONTH(datedepense) = MONTH(NOW())";
-
-                                                        } else {
-                                                            $sql = "SELECT SUM(montant) as montant FROM depenses WHERE MONTH(datedepense) = MONTH(NOW())";
-
-                                                        }
-                                                        $result = $conn->query($sql);
-                                                        $row = mysqli_fetch_assoc($result);
-                                                        $nbetoile = 10;
-                                                        $etoile = "*";
-                                                        for ($i=0; $i <$nbetoile ; $i++) { 
-                                                            $etoile .= "*";
-                                                        }
-                                                         echo '<span  id="depense">'.$etoile.'</span>';
-                                                        echo '<div class="h5 mb-0 font-weight-bold text-gray-800 text-danger amount" id="montdepense">'.$row["montant"].' FCFA'.'</div>'; 
-                                                            //var_dump($row);
-                                                    ?> #}
+                                                    DEPENSE (MONTANT)</div>
+                                                    
                                                 </div>
                                             </a>
                                         <div class="col-auto">
@@ -422,34 +319,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Stock de produit</h6>
                                 </div>
                                 <div class="card-body">
-                                    {# <?php 
-                                        global $conn;
-                                        
-                                        $tab = array("rouge"=>"",
-                                            "jaune"=>"",
-                                            "info"=>"",
-                                            "success"=>""
-
-                                        );
-                                        if (($_SESSION["route"] == "cabinet")) {
-                                            $sql = "SELECT nom_produit as nom, quantite_produit as quantite FROM produitphamacie WHERE cathegorie='provenderie'";
-
-                                        } else {
-                                            $sql = "SELECT nom_produit as nom, quantite_produit as quantite FROM `produit` WHERE cathegorie='provenderie'  ORDER BY nom_produit ASC";
-
-                                        }
-                                        $result = $conn->query($sql);
-                                        while($row = mysqli_fetch_assoc($result)){
-                                            if($row["quantite"]<100){
-                                                echo '<h4 class="small font-weight-bold">'.$row["nom"].'<span class="float-right">'.$row["quantite"].'</span></h4>';
-                                                echo '<div class="progress mb-4">';
-                                                echo '<div class="progress-bar bg-danger" role="progressbar" style="width:'.$row["quantite"].'%"
-                                                aria-valuenow="3" aria-valuemin="0" aria-valuemax="100">'.'</div>';
-                                                echo '</div>';
-                                            }
-                                        }
-                                                    //var_dump($row);
-                                    ?> #}
+                                      
                                 </div>
                             </div>
 
@@ -461,46 +331,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Top 20 des Produits les plus Venduent mois</h6>
                                 </div>
                                 <div class="card-body">
-                                    {# <?php 
-                                        global $conn;
-                                        
-                                        $tab = array("rouge"=>"",
-                                            "jaune"=>"",
-                                            "info"=>"",
-                                            "success"=>""
-
-                                        );
-                                        if (($_SESSION["route"] == "cabinet")) {
-                                            $sql = "SELECT COUNT(f.idproduit) , f.nomproduit, p.quantite_produit 
-                                                    FROM facture f 
-                                                    INNER JOIN produit p
-                                                    WHERE month(f.datefacture) = month(now()) AND f.idproduit = p.id
-                                                    GROUP BY f.nomproduit
-                                                    ORDER BY COUNT(f.idproduit) DESC 
-                                                    LIMIT 20";
-
-                                        } else {
-                                            $sql = "SELECT COUNT(f.idproduit) , f.nomproduit, ROUND(SUM(f.quantite),2) as quantite_produit
-                                                    FROM facture f 
-                                                    INNER JOIN produit p
-                                                    WHERE month(f.datefacture) = month(now()) AND f.idproduit = p.id
-                                                    GROUP BY f.nomproduit
-                                                    ORDER BY SUM(f.quantite)  DESC 
-                                                    LIMIT 20";
-
-                                        }
-                                        $result = $conn->query($sql);
-                                        while($row = mysqli_fetch_assoc($result)){
-                                            
-                                                echo '<h4 class="small font-weight-bold">'.$row["nomproduit"].'<span class="float-right">'.$row["quantite_produit"].'</span></h4>';
-                                                echo '<div class="progress mb-4">';
-                                                echo '<div class="progress-bar bg-danger" role="progressbar" style="width:'.$row["quantite_produit"].'%"
-                                                aria-valuenow="3" aria-valuemin="0" aria-valuemax="100">'.'</div>';
-                                                echo '</div>';
-                                            
-                                        }
-                                                    //var_dump($row);
-                                    ?> #}
+                                    
                                 </div>
                             </div>
 
@@ -538,50 +369,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Liste des 20 premiers clients</h6>
                                 </div>
                                 <div class="card-body">
-                                {# <?php 
-                                        global $conn;
-                                        
-                                        $tab = array("rouge"=>"",
-                                            "jaune"=>"",
-                                            "info"=>"",
-                                            "success"=>""
-
-                                        );
-                                        if (($_SESSION["route"] == "cabinet")) {
-                                            $sql = "SELECT c.firstname, SUM(v.prix) AS somme, COUNT(v.id) as sommeFacture FROM vente v
-                                                INNER JOIN client c WHERE c.id = v.idclient and MONTH(v.datevente) = MONTH(NOW()) 
-                                                GROUP BY c.firstname 
-                                                ORDER by SUM(v.prix) DESC 
-                                                LIMIT 20";
-
-                                        } else {
-                                            $sql = "SELECT c.firstname, SUM(v.prix) AS somme, COUNT(v.id) as sommeFacture FROM vente v
-                                                INNER JOIN client c WHERE c.id = v.idclient and MONTH(v.datevente) = MONTH(NOW()) 
-                                                GROUP BY c.firstname 
-                                                ORDER by SUM(v.prix) DESC 
-                                                LIMIT 20";
-
-                                        }
-                                        $result = $conn->query($sql);
-                                        while($row = mysqli_fetch_assoc($result)){
-                                            
-                                                echo '<h4 class="small font-weight-bold me-5"><hr></h4>';
-                                                echo '<div class="row">';
-                                                    echo '<div class="col-lg-3 mb-2">';
-                                                    echo $row["firstname"];
-                                                    echo '</div>';
-                                                    echo '<div class="col-lg-5 mb-3">';
-                                                    echo 'Montant : '.$row["somme"].'FCFA';
-                                                    echo '</div>';
-
-                                                    echo '<div class="col-lg-4 mb-4">';
-                                                    echo 'NB Achat : '.$row["sommeFacture"];
-                                                    echo '</div>';
-                                                echo '</div>';
-                                            
-                                        }
-                                                    //var_dump($row);
-                                    ?> #}
+                                
                                     
                                 </div>
                             </div>
@@ -638,26 +426,14 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-semaine.js"></script>
-    <script src="js/demo/chart-pie-semain.js"></script>
-    <script src="js/demo/chart-bar-semain.js"></script>
-    
    
     
+   
 </body>
 </html>
 
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}

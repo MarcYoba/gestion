@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Stmt\Return_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +19,10 @@ class UserController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -37,7 +39,7 @@ class UserController extends AbstractController
     }
 
 
-    #[Route("/user/fotgot-password", name: "app_forgot")]
+    #[Route('/user/fotgot-password', name: "app_forgot")]
      
     public function fotgotPassword(Request $request, EntityManagerInterface $entityManager,UserPasswordHasherInterface $userPasswordHasher) :Response {
         
@@ -77,5 +79,11 @@ class UserController extends AbstractController
         ]);
     }
 
-    
+    #[Route(path : '/user/list' , name: 'user_list')]
+    public function list(EntityManagerInterface $entityManager) : Response {
+       $user = $entityManager->getRepository(User::class)->findAll();
+        return $this->render('security/list.html.twig',[
+            'user' => $user,
+        ]);
+    }
 }

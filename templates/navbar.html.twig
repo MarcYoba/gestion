@@ -1,5 +1,4 @@
 
-
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
@@ -159,8 +158,8 @@
     <div id="utilisateur" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">utilisateur:</h6>
-                <a class="collapse-item" href="php/userCon/page.php" id="ajouterUtilisateur">ajouter utilisateur</a>
-                <a class="collapse-item" href="php/userCon/liste.php">Liste</a>
+                <a class="collapse-item" href="{{ path('app_register') }}" id="ajouterUtilisateur">ajouter utilisateur</a>
+                <a class="collapse-item" href="{{ path('user_list') }}">Liste</a>
         </div>
     </div>
     </li>
@@ -248,8 +247,8 @@
     <div id="employer" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Employer :</h6>
-                <a class="collapse-item" href="php/employer/employer.php">Employer</a>
-                <a class="collapse-item" href="php/employer/liste.php">Liste </a>
+                <a class="collapse-item" href="{{ path('app_employer') }}">Employer</a>
+                <a class="collapse-item" href="{{ ('employer_list') }}">Liste </a>
         </div>
     </div>
     </li>
@@ -265,14 +264,12 @@
     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="index.php">Login</a>
-            <a class="collapse-item" href="php/userCon/page.php">Register</a>
-            <a class="collapse-item" href="php/userCon/liste.php">Liste</a>
-            <a class="collapse-item" href="php/userCon/forgot-password.html">Forgot Password</a>
+            <a class="collapse-item" href="{{ path('app_login') }}">Login</a>
+            <a class="collapse-item" href="{{ path('app_logout') }}">Logout</a>
+            <a class="collapse-item" href="{{ path('app_register') }}">Register</a>
+            <a class="collapse-item" href="{{ path('app_forgot') }}">Forgot Password</a>
             <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
+            
         </div>
     </div>
     </li>
