@@ -52,11 +52,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Employer $Employer = null;
 
+    
+
     public function __construct() {
         $this->clients = new Clients(); // Crée un Client automatiquement
         $this->clients->setUser($this); 
         $this->clients->setCreatedAt(new \DateTimeImmutable());// Lie le Client au User
         $this->agences = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -240,4 +243,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    
+
+    
 }
