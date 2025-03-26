@@ -22,21 +22,29 @@ class EmployerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-          
+           $emplyer->setNom($emplyer->getUser()->getUsername());
             $entityManager->persist($emplyer);
             $entityManager->flush();
+
+           return $this->redirectToRoute("employer_list");
         }
         
         return $this->render('employer/index.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-
-    #[Route('/employer/list/', name: 'employer_list')]
-    public function list(): Response
+    /**
+     * @Route(path ="/employer/list", name="employer_list")
+     */
+    public function list(EntityManagerInterface  $entityManager): Response
     {
+        $emplyer = $entityManager->getRepository(Employer::class)->findAll();
+        $agence = $entityManager->getRepository(Agence::class)->findAll();
+        $user = $entityManager->getRepository(User::class)->findAll();
         return $this->render('employer/list.html.twig', [
-            'controller_name' => 'EmployerController',
+            'employers' => $emplyer,
+            'agence' => $agence,
+            'user' => $user,
         ]);
     }
 }

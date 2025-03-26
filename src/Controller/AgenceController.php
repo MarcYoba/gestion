@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AgenceController extends AbstractController
 {
-    #[Route('/agence', name: 'app_agence')]
+    #[Route('/agence/create', name: 'app_agence')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $agence = new Agence();
@@ -45,7 +45,7 @@ class AgenceController extends AbstractController
     #[Route('/agence/client/', name: 'app_client')]
     public function client(): Response
     {
-        return $this->render('agence/index.html.twig', [
+        return $this->render('agence/client.html.twig', [
             'controller_name' => 'AgenceController',
         ]);
     }

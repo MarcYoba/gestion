@@ -55,21 +55,19 @@
                             </div>
                             {{ form_errors(form) }}
                             {{ form_start(form) }}
-                            
-                            <form class="user"  method="post" action="app_employer">
                                 <div class="form-group row">
                                     <div class="col-sm-4 mb-3 mb-sm-0">
                                         {{ form_row(form.createdAt) }} 
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         {{ form_label(form.user) }}<br>
-                                            <select name="{{ field_name(form.user) }}" >
-                                                {% for user in form.user.vars.choices %}
-                                                    <option value="{{ user.value }}" {{ form.user.vars.data and user.value == form.user.vars.data.id ? 'selected' }}>
-                                                        {{ user.data.username }} {# Affiche le nom de l'utilisateur #}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
+                                            {{ form_widget(form.user,{
+                                                'attr':{
+                                                    'class':'form-control form-control-user',
+                                                    'required':'required',
+                                                    'size':'4'
+                                                }
+                                            }) }}
                                         {{ form_errors(form.user) }}
                                     </div>
                                 </div>
@@ -77,14 +75,27 @@
                                     
                                     <div class="col-sm-6">
                                         {{ form_label(form.agence) }}<br>
-                                            <select name="{{ field_name(form.agence) }}" >
-                                                {% for agence in form.agence.vars.choices %}
-                                                    <option value="{{ agence.value }}" {{ form.agence.vars.data and agence.value == form.agence.vars.data.id ? 'selected' }}>
-                                                        {{ agence.data.nom }} {# Affiche le nom de l'agence #}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
+                                            {{ form_widget(form.agence,{
+                                                'attr':{
+                                                    'class':'form-control form-control-user',
+                                                    
+                                                    'required':'required',
+                                                    'size':'4'
+                                                }
+                                            }) }}
                                         {{ form_errors(form.agence) }}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        {{ form_label(form.poste) }}
+                                        {{ form_widget(form.poste,{
+                                            'attr':{
+                                                'class':'form-control form-control-user',
+                                                'required':'required',
+                                                'size':'4'
+                                            }
+                                        }) }}
+                                        {{ form_errors(form.poste) }}
+                                        
                                     </div>
                                     
                                 </div>
@@ -94,7 +105,7 @@
                                     Enregistrer un nouveau employer
                                 </button>
                                 </span>
-                            </form>
+                           
                             {{ form_end(form) }}
                             <hr>
                             
