@@ -69,9 +69,9 @@
     </a>
     <div id="collapseproduit" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Operation des produit</h6>
-                <a class="collapse-item" href="php/produit/produit.php" id="ajouterProduit">ajouter un produit</a>
-                <a class="collapse-item" href="php/produit/liste.php">liste produit</a>
+            <h6 class="collapse-header">Operation des produits</h6>
+                <a class="collapse-item" href="{{ path('app_produit') }}" id="ajouterProduit">ajouter un produit</a>
+                <a class="collapse-item" href="{{ path('produit_list') }}">liste produit</a>
         </div>
     </div>
     </li>
