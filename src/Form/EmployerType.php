@@ -8,7 +8,9 @@ use App\Entity\User;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,7 +30,7 @@ class EmployerType extends AbstractType
                 'choice_label' => 'username',
                 'label' => 'Sélectionner un utilisateur',
                 'placeholder' => 'Choisissez un utilisateur',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'class' => 'form-select form-control-user'
                 ]
@@ -36,13 +38,26 @@ class EmployerType extends AbstractType
             ->add('agence', EntityType::class,[
                 'class' => Agence::class,
                 'choice_label' => 'nom',
-                'mapped' => false,
+                'mapped' => true,
                 'label' => 'Attribuer l\'agence',
                 'placeholder' => 'Attribuer l\'agence',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'class' => 'form-select form-control-user'
                 ]
+            ])
+            ->add('poste', ChoiceType::class,[
+                'choices' => [
+                    'Employer'=>'Employer',
+                    'Manager'=>'Manager',
+                    'Directeur'=>'Directeur',
+                    'Comptable'=>'Comptable',
+                    'Secretaire'=>'Secretaire',
+                    'Chauffeur'=>'Chauffeur',
+                ],
+                'attr' => ['class' => 'form-control form-control-user'],
+                'label' => 'Poste Employé'
+                
             ])
         ;
     }

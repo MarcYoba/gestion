@@ -25,14 +25,6 @@ class Salaire
     #[ORM\Column(length: 30)]
     private ?string $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'salaire', targetEntity: Employer::class)]
-    private Collection $employer;
-
-    public function __construct()
-    {
-        $this->employer = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -74,33 +66,7 @@ class Salaire
         return $this;
     }
 
-    /**
-     * @return Collection<int, Employer>
-     */
-    public function getEmployer(): Collection
-    {
-        return $this->employer;
-    }
+   
 
-    public function addEmployer(Employer $employer): static
-    {
-        if (!$this->employer->contains($employer)) {
-            $this->employer->add($employer);
-            $employer->setSalaire($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEmployer(Employer $employer): static
-    {
-        if ($this->employer->removeElement($employer)) {
-            // set the owning side to null (unless already changed)
-            if ($employer->getSalaire() === $this) {
-                $employer->setSalaire(null);
-            }
-        }
-
-        return $this;
-    }
+   
 }

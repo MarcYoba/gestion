@@ -18,8 +18,6 @@ class Employer
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToMany(targetEntity: Agence::class, inversedBy: 'employers')]
-    private Collection $idagence;
 
     #[ORM\OneToOne(inversedBy: 'Employer', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -28,17 +26,12 @@ class Employer
     #[ORM\Column(length: 100)]
     private ?string $poste = null;
 
-    #[ORM\ManyToOne(inversedBy: 'employer')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Salaire $salaire = null;
-
     #[ORM\Column(length: 100)]
     private ?string $nom = null;
 
-    public function __construct()
-    {
-        $this->idagence = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'employer')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Agence $agence = null;
 
     public function getId(): ?int
     {
@@ -53,34 +46,6 @@ class Employer
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    
-
-    
-
-    /**
-     * @return Collection<int, Agence>
-     */
-    public function getIdagence(): Collection
-    {
-        return $this->idagence;
-    }
-
-    public function addIdagence(Agence $idagence): static
-    {
-        if (!$this->idagence->contains($idagence)) {
-            $this->idagence->add($idagence);
-        }
-
-        return $this;
-    }
-
-    public function removeIdagence(Agence $idagence): static
-    {
-        $this->idagence->removeElement($idagence);
 
         return $this;
     }
@@ -109,18 +74,6 @@ class Employer
         return $this;
     }
 
-    public function getSalaire(): ?Salaire
-    {
-        return $this->salaire;
-    }
-
-    public function setSalaire(?Salaire $salaire): static
-    {
-        $this->salaire = $salaire;
-
-        return $this;
-    }
-
     public function getNom(): ?string
     {
         return $this->nom;
@@ -129,6 +82,18 @@ class Employer
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getAgence(): ?Agence
+    {
+        return $this->agence;
+    }
+
+    public function setAgence(?Agence $agence): static
+    {
+        $this->agence = $agence;
 
         return $this;
     }

@@ -22,10 +22,6 @@ class Agence
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $datecreation = null;
 
-   
-
-    #[ORM\ManyToMany(targetEntity: Employer::class, mappedBy: 'idagence')]
-    private Collection $employers;
 
     #[ORM\ManyToOne(inversedBy: 'agences')]
     private ?User $user = null;
@@ -36,11 +32,15 @@ class Agence
     #[ORM\Column(length: 255)]
     private ?string $adress = null;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Employer::class)]
+    private Collection $employer;
+
     public function __construct()
     {
-        
-        $this->employers = new ArrayCollection();
+        $this->employer = new ArrayCollection();
     }
+
+   
 
     public function getId(): ?int
     {
@@ -67,37 +67,6 @@ class Agence
     public function setDatecreation(\DateTimeInterface $datecreation): static
     {
         $this->datecreation = $datecreation;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-
-    /**
-     * @return Collection<int, Employer>
-     */
-    public function getEmployers(): Collection
-    {
-        return $this->employers;
-    }
-
-    public function addEmployer(Employer $employer): static
-    {
-        if (!$this->employers->contains($employer)) {
-            $this->employers->add($employer);
-            $employer->addIdagence($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEmployer(Employer $employer): static
-    {
-        if ($this->employers->removeElement($employer)) {
-            $employer->removeIdagence($this);
-        }
 
         return $this;
     }
@@ -134,6 +103,36 @@ class Agence
     public function setAdress(string $adress): static
     {
         $this->adress = $adress;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Employer>
+     */
+    public function getEmployer(): Collection
+    {
+        return $this->employer;
+    }
+
+    public function addEmployer(Employer $employer): static
+    {
+        if (!$this->employer->contains($employer)) {
+            $this->employer->add($employer);
+            $employer->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmployer(Employer $employer): static
+    {
+        if ($this->employer->removeElement($employer)) {
+            // set the owning side to null (unless already changed)
+            if ($employer->getAgence() === $this) {
+                $employer->setAgence(null);
+            }
+        }
 
         return $this;
     }
