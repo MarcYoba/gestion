@@ -52,6 +52,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Employer $Employer = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Produit::class)]
+    private Collection $produits;
+
     
 
     public function __construct() {
@@ -59,6 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->clients->setUser($this); 
         $this->clients->setCreatedAt(new \DateTimeImmutable());// Lie le Client au User
         $this->agences = new ArrayCollection();
+        $this->produits = new ArrayCollection();
         
     }
 
@@ -240,6 +244,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->Employer = $Employer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Produit>
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produit $produit): static
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): static
+    {
+        if ($this->produits->removeElement($produit)) {
+            // set the owning side to null (unless already changed)
+            if ($produit->getUser() === $this) {
+                $produit->setUser(null);
+            }
+        }
 
         return $this;
     }
