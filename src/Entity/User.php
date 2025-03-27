@@ -58,6 +58,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Fournisseur::class)]
     private Collection $fournisseurs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Achat::class)]
+    private Collection $achat;
+
     
 
     public function __construct() {
@@ -67,6 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->agences = new ArrayCollection();
         $this->produits = new ArrayCollection();
         $this->fournisseurs = new ArrayCollection();
+        $this->achat = new ArrayCollection();
         
     }
 
@@ -306,6 +310,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($fournisseur->getUser() === $this) {
                 $fournisseur->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Achat>
+     */
+    public function getAchat(): Collection
+    {
+        return $this->achat;
+    }
+
+    public function addAchat(Achat $achat): static
+    {
+        if (!$this->achat->contains($achat)) {
+            $this->achat->add($achat);
+            $achat->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchat(Achat $achat): static
+    {
+        if ($this->achat->removeElement($achat)) {
+            // set the owning side to null (unless already changed)
+            if ($achat->getUser() === $this) {
+                $achat->setUser(null);
             }
         }
 
