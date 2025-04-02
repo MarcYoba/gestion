@@ -28,9 +28,17 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'clients', targetEntity: Versement::class)]
     private Collection $versements;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Vente::class, orphanRemoval: true)]
+    private Collection $vente;
+
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Credit::class, orphanRemoval: true)]
+    private Collection $credit;
+
     public function __construct()
     {
         $this->versements = new ArrayCollection();
+        $this->vente = new ArrayCollection();
+        $this->credit = new ArrayCollection();
     }
 
     
@@ -100,6 +108,66 @@ class Clients
             // set the owning side to null (unless already changed)
             if ($versement->getClients() === $this) {
                 $versement->setClients(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vente>
+     */
+    public function getVente(): Collection
+    {
+        return $this->vente;
+    }
+
+    public function addVente(Vente $vente): static
+    {
+        if (!$this->vente->contains($vente)) {
+            $this->vente->add($vente);
+            $vente->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVente(Vente $vente): static
+    {
+        if ($this->vente->removeElement($vente)) {
+            // set the owning side to null (unless already changed)
+            if ($vente->getClient() === $this) {
+                $vente->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Credit>
+     */
+    public function getCredit(): Collection
+    {
+        return $this->credit;
+    }
+
+    public function addCredit(Credit $credit): static
+    {
+        if (!$this->credit->contains($credit)) {
+            $this->credit->add($credit);
+            $credit->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCredit(Credit $credit): static
+    {
+        if ($this->credit->removeElement($credit)) {
+            // set the owning side to null (unless already changed)
+            if ($credit->getClient() === $this) {
+                $credit->setClient(null);
             }
         }
 
