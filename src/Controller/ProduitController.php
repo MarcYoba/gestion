@@ -40,4 +40,26 @@ class ProduitController extends AbstractController
             'produits' => $produit,
         ]);
     }
+
+    #[Route('/produit/recherche/prix', name: 'produit_prix_recherche')]
+    public function RecherchePrix(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        if ($request->isXmlHttpRequest() || $request->getContentType()==='json') {
+            $json = $request->getContent();
+            $donnees = json_decode($json, true);
+            if (isset($donnees['nom'])) {
+                $produit = $entityManager->getRepository(Produit::class)->findBy(['id' => $donnees['nom']]);
+                if ($produit) {
+                    return $this->json([
+                        'success' => true,
+                        'message' => $produit[0]->getPrixvente(),
+                        'quantite' => $produit[0]->getQuantite(),
+                    ]);
+                } else {
+                    return $this->json(['error' => 'Produit non trouvé'], 404);
+                }
+            }
+        }
+        return $this->json(['error' => 'Prix non spécifié'], 404);
+    }
 }

@@ -45,4 +45,15 @@ class ProduitRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findByName($nom): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.prixvente as prix, p.quantite as quantite')
+            ->andWhere('p.prix = :val')
+            ->setParameter('val', $nom)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
