@@ -23,8 +23,11 @@ class Credit
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\OneToOne(mappedBy: 'credit', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'credit', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Vente $vente = null;
+
+   
 
     public function getId(): ?int
     {
@@ -74,13 +77,9 @@ class Credit
 
     public function setVente(Vente $vente): static
     {
-        // set the owning side of the relation if necessary
-        if ($vente->getCredit() !== $this) {
-            $vente->setCredit($this);
-        }
-
         $this->vente = $vente;
 
         return $this;
     }
+
 }
