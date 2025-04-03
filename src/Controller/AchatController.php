@@ -43,12 +43,18 @@ class AchatController extends AbstractController
                     $fournisseur = $entityManager->getReference(Fournisseur::class, $key['fournisseur']);
                     $produit = $entityManager->getReference(Produit::class, $key['produit']);
 
+                    $ajout = $produit->getQuantite();
+
                     $achat->setPrix($key["prix"]);
                     $achat->setQuantite($key["quantite"]);
                     $achat->setMontant($key["total"]);
                     $achat->setUser($this->getUser());
                     $achat->setFournisseur($fournisseur);
                     $achat->setProduit($produit);
+
+                    $ajout = $ajout + $key["quantite"];
+
+                    $produit->setQuantite($ajout);
                     $entityManager->persist($achat);
                     
                 }

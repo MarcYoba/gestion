@@ -67,6 +67,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Facture::class, orphanRemoval: true)]
     private Collection $facture;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Quantiteproduit::class, orphanRemoval: true)]
+    private Collection $quantiteproduits;
+
     
 
     public function __construct() {
@@ -79,6 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->achat = new ArrayCollection();
         $this->vente = new ArrayCollection();
         $this->facture = new ArrayCollection();
+        $this->quantiteproduits = new ArrayCollection();
         
     }
 
@@ -408,6 +412,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($facture->getUser() === $this) {
                 $facture->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Quantiteproduit>
+     */
+    public function getQuantiteproduits(): Collection
+    {
+        return $this->quantiteproduits;
+    }
+
+    public function addQuantiteproduit(Quantiteproduit $quantiteproduit): static
+    {
+        if (!$this->quantiteproduits->contains($quantiteproduit)) {
+            $this->quantiteproduits->add($quantiteproduit);
+            $quantiteproduit->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuantiteproduit(Quantiteproduit $quantiteproduit): static
+    {
+        if ($this->quantiteproduits->removeElement($quantiteproduit)) {
+            // set the owning side to null (unless already changed)
+            if ($quantiteproduit->getUser() === $this) {
+                $quantiteproduit->setUser(null);
             }
         }
 

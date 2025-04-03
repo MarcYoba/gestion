@@ -53,10 +53,14 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Facture::class, orphanRemoval: true)]
     private Collection $facture;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Quantiteproduit::class, orphanRemoval: true)]
+    private Collection $quantiteproduits;
+
     public function __construct()
     {
         $this->achat = new ArrayCollection();
         $this->facture = new ArrayCollection();
+        $this->quantiteproduits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -238,6 +242,36 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($facture->getProduit() === $this) {
                 $facture->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Quantiteproduit>
+     */
+    public function getQuantiteproduits(): Collection
+    {
+        return $this->quantiteproduits;
+    }
+
+    public function addQuantiteproduit(Quantiteproduit $quantiteproduit): static
+    {
+        if (!$this->quantiteproduits->contains($quantiteproduit)) {
+            $this->quantiteproduits->add($quantiteproduit);
+            $quantiteproduit->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuantiteproduit(Quantiteproduit $quantiteproduit): static
+    {
+        if ($this->quantiteproduits->removeElement($quantiteproduit)) {
+            // set the owning side to null (unless already changed)
+            if ($quantiteproduit->getProduit() === $this) {
+                $quantiteproduit->setProduit(null);
             }
         }
 

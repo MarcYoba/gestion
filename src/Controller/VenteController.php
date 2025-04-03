@@ -3,10 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Vente;
-use App\Entity\User;
+
 use App\Entity\Facture;
 use app\Entity\Clients;
 use App\Entity\Produit;
+use App\Entity\Quantiteproduit;
 use App\Form\VenteType;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -31,6 +32,7 @@ class VenteController extends AbstractController
                 $lignevente = end($data);
                 array_pop($data);
                 $type = "";
+                $date = null;
                 $heure = date("H:i:s");
                 $idclient = $lignevente['client'];
                 $user = $this->getUser();
@@ -90,8 +92,10 @@ class VenteController extends AbstractController
                 $entityManager->persist($vente);
                 
                     foreach ($data as $key => $value) {
+                        $reste = 0;
                         $facture = new Facture();
-                        
+                        $quantitereste = new Quantiteproduit;
+
                         $produit = $entityManager->getRepository(Produit::class)->find($value['produit']);
                         $facture->setQuantite($value['quantite']);
                         $facture->setPrix($value['prix']);
@@ -99,19 +103,32 @@ class VenteController extends AbstractController
                         $facture->setTypepaiement($type);
                         
                         if(empty($value['date'])){
-                            $data = new \DateTimeImmutable;
-                            $facture->setCreatedAt($data );
+                            $date = new \DateTimeImmutable;
+                            $facture->setCreatedAt($date );
                         }else{
-                            $data = new \DateTimeImmutable($value['date']);
-                            $facture->setCreatedAt($data );
+                            $date = new \DateTimeImmutable($value['date']);
+                            $facture->setCreatedAt($date );
                         }
+
+                        if ($produit) {
+                            $reste = $produit->getQuantite();
+                            $reste = $reste - $value['quantite'];
+                           $quantitereste->setQuantiteRestant($reste);
+                           $quantitereste->setCreatedAt($date);
+                        }
+
+                        $produit ->setQuantite($reste);
+
+                        $quantitereste->setUser($user);
+                        $quantitereste->setVente($vente);
+                        $quantitereste->setProduit($produit);
                         $facture->setUser($user);
                         $facture->setClient($client);
                         $facture->setProduit($produit);
                         $facture->setVente($vente);
                         
                         $entityManager->persist($facture);
-                        
+                        $entityManager->persist($quantitereste);
                      }
                 
                 try {
@@ -140,11 +157,16 @@ class VenteController extends AbstractController
     }
 
     #[Route('/vente/list', name: 'vente_list')]
-    public function list(): Response
+    public function list(EntityManagerInterface $entityManager): Response
     {
+        $vente = $entityManager->getRepository(Vente::class)->findAll();
+        $produit = $entityManager->getRepository(Produit::class)->findAll();
+        $client = $entityManager->getRepository(Clients::class)->findAll();
         return $this->render('vente/list.html.twig', [
-            'controller_name' => 'VenteController',
-        ]);
+            'vente' => $vente,
+            'produit' => $produit,
+            'client' => $client,
+            ]);
     }
 
     
