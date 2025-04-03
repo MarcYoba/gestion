@@ -50,9 +50,13 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Achat::class, orphanRemoval: true)]
     private Collection $achat;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Facture::class, orphanRemoval: true)]
+    private Collection $facture;
+
     public function __construct()
     {
         $this->achat = new ArrayCollection();
+        $this->facture = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -204,6 +208,36 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($achat->getProduit() === $this) {
                 $achat->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Facture>
+     */
+    public function getFacture(): Collection
+    {
+        return $this->facture;
+    }
+
+    public function addFacture(Facture $facture): static
+    {
+        if (!$this->facture->contains($facture)) {
+            $this->facture->add($facture);
+            $facture->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFacture(Facture $facture): static
+    {
+        if ($this->facture->removeElement($facture)) {
+            // set the owning side to null (unless already changed)
+            if ($facture->getProduit() === $this) {
+                $facture->setProduit(null);
             }
         }
 

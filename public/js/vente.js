@@ -288,7 +288,7 @@ function recuperationdonneTable() {
             const cellule5 = tableau.rows[index].cells[4];
            // const cellule6 = tableau.rows[index].cells[5];
     
-            data.fournisseur = cellule1.textContent;
+            data.client = cellule1.textContent;
             data.produit = cellule2.textContent;
             data.quantite = cellule3.textContent;
             data.prix = cellule4.textContent;
@@ -330,7 +330,7 @@ function enregistrementBD(){
 
     let donnees =[];
     donnees = recuperationdonneTable();
-    console.log(donnees);
+    
     fetch('/vente/create',{
         method:'POST',
         headers:{
@@ -342,10 +342,10 @@ function enregistrementBD(){
     .then(data => { 
         if (data.success == true) {
             document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-info"> enregistrement des donne avec success</p>';
-            window.location.href = 'facture.php?id='+ data.message;
+            window.location.href = '/facture/view/'+ data.message;
             console.log(data);
         }else if(data.success == false){
-            document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-danger"> Verifier que le produit ne sont conforme </p>';
+            document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-danger"> Verifier que les produits sont conforme </p>';
         }else{
             console.log(data);
         }     

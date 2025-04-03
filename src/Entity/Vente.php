@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VenteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VenteRepository::class)]
@@ -36,9 +38,44 @@ class Vente
     #[ORM\Column(length: 255)]
     private ?string $esperce = null;
 
-    #[ORM\OneToOne(inversedBy: 'vente', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+   
+
+
+
+    #[ORM\Column(length: 50)]
+    private ?string $aliment = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $heure = null;
+
+    #[ORM\Column(length: 30)]
+    private ?string $statusvente = null;
+
+    #[ORM\OneToOne(mappedBy: 'vente', cascade: ['persist', 'remove'])]
     private ?Credit $credit = null;
+
+    #[ORM\Column]
+    private ?float $montantcredit = null;
+
+    #[ORM\Column]
+    private ?float $montantcash = null;
+
+    #[ORM\Column]
+    private ?float $montantbanque = null;
+
+    #[ORM\Column]
+    private ?float $montantmomo = null;
+
+    #[ORM\OneToMany(mappedBy: 'vente', targetEntity: Facture::class, orphanRemoval: true)]
+    private Collection $facture;
+
+    #[ORM\Column]
+    private ?float $reduction = null;
+
+    public function __construct()
+    {
+        $this->facture = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -129,6 +166,45 @@ class Vente
         return $this;
     }
 
+    
+
+
+    public function getAliment(): ?string
+    {
+        return $this->aliment;
+    }
+
+    public function setAliment(string $aliment): static
+    {
+        $this->aliment = $aliment;
+
+        return $this;
+    }
+
+    public function getHeure(): ?string
+    {
+        return $this->heure;
+    }
+
+    public function setHeure(string $heure): static
+    {
+        $this->heure = $heure;
+
+        return $this;
+    }
+
+    public function getStatusvente(): ?string
+    {
+        return $this->statusvente;
+    }
+
+    public function setStatusvente(string $statusvente): static
+    {
+        $this->statusvente = $statusvente;
+
+        return $this;
+    }
+
     public function getCredit(): ?Credit
     {
         return $this->credit;
@@ -136,7 +212,102 @@ class Vente
 
     public function setCredit(Credit $credit): static
     {
+        // set the owning side of the relation if necessary
+        if ($credit->getVente() !== $this) {
+            $credit->setVente($this);
+        }
+
         $this->credit = $credit;
+
+        return $this;
+    }
+
+    public function getMontantcredit(): ?float
+    {
+        return $this->montantcredit;
+    }
+
+    public function setMontantcredit(float $montantcredit): static
+    {
+        $this->montantcredit = $montantcredit;
+
+        return $this;
+    }
+
+    public function getMontantcash(): ?float
+    {
+        return $this->montantcash;
+    }
+
+    public function setMontantcash(float $montantcash): static
+    {
+        $this->montantcash = $montantcash;
+
+        return $this;
+    }
+
+    public function getMontantbanque(): ?float
+    {
+        return $this->montantbanque;
+    }
+
+    public function setMontantbanque(float $montantbanque): static
+    {
+        $this->montantbanque = $montantbanque;
+
+        return $this;
+    }
+
+    public function getMontantmomo(): ?float
+    {
+        return $this->montantmomo;
+    }
+
+    public function setMontantmomo(float $montantmomo): static
+    {
+        $this->montantmomo = $montantmomo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Facture>
+     */
+    public function getFacture(): Collection
+    {
+        return $this->facture;
+    }
+
+    public function addFacture(Facture $facture): static
+    {
+        if (!$this->facture->contains($facture)) {
+            $this->facture->add($facture);
+            $facture->setVente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFacture(Facture $facture): static
+    {
+        if ($this->facture->removeElement($facture)) {
+            // set the owning side to null (unless already changed)
+            if ($facture->getVente() === $this) {
+                $facture->setVente(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getReduction(): ?float
+    {
+        return $this->reduction;
+    }
+
+    public function setReduction(float $reduction): static
+    {
+        $this->reduction = $reduction;
 
         return $this;
     }
