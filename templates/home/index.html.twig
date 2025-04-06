@@ -48,7 +48,8 @@
         </div>
 
         <!-- Navigation -->
-        {# <nav class="navbar navbar-default navbar-fixed-top fadeInDown" data-wow-delay="0.2s">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top wow animate__animated animate__fadeInDown" 
+        data-wow-delay="0.2s">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header page-scroll">
@@ -77,7 +78,7 @@
 
             </div>
             <!-- /.container-fluid -->
-        </nav> #}
+        </nav>
 
         <div id="search-wrapper">
             <button type="button" class="close">×</button>
@@ -88,7 +89,7 @@
         </div>
 
         <!-- Header -->
-        {# <header id="headerwrap" class="backstretched fullheight">
+        <header id="headerwrap" class="backstretched fullheight">
             <div class="container-fluid fullheight">
                 <div class="vertical-center row">
                     <div class="col-sm-1 pull-left text-center slider-control match-height">
@@ -102,7 +103,7 @@
                     </div>
                 </div>
             </div>
-        </header> #}
+        </header>
 
         <section id="about" class="top-border-me">
             <div class="section-inner">
@@ -120,6 +121,9 @@
                                     {{ agences.nom }}
                                     <a href="{{ path('app_home_dashboard', {'id':agences.id}) }}" class="btn btn-primary btn-user btn-block">
                                         <span class="theme-accent-color"> Provenderie </span> 
+                                    </a>
+                                    <a href="{{ path('app_home_dashboardA', {'id':agences.id}) }}" class="btn btn-primary btn-user btn-block">
+                                        <span class="theme-accent-color"> Cabinet </span> 
                                     </a>
                                 </button>
                             {% endfor %}
@@ -161,7 +165,7 @@
                     <div class="row">
                         <div class="col-lg-12 text-center mb100">                        
                             <h2 class="section-heading">Information <span class="theme-accent-color">en</span> Pharmacie</h2>
-                            <p class="mt20"><a href="homepahamacie.php" class="btn btn-primary btn-red page-scroll">Aller en pharmacie</a></p>               
+                                         
                             <hr class="thin-hr">
                             <h3 class="section-subheading secondary-font">Nous sommes très heureux de te voir.</h3>
                         </div>
@@ -353,9 +357,7 @@
                             <hr class="thin-hr">
                             
                             
-                                    <p class="mt20"><a href="customer/client.php" class="btn btn-primary btn-red page-scroll">passer une commande</a></p>
-                                       
-                                    <p class="mt20"><a href="customer/transition.php" class="btn btn-primary btn-red page-scroll">passer une commande</a></p>
+                                    
            
                             <h3 class="section-subheading secondary-font">Bienvenue dans la communauté</h3>
                         </div>
@@ -388,10 +390,7 @@
                         <div class="col-lg-12 text-center mb100">
                             <h2 class="section-heading">Infomation <span class="theme-accent-color">en</span> provenderi</h2>
                             <hr class="thin-hr">
-                           
-                              <p class="mt20">
-                                <a href="home.php" class="btn btn-primary btn-red page-scroll">Aller a la provenderie</a>
-                            </p>         
+                                   
                         
                             <h3 class="section-subheading secondary-font">Bienvenue dans la communauté</h3>
                         </div>

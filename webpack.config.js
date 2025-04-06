@@ -1,105 +1,61 @@
 const Encore = require('@symfony/webpack-encore');
 
-// Manually configure the runtime environment if not already configured yet by the "encore" command.
-// It's useful when you use tools that rely on webpack.config.js file.
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
 Encore
-    // directory where compiled assets will be stored
     .setOutputPath('public/build/')
-    // public path used by the web server to access the output path
     .setPublicPath('/build')
-    // only needed for CDN's or subdirectory deploy
-    //.setManifestKeyPrefix('build/')
-    // <-- Ceci est crucial
     
-    /*
-     * ENTRY CONFIG
-     *
-     * Each entry will result in one JavaScript file (e.g. app.js)
-     * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
-     */
-    .addEntry('app', [
+    // Entrées principales
+    .addEntry('app', './assets/app.js')
+    
+    // Entrées séparées pour les bibliothèques
+    .addEntry('vendor', [
         'jquery',
-        'popper.js/dist/umd/popper',
-        'bootstrap/dist/js/bootstrap.min.js',
-        'startbootstrap-sb-admin-2/js/sb-admin-2.min.js',
-        'chart.js/dist/Chart.bundle.min.js',
-        'jquery.easing/jquery.easing.min.js',
-        'jquery-backstretch',
-        'waypoints/lib/noframework.waypoints.min.js',
-        'wow.js/dist/wow.min.js',
-
-        // Votre code
-        './assets/app.js',
-        './assets/js/demo/chart-area-semaine.js',
-        './assets/js/demo/chart-pie-semaine.js', // Correction du nom de fichier (semain → semaine)
-        './assets/js/demo/chart-bar-semaine.js'
+        'bootstrap',
+        '@fortawesome/fontawesome-free',
+        'animate.css',
+        'wow.js',
+        'jquery.easing',
+        'chart.js'
     ])
-    .autoProvidejQuery() 
-      
-      // Ajout spécifique pour SB Admin 2
+    
+    // SB Admin 2 spécifique
     .addStyleEntry('sb-admin-2', [
-        './node_modules/startbootstrap-sb-admin-2/css/sb-admin-2.min.css',
-        './node_modules/@fortawesome/fontawesome-free/css/all.min.css'
+        'startbootstrap-sb-admin-2/css/sb-admin-2.min.css',
+        'startbootstrap-sb-admin-2/js/sb-admin-2.min.js',
+        '@fortawesome/fontawesome-free/css/all.min.css'
     ])
-
-    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
+    
+    // Features
     .enableStimulusBridge('./assets/controllers.json')
-
-    // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
-
-    // will require an extra script tag for runtime.js
-    // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
-
-    /*
-     * FEATURE CONFIG
-     *
-     * Enable & configure other features below. For a full
-     * list of features, see:
-     * https://symfony.com/doc/current/frontend.html#adding-more-features
-     */
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
-    // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
-
-    // configure Babel
-    // .configureBabel((config) => {
-    //     config.plugins.push('@babel/a-babel-plugin');
-    // })
-
-    // enables and configure @babel/preset-env polyfills
+    .autoProvidejQuery()
+    
+    // Configuration Babel
     .configureBabelPresetEnv((config) => {
         config.useBuiltIns = 'usage';
         config.corejs = '3.23';
     })
-
-    // enables Sass/SCSS support
-    //.enableSassLoader()
-
-    // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
-
-    // uncomment if you use React
-    //.enableReactPreset()
-
-    // uncomment to get integrity="..." attributes on your script & link tags
-    // requires WebpackEncoreBundle 1.4 or higher
-    //.enableIntegrityHashes(Encore.isProduction())
-
-    // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
-    .copyFiles({
-        from: './node_modules/font-awesome/fonts',
-        to: 'fonts/[name].[hash:8].[ext]'
-    });
     
+    // Copie des assets
+    .copyFiles([
+        {
+            from: './node_modules/@fortawesome/fontawesome-free/webfonts',
+            to: 'webfonts/[name].[hash:8].[ext]'
+        },
+        {
+            from: './assets/images',
+            to: 'images/[path][name].[hash:8].[ext]'
+        }
+    ])
 ;
 
 module.exports = Encore.getWebpackConfig();
