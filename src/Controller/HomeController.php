@@ -27,4 +27,13 @@ class HomeController extends AbstractController
             'agence' => $agence,
         ]);
     }
+
+    #[Route('/home/dashboardA/{id}', name: 'app_home_dashboardA')]
+    public function dashboardA(EntityManagerInterface $entityManager): Response
+    {
+        $agence = $entityManager->getRepository(Agence::class)->findAll();
+        return $this->render('home/dashboardA.html.twig', [
+            'agence' => $agence,
+        ]);
+    }
 }
