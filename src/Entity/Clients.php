@@ -37,12 +37,16 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Facture::class, orphanRemoval: true)]
     private Collection $facture;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: VersementA::class)]
+    private Collection $versementAs;
+
     public function __construct()
     {
         $this->versements = new ArrayCollection();
         $this->vente = new ArrayCollection();
         $this->credit = new ArrayCollection();
         $this->facture = new ArrayCollection();
+        $this->versementAs = new ArrayCollection();
     }
 
     
@@ -202,6 +206,36 @@ class Clients
             // set the owning side to null (unless already changed)
             if ($facture->getClient() === $this) {
                 $facture->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VersementA>
+     */
+    public function getVersementAs(): Collection
+    {
+        return $this->versementAs;
+    }
+
+    public function addVersementA(VersementA $versementA): static
+    {
+        if (!$this->versementAs->contains($versementA)) {
+            $this->versementAs->add($versementA);
+            $versementA->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVersementA(VersementA $versementA): static
+    {
+        if ($this->versementAs->removeElement($versementA)) {
+            // set the owning side to null (unless already changed)
+            if ($versementA->getClient() === $this) {
+                $versementA->setClient(null);
             }
         }
 

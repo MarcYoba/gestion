@@ -22,6 +22,8 @@ class VersementController extends AbstractController
         $form = $this->createForm(VersementType::class,$versement);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $user = $this->getUser();
+            $versement->setUser($user);
             $entityManager->persist($versement);
             $entityManager->flush();
             return $this->redirectToRoute('versement_list');

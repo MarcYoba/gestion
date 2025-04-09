@@ -76,6 +76,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DepenseA::class)]
     private Collection $depenseAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: VersementA::class, orphanRemoval: true)]
+    private Collection $versementAs;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Versement::class, orphanRemoval: true)]
+    private Collection $versements;
+
     
 
     public function __construct() {
@@ -90,6 +96,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->facture = new ArrayCollection();
         $this->quantiteproduits = new ArrayCollection();
         $this->depenseAs = new ArrayCollection();
+        $this->versementAs = new ArrayCollection();
+        $this->versements = new ArrayCollection();
         
     }
 
@@ -491,6 +499,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($depenseA->getUser() === $this) {
                 $depenseA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VersementA>
+     */
+    public function getVersementAs(): Collection
+    {
+        return $this->versementAs;
+    }
+
+    public function addVersementA(VersementA $versementA): static
+    {
+        if (!$this->versementAs->contains($versementA)) {
+            $this->versementAs->add($versementA);
+            $versementA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVersementA(VersementA $versementA): static
+    {
+        if ($this->versementAs->removeElement($versementA)) {
+            // set the owning side to null (unless already changed)
+            if ($versementA->getUser() === $this) {
+                $versementA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Versement>
+     */
+    public function getVersements(): Collection
+    {
+        return $this->versements;
+    }
+
+    public function addVersement(Versement $versement): static
+    {
+        if (!$this->versements->contains($versement)) {
+            $this->versements->add($versement);
+            $versement->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVersement(Versement $versement): static
+    {
+        if ($this->versements->removeElement($versement)) {
+            // set the owning side to null (unless already changed)
+            if ($versement->getUser() === $this) {
+                $versement->setUser(null);
             }
         }
 

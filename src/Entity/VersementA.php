@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
-use App\Entity\Clients;
-use App\Repository\VersementRepository;
-use Doctrine\DBAL\Types\Types;
+use App\Repository\VersementARepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: VersementRepository::class)]
-class Versement
+#[ORM\Entity(repositoryClass: VersementARepository::class)]
+class VersementA
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,24 +17,21 @@ class Versement
     private ?float $montant = null;
 
     #[ORM\Column]
-    private ?float $Om = null;
+    private ?float $om = null;
 
     #[ORM\Column]
     private ?float $banque = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $createdAd = null;
-
-    
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(inversedBy: 'versements')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Clients $clients = null;
+    #[ORM\ManyToOne(inversedBy: 'versementAs')]
+    private ?Clients $client = null;
 
-    #[ORM\ManyToOne(inversedBy: 'versements')]
+    #[ORM\ManyToOne(inversedBy: 'versementAs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -59,12 +54,12 @@ class Versement
 
     public function getOm(): ?float
     {
-        return $this->Om;
+        return $this->om;
     }
 
-    public function setOm(float $Om): static
+    public function setOm(float $om): static
     {
-        $this->Om = $Om;
+        $this->om = $om;
 
         return $this;
     }
@@ -81,19 +76,17 @@ class Versement
         return $this;
     }
 
-    public function getCreatedAd(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->createdAd;
+        return $this->createdAt;
     }
 
-    public function setCreatedAd(\DateTimeInterface $createdAd): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->createdAd = $createdAd;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
-
-   
 
     public function getDescription(): ?string
     {
@@ -107,14 +100,14 @@ class Versement
         return $this;
     }
 
-    public function getClients(): ?Clients
+    public function getClient(): ?Clients
     {
-        return $this->clients;
+        return $this->client;
     }
 
-    public function setClients(?Clients $clients): static
+    public function setClient(?Clients $client): static
     {
-        $this->clients = $clients;
+        $this->client = $client;
 
         return $this;
     }
