@@ -70,6 +70,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Quantiteproduit::class, orphanRemoval: true)]
     private Collection $quantiteproduits;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: DepenseA::class)]
+    private Collection $depenseAs;
+
     
 
     public function __construct() {
@@ -83,6 +89,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->vente = new ArrayCollection();
         $this->facture = new ArrayCollection();
         $this->quantiteproduits = new ArrayCollection();
+        $this->depenseAs = new ArrayCollection();
         
     }
 
@@ -442,6 +449,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($quantiteproduit->getUser() === $this) {
                 $quantiteproduit->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DepenseA>
+     */
+    public function getDepenseAs(): Collection
+    {
+        return $this->depenseAs;
+    }
+
+    public function addDepenseA(DepenseA $depenseA): static
+    {
+        if (!$this->depenseAs->contains($depenseA)) {
+            $this->depenseAs->add($depenseA);
+            $depenseA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepenseA(DepenseA $depenseA): static
+    {
+        if ($this->depenseAs->removeElement($depenseA)) {
+            // set the owning side to null (unless already changed)
+            if ($depenseA->getUser() === $this) {
+                $depenseA->setUser(null);
             }
         }
 

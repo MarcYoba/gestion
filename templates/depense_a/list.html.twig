@@ -67,13 +67,7 @@
                                 <br>
                                 <label for="annee">Année recherche</label>
                                     <select class="form-control" id="annee" name="annee" onchange="reload()">
-                                        <?php
-                                        $currentYear = 2024;
-                                        echo "<option >Recherche a</option>";
-                                        for ($year = $currentYear; $year <= $currentYear + 10; $year++) {
-                                            echo "<option value=\"$year\">$year</option>";
-                                        }
-                                        ?>
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -103,12 +97,13 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        {% for depenses in depense %}
+                                        {% for depense in depenses %}
                                         <tr>
-                                            <td>{{ depenses.id }}</td>
-                                            <td>{{ depenses.type }}</td>
-                                            <td>{{ depenses.description }}</td>
-                                            <td>{{ depenses.createdAt|date('d/m/Y H:i')  }}</td>
+                                            <td>{{ depense.id }}</td>
+                                            <td>{{ depense.description }}</td>
+                                            <td>{{ depense.montant }}</td>
+                                            <td>{{ depense.type }}</td>
+                                            <td>{{ depense.createdAt|date('d/m/Y H:i')  }}</td>
                                             <td>
                                                 <a href='page.php?id=" .$row["id"]. "' class='btn btn-primary'><i class='fas fa-pencil-alt '></i></a>
                                                 <a href='edite.php?delete=" .$row["id"]. "' class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer cet Achat ? si vous suprimer cet achat elle sera supprimer du stock");'><i class='fas fa-trash-alt'></i></a>
@@ -131,7 +126,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>vestion Production &copy; {{ "now" | date("Y-m-d") }}</span>
+                        <span>vestion production &copy; {{ "now" | date("Y-m-d") }}</span>
                     </div>
                 </div>
             </footer>
@@ -181,7 +176,6 @@
     <!-- Page level plugins -->
     <script src="vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="header.js"></script>
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
    

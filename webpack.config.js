@@ -46,16 +46,16 @@ Encore
     })
     
     // Copie des assets
-    .copyFiles([
-        {
-            from: './node_modules/@fortawesome/fontawesome-free/webfonts',
-            to: 'webfonts/[name].[hash:8].[ext]'
-        },
-        {
-            from: './assets/images',
-            to: 'images/[path][name].[hash:8].[ext]'
-        }
-    ])
+    // .copyFiles([
+    //     {
+    //         from: './node_modules/@fortawesome/fontawesome-free/webfonts',
+    //         to: 'webfonts/[name].[hash:8].[ext]'
+    //     },
+    //     {
+    //         from: './assets/images',
+    //         to: 'images/[path][name].[hash:8].[ext]'
+    //     }
+    // ])
 ;
 
 module.exports = Encore.getWebpackConfig();
