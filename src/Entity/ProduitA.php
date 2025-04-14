@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProduitARepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProduitARepository::class)]
@@ -43,6 +45,14 @@ class ProduitA
 
     #[ORM\Column(length: 100)]
     private ?string $type = null;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: AchatA::class, orphanRemoval: true)]
+    private Collection $achatAs;
+
+    public function __construct()
+    {
+        $this->achatAs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -165,6 +175,36 @@ class ProduitA
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AchatA>
+     */
+    public function getAchatAs(): Collection
+    {
+        return $this->achatAs;
+    }
+
+    public function addAchatA(AchatA $achatA): static
+    {
+        if (!$this->achatAs->contains($achatA)) {
+            $this->achatAs->add($achatA);
+            $achatA->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchatA(AchatA $achatA): static
+    {
+        if ($this->achatAs->removeElement($achatA)) {
+            // set the owning side to null (unless already changed)
+            if ($achatA->getProduit() === $this) {
+                $achatA->setProduit(null);
+            }
+        }
 
         return $this;
     }

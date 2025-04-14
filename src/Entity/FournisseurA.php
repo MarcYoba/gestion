@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FournisseurARepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -34,6 +36,14 @@ class FournisseurA
 
     #[ORM\Column]
     private ?int $numfacture = null;
+
+    #[ORM\OneToMany(mappedBy: 'forunisseur', targetEntity: AchatA::class, orphanRemoval: true)]
+    private Collection $achatAs;
+
+    public function __construct()
+    {
+        $this->achatAs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +130,36 @@ class FournisseurA
     public function setNumfacture(int $numfacture): static
     {
         $this->numfacture = $numfacture;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AchatA>
+     */
+    public function getAchatAs(): Collection
+    {
+        return $this->achatAs;
+    }
+
+    public function addAchatA(AchatA $achatA): static
+    {
+        if (!$this->achatAs->contains($achatA)) {
+            $this->achatAs->add($achatA);
+            $achatA->setForunisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchatA(AchatA $achatA): static
+    {
+        if ($this->achatAs->removeElement($achatA)) {
+            // set the owning side to null (unless already changed)
+            if ($achatA->getForunisseur() === $this) {
+                $achatA->setForunisseur(null);
+            }
+        }
 
         return $this;
     }
