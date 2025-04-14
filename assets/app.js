@@ -1,56 +1,79 @@
-/*
- * Fichier JavaScript principal
- */
-
-// CSS
-import './styles/app.css';
+/* ==================== */
+/* IMPORTS CSS (Ordre critique) */
+/* ==================== */
+// 1. Bibliothèques de base
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'animate.css/animate.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'animate.css/animate.min.css';
+
+// 2. Thème SB Admin 2 (doit venir après les librairies qu'il surcharge)
 import '../node_modules/startbootstrap-sb-admin-2/css/sb-admin-2.min.css';
 
-// JS Libraries (dans le bon ordre)
-import 'jquery';
-import 'jquery.easing';
-import 'bootstrap';
+// 3. Vos styles personnalisés (toujours en dernier)
+import './styles/app.css';
+
+/* ==================== */
+/* IMPORTS JS (Ordre critique) */
+/* ==================== */
+// 1. jQuery (base)
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
+
+// 2. Extensions jQuery
+import 'jquery.easing/jquery.easing.min.js';
+
+// 3. Bootstrap (avec Popper)
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
+// 4. Autres bibliothèques
 import WOW from 'wow.js';
 import Chart from 'chart.js/auto';
-import '../node_modules/startbootstrap-sb-admin-2/js/sb-admin-2.min.js';
 
-// Initialisation WOW.js
-new WOW({
-  offset: 100, // distance de déclenchement
-  mobile: true // activation sur mobile
-}).init();
-
-// Configuration globale
-window.$ = window.jQuery = $; // jQuery global
-window.Chart = Chart; // Chart.js global
-
-// Initialisation conditionnelle des plugins SB Admin 2
+/* ==================== */
+/* INITIALISATION */
+/* ==================== */
 $(document).ready(function() {
-  // Vérifie l'existence des éléments avant d'initialiser
-  const initSBAdminPlugins = () => {
-      // Sidebar Toggle
-      if ($('#sidebarToggle').length) {
-          $('#sidebarToggle').on('click', function(e) {
-              e.preventDefault();
-              $('body').toggleClass('sidebar-toggled');
-              $('.sidebar').toggleClass('toggled');
-          });
-      }
+  // Configuration globale
+  window.Chart = Chart;
 
-      // Tooltips
-      if ($('[data-bs-toggle="tooltip"]').length) {
-          $('[data-bs-toggle="tooltip"]').tooltip();
-      }
+  // Initialisation WOW.js
+  new WOW({
+    offset: 100,
+    mobile: true
+  }).init();
 
-      // Popovers
-      if ($('[data-bs-toggle="popover"]').length) {
-          $('[data-bs-toggle="popover"]').popover();
-      }
-  };
-
-  // Délai d'initialisation pour s'assurer que le DOM est prêt
-  setTimeout(initSBAdminPlugins, 100);
+  // Chargement dynamique de SB Admin 2
+  import('../node_modules/startbootstrap-sb-admin-2/js/sb-admin-2.min.js')
+    .then(() => {
+      // Initialisation des composants
+      initSBAdminComponents();
+    })
+    .catch(error => console.error('SB Admin 2 loading error:', error));
 });
+
+/* ==================== */
+/* FONCTIONS D'INITIALISATION */
+/* ==================== */
+function initSBAdminComponents() {
+  // Sidebar Toggle
+  $('#sidebarToggle').off('click').on('click', function(e) {
+    e.preventDefault();
+    $('body').toggleClass('sidebar-toggled');
+    $('.sidebar').toggleClass('toggled');
+  });
+
+  // Tooltips (avec vérification Bootstrap 5)
+  if (typeof bootstrap !== 'undefined') {
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+      new bootstrap.Tooltip(el);
+    });
+    document.querySelectorAll('[data-bs-toggle="popover"]').forEach(el => {
+      new bootstrap.Popover(el);
+    });
+  } else {
+    // Fallback pour Bootstrap 4
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
+  }
+} 
