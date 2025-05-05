@@ -67,13 +67,7 @@
                                 <br>
                                 <label for="annee">Année recherche</label>
                                     <select class="form-control" id="annee" name="annee" onchange="reload()">
-                                        <?php
-                                        $currentYear = 2024;
-                                        echo "<option >Recherche a</option>";
-                                        for ($year = $currentYear; $year <= $currentYear + 10; $year++) {
-                                            echo "<option value=\"$year\">$year</option>";
-                                        }
-                                        ?>
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -106,12 +100,13 @@
                                         {% for depenses in depense %}
                                         <tr>
                                             <td>{{ depenses.id }}</td>
-                                            <td>{{ depenses.type }}</td>
                                             <td>{{ depenses.description }}</td>
+                                            <td>{{ depenses.montant }}</td>
+                                            <td>{{ depenses.type }}</td>
                                             <td>{{ depenses.createdAt|date('d/m/Y H:i')  }}</td>
                                             <td>
-                                                <a href='page.php?id=" .$row["id"]. "' class='btn btn-primary'><i class='fas fa-pencil-alt '></i></a>
-                                                <a href='edite.php?delete=" .$row["id"]. "' class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer cet Achat ? si vous suprimer cet achat elle sera supprimer du stock");'><i class='fas fa-trash-alt'></i></a>
+                                                <a href="{{ path('depenses_edit', {'id': depenses.id}) }}" class='btn btn-primary'><i class='fas fa-pencil-alt '></i></a>
+                                                <a href="{{ path('depenses_delete', {'id': depenses.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer cette dépense ?");'><i class='fas fa-trash-alt'></i></a>
                                             </td> 
                                         </tr>
                                         {% endfor %}
@@ -169,23 +164,7 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="header.js"></script>
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
    
-
 </body>
 
 </html>

@@ -35,9 +35,13 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Employer::class)]
     private Collection $employer;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Depenses::class)]
+    private Collection $depenses;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
+        $this->depenses = new ArrayCollection();
     }
 
    
@@ -131,6 +135,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($employer->getAgence() === $this) {
                 $employer->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Depenses>
+     */
+    public function getDepenses(): Collection
+    {
+        return $this->depenses;
+    }
+
+    public function addDepense(Depenses $depense): static
+    {
+        if (!$this->depenses->contains($depense)) {
+            $this->depenses->add($depense);
+            $depense->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepense(Depenses $depense): static
+    {
+        if ($this->depenses->removeElement($depense)) {
+            // set the owning side to null (unless already changed)
+            if ($depense->getAgence() === $this) {
+                $depense->setAgence(null);
             }
         }
 

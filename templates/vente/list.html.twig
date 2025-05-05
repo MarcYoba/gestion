@@ -161,7 +161,7 @@
                                             <th>{{ row.statusvente }}</th>
                                             <th>{{ row.createdAt | date("Y-m-d")  }}</th>
                                             <th>
-                                            <a href='facture.php?id=" . $row["id"] . "' class='btn btn-primary'><i class='fa fa-bars'></i></a>
+                                            <a href="{{ path('app_facture', {'id': row.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>
                                             </th>
                                         </tr>
                                         {% endfor %}

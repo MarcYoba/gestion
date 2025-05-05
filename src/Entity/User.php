@@ -88,6 +88,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: AchatA::class, orphanRemoval: true)]
     private Collection $achatAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Depenses::class)]
+    private Collection $depenses;
+
     
 
     public function __construct() {
@@ -106,6 +109,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->versements = new ArrayCollection();
         $this->produitAs = new ArrayCollection();
         $this->achatAs = new ArrayCollection();
+        $this->depenses = new ArrayCollection();
         
     }
 
@@ -633,7 +637,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    
+    /**
+     * @return Collection<int, Depenses>
+     */
+    public function getDepenses(): Collection
+    {
+        return $this->depenses;
+    }
 
+    public function addDepense(Depenses $depense): static
+    {
+        if (!$this->depenses->contains($depense)) {
+            $this->depenses->add($depense);
+            $depense->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepense(Depenses $depense): static
+    {
+        if ($this->depenses->removeElement($depense)) {
+            // set the owning side to null (unless already changed)
+            if ($depense->getUser() === $this) {
+                $depense->setUser(null);
+            }
+        }
+
+        return $this;
+    }
     
 }

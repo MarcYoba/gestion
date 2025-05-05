@@ -70,16 +70,16 @@
                                     
                                         
 
-                                    <p class="col-md-2"> Nom Client : {{ client.nom }}</p>
+                                    <p class="col-md-2"> Nom Client : {{client.nom}}</p>
                                     <p class="col-md-2"> Telephone : {{ client.user.telephone }} </p>
                                     
                                     <p class='col-md-2 '> <a href='../pdf/getfacture.php?id=" . $_GET["id"] . "' class='btn btn-info btn-user'>Imprimer</a></p>  
                                       
-                                    <p class='col-md-1 '> <button  class='btn btn-warning btn-user' onclick='editefacture()'>Edite</button></p> 
+                                    <p class='col-md-1 '> <button  class='btn btn-warning btn-user' onclick="editefacture()">Edite</button></p> 
                                     <p class='col-md-2 '> <button  class='btn btn-danger btn-user' onclick=''>Supprimer</button></p>
                                     <p class='col-md-2 '> <a href='modifiction.php?id=" . $_GET["id"] . "' class='btn btn-secondary btn-user'>changer client</a></p>
                                     
-                                    <span class='cacher' id='id'></span>
+                                    <span class='cacher' id='id'>{{ id }}</span>
 
                                     
                                 </div>
@@ -175,22 +175,8 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
     
+    <script src="{{ asset('js/vente.js') }}"></script>
 
 </body>
 

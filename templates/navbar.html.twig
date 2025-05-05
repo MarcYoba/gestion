@@ -208,26 +208,6 @@
     </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-        aria-expanded="true" aria-controls="collapseUtilities">
-        <i class="fas fa-fw fa-wrench"></i>
-        <span>Utilities</span>
-    </a>
-    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-        data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-                <a class="collapse-item" href="php/caise/liste.php">liste caisse</a>
-                <a class="collapse-item" href="php/depenses/liste.php">Liste Depense</a>
-
-        <!--  <a class="collapse-item" href="php/caisse/caisse.php">Caisse</a> -->
-            
-        <!--  <a class="collapse-item" href="php/depenses/depense.php">Depenses</a> -->
-            
-        </div>
-    </div>
-    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider">
@@ -248,31 +228,13 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Employer :</h6>
                 <a class="collapse-item" href="{{ path('app_employer') }}">Employer</a>
-                <a class="collapse-item" href="{{ ('employer_list') }}">Liste </a>
+                <a class="collapse-item" href="{{ path('employer_list') }}">Liste </a>
         </div>
     </div>
     </li>
 
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-        aria-expanded="true" aria-controls="collapsePages">
-        <i class="fas fa-fw fa-folder"></i>
-        <span>Pages</span>
-    </a>
-    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="{{ path('app_login') }}">Login</a>
-            <a class="collapse-item" href="{{ path('app_logout') }}">Logout</a>
-            <a class="collapse-item" href="{{ path('app_register') }}">Register</a>
-            <a class="collapse-item" href="{{ path('app_forgot') }}">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            
-        </div>
-    </div>
-    </li>
 
     <!-- Nav Item - Charts -->
     <li class="nav-item">

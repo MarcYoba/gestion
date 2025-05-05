@@ -45,4 +45,30 @@ class VersementController extends AbstractController
             'client' => $clients,
         ]);
     }
+
+    /**
+     * @Route( path ="/versement/edit/{id}", name="versement_edit")
+     */
+    public function edit(Request $request, EntityManagerInterface $entityManager, Versement $versement): Response
+    {
+        $form = $this->createForm(VersementType::class, $versement);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $entityManager->flush();
+            return $this->redirectToRoute('versement_list');
+        }
+        return $this->render('versement/index.html.twig', [
+            'form' => $form->createView(),
+            'versement' => $versement,
+        ]);
+    }
+    /**
+     * @Route( path ="/versement/delete/{id}", name="versement_delete")
+     */
+    public function delete(EntityManagerInterface $entityManager, Versement $versement): Response
+    {
+        $entityManager->remove($versement);
+        $entityManager->flush();
+        return $this->redirectToRoute('versement_list');
+    }
 }

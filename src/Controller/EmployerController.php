@@ -47,4 +47,35 @@ class EmployerController extends AbstractController
             'user' => $user,
         ]);
     }
+
+    /**
+     * @Route(path = "/employer/edit/{id}", name = "employer_edit")
+     */
+    public function edit(Request $request, EntityManagerInterface $entityManager, Employer $employer): Response
+    {
+        $form = $this->createForm(EmployerType::class, $employer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('employer_list');
+        }
+
+        return $this->render('employer/edit.html.twig', [
+            'form' => $form->createView(),
+            'employer' => $employer,
+        ]);
+    }
+
+    /**
+     * @Route(path = "/employer/delete/{id}", name = "employer_delete")
+     */
+    public function delete(EntityManagerInterface $entityManager, Employer $employer): Response
+    {
+        $entityManager->remove($employer);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('employer_list');
+    }
 }

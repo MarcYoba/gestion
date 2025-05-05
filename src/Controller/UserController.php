@@ -86,4 +86,27 @@ class UserController extends AbstractController
             'user' => $user,
         ]);
     }
+    #[Route(path : '/user/edit/{id}' , name: 'user_edit')]
+    public function edit(EntityManagerInterface $entityManager, Request $request, int $id) : Response {
+        $user = $entityManager->getRepository(User::class)->find($id);
+        if (!$user) {
+            throw $this->createNotFoundException('No user found for id '.$id);
+        }
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            return $this->redirectToRoute('user_list');
+        }
+        return $this->render('security/edit.html.twig',[
+            'form' => $form->createView(),
+            'user' => $user,
+        ]);
+    }
+    #[Route(path : '/user/delete/{id}' , name: 'user_delete')]
+    public function delete(EntityManagerInterface $entityManager, User $user) : Response {
+        $entityManager->remove($user);
+        $entityManager->flush();
+        return $this->redirectToRoute('user_list');
+    }
 }

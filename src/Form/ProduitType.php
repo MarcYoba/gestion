@@ -56,13 +56,7 @@ class ProduitType extends AbstractType
                     'class' => 'form-control form-control-user'
                 ]
             ])
-            ->add('createdAt',DateType::class,[
-                'input' => 'datetime_immutable',
-                'attr' => [
-                    'class' => 'form-control form-control-user',
-                    'placeholder' => 'Date de création'
-                ],
-            ])
+            ->add('createdAt')
             ->add('type',ChoiceType::class,[
                 'choices' => [
                     'Provenderie' => 'Provenderie',

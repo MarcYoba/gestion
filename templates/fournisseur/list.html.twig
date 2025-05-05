@@ -85,6 +85,7 @@
                                             <th>Date enregistrement</th>
                                             <th>numero facture</th>
                                             <th>Date achat</th>
+                                            <th>Action</th>
                                             
                                         </tr>
                                     </thead>
@@ -98,7 +99,7 @@
                                             <th>Date enregistrement</th>
                                             <th>numero facture</th>
                                             <th>Date achat</th>
-                                            
+                                            <th>Action</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -112,7 +113,12 @@
                                             <td>{{ fournisseur.createdAt|date('d-m-Y') }}</td>
                                             <td>{{ fournisseur.numfacture }}</td>
                                             <td>{{ fournisseur.datefacture|date('d-m-Y') }}</td>
-                                            
+                                            <td>
+                                                <a href="{{ path('fournisseur_edit', {'id': fournisseur.id}) }}" class='btn btn-primary'>
+                                                    <i class='fas fa-pencil-alt'></i></a>
+                                                <a href="{{ path('fournisseur_delete', {'id': fournisseur.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce fournisseur ?");'>
+                                                    <i class='fas fa-trash-alt'></i></a>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

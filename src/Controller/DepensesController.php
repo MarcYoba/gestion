@@ -39,7 +39,10 @@ class DepensesController extends AbstractController
                 $depenses->setImageName($filename);
                 $depenses->setImageSize($fillesize);
             }
-
+            $user = $this->getUser();
+            dd($user);
+            $employe = $user->getAgences();
+            $depenses->setAgence($employe);
             $entityManager->persist($depenses);
             $entityManager->flush();
 
@@ -57,5 +60,50 @@ class DepensesController extends AbstractController
         return $this->render('depenses/list.html.twig', [
             'depense' => $depenses,
         ]);
+    }
+
+    #[Route('/depenses/edit/{id}', name: 'depenses_edit')]
+    public function edit(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    {
+        $depenses = $entityManager->getRepository(Depenses::class)->find($id);
+        if (!$depenses) {
+            throw $this->createNotFoundException('No depense found for id '.$id);
+        }
+        $form = $this->createForm(DepensesType::class, $depenses);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $file */
+            $file = $form->get('imageFile')->getData();
+
+            if ($file) {
+                $fillesize = $file->getSize();
+                $filename = uniqid().'.'.$file->guessExtension();
+
+                $file->move(
+                    $this->getParameter('depenses_upload_directory'), // Défini dans services.yaml
+                    $filename
+                );
+                $depenses->setImageName($filename);
+                $depenses->setImageSize($fillesize);
+            }
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('depenses_list');
+        }
+
+        return $this->render('depenses/index.html.twig', [
+            'form' => $form->createView(),
+            'depense' => $depenses,
+        ]);
+    }
+
+    #[Route('/depenses/delete/{id}', name: 'depenses_delete')]
+    public function delete(EntityManagerInterface $entityManager, Depenses $depenses): Response
+    {
+        $entityManager->remove($depenses);
+        $entityManager->flush();
+        return $this->redirectToRoute('depenses_list');
     }
 }

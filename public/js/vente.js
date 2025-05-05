@@ -415,7 +415,7 @@ function enregistrementDonnees(){
     
 }
 
-function LigneventeMofiier(donnees){
+function LigneventeMofier(donnees){
     const tableau = document.getElementById('dataTable');
 
    // const  Typepaiement = document.getElementById("Typepaiement").value; 
@@ -428,14 +428,14 @@ function LigneventeMofiier(donnees){
        
         const nouvellecellule = nouvelleLigne.insertCell();
         const input = document.createElement('p');
-        input.innerHTML = donnees.idclient ;
+        input.innerHTML = donnees.client ;
         input.classList.add('form-control', 'form-control-user');
         nouvellecellule.appendChild(input);
     
-        
+        console.log(donnees);
         const nouvellecellule2 = nouvelleLigne.insertCell();
         const p2 = document.createElement('p');
-        p2.innerHTML = donnees.nomproduit;
+        p2.innerHTML = donnees.produit;
         p2.classList.add('form-control', 'form-control-user');
         nouvellecellule2.appendChild(p2);
     
@@ -473,24 +473,24 @@ function LigneventeMofiier(donnees){
          document.getElementById("Total").value=prixtotal;
          document.getElementById("TypePaie").innerText = donnees.Typepaiement
         document.getElementById("TypePaie").style.display="block";
-    //    // document.getElementById("prixtotal").textContent = '';
-    //     document.getElementById("resultat").innerHTML='';
-    //     document.getElementById("nomProduit").value='';  
-    //    // document.getElementById("Typepaiement").value='';
     document.getElementById("idfacture").textContent = donnees.id;
     document.getElementById("idvente").textContent = donnees.idvente;
     
     
 }
+// ecrire les ligne de vente dans le tableau
+// recuperer les donnes de la vente et les afficher dans le tableau
 function editevente(){
     if (typeof data === 'undefined' || data === null) {
         console.log("La variable est undefined ou null");
       }else{
-        
+        var index = 0;
         data.forEach(element => {
-           // console.log(element);
-            LigneventeMofiier(element);
+           console.log(element);
+           LigneventeMofier(element);
+            index+=0;
         });
+        index = 0;
         localStorage.removeItem('myData');
         document.getElementById("enregistremet").style.display="none";
       document.getElementById("modifiervente").innerHTML = '<button  class="btn btn-warning btn-user btn-block" onclick="saveedite()" >Modifier vente</button>';
@@ -680,7 +680,7 @@ function LigneTableau(data){
 }
 
 function getVenteData(idvente){
-  fetch('Edite.php', {
+  fetch('/vente/edit', {
       method: 'POST',
       body: JSON.stringify(idvente),
       headers: {
@@ -690,9 +690,9 @@ function getVenteData(idvente){
     .then(response => response.json())
     .then(data => {
       value = {};
-    // console.log(data);
+        console.log(data);
       localStorage.setItem("myData", JSON.stringify(data));
-      window.location.href = 'vente.php';
+      window.location.href = '/vente/create';
 
     })
     .catch(error => {
@@ -703,29 +703,6 @@ function getVenteData(idvente){
 function editefacture(){
   console.log(document.getElementById("id").innerText);
   getVenteData(document.getElementById("id").innerText);
-}
-
-function generatePDF() {
-  // Récupérer les données du formulaire
-  var formData = new FormData(document.getElementById("myForm"));
-
-  // Envoyer les données au fichier PHP
-  fetch('../pdf/getTypeVente.php', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.blob())
-  .then(blob => {
-    // Créer un lien de téléchargement
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'mon_fichier.pdf';
-    link.click();
-  })
-  .catch(error => {
-    console.error('Erreur lors de la génération du PDF:', error);
-  });
 }
 
 function myFunction() {

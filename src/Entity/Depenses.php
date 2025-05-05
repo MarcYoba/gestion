@@ -38,6 +38,14 @@ class Depenses
     #[ORM\Column]
     private ?int $imageSize = null;
 
+    #[ORM\ManyToOne(inversedBy: 'depenses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?agence $agence = null;
+
+    #[ORM\ManyToOne(inversedBy: 'depenses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -127,5 +135,29 @@ class Depenses
         if ($imageFile !== null) {
             $this->createdAt = new \DateTimeImmutable();
         }
+    }
+
+    public function getAgence(): ?agence
+    {
+        return $this->agence;
+    }
+
+    public function setAgence(?agence $agence): static
+    {
+        $this->agence = $agence;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

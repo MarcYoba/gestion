@@ -62,4 +62,35 @@ class ProduitController extends AbstractController
         }
         return $this->json(['error' => 'Prix non spécifié'], 404);
     }
+    #[Route('/produit/edit/{id}', name: 'produit_edit')]
+    public function edit(EntityManagerInterface $entityManager, Request $request, int $id): Response
+    {
+        
+        $produit = $entityManager->getRepository(Produit::class)->find($id);
+        if (!$produit) {
+            throw $this->createNotFoundException('Produit non trouvé');
+        }
+        $form = $this->createForm(ProduitType::class, $produit);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            return $this->redirectToRoute("produit_list");
+        }
+        return $this->render('produit/edit.html.twig', [
+            'form' => $form->createView(),
+            'produit' => $produit,
+        ]);
+    }
+
+    #[Route('/produit/delete/{id}', name: 'produit_delete')]
+    public function delete(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $produit = $entityManager->getRepository(Produit::class)->find($id);
+        if (!$produit) {
+            throw $this->createNotFoundException('Produit non trouvé');
+        }
+        $entityManager->remove($produit);
+        $entityManager->flush();
+        return $this->redirectToRoute("produit_list");
+    }
 }

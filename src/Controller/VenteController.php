@@ -13,8 +13,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Json;
 
 class VenteController extends AbstractController
 {
@@ -167,6 +169,61 @@ class VenteController extends AbstractController
             'produit' => $produit,
             'client' => $client,
             ]);
+    }
+
+    #[Route('/vente/edit', name: 'vente_edit')]
+    public function edit(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+
+        try {
+            $data = json_decode($request->getContent(), true);
+            $id = $data;
+            $vente = $entityManager->getRepository(Vente::class)->find($id);
+            if ($vente) {
+                $facture = $vente->getFacture();
+                if (!$facture->isEmpty()) {
+                    $lignevente = [];
+                    $data =[];
+                    foreach ($facture as $fact) {
+                        $lignevente[] = [
+                            'client' => $fact->getClient()->getId(),
+                            'produit' => $fact->getProduit()->getNom(),
+                            'quantite' => $fact->getQuantite(),
+                            'prix' => $fact->getPrix(),
+                            'montant' => $fact->getMontant(),
+                            'typepaiement' => $fact->getTypepaiement(),
+                            'id' => $fact->getId(),
+                            'idvente' => $vente->getId(),
+                            // 'prixtotal' => $vente->getPrix(),
+                            // 'quantiteTotal' => $vente->getQuantite(),
+                        ];
+                        //array_push($data, $lignevente);
+                    }
+                    return $this->json([
+                        $lignevente,
+                    ]);
+                }else{
+                    return $this->json([
+                        'facture' =>0,
+                    ]);
+                }
+               
+                
+                 
+            }
+            return $this->json([
+                'success' => false,
+                'message' => 'Vente Not found',
+            ], 200);
+        
+        } catch (\Exception $e) {
+            return $this->json([
+                'error' => $e->getMessage(),
+                'success' => false
+                ]
+                , 500);
+        }
+        
     }
 
     

@@ -53,7 +53,15 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         if (in_array('ROLE_CLIENTS', $token->getRoleNames())) {
-            return new RedirectResponse($this->urlGenerator->generate('app_client'));
+            if ($token->getUser()->getEmployer()->getPoste()) {
+                if ($token->getUser()->getEmployer()->getPoste() == "Employer") {
+                    return new RedirectResponse($this->urlGenerator->generate('app_agence'));
+                } else {
+                    return new RedirectResponse($this->urlGenerator->generate('app_employer'));
+                }
+            }else{
+                return new RedirectResponse($this->urlGenerator->generate('app_client'));
+            } 
        }
 
         // For example:

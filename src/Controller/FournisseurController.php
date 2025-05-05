@@ -39,4 +39,27 @@ class FournisseurController extends AbstractController
             'fournisseurs' => $fournisseur,
         ]);
     }
+
+    #[Route('/fournisseur/edit/{id}', name: 'fournisseur_edit')]
+    public function edit(Request $request, EntityManagerInterface $entityManager, Fournisseur $fournisseur): Response
+    {
+        $form = $this->createForm(FournisseurType::class, $fournisseur);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $entityManager->flush();
+            return $this->redirectToRoute('fournisseur_list');
+        }
+
+        return $this->render('fournisseur/index.html.twig', [
+            'form' => $form->createView(),
+            'fournisseur' => $fournisseur,
+        ]);
+    }
+    #[Route('/fournisseur/delete/{id}', name: 'fournisseur_delete')]
+    public function delete(EntityManagerInterface $entityManager, Fournisseur $fournisseur): Response
+    {
+        $entityManager->remove($fournisseur);
+        $entityManager->flush();
+        return $this->redirectToRoute('fournisseur_list');
+    }
 }
