@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} FournisseurController!{% endblock %}
+{% block title %} Fournisseur {% endblock %}
 
 {% block body %}
 <!DOCTYPE html>
@@ -27,7 +27,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-success">
 
     <div class="container">
 
@@ -47,8 +47,17 @@
                                         <div class="col-sm-8 mb-3 mb-sm-0">
                                             <h6 class="m-0 font-weight-bold text-primary">Liste des fournisseurs</h6>
                                         </div>
-                                        <div class="col-sm-4 mb-3 mb-sm-0">
-                                            <a href="{{ path('fournisseur_a_list') }}" class="btn btn-success">list</a>
+                                        <div class="col-sm-2 mb-3 mb-sm-0">
+                                            <a href="{{ path('app_home_dashboardA', {'id': app.user.employer.agence.id}) }}" class="btn btn-success">
+                                                <i class="fas fa-home"></i>
+                                                Home
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-2 mb-3 mb-sm-0">
+                                            <a href="{{ path('fournisseur_a_list') }}" class="btn btn-success">
+                                                <i class="fas fa-list"></i>
+                                                List
+                                            </a>
                                         </div>
                                         
                                     </div>

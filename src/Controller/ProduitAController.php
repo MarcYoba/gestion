@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Employer;
 use App\Entity\ProduitA;
 use App\Form\ProduitAType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,11 +19,21 @@ class ProduitAController extends AbstractController
         $produitA = new ProduitA();
         $form = $this->createForm(ProduitAType::class, $produitA);
         $form->handleRequest($request);
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $produitA->setUser($this->getUser());
             $produitA->setGain(0);
             $produitA->setStockdebut($produitA->getQuantite());
+
+            $employer = new Employer();
+            if ($user->getEmployer()->getAgence()) {
+               $employer = $user->getEmployer()->getAgence();
+            }else{
+                $this->addFlash('error', 'Agence introuvable pour cet utilisateur vous ne pouvez enregistrer de produit.');
+                return $this->redirectToRoute("produit_list");
+            }
+            $produitA->setAgence($employer);
             $em->persist($produitA);
             $em->flush();
 
@@ -40,5 +51,41 @@ class ProduitAController extends AbstractController
         return $this->render('produit_a/list.html.twig', [
             'produits' => $produits,
         ]);
+    }
+
+    #[Route('/produit/a/edit/{id}', name: 'produit_a_edit')]
+    public function edite(Request $request, EntityManagerInterface $em,int $id): Response
+    {
+
+        $produits = $em->getRepository(ProduitA::class)->find($id);
+        if (!$produits) {
+            $this->addFlash('error','Le produit que vous recherche n\'existe pas');
+        }
+        $form = $this->createForm(ProduitAType::class,$produits);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            return $this->redirectToRoute('produit_a_list');
+        }
+
+        return $this->render('produit_a/index.html.twig', [
+            'form' => $form->createView(),
+            'produit' => $produits,
+        ]);
+    }
+
+    #[Route('/produit/a/delete/{id}', name: 'produit_a_delete')]
+    public function delete(EntityManagerInterface $em, int $id): Response
+    {
+        $produit = $em->getRepository(ProduitA::class)->find($id);
+        if (!$produit) {
+            $this->addFlash('error','Le produit que vous recherche n\'existe pas');
+        }else{
+            $em->remove($produit);
+            $em->flush();
+            $this->addFlash('success','Produit supprimer avec success');
+        }
+        return $this->redirectToRoute('produit_a_list');
     }
 }

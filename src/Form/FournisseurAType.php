@@ -37,6 +37,13 @@ class FournisseurAType extends AbstractType
                     'class' => 'form-control form-control-user'
                 ]
             ])
+            ->add('numfacture' , NumberType::class, [
+                'label' => 'Numéro de facture',
+                'attr' => [
+                    'placeholder' => 'Entrez le numéro de facture',
+                    'class' => 'form-control form-control-user'
+                ]
+            ])
             ->add('email' , TextType::class, [
                 'label' => 'Email',
                 'attr' => [

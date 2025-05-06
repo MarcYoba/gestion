@@ -14,7 +14,7 @@
 
 <!-- Nav Item - Dashboard -->
 <li class="nav-item active">
-<a class="nav-link" href="index.php">
+<a class="nav-link" href="{{ path('app_home_dashboardA', {'id': app.user.employer.agence.id}) }}">
     <i class="fas fa-fw fa-tachometer-alt"></i>
     <span>Dashboard</span></a>
 </li>
@@ -41,8 +41,8 @@
 <div id="collapseahcat" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Operation des Achat</h6>
-            <a class="collapse-item" href="phpphamacie/achat/teste.php" id="ajouterAcaht">ajouter un Achat</a>
-            <a class="collapse-item" href="phpphamacie/achat/liste.php?date='.date("Y").'">liste Achat</a>
+            <a class="collapse-item" href="{{ path('app_achat_a') }}" >ajouter un Achat</a>
+            <a class="collapse-item" href="{{ path('achat_a_list') }}">liste Achat</a>
     </div>
 </div>
 </li>
@@ -69,9 +69,9 @@
 </a>
 <div id="collapseproduit" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Operation des produit</h6>
-            <a class="collapse-item" href="phpphamacie/produit/produit.php" id="ajouterProduit">ajouter un produit</a>
-            <a class="collapse-item" href="phpphamacie/produit/liste.php">liste produit</a>
+        <h6 class="collapse-header">Operation des produits</h6>
+            <a class="collapse-item" href="{{ path('app_produit_a') }}" id="ajouterProduit">Ajouter</a>
+            <a class="collapse-item" href="{{ path('produit_a_list') }}">List</a>
             <a class="collapse-item" href="phpphamacie/produit/Peramtion.php">Date Peramtion</a>
     </div>
 </div>
@@ -85,8 +85,8 @@
 <div id="collapsefournisseur" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Operation des produit</h6>
-            <a class="collapse-item" href="phpphamacie/fournisseur/fourniseur.php" id="ajouterFourniseur">ajouter un Fournisseur</a>
-            <a class="collapse-item" href="phpphamacie/fournisseur/liste.php">liste Fournisseur</a>
+            <a class="collapse-item" href="{{ path('app_fournisseur_a') }}" id="ajouterFourniseur">ajouter un Fournisseur</a>
+            <a class="collapse-item" href="{{ path('fournisseur_a_list') }}">liste Fournisseur</a>
     </div>
 </div>
 </li>
@@ -267,20 +267,6 @@ Interface
 </div>
 
 <!-- Nav Item - Pages Collapse Menu -->
-<li class="nav-item">
-<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-    aria-expanded="true" aria-controls="collapseTwo">
-    <i class="fas fa-fw fa-cog"></i>
-    <span>Composant vente</span>
-</a>
-<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Dette :</h6>
-            <a class="collapse-item" href="phpphamacie/dette/dette.php?date='.date("Y").'">Liste dette</a>
-    </div>
-</div>
-
-</li>
 
 <!-- Nav Item - Utilities Collapse Menu -->
 

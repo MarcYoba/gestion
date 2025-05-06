@@ -50,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $agences;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Employer $Employer = null;
+    private ?Employer $Employer;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Produit::class)]
     private Collection $produits;
@@ -91,6 +91,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Depenses::class)]
     private Collection $depenses;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: FournisseurA::class)]
+    private Collection $fournisseurAs;
+
     
 
     public function __construct() {
@@ -110,6 +113,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->produitAs = new ArrayCollection();
         $this->achatAs = new ArrayCollection();
         $this->depenses = new ArrayCollection();
+        $this->fournisseurAs = new ArrayCollection();
         
     }
 
@@ -661,6 +665,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($depense->getUser() === $this) {
                 $depense->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FournisseurA>
+     */
+    public function getFournisseurAs(): Collection
+    {
+        return $this->fournisseurAs;
+    }
+
+    public function addFournisseurA(FournisseurA $fournisseurA): static
+    {
+        if (!$this->fournisseurAs->contains($fournisseurA)) {
+            $this->fournisseurAs->add($fournisseurA);
+            $fournisseurA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFournisseurA(FournisseurA $fournisseurA): static
+    {
+        if ($this->fournisseurAs->removeElement($fournisseurA)) {
+            // set the owning side to null (unless already changed)
+            if ($fournisseurA->getUser() === $this) {
+                $fournisseurA->setUser(null);
             }
         }
 

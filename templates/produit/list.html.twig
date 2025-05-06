@@ -52,11 +52,17 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="form-group row">
-                                    <div class="col-sm-10 ">
+                                    <div class="col-sm-8 ">
                                     <h6 class="m-0 font-weight-bold text-primary">Tables Produit</h6>
                                     </div>
                                     <div class="col-sm-2 ">
-                                    <a class="m-0 font-weight-bold text-primary" href="../pdf/getproduit.php">telecharger</a>
+                                        <a class="m-0 font-weight-bold  btn btn-primary" href="{{ path('app_produit') }}">
+                                            <i class="fas fa-plus"></i>
+                                            Ajout
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2 ">
+                                        <a class="m-0 font-weight-bold  btn btn-primary" href="../pdf/getproduit.php">telecharger</a>
                                     </div>
                                 </div>
                         </div>
@@ -87,21 +93,46 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        {% for produit in produits %}
-                                        <tr>
-                                            <td>{{ produit.id }}</td>
-                                            <td>{{ produit.nom }}</td>
-                                            <td>{{ produit.prixvente }}</td>
-                                            <td>{{ produit.prixachat }}</td>
-                                            <td>{{ produit.quantite }}</td>
-                                            <td>{{ produit.createdAt|date("d-m-Y") }}</td>
-                                            <td>
-                                                <a href="{{ path('produit_edit', {'id': produit.id}) }}" class='btn btn-primary'>
-                                                    <i class='fas fa-pencil-alt'></i></a>
-                                                <a href="{{ path('produit_delete', {'id': produit.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce produit ?");'>
-                                                    <i class='fas fa-trash-alt'></i></a>
-                                            </td> 
-                                        {% endfor %}
+                                        {% if is_granted('ROLE_ADMIN_ADMIN') %}
+                                            {% for produit in produits %}
+                                                    <tr>
+                                                        <td>{{ produit.id }}</td>
+                                                        <td>{{ produit.nom }}</td>
+                                                        <td>{{ produit.prixvente }}</td>
+                                                        <td>{{ produit.prixachat }}</td>
+                                                        <td>{{ produit.quantite }}</td>
+                                                        <td>{{ produit.createdAt|date("d-m-Y") }}</td>
+                                                        <td>
+                                                            <a href="{{ path('produit_edit', {'id': produit.id}) }}" class='btn btn-primary'>
+                                                                <i class='fas fa-pencil-alt'></i></a>
+                                                            <a href="{{ path('produit_delete', {'id': produit.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce produit ?");'>
+                                                                <i class='fas fa-trash-alt'></i></a>
+                                                        </td> 
+                                                    </tr>
+                                            {% endfor %}
+                                        {% elseif is_granted('ROLE_CLIENTS') %}
+                                            {% for produit in produits %}
+                                                {% if produit.agence.id == app.user.employer.agence.id %}
+                                                    <tr>
+                                                        <td>{{ produit.id }}</td>
+                                                        <td>{{ produit.nom }}</td>
+                                                        <td>{{ produit.prixvente }}</td>
+                                                        <td>{{ produit.prixachat }}</td>
+                                                        <td>{{ produit.quantite }}</td>
+                                                        <td>{{ produit.createdAt|date("d-m-Y") }}</td>
+                                                        <td>
+                                                            <a href="{{ path('produit_edit', {'id': produit.id}) }}" class='btn btn-primary'>
+                                                                <i class='fas fa-pencil-alt'></i></a>
+                                                            <a href="{{ path('produit_delete', {'id': produit.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce produit ?");'>
+                                                                <i class='fas fa-trash-alt'></i></a>
+                                                        </td> 
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            <p class="card-text text-danger"> Vous êtes un magicien</p>
+                                        {% endif %}
+                                        
                                     </tbody>
                                 </table>
                             </div>

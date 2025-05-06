@@ -46,9 +46,21 @@
                                     <div class="col-sm-8 mb-3 mb-sm-0">
                                         Enregistrer un Produit
                                     </div>
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                    {% for message in app.flashes('success') %}
+                                        <div class="alert alert-success">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                    <div class="col-sm-2 mb-3 mb-sm-0">
+                                        <a href="{{ path('app_home_dashboard', {'id': app.user.employer.agence.id}) }}" class="btn btn-primary btn-user btn-block">
+                                            <i class="fas fa-home"></i>
+                                            home
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2 mb-3 mb-sm-0">
                                         <a href="{{ path('produit_list') }}" class="btn btn-primary btn-user btn-block">
-                                            Liste des produits
+                                            <i class="fas fa-list"></i>
+                                            List
                                         </a>
                                     </div>      
                                 </div> 

@@ -60,9 +60,15 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="form-group row">
-                                    <div class="col-sm-10 ">
+                                    <div class="col-sm-8 ">
                                     <h6 class="m-0 font-weight-bold text-primary">Tables Produit</h6>
                                     </div>
+                                    <div class="col-sm-2 mb-3 mb-sm-0">
+                                        <a href="{{ path('app_produit_a') }}" class="btn btn-primary btn-user btn-block">
+                                            <i class="fas fa-plus"></i>
+                                            Ajout
+                                        </a>
+                                    </div> 
                                     <div class="col-sm-2 ">
                                     <a class="m-0 font-weight-bold text-primary" href="../pdf/getproduit.php">telecharger</a>
                                     </div>
@@ -95,21 +101,49 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        {% for produit in produits %}
-                                        <tr>
-                                            <td>{{ produit.id }}</td>
-                                            <td>{{ produit.nom }}</td>
-                                            <td>{{ produit.prixvente }}</td>
-                                            <td>{{ produit.prixachat }}</td>
-                                            <td>{{ produit.quantite }}</td>
-                                            <td>{{ produit.createdAt|date("d-m-Y") }}</td>
-                                            <td>
-                                                <a href='Edite.php?id=" . $row["id"] . "' class='btn btn-primary'>
-                                                    <i class='fas fa-pencil-alt'></i></a>
-                                                <a href='delete.php?id=" . $row["id"] . "' class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer cette vente ?");'>
-                                                    <i class='fas fa-trash-alt'></i></a>
-                                            </td> 
-                                        {% endfor %}
+                                        {% if is_granted('ROLE_ADMIN_ADMIN') %}
+                                            {% for produit in produits %}
+                                                <tr>
+                                                    <td>{{ produit.id }}</td>
+                                                    <td>{{ produit.nom }}</td>
+                                                    <td>{{ produit.prixvente }}</td>
+                                                    <td>{{ produit.prixachat }}</td>
+                                                    <td>{{ produit.quantite }}</td>
+                                                    <td>{{ produit.createdAt|date("d-m-Y") }}</td>
+                                                    <td>
+                                                        <a href="{{ path('produit_a_edit', {'id': produit.id}) }}" class='btn btn-primary'>
+                                                            <i class='fas fa-pencil-alt'></i></a>
+                                                        <a href="{{ path('produit_a_delete', {'id': produit.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer cette vente ?");'>
+                                                            <i class='fas fa-trash-alt'></i></a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% elseif is_granted('ROLE_CLIENTS') %}
+                                            {% for produit in produits %}
+                                                {% if produit.agence.id == app.user.employer.agence.id %}
+                                                    <tr>
+                                                        <td>{{ produit.id }}</td>
+                                                        <td>{{ produit.nom }}</td>
+                                                        <td>{{ produit.prixvente }}</td>
+                                                        <td>{{ produit.prixachat }}</td>
+                                                        <td>{{ produit.quantite }}</td>
+                                                        <td>{{ produit.createdAt|date("d-m-Y") }}</td>
+                                                        <td>
+                                                            <a href="{{ path('produit_a_edit', {'id': produit.id}) }}" class='btn btn-primary'>
+                                                                <i class='fas fa-pencil-alt'></i></a>
+                                                            <a href="{{ path('produit_a_delete', {'id': produit.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce produit ?");'>
+                                                                <i class='fas fa-trash-alt'></i></a>
+                                                        </td> 
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            <tr>
+                                                <td>Table vide</td>
+                                            </tr>
+                                        {% endif %}
+
+                                        
                                     </tbody>
                                 </table>
                             </div>

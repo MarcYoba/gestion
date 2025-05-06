@@ -21,6 +21,7 @@ class FournisseurController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $fournisseur->setUser($this->getUser());
+            $fournisseur->setAgence($this->getUser()->getEmployer()->getAgence());
             $entityManager->persist($fournisseur);
             $entityManager->flush();
             return $this->redirectToRoute('fournisseur_list');

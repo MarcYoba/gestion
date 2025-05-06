@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Employer;
 use App\Entity\Produit;
 use App\Form\ProduitType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,12 +18,23 @@ class ProduitController extends AbstractController
     public function index(Request $request,EntityManagerInterface $entityManager,Security $security): Response
     {
         $produit = new Produit();
+        $user = $this->getUser();
         $form = $this->createForm(ProduitType::class,$produit);
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $produit->setPrixachat(0);
             $produit->setGain(0);
             $produit->setUser($security->getUser());
+            $employer = new Employer();
+            if ($user->getEmployer()->getAgence()) {
+               $employer = $user->getEmployer()->getAgence();
+            }else{
+                $this->addFlash('error', 'Agence introuvable pour cet utilisateur vous ne pouvez enregistrer de produit.');
+                return $this->redirectToRoute("produit_list");
+            }
+            $produit->setAgence($employer);
+
             $entityManager->persist($produit);
             $entityManager->flush();
             return $this->redirectToRoute("produit_list");

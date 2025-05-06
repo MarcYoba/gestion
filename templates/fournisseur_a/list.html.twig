@@ -38,7 +38,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        {% include "navbar.html.twig" %}
+        {% include "navbarA.html.twig" %}
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -64,9 +64,16 @@
                             <div class="form-group row">
                                 <div class="col-sm-8 mb-3 mb-sm-0">
                                     <h6 class="m-0 font-weight-bold text-primary">Liste des fournisseurs</h6>
+                                </div>
+                                <div class="col-sm-2 mb-3 mb-sm-0">
+                                    <a href="{{ path('app_home_dashboardA', {'id': app.user.employer.agence.id}) }}" class="btn btn-success">
+                                        <i class="fas fa-home"></i>
+                                        Home
+                                    </a>
                                 </div>  
-                                <div class="col-sm-4 mb-3 mb-sm-0">
-                                    <a href="{{ path('app_fournisseur_a') }}" class="btn btn-success"><i class="fas fa-plus"></i>list</a>
+                                <div class="col-sm-2 mb-3 mb-sm-0">
+                                    <a href="{{ path('app_fournisseur_a') }}" class="btn btn-success">
+                                        <i class="fas fa-plus"></i>Alouter</a>
                                 </div>
                             </div>
                             
@@ -85,6 +92,7 @@
                                             <th>Date enregistrement</th>
                                             <th>numero facture</th>
                                             <th>Date achat</th>
+                                            <th>Action</th>
                                             
                                         </tr>
                                     </thead>
@@ -98,7 +106,7 @@
                                             <th>Date enregistrement</th>
                                             <th>numero facture</th>
                                             <th>Date achat</th>
-                                            
+                                            <th>Action</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -112,7 +120,12 @@
                                             <td>{{ fournisseur.createdAt|date('d-m-Y') }}</td>
                                             <td>{{ fournisseur.numfacture }}</td>
                                             <td>{{ fournisseur.dateAchat|date('d-m-Y') }}</td>
-                                            
+                                            <td>
+                                                <a href="{{ path('fournisseur_a_edit', {'id': fournisseur.id}) }}" class='btn btn-primary'>
+                                                    <i class='fas fa-pencil-alt'></i></a>
+                                                <a href="{{ path('fournisseur_a_delete', {'id': fournisseur.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce fournisseur ?");'>
+                                                    <i class='fas fa-trash-alt'></i></a>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

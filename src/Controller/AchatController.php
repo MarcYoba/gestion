@@ -49,6 +49,7 @@ class AchatController extends AbstractController
                     $achat->setQuantite($key["quantite"]);
                     $achat->setMontant($key["total"]);
                     $achat->setUser($this->getUser());
+                    $achat->setAgence($this->getUser()->getEmployer()->getAgence());
                     $achat->setFournisseur($fournisseur);
                     $achat->setProduit($produit);
 

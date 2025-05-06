@@ -46,7 +46,30 @@
                                     <!-- DataTales Example -->
                                     <div class="card shadow mb-4">
                                         <div class="card-header py-3">
-                                            <h6 class="m-0 font-weight-bold text-primary">Tables des Achats</h6>
+                                            <div class="card-header py-3">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-8 mb-3 mb-sm-0">
+                                                        Enregistrer un Fournisseur
+                                                    </div>
+                                                    {% for message in app.flashes('success') %}
+                                                        <div class="alert alert-success">
+                                                            {{ message }}
+                                                        </div>
+                                                    {% endfor %}
+                                                    <div class="col-sm-2 mb-3 mb-sm-0">
+                                                        <a href="{{ path('app_home_dashboard', {'id': app.user.employer.agence.id}) }}" class="btn btn-primary btn-user btn-block">
+                                                            <i class="fas fa-home"></i>
+                                                            home
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-sm-2 mb-3 mb-sm-0">
+                                                        <a href="{{ path('achat_list') }}" class="btn btn-primary btn-user btn-block">
+                                                            <i class="fas fa-list"></i>
+                                                            List
+                                                        </a>
+                                                    </div>      
+                                                </div> 
+                                            </div>
                                             <br>
                                             <div class="row">
                                                 <p class="btn btn-warning btn-user col-md-4" onclick="ajouterLigne('dataTable', 
@@ -142,15 +165,10 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('js/achat.js') }}"></script>    
-    <script src="js/sb-admin-2.min.js"></script>
+    
     <!--<script src="achat.js"></script>-->
     
 </body>

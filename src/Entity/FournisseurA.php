@@ -40,6 +40,12 @@ class FournisseurA
     #[ORM\OneToMany(mappedBy: 'forunisseur', targetEntity: AchatA::class, orphanRemoval: true)]
     private Collection $achatAs;
 
+    #[ORM\ManyToOne(inversedBy: 'fournisseurAs')]
+    private ?Agence $agence = null;
+
+    #[ORM\ManyToOne(inversedBy: 'fournisseurAs')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->achatAs = new ArrayCollection();
@@ -160,6 +166,30 @@ class FournisseurA
                 $achatA->setForunisseur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAgence(): ?Agence
+    {
+        return $this->agence;
+    }
+
+    public function setAgence(?Agence $agence): static
+    {
+        $this->agence = $agence;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

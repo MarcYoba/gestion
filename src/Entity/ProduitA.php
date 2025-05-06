@@ -49,6 +49,10 @@ class ProduitA
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: AchatA::class, orphanRemoval: true)]
     private Collection $achatAs;
 
+    #[ORM\ManyToOne(inversedBy: 'produitAs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?agence $agence = null;
+
     public function __construct()
     {
         $this->achatAs = new ArrayCollection();
@@ -205,6 +209,18 @@ class ProduitA
                 $achatA->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAgence(): ?agence
+    {
+        return $this->agence;
+    }
+
+    public function setAgence(?agence $agence): static
+    {
+        $this->agence = $agence;
 
         return $this;
     }
