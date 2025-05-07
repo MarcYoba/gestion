@@ -53,9 +53,21 @@ class ProduitA
     #[ORM\JoinColumn(nullable: false)]
     private ?agence $agence = null;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: VenteA::class)]
+    private Collection $venteAs;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: FactureA::class)]
+    private Collection $factureAs;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: QuantiteproduitA::class)]
+    private Collection $quantiteproduitAs;
+
     public function __construct()
     {
         $this->achatAs = new ArrayCollection();
+        $this->venteAs = new ArrayCollection();
+        $this->factureAs = new ArrayCollection();
+        $this->quantiteproduitAs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -221,6 +233,96 @@ class ProduitA
     public function setAgence(?agence $agence): static
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VenteA>
+     */
+    public function getVenteAs(): Collection
+    {
+        return $this->venteAs;
+    }
+
+    public function addVenteA(VenteA $venteA): static
+    {
+        if (!$this->venteAs->contains($venteA)) {
+            $this->venteAs->add($venteA);
+            $venteA->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVenteA(VenteA $venteA): static
+    {
+        if ($this->venteAs->removeElement($venteA)) {
+            // set the owning side to null (unless already changed)
+            if ($venteA->getProduit() === $this) {
+                $venteA->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FactureA>
+     */
+    public function getFactureAs(): Collection
+    {
+        return $this->factureAs;
+    }
+
+    public function addFactureA(FactureA $factureA): static
+    {
+        if (!$this->factureAs->contains($factureA)) {
+            $this->factureAs->add($factureA);
+            $factureA->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactureA(FactureA $factureA): static
+    {
+        if ($this->factureAs->removeElement($factureA)) {
+            // set the owning side to null (unless already changed)
+            if ($factureA->getProduit() === $this) {
+                $factureA->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, QuantiteproduitA>
+     */
+    public function getQuantiteproduitAs(): Collection
+    {
+        return $this->quantiteproduitAs;
+    }
+
+    public function addQuantiteproduitA(QuantiteproduitA $quantiteproduitA): static
+    {
+        if (!$this->quantiteproduitAs->contains($quantiteproduitA)) {
+            $this->quantiteproduitAs->add($quantiteproduitA);
+            $quantiteproduitA->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuantiteproduitA(QuantiteproduitA $quantiteproduitA): static
+    {
+        if ($this->quantiteproduitAs->removeElement($quantiteproduitA)) {
+            // set the owning side to null (unless already changed)
+            if ($quantiteproduitA->getProduit() === $this) {
+                $quantiteproduitA->setProduit(null);
+            }
+        }
 
         return $this;
     }

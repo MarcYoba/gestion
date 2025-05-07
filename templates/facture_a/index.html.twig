@@ -41,7 +41,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        {% include "navbar.html.twig" %}
+        {% include "navbarA.html.twig" %}
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -109,7 +109,7 @@
                                                 <td>{{ row.quantite }}</td>
                                                 <td>{{ row.prix }}</td>
                                                 <td>{{ row.montant }}</td>
-                                                <td>{{ row.typepaiement }}</td>
+                                                <td>{{ row.type }}</td>
                                             </tr>
                                         {% endfor %}
                                         
@@ -182,3 +182,4 @@
 
 </html>
 {% endblock %}
+

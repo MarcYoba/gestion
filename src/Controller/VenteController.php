@@ -30,111 +30,115 @@ class VenteController extends AbstractController
 
         if($request->isXmlHttpRequest() || $request->getContentType()==='json') {
             $data = json_decode($request->getContent(), true);
+            
             if (isset($data)) {
-                $lignevente = end($data);
-                array_pop($data);
-                $type = "";
-                $date = null;
-                $heure = date("H:i:s");
-                $idclient = $lignevente['client'];
-                $user = $this->getUser();
-                $client = $entityManager->getRepository(Clients::class)->find($idclient);
-                $vente->setUser($user);
-                $vente->setClient($client);
-                if($lignevente['momo'] > 0) 
-                {
-                    $type = "momo";
-                } 
-                if($lignevente['credit'] > 0)
-                {
-                    if(empty($type)){
-                        $type = "credit";
-                    }else{
-                        $type += "credit";
-                    }
-                }
-                if($lignevente['cash'] > 0)
-                {
-                    if(empty($type)){
-                        $type = "cash";
-                    }else{
-                        $type += "cash";
-                    }
-                }
-                if ($lignevente['Banque'] > 0) {  
-                  if(empty($type)){
-                    $type = "banque";
-                  }else{
-                    $type += "banque";
-                  }
-                }
-
-                if(empty($lignevente['date']))
-                {
-                    $date = new \DateTimeImmutable();
-                    $vente->setCreatedAt($date);
-                }else{
-                    $date = new \DateTimeImmutable($lignevente['date']);
-                    $vente->setCreatedAt($date);
-                }
-
-                $vente->setType($type);
-                $vente->setQuantite($lignevente['Qttotal']);
-                $vente->setPrix($lignevente['Total']);
-                $vente->setEsperce($lignevente['esperce']);
-                $vente->setAliment($lignevente['aliment']);
-                $vente->setHeure($heure);
-                $vente->setStatusvente($lignevente['statusvente']);
-                $vente->setMontantbanque($lignevente['Banque']);
-                $vente->setMontantcash($lignevente['cash']);
-                $vente->setMontantcredit($lignevente['credit']);
-                $vente->setMontantmomo($lignevente['momo']);
-                $vente->setReduction($lignevente['reduction']);
-
-                $entityManager->persist($vente);
-                
-                    foreach ($data as $key => $value) {
-                        $reste = 0;
-                        $facture = new Facture();
-                        $quantitereste = new Quantiteproduit;
-
-                        $produit = $entityManager->getRepository(Produit::class)->find($value['produit']);
-                        $facture->setQuantite($value['quantite']);
-                        $facture->setPrix($value['prix']);
-                        $facture->setMontant($value['total']);
-                        $facture->setTypepaiement($type);
-                        
-                        if(empty($value['date'])){
-                            $date = new \DateTimeImmutable;
-                            $facture->setCreatedAt($date );
-                        }else{
-                            $date = new \DateTimeImmutable($value['date']);
-                            $facture->setCreatedAt($date );
-                        }
-
-                        if ($produit) {
-                            $reste = $produit->getQuantite();
-                            $reste = $reste - $value['quantite'];
-                           $quantitereste->setQuantiteRestant($reste);
-                           $quantitereste->setCreatedAt($date);
-                        }
-
-                        $produit ->setQuantite($reste);
-
-                        $quantitereste->setUser($user);
-                        $quantitereste->setVente($vente);
-                        $quantitereste->setProduit($produit);
-                        $facture->setUser($user);
-                        $facture->setClient($client);
-                        $facture->setProduit($produit);
-                        $facture->setVente($vente);
-                        
-                        $entityManager->persist($facture);
-                        $entityManager->persist($quantitereste);
-                     }
-                
                 try {
-                    $entityManager->flush();
+                    $lignevente = end($data);
+                    array_pop($data);
+                    $type = "";
+                    $date = null;
+                    $heure = date("H:i:s");
+                    $idclient = $lignevente['client'];
+                    $user = $this->getUser();
+                    $client = $entityManager->getRepository(Clients::class)->find($idclient);
+                    $vente->setUser($user);
+                    $vente->setClient($client);
+                    if($lignevente['momo'] > 0) 
+                    {
+                        $type = "momo";
+                    } 
+                    if($lignevente['credit'] > 0)
+                    {
+                        if(empty($type)){
+                            $type = "credit";
+                        }else{
+                            $type += "credit";
+                        }
+                    }
+                    if($lignevente['cash'] > 0)
+                    {
+                        if(empty($type)){
+                            $type = "cash";
+                        }else{
+                            $type += "cash";
+                        }
+                    }
+                    if ($lignevente['Banque'] > 0) {  
+                    if(empty($type)){
+                        $type = "banque";
+                    }else{
+                        $type += "banque";
+                    }
+                    }
+
+                    if(empty($lignevente['date']))
+                    {
+                        $date = new \DateTimeImmutable();
+                        $vente->setCreatedAt($date);
+                    }else{
+                        $date = new \DateTimeImmutable($lignevente['date']);
+                        $vente->setCreatedAt($date);
+                    }
+                    
+                    $vente->setType($type);
+                    $vente->setQuantite($lignevente['Qttotal']);
+                    $vente->setPrix($lignevente['Total']);
+                    $vente->setEsperce($lignevente['esperce']);
+                    $vente->setAliment($lignevente['aliment']);
+                    $vente->setHeure($heure);
+                    $vente->setStatusvente($lignevente['statusvente']);
+                    $vente->setMontantbanque($lignevente['Banque']);
+                    $vente->setMontantcash($lignevente['cash']);
+                    $vente->setMontantcredit($lignevente['credit']);
+                    $vente->setMontantmomo($lignevente['momo']);
+                    $vente->setReduction($lignevente['reduction']);
+                    $vente->setAgence($user->getEmployer()->getAgence());
+                    $entityManager->persist($vente);
+                    
+                        foreach ($data as $key => $value) {
+                            $reste = 0;
+                            $facture = new Facture();
+                            $quantitereste = new Quantiteproduit;
+
+                            $produit = $entityManager->getRepository(Produit::class)->find($value['produit']);
+                            $facture->setQuantite($value['quantite']);
+                            $facture->setPrix($value['prix']);
+                            $facture->setMontant($value['total']);
+                            $facture->setTypepaiement($type);
+                            
+                            if(empty($value['date'])){
+                                $date = new \DateTimeImmutable;
+                                $facture->setCreatedAt($date );
+                            }else{
+                                $date = new \DateTimeImmutable($value['date']);
+                                $facture->setCreatedAt($date );
+                            }
+
+                            if ($produit) {
+                                $reste = $produit->getQuantite();
+                                $reste = $reste - $value['quantite'];
+                            $quantitereste->setQuantiteRestant($reste);
+                            $quantitereste->setCreatedAt($date);
+                            }
+
+                            $produit ->setQuantite($reste);
+
+                            $quantitereste->setUser($user);
+                            $quantitereste->setVente($vente);
+                            $quantitereste->setProduit($produit);
+                            $facture->setUser($user);
+                            $facture->setAgence($user->getEmployer()->getAgence());
+
+                            $facture->setClient($client);
+                            $facture->setProduit($produit);
+                            $facture->setVente($vente);
+                            
+                            $entityManager->persist($facture);
+                            $entityManager->persist($quantitereste);
+                        }
+                    
+                    
+                        $entityManager->flush();
                 } catch (\Exception $e) {
                     return $this->json([
                         'error' => $e->getMessage(),

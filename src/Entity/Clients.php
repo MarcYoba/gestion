@@ -40,6 +40,12 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: VersementA::class)]
     private Collection $versementAs;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: VenteA::class)]
+    private Collection $venteAs;
+
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: FactureA::class)]
+    private Collection $factureAs;
+
     public function __construct()
     {
         $this->versements = new ArrayCollection();
@@ -47,6 +53,8 @@ class Clients
         $this->credit = new ArrayCollection();
         $this->facture = new ArrayCollection();
         $this->versementAs = new ArrayCollection();
+        $this->venteAs = new ArrayCollection();
+        $this->factureAs = new ArrayCollection();
     }
 
     
@@ -236,6 +244,66 @@ class Clients
             // set the owning side to null (unless already changed)
             if ($versementA->getClient() === $this) {
                 $versementA->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VenteA>
+     */
+    public function getVenteAs(): Collection
+    {
+        return $this->venteAs;
+    }
+
+    public function addVenteA(VenteA $venteA): static
+    {
+        if (!$this->venteAs->contains($venteA)) {
+            $this->venteAs->add($venteA);
+            $venteA->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVenteA(VenteA $venteA): static
+    {
+        if ($this->venteAs->removeElement($venteA)) {
+            // set the owning side to null (unless already changed)
+            if ($venteA->getClient() === $this) {
+                $venteA->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FactureA>
+     */
+    public function getFactureAs(): Collection
+    {
+        return $this->factureAs;
+    }
+
+    public function addFactureA(FactureA $factureA): static
+    {
+        if (!$this->factureAs->contains($factureA)) {
+            $this->factureAs->add($factureA);
+            $factureA->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactureA(FactureA $factureA): static
+    {
+        if ($this->factureAs->removeElement($factureA)) {
+            // set the owning side to null (unless already changed)
+            if ($factureA->getClient() === $this) {
+                $factureA->setClient(null);
             }
         }
 

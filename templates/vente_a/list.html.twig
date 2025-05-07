@@ -37,7 +37,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        {% include "navbar.html.twig" %}
+        {% include "navbarA.html.twig" %}
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -158,10 +158,10 @@
                                             <th>{{ row.id }}</th>
                                             <th>{{ row.quantite }}</th>
                                             <th>{{ row.prix }}</th>
-                                            <th>{{ row.statusvente }}</th>
-                                            <th>{{ row.createdAt | date("Y-m-d")  }}</th>
+                                            <th>{{ row.statut }}</th>
+                                            <th>{{ row.createAt | date("Y-m-d")  }}</th>
                                             <th>
-                                            <a href="{{ path('app_facture', {'id': row.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>
+                                            <a href="{{ path('app_facture_a', {'id': row.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>
                                             </th>
                                         </tr>
                                         {% endfor %}

@@ -94,6 +94,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: FournisseurA::class)]
     private Collection $fournisseurAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: VenteA::class)]
+    private Collection $venteAs;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: FactureA::class)]
+    private Collection $factureAs;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: QuantiteproduitA::class)]
+    private Collection $quantiteproduitAs;
+
     
 
     public function __construct() {
@@ -114,6 +123,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->achatAs = new ArrayCollection();
         $this->depenses = new ArrayCollection();
         $this->fournisseurAs = new ArrayCollection();
+        $this->venteAs = new ArrayCollection();
+        $this->factureAs = new ArrayCollection();
+        $this->quantiteproduitAs = new ArrayCollection();
         
     }
 
@@ -695,6 +707,96 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($fournisseurA->getUser() === $this) {
                 $fournisseurA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VenteA>
+     */
+    public function getVenteAs(): Collection
+    {
+        return $this->venteAs;
+    }
+
+    public function addVenteA(VenteA $venteA): static
+    {
+        if (!$this->venteAs->contains($venteA)) {
+            $this->venteAs->add($venteA);
+            $venteA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVenteA(VenteA $venteA): static
+    {
+        if ($this->venteAs->removeElement($venteA)) {
+            // set the owning side to null (unless already changed)
+            if ($venteA->getUser() === $this) {
+                $venteA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FactureA>
+     */
+    public function getFactureAs(): Collection
+    {
+        return $this->factureAs;
+    }
+
+    public function addFactureA(FactureA $factureA): static
+    {
+        if (!$this->factureAs->contains($factureA)) {
+            $this->factureAs->add($factureA);
+            $factureA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactureA(FactureA $factureA): static
+    {
+        if ($this->factureAs->removeElement($factureA)) {
+            // set the owning side to null (unless already changed)
+            if ($factureA->getUser() === $this) {
+                $factureA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, QuantiteproduitA>
+     */
+    public function getQuantiteproduitAs(): Collection
+    {
+        return $this->quantiteproduitAs;
+    }
+
+    public function addQuantiteproduitA(QuantiteproduitA $quantiteproduitA): static
+    {
+        if (!$this->quantiteproduitAs->contains($quantiteproduitA)) {
+            $this->quantiteproduitAs->add($quantiteproduitA);
+            $quantiteproduitA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuantiteproduitA(QuantiteproduitA $quantiteproduitA): static
+    {
+        if ($this->quantiteproduitAs->removeElement($quantiteproduitA)) {
+            // set the owning side to null (unless already changed)
+            if ($quantiteproduitA->getUser() === $this) {
+                $quantiteproduitA->setUser(null);
             }
         }
 
