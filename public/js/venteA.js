@@ -104,11 +104,12 @@ function calculeprixTotalquantitetotal(){
 }
 
 function calculeTotal(){
+    
     let verQuantite = parseInt(document.getElementById("quantite").value);
     let stoQuantite = parseInt(document.getElementById("quantiteStokage").value);
 
-    // console.log("valeure : "+verQuantite);
-    // console.log("valeure : "+stoQuantite);
+    console.log("valeure : "+verQuantite);
+    console.log("valeure : "+stoQuantite);
 
     if (verQuantite <= stoQuantite) {
         document.getElementById("resultat").textContent = document.getElementById("quantite").value * document.getElementById("prixglobal").value;
@@ -127,7 +128,6 @@ function calculeTotal(){
         }
         
     }
-    
 }
 
 
@@ -135,11 +135,11 @@ function recherchePrix(){
     
     let data = {};
     const nomproduit  = document.getElementById("nomProduit").value ;
-    // collection de l'id du produit
+    //console.log(nomproduit);
     data.nom = nomproduit;
     //console.log(data);
 
-    fetch('/produit/recherche/prix',{
+    fetch('/produit/a/recherche/prix',{
         method:'POST',
         headers:{
             'Content-Type': 'application/json'
@@ -153,16 +153,8 @@ function recherchePrix(){
                 document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> Rupture de stock en cour : '+data.quantite+'</p>';
                 if (data.quantite >= 1 && data.quantite <= 5) {
                    document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-danger"> fin de stock pour ce produit: '+data.quantite+'</p>';  
-                   document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')" >Enregistrer</button>'
-                   document.getElementById("quantiteStokage").value = data.quantite;
+                   document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')">Enregistrer</button>'
                 }else if(data.quantite <= 0){
-                    document.getElementById("quantiteStokage").value = data.quantite;
-                    if (document.getElementById("modifiervente").textContent == "Modifier vente") {
-                        
-                    } else {
-                        document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')" >Enregistrer vente</button>';
-                    }
-                }else if(data.quantite >= 5){
                     if (document.getElementById("modifiervente").textContent == "Modifier vente") {
                         
                     } else {
@@ -171,17 +163,16 @@ function recherchePrix(){
                 }
             } else {
                 document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-info"> stock en cour : '+data.quantite+'</p>';
-                document.getElementById("quantiteStokage").value = data.quantite;
                 console.log(document.getElementById("modifiervente").textContent);
-                document.getElementById("quantiteStokage").value = data.quantite;
                 if (document.getElementById("modifiervente").textContent == "Modifier vente") {
                     
                 } else {
                     document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')" >Enregistrer vente</button>'
                 }
             }
-            document.getElementById("quantiteStokage").value = data.quantite;
+            document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')">Enregistrer</button>'
             document.getElementById("prixglobal").value = data.message;
+            document.getElementById("quantiteStokage").value = data.quantite;
             console.log(data);
         }else if(data.success == false){
         }else{
@@ -295,7 +286,7 @@ function recuperationdonneTable() {
             data.total = cellule5.textContent;
            // data.typepaie = cellule6.textContent;
             data.date = datevente;
-            
+            //console.log(data);
             donnees.push({...data});  //on peut aussi  declarer directement let data = {} dans la boucle pour redure le programme
             data.value++;
 
@@ -308,8 +299,6 @@ function recuperationdonneTable() {
         data.Qttotal = document.getElementById("quantitetotal").textContent;
         data.taille = tableau.rows.length;
         data.Banque = document.getElementById("Banque").value;
-        data.esperce = document.getElementById("esperce").value;
-        data.aliment = document.getElementById("aliment").value;
         data.statusvente = document.getElementById("statusvente").value;
 
         donnees.push({...data});  //on peut aussi  declarer directement let data = {} dans la boucle pour redure le programme
@@ -330,8 +319,7 @@ function enregistrementBD(){
 
     let donnees =[];
     donnees = recuperationdonneTable();
-    
-    fetch('/vente/create',{
+    fetch('/vente/a/create',{
         method:'POST',
         headers:{
             'Content-Type': 'application/json'
@@ -342,10 +330,10 @@ function enregistrementBD(){
     .then(data => { 
         if (data.success == true) {
             document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-info"> enregistrement des donne avec success</p>';
-            window.location.href = '/facture/view/'+ data.message;
+            window.location.href = '/facture/a/view/'+ data.message;
             console.log(data);
         }else if(data.success == false){
-            document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-danger"> Verifier que les produits sont conforme </p>';
+            document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-danger"> Verifier que le produit ne sont conforme </p>';
         }else{
             console.log(data);
         }     
@@ -360,22 +348,23 @@ function enregistrementDonnees(){
     let cahs = document.getElementById("cash").value;
     let credit = document.getElementById("credit").value;
     let momo = document.getElementById("momo").value;
-    let banque = document.getElementById("Banque").value;
+    let Banque = document.getElementById("Banque").value;
     let teste = document.getElementById("teste").textContent;
-    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit) + parseInt(banque) ;
+
+    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit)+parseInt(Banque) ;
     if ((somme) == (document.getElementById("Total").value)) 
     {
     
         if(document.getElementById("momo").value == 0){
             if (document.getElementById("cash").value == 0) {
                 if (document.getElementById("credit").value == 0) {
-                    if (document.getElementById("Banque").value ==0) {
-                        document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH/Banque ou Credit</p>';
+                    if (document.getElementById("Banque").value==0) {
+                        document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH ou Credit</p>';  
                     } else {
                         if (teste == 0) {
                             document.getElementById("teste").innerText = 1;
                         }else{
-                            window.location.href = 'list'
+                            window.location.href = 'list.php'
                         }
                         enregistrementBD();
                     }
@@ -384,7 +373,7 @@ function enregistrementDonnees(){
                     if (teste == 0) {
                         document.getElementById("teste").innerText = 1;
                     }else{
-                        window.location.href = 'list'
+                        window.location.href = 'list.php'
                     }
                     enregistrementBD();
                 }
@@ -393,7 +382,7 @@ function enregistrementDonnees(){
                     if (teste == 0) {
                         document.getElementById("teste").innerText = 1;
                     }else{
-                        window.location.href = 'list'
+                        window.location.href = 'list.php'
                     }
                 enregistrementBD(); 
             }
@@ -402,7 +391,7 @@ function enregistrementDonnees(){
                     if (teste == 0) {
                         document.getElementById("teste").innerText = 1;
                     }else{
-                        window.location.href = 'list'
+                        window.location.href = 'list.php'
                     }
             enregistrementBD();
         }
@@ -415,7 +404,7 @@ function enregistrementDonnees(){
     
 }
 
-function LigneventeMofier(donnees){
+function LigneventeMofiier(donnees){
     const tableau = document.getElementById('dataTable');
 
    // const  Typepaiement = document.getElementById("Typepaiement").value; 
@@ -428,14 +417,14 @@ function LigneventeMofier(donnees){
        
         const nouvellecellule = nouvelleLigne.insertCell();
         const input = document.createElement('p');
-        input.innerHTML = donnees.client ;
+        input.innerHTML = donnees.idclient ;
         input.classList.add('form-control', 'form-control-user');
         nouvellecellule.appendChild(input);
     
-        console.log(donnees);
+        
         const nouvellecellule2 = nouvelleLigne.insertCell();
         const p2 = document.createElement('p');
-        p2.innerHTML = donnees.produit;
+        p2.innerHTML = donnees.nomproduit;
         p2.classList.add('form-control', 'form-control-user');
         nouvellecellule2.appendChild(p2);
     
@@ -471,29 +460,29 @@ function LigneventeMofier(donnees){
          document.getElementById("quantitetotal").innerHTML = quantiteTotal;
          document.getElementById("prixtotal").textContent = prixtotal;
          document.getElementById("Total").value=prixtotal;
-         document.getElementById("TypePaie").innerText = donnees.typepaiement
+         document.getElementById("TypePaie").innerText = donnees.Typepaiement
         document.getElementById("TypePaie").style.display="block";
+    
     document.getElementById("idfacture").textContent = donnees.id;
     document.getElementById("idvente").textContent = donnees.idvente;
     
     
 }
-// ecrire les ligne de vente dans le tableau
-// recuperer les donnes de la vente et les afficher dans le tableau
 function editevente(){
     if (typeof data === 'undefined' || data === null) {
         console.log("La variable est undefined ou null");
-    }else{
-        
+      }else{
         
         data.forEach(element => {
-            //console.log(element);
-            LigneventeMofier(element);
+           // console.log(element);
+            LigneventeMofiier(element);
         });
         localStorage.removeItem('myData');
         document.getElementById("enregistremet").style.display="none";
       document.getElementById("modifiervente").innerHTML = '<button  class="btn btn-warning btn-user btn-block" onclick="saveedite()" >Modifier vente</button>';
     }
+      
+
 }
 editevente();// affiche la vente
 
@@ -510,7 +499,7 @@ function enregistrementEdite(){
     //data.value++;
     //console.log(donnees);
     
-    fetch('/vente/update',{
+    fetch('Edite.php',{
         method:'POST',
         headers:{
             'Content-Type': 'application/json'
@@ -521,13 +510,13 @@ function enregistrementEdite(){
     .then(data => { 
         if (data.success == true) {
             document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-info"> Modification des donnes avec success</p>';
-            window.location.href = '/facture/view/'+ data.message;
+            window.location.href = 'facture.php?id='+ data.message;
             console.log("edite : "+data);
         }else if(data.success == false){
             document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-danger"> Verifier que le produit ne sont conforme </p>';
         }else{
             console.log(data);
-           // window.location.href = 'list';
+            window.location.href = 'liste.php';
         }     
     })
     .catch(error => {
@@ -540,17 +529,19 @@ function saveedite(){
    let cahs = document.getElementById("cash").value;
     let credit = document.getElementById("credit").value;
     let momo = document.getElementById("momo").value;
-    let banque = document.getElementById("Banque").value;
+    let Banque = document.getElementById("Banque").value;
     let teste = document.getElementById("teste").textContent;
-    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit)+parseInt(banque) ;
+    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit)+parseInt(Banque) ;
     if ((somme) == (document.getElementById("Total").value)) 
     {
     
         if(document.getElementById("momo").value == 0){
             if (document.getElementById("cash").value == 0) {
                 if (document.getElementById("credit").value == 0) {
-                    if (document.getElementById("Banque").value==0) {
+                    if (document.getElementById("Banque").value ==0) {
                         document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH ou Credit</p>';
+
+                    
                         if (teste == 0) {
                             document.getElementById("teste").innerText = 1;
                         }else{
@@ -558,9 +549,8 @@ function saveedite(){
                             document.getElementById("teste").innerText = 0;
                             enregistrementEdite()
                         }
-                    } else {
-                        enregistrementEdite()
                     }
+                    
                 } else {
                     enregistrementEdite()
                 }
@@ -583,26 +573,7 @@ function check(params) {
     
 }
 
-function Client(element){
-    const nomClient  = document.getElementById("fournisseur").value ;
-    document.getElementById("idclient").innerText = nomClient;
-    // fetch('/clients/recherche',{
-    //     method:'POST',
-    //     headers:{
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(nomClient)
-    // })
-    // .then(response => response.json())
-    // .then(data => { 
-    //     document.getElementById("idclient").innerText = data.nom;
-        
-    // })
-    // .catch(error => {
-    //     console.error(error);
-    // });
-       
-  }
+
 
   function enregistremetnclient() {
     var nom = document.getElementById("recherche").value;
@@ -634,151 +605,3 @@ function Client(element){
     document.getElementById("caculelreduction").value = parseFloat(document.getElementById("caculelreduction").value) + parseFloat(resultreduction);
     document.getElementById("rp").value = 0;
   }
-
-
-  const inputcash = document.getElementById("cash");
-const inputcredit = document.getElementById("credit");
-const inputom = document.getElementById("om");
-
-function LigneTableau(data){
-    
-    const tableau = document.getElementById('dataTable');
-
-    
-       const nouvelleLigne = tableau.insertRow(1);
-       const nouvellecellule = nouvelleLigne.insertCell();
-        nouvellecellule.innerHTML = data.id;
-       
-    
-        
-        const nouvellecellule2 = nouvelleLigne.insertCell();
-        nouvellecellule2.innerHTML = data.typevente;
-        
-    
-        const nouvellecellule3 = nouvelleLigne.insertCell();
-        nouvellecellule3.innerHTML = data.numfacture;
-        
-    
-        const nouvellecellule4 = nouvelleLigne.insertCell();
-        nouvellecellule4.innerHTML = data.quantite;
-        
-    
-        const nouvellecellule5 = nouvelleLigne.insertCell();
-        nouvellecellule5.innerHTML = data.prix;
-     
-
-        const nouvellecellule6 = nouvelleLigne.insertCell();
-        nouvellecellule6.innerHTML = data.datevente;
-        const nouvellecellule7 = nouvelleLigne.insertCell();
-        nouvellecellule7.innerHTML = data.datevente;
-       
-
-
-}
-
-function getVenteData(idvente){
-  fetch('/vente/edit', {
-      method: 'POST',
-      body: JSON.stringify(idvente),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      value = {};
-        console.log(data);
-      localStorage.setItem("myData", JSON.stringify(data));
-      window.location.href = '/vente/create';
-
-    })
-    .catch(error => {
-      console.error('Erreur lors de la requête :', error);
-    });
-};
-
-function editefacture(){
-  console.log(document.getElementById("id").innerText);
-  getVenteData(document.getElementById("id").innerText);
-}
-
-function myFunction() {
-  // Récupérer l'input et la liste déroulante
-  var input, filter, ul, li, a, i;
-  input = document.getElementById("recherche");
-  filter = input.value.toUpperCase();
-  ul = document.getElementById("fournisseur");
-  li = ul.getElementsByTagName("option");
-
-  // Boucler sur toutes les options
-  for (i = 0; i < li.length; i++) {
-    a = li[i];
-    if (a.value.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
-    }
-  }
-  
-}
-
-function myFunctionP() {
-  // Récupérer l'input et la liste déroulante
-  var input, filter, ul, li, a, i;
-  input = document.getElementById("rechercheP");
-  filter = input.value.toUpperCase();
-  ul = document.getElementById("nomProduit");
-  li = ul.getElementsByTagName("option");
-
-  // Boucler sur toutes les options
-  for (i = 0; i < li.length; i++) {
-    a = li[i];
-    if (a.value.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
-    }
-  }
-  
-}
-
-function recherchduproduit() {
-  // Récupérer l'input et la liste déroulante
-  var input, filter, ul, li, a, i;
-  input = document.getElementById("produitrecher");
-  filter = input.value.toUpperCase();
-  ul = document.getElementById("nomProduite");
-  li = ul.getElementsByTagName("option");
- 
-  // Boucler sur toutes les options
-  for (i = 0; i < li.length; i++) {
-    a = li[i];
-    if (a.value.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
-    }
-  }
-  
-}
-
-function recherchduclient() {
-  // Récupérer l'input et la liste déroulante
-  var input, filter, ul, li, a, i;
-  input = document.getElementById("clientrecher");
-  filter = input.value.toUpperCase();
-  ul = document.getElementById("clientt");
-  li = ul.getElementsByTagName("option");
-  console.log(li.length);
-  // Boucler sur toutes les options
-  for (i = 0; i < li.length; i++) {
-    a = li[i];
-    
-    if (a.textContent.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
-    }
-  }
-  
-}

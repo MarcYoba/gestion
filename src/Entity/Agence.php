@@ -56,6 +56,18 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: AchatA::class)]
     private Collection $achatAs;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Vente::class)]
+    private Collection $ventes;
+
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Facture::class)]
+    private Collection $factures;
+
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: VenteA::class)]
+    private Collection $venteAs;
+
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: FactureA::class)]
+    private Collection $factureAs;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -66,6 +78,10 @@ class Agence
         $this->fournisseurs = new ArrayCollection();
         $this->fournisseurAs = new ArrayCollection();
         $this->achatAs = new ArrayCollection();
+        $this->ventes = new ArrayCollection();
+        $this->factures = new ArrayCollection();
+        $this->venteAs = new ArrayCollection();
+        $this->factureAs = new ArrayCollection();
     }
 
    
@@ -369,6 +385,126 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($achatA->getAgence() === $this) {
                 $achatA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vente>
+     */
+    public function getVentes(): Collection
+    {
+        return $this->ventes;
+    }
+
+    public function addVente(Vente $vente): static
+    {
+        if (!$this->ventes->contains($vente)) {
+            $this->ventes->add($vente);
+            $vente->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVente(Vente $vente): static
+    {
+        if ($this->ventes->removeElement($vente)) {
+            // set the owning side to null (unless already changed)
+            if ($vente->getAgence() === $this) {
+                $vente->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Facture>
+     */
+    public function getFactures(): Collection
+    {
+        return $this->factures;
+    }
+
+    public function addFacture(Facture $facture): static
+    {
+        if (!$this->factures->contains($facture)) {
+            $this->factures->add($facture);
+            $facture->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFacture(Facture $facture): static
+    {
+        if ($this->factures->removeElement($facture)) {
+            // set the owning side to null (unless already changed)
+            if ($facture->getAgence() === $this) {
+                $facture->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VenteA>
+     */
+    public function getVenteAs(): Collection
+    {
+        return $this->venteAs;
+    }
+
+    public function addVenteA(VenteA $venteA): static
+    {
+        if (!$this->venteAs->contains($venteA)) {
+            $this->venteAs->add($venteA);
+            $venteA->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVenteA(VenteA $venteA): static
+    {
+        if ($this->venteAs->removeElement($venteA)) {
+            // set the owning side to null (unless already changed)
+            if ($venteA->getAgence() === $this) {
+                $venteA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FactureA>
+     */
+    public function getFactureAs(): Collection
+    {
+        return $this->factureAs;
+    }
+
+    public function addFactureA(FactureA $factureA): static
+    {
+        if (!$this->factureAs->contains($factureA)) {
+            $this->factureAs->add($factureA);
+            $factureA->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactureA(FactureA $factureA): static
+    {
+        if ($this->factureAs->removeElement($factureA)) {
+            // set the owning side to null (unless already changed)
+            if ($factureA->getAgence() === $this) {
+                $factureA->setAgence(null);
             }
         }
 

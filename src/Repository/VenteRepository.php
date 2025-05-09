@@ -55,4 +55,14 @@ class VenteRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    // public function findTotalPriceByYear($year)
+    // {
+    //     return $this->createQueryBuilder('v')
+    //         ->select('SUM(v.prix) as totalPrice')
+    //         ->andWhere('(v.createdAt) = :year')
+    //         ->setParameter('year', $year)
+    //         ->getQuery()
+    //         ->getSingleScalarResult();
+    // }
+    
 }
