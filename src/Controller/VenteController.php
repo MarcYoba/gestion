@@ -231,6 +231,7 @@ class VenteController extends AbstractController
     #[Route('/vente/update', name: 'vente_update')]
     public function update(Request $request,EntityManagerInterface $em): JsonResponse 
     {
+        $user = $this->getUser();
        try {
             $data = json_decode($request->getContent(), true);
             if (!empty($data)) {
@@ -343,6 +344,7 @@ class VenteController extends AbstractController
                         $facture->setMontant($newfacture["total"]);
                         $facture->setPrix($newfacture["prix"]);
                         $facture->setTypepaiement($type);
+                        $facture->setAgence($user->getEmployer()->getAgence());
 
                         if (empty($newfacture["date"])) {
                             $facture->setCreatedAt(new \DateTimeImmutable());
