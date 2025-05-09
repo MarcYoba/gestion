@@ -10,6 +10,7 @@ use App\Entity\ProduitA;
 use App\Entity\QuantiteproduitA;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -89,7 +90,7 @@ class VenteAController extends AbstractController
                         $facture = new FactureA();
                         $quantiterestant = new QuantiteproduitA();
 
-                        $produit = $em->getRepository(ProduitA::class)->find($value['produit']);
+                        $produit = $em->getRepository(ProduitA::class)->findOneBy(["nom" => $value['produit']]);
                         $facture->setQuantite($value['quantite']);
                         $facture->setPrix($value['prix']);
                         $facture->setMontant($value['total']);
@@ -164,5 +165,212 @@ class VenteAController extends AbstractController
             'produit' => $produit,
             'client' => $client,
         ]);
+    }
+
+    #[Route('/vente/a/edit', name: 'vente_a_edit')]
+    public function edit(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+
+        try {
+            $data = json_decode($request->getContent(), true);
+            $id = $data;
+            $vente = $entityManager->getRepository(VenteA::class)->find($id);
+            if ($vente) {
+                $facture = $vente->getFactureAs();
+                if (!$facture->isEmpty()) {
+                    $lignevente = [];
+                    foreach ($facture as $fact) {
+                        $lignevente[] = [
+                            'client' => $fact->getClient()->getId(),
+                            'produit' => $fact->getProduit()->getNom(),
+                            'quantite' => $fact->getQuantite(),
+                            'prix' => $fact->getPrix(),
+                            'montant' => $fact->getMontant(),
+                            'typepaiement' => $fact->getType(),
+                            'id' => $fact->getId(),
+                            'idvente' => $vente->getId(),
+                            // 'prixtotal' => $vente->getPrix(),
+                            // 'quantiteTotal' => $vente->getQuantite(),
+                        ];
+                        //array_push($data, $lignevente);
+                    }
+                    return $this->json(
+                        $lignevente,
+                    );
+                }else{
+                    return $this->json([
+                        'facture' =>0,
+                    ]);
+                }
+               
+                
+                 
+            }
+            return $this->json([
+                'success' => false,
+                'message' => 'Vente Not found',
+            ], 200);
+        
+        } catch (\Exception $e) {
+            return $this->json([
+                'error' => $e->getMessage(),
+                'success' => false
+                ]
+                , 500);
+        }
+        
+    }
+
+    #[Route("/vente/a/update", name:'vente_a_update')]
+    public function update(Request $request, EntityManagerInterface $em): JsonResponse {
+        $user = $this->getUser();
+        try {
+            $data = json_decode($request->getContent(),true);
+            if (!empty($data)) {
+                $idvente = end($data);
+                array_pop($data);
+                $vente = $em->getRepository(VenteA::class)->find($idvente["idvente"]);
+                $facture = $em->getRepository(FactureA::class)->findBy(["vente" => $vente]);
+
+                if ($facture) {
+                    $lignevente = end($data);
+                    array_pop($data);
+                    $type ="";
+                    if ($lignevente["Banque"] > 0) {
+                        $type = "BANQUE";
+                    }
+                    if ($lignevente["cash"] > 0) {
+                        if (empty($type)) {
+                            $type = "CASH";
+                        }else{
+                            $type += "CASH";
+                        }
+                    }
+                    if ($lignevente["momo"] > 0) {
+                        if (empty($type)) {
+                            $type = "OM";
+                        }else{
+                            $type += "OM";
+                        }
+                    }
+                    if ($lignevente["credit"] > 0) {
+                        if (empty($type)) {
+                            $type = "CREDIT";
+                        }else{
+                            $type += "CREDIT";
+                        }
+                    }
+
+                    $vente->setType($type);
+                    $vente->setQuantite($lignevente["Qttotal"]);
+                    $vente->setPrix($lignevente["Total"]);
+
+                    $vente->setCash($lignevente["cash"]);
+                    $vente->setBanque($lignevente["Banque"]);
+                    $vente->setCredit($lignevente["credit"]);
+                    $vente->setMomo($lignevente["momo"]);
+                    $vente->setReduction($lignevente["reduction"]);
+                    $vente->setStatut($lignevente["statusvente"]);
+
+                    if (!empty($lignevente["date"])) {
+                        $vente->setCreateAt(new \DateTimeImmutable($lignevente["date"]));
+                    }
+
+                    $value = new FactureA();
+                    $produit = new ProduitA(); 
+                    foreach ($facture as $key => $value) {
+                        $lignefacture = $data[0];
+
+                        $produit = $em->getRepository(ProduitA::class)->findOneBy(["nom" => $lignefacture["produit"]]);
+                        
+                        if ($produit) {
+                            
+                            if ($produit->getId() == $value->getProduit()->getId()) {
+                                $quantite = $lignefacture["quantite"] - $value->getQuantite() ;
+                                if ($quantite != 0) {
+                                    $quantite = ((-1 * $quantite ) + $produit->getQuantite());
+                                    $value->setQuantite($lignefacture["quantite"]);
+                                    $value->setMontant($lignefacture["total"]);
+                                    $produit->setQuantite($quantite);
+                                    if ($lignefacture["quantite"] == 0) {
+                                        $value->setPrix(0);
+                                    }else{
+                                        $value->setPrix($lignefacture["prix"]);
+                                    }
+                                }
+                            }else{
+                                
+                                $autreproduit = $em->getRepository(ProduitA::class)->find($value->getProduit());
+                                $autreproduit->setQuantite($autreproduit->getQuantite() + $value->getQuantite());
+
+                                $value->setProduit($produit);
+                                $value->setPrix($lignefacture["prix"]);
+                                $value->setMontant($lignefacture["total"]);
+                                $value->setQuantite($lignefacture["quantite"]);
+
+                                $produit->setQuantite(($produit->getQuantite() - $lignefacture["quantite"]));
+                                $em->flush();
+                            }
+                        }
+                        
+                        array_shift($data);
+                    }
+
+                    if (!empty($data)) {
+                        foreach ($data as $key => $newfacture) {
+                           $produit = new ProduitA();
+                           $facture = new FactureA();
+                           $quantiterestant = new QuantiteproduitA();
+
+                           $produit = $em->getRepository(ProduitA::class)->findOneBy(["nom" => $newfacture["produit"]]);
+                            $client = $em->getRepository(Clients::class)->find($newfacture["client"]);
+
+                            $facture->setUser($this->getUser());
+                            $facture->setProduit($produit);
+                            $facture->setClient($client);
+
+                            $facture->setQuantite($newfacture["quantite"]);
+                            $quantite = ($produit->getQuantite() - $newfacture["quantite"]);
+                            $produit->setQuantite($quantite);
+                            $facture->setMontant($newfacture["total"]);
+                            $facture->setPrix($newfacture["prix"]);
+                            $facture->setType($type);
+                            $facture->setAgence($user->getEmployer()->getAgence());
+
+                            if (empty($newfacture["date"])) {
+                                $facture->setCreateAt(new \DateTimeImmutable());
+                            }else{
+                                $facture->setCreateAt(new \DateTimeImmutable($newfacture["date"]));
+                            }
+    
+                            $facture->setVente($vente);
+                            $quantiterestant->setUser($this->getUser());
+                            $quantiterestant->setProduit($produit);
+                            $quantiterestant->setVente($vente);
+                            $quantiterestant->setQuantite($quantite);
+                            $quantiterestant->setCreateAt(new \DateTimeImmutable());
+    
+                            $em->persist($quantiterestant);
+                            $em->persist($facture);
+
+                        }
+                    }
+                }
+
+                $em->flush();
+            }
+           return $this->json([
+            'success' => true,
+            'message' => $vente->getId(),
+            ],
+            200
+            );
+        } catch (\Throwable $th) {
+           return $this->json([
+                'success' => false,
+                'message' => $th
+            ],
+            500);
+        }
     }
 }

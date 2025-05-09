@@ -122,7 +122,7 @@
                                                     <button class="btn btn-success btn-user" onclick="enregistremetnclient()">enregistrer client</button>
                                                 </p>
                                                 <p class="col-md-3" >
-                                                    <select id="idclient"  name="idclient"   class="form-control form-select"  size="10" multiple aria-label="multiple select "  required>
+                                                    <select id="fournisseur"  name="fournisseur"   class="form-control form-select"  size="10" multiple aria-label="multiple select "  required>
                                                         {% for row in form.client.vars.choices %}
                                                             <option value="{{ row.value }}">{{ row.data.nom }}</option>
                                                         {% endfor %}  
@@ -141,7 +141,7 @@
                                                 <p class="col-md-3" >
                                                     <select id="nomProduit"  name="nomProduit"  class="form-control form-select" size="10"  multiple aria-label="multiple select " required onclick="recherchePrix()">
                                                         {% for row in form.produit.vars.choices %}
-                                                            <option value="{{ row.value }}">{{ row.data.nom }}</option>
+                                                            <option value="{{ row.data.nom }}">{{ row.data.nom }}</option>
                                                         {% endfor %}             
                                                     </select>
                                                 </p>
