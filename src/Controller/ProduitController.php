@@ -60,7 +60,7 @@ class ProduitController extends AbstractController
             $json = $request->getContent();
             $donnees = json_decode($json, true);
             if (isset($donnees['nom'])) {
-                $produit = $entityManager->getRepository(Produit::class)->findBy(['id' => $donnees['nom']]);
+                $produit = $entityManager->getRepository(Produit::class)->findBy(['nom' => $donnees['nom']]);
                 if ($produit) {
                     return $this->json([
                         'success' => true,

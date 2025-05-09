@@ -471,7 +471,7 @@ function LigneventeMofier(donnees){
          document.getElementById("quantitetotal").innerHTML = quantiteTotal;
          document.getElementById("prixtotal").textContent = prixtotal;
          document.getElementById("Total").value=prixtotal;
-         document.getElementById("TypePaie").innerText = donnees.Typepaiement
+         document.getElementById("TypePaie").innerText = donnees.typepaiement
         document.getElementById("TypePaie").style.display="block";
     document.getElementById("idfacture").textContent = donnees.id;
     document.getElementById("idvente").textContent = donnees.idvente;
@@ -483,20 +483,17 @@ function LigneventeMofier(donnees){
 function editevente(){
     if (typeof data === 'undefined' || data === null) {
         console.log("La variable est undefined ou null");
-      }else{
-        var index = 0;
+    }else{
+        
+        
         data.forEach(element => {
-           console.log(element);
-           LigneventeMofier(element);
-            index+=0;
+            //console.log(element);
+            LigneventeMofier(element);
         });
-        index = 0;
         localStorage.removeItem('myData');
         document.getElementById("enregistremet").style.display="none";
       document.getElementById("modifiervente").innerHTML = '<button  class="btn btn-warning btn-user btn-block" onclick="saveedite()" >Modifier vente</button>';
     }
-      
-
 }
 editevente();// affiche la vente
 
@@ -513,7 +510,7 @@ function enregistrementEdite(){
     //data.value++;
     //console.log(donnees);
     
-    fetch('Edite.php',{
+    fetch('/vente/update',{
         method:'POST',
         headers:{
             'Content-Type': 'application/json'
@@ -524,13 +521,13 @@ function enregistrementEdite(){
     .then(data => { 
         if (data.success == true) {
             document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-info"> Modification des donnes avec success</p>';
-            window.location.href = 'facture.php?id='+ data.message;
+            window.location.href = '/facture/view/'+ data.message;
             console.log("edite : "+data);
         }else if(data.success == false){
             document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-danger"> Verifier que le produit ne sont conforme </p>';
         }else{
             console.log(data);
-            window.location.href = 'liste.php';
+           // window.location.href = 'list';
         }     
     })
     .catch(error => {
