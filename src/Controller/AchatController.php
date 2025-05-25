@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Achat;
+use App\Entity\Agence;
 use App\Entity\Fournisseur;
 use App\Entity\Produit;
 use App\Form\AchatType;
@@ -72,12 +73,12 @@ class AchatController extends AbstractController
         ]);
     }
 
-    #[Route('/achat/list', name: 'achat_list')]
-    public function list(EntityManagerInterface $entityManager): Response
+    #[Route('/achat/list/{id}', name: 'achat_list')]
+    public function list(EntityManagerInterface $entityManager, int $id): Response
     {
-        $produit = $entityManager->getRepository(Achat::class)->findAll();
-        $achat = $entityManager->getRepository(Achat::class)->findAll();
-        $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll();
+        $produit = $entityManager->getRepository(Achat::class)->findAll(["agence" => $id]);
+        $achat = $entityManager->getRepository(Achat::class)->findAll(["agence" => $id]);
+        $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll(["agence" => $id]);
         return $this->render('achat/list.html.twig', [
             'achat' => $achat,
             'produit' => $produit,

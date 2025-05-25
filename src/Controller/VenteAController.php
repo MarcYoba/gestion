@@ -154,11 +154,11 @@ class VenteAController extends AbstractController
         ]);
     }
 
-    #[Route('/vente/a/list', name: 'vente_a_list')]
-    public function list(EntityManagerInterface $em): Response
+    #[Route('/vente/a/list/{id}', name: 'vente_a_list')]
+    public function list(EntityManagerInterface $em, int $id): Response
     {
-        $ventes = $em->getRepository(VenteA::class)->findAll();
-        $produit = $em->getRepository(ProduitA::class)->findAll();
+        $ventes = $em->getRepository(VenteA::class)->findAll(["agence" => $id]);
+        $produit = $em->getRepository(ProduitA::class)->findAll(["agence" => $id]);
         $client = $em->getRepository(Clients::class)->findAll();
         return $this->render('vente_a/list.html.twig', [
             'vente' => $ventes,

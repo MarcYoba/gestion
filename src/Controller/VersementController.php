@@ -34,11 +34,11 @@ class VersementController extends AbstractController
     }
 
     /**
-     * @Route( path ="/versement/list", name="versement_list")
+     * @Route( path ="/versement/list/{id}", name="versement_list")
      */
-    public function list(EntityManagerInterface $entityManager): Response
+    public function list(EntityManagerInterface $entityManager, int $id): Response
     {
-        $versement = $entityManager->getRepository(Versement::class)->findAll();
+        $versement = $entityManager->getRepository(Versement::class)->findAll(["id" => $id]);
         $clients = $entityManager->getRepository(Clients::class)->findAll();
         return $this->render('versement/list.html.twig', [
             'versement' => $versement,

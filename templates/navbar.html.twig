@@ -2,21 +2,36 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ path('app_home_dashboard', {'id': app.user.employer.agence.id}) }}">
-    <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-laugh-wink"></i>
-    </div>
-    <div class="sidebar-brand-text mx-3">AB COMPTA <sup>2</sup></div>
-    </a>
+    {% if app.user.employer is not null %}
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ path('app_home_dashboard', {'id': app.user.employer.agence.id}) }}">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-laugh-wink"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">AB COMPTA <sup>2</sup></div>
+        </a>
+    {% else %}
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ path('app_home_dashboard', {'id': app.request.get('id')}) }}">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-laugh-wink"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">AB COMPTA <sup>2</sup></div>
+        </a>
+    {% endif %}
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-    <a class="nav-link" href="{{ path('app_home_dashboard', {'id': app.user.employer.agence.id}) }}">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span></a>
+        {% if app.user.employer is not null  %}
+            <a class="nav-link" href="{{ path('app_home_dashboard', {'id': app.user.employer.agence.id}) }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></a>
+        {% else %}
+            <a class="nav-link" href="{{ path('app_home_dashboard', {'id': app.request.get('id')}) }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></a>
+        {% endif %}
     </li>
     <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsevente"
@@ -27,8 +42,12 @@
     <div id="collapsevente" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation de vente</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('vente_list',{'id': app.request.get('id')}) }}">Liste vente</a>
+            {% else %}
                 <a class="collapse-item" href="{{ path('app_vente') }}"> Ajouter une vente</a>
-                <a class="collapse-item" href="{{ path('vente_list') }}">Liste vente</a>
+                <a class="collapse-item" href="{{ path('vente_list',{'id': app.user.employer.agence.id}) }}">Liste vente</a>
+            {% endif %}
         </div>
     </div>
     </li>
@@ -41,8 +60,12 @@
     <div id="collapseahcat" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation des Achat</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('achat_list',{'id': app.request.get('id')}) }}">Liste Achat</a>
+            {% else %}
                 <a class="collapse-item" href="{{ path('app_achat') }}" >Ajouter un Achat</a>
-                <a class="collapse-item" href="{{ path('achat_list') }}">Liste Achat</a>
+                <a class="collapse-item" href="{{ path('achat_list',{'id': app.user.employer.agence.id}) }}">Liste Achat</a>
+            {% endif %}
         </div>
     </div>
     </li>
@@ -55,9 +78,13 @@
     <div id="collapseclient" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation des clients</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="#">Liste client</a>
+            {% else %}
                 <a class="collapse-item" href="{{ path('app_register') }}" id="ajouterClient">ajouter un client</a>
                 <a class="collapse-item" href="#">Liste client</a>
                 <a class="collapse-item" href="#">Liste des client Inactif </a>
+            {% endif %}
         </div>
     </div>
     </li>
@@ -70,8 +97,12 @@
     <div id="collapseproduit" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation des produits</h6>
-                <a class="collapse-item" href="{{ path('app_produit') }}" id="ajouterProduit">Ajouter un produit</a>
-                <a class="collapse-item" href="{{ path('produit_list') }}">Liste produit</a>
+                {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                    <a class="collapse-item" href="{{ path('produit_list', {'id': app.request.get('id')}) }}">Liste produit</a>
+                {% else %}
+                    <a class="collapse-item" href="{{ path('app_produit') }}" id="ajouterProduit">Ajouter un produit</a>
+                    <a class="collapse-item" href="{{ path('produit_list', {'id': app.user.employer.agence.id}) }}">Liste produit</a>
+                {% endif %}
         </div>
     </div>
     </li>
@@ -84,8 +115,12 @@
     <div id="collapsefournisseur" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation des produit</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('fournisseur_list', {'id': app.request.get('id')}) }}">liste Fournisseur</a>
+            {% else %}
                 <a class="collapse-item" href="{{ path('app_fournisseur') }}" id="ajouterFourniseur">ajouter un Fournisseur</a>
-                <a class="collapse-item" href="{{ path('fournisseur_list') }}">liste Fournisseur</a>
+                <a class="collapse-item" href="{{ path('fournisseur_list', {'id': app.request.get('id')}) }}">liste Fournisseur</a>
+            {% endif %}
         </div>
     </div>
     </li>
@@ -98,10 +133,10 @@
     <div id="collapsestock" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation des Stock</h6>
-                    <a class="collapse-item" href="php/stock/sctockVente.php">Historique </a>
-                    <a class="collapse-item" href="php/achat/liste.php">Stock Achat </a>
-                    <a class="collapse-item" href="php/stock/recaptliste.php">Recapitulatif</a>
-                    <a class="collapse-item" href="php/stock/editeStock.php" id="ajouterStock">Stock Initiale / Inventaire</a>
+                <a class="collapse-item" href="php/stock/sctockVente.php">Historique </a>
+                <a class="collapse-item" href="php/achat/liste.php">Stock Achat </a>
+                <a class="collapse-item" href="php/stock/recaptliste.php">Recapitulatif</a>
+                <a class="collapse-item" href="php/stock/editeStock.php" id="ajouterStock">Stock Initiale / Inventaire</a>
         </div>
     </div>
     </li>
@@ -114,8 +149,12 @@
     <div id="versement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">versement:</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('versement_list' , {'id': app.request.get('id')}) }}">Liste versement</a>
+            {% else %}
                 <a class="collapse-item" href="{{ path('app_versement') }}" >ajouter versement</a>
-                <a class="collapse-item" href="{{ path('versement_list') }}">Liste versement</a>
+                <a class="collapse-item" href="{{ path('versement_list' , {'id': app.request.get('id')}) }}">Liste versement</a>
+            {% endif %}
         </div>
     </div>
     </li>
@@ -141,10 +180,13 @@
     </a>
     <div id="caisse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Caisse:</h6>
+            <h6 class="collapse-header">Caisse </h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="php/caisse/liste.php">liste caisse</a>
+            {% else %}
                 <a class="collapse-item" href="php/caisse/caisse.php" >Caisse</a>
                 <a class="collapse-item" href="php/caisse/liste.php">liste caisse</a>
-
+            {% endif %}
         </div>
     </div>
     </li>
@@ -158,8 +200,12 @@
     <div id="utilisateur" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">utilisateur:</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('user_list', {'id': app.request.get('id')}) }}">Liste</a>
+            {% else %}
                 <a class="collapse-item" href="{{ path('app_register') }}" id="ajouterUtilisateur">ajouter utilisateur</a>
-                <a class="collapse-item" href="{{ path('user_list') }}">Liste</a>
+                <a class="collapse-item" href="{{ path('user_list', {'id': app.request.get('id')}) }}">Liste</a>
+            {% endif %}
         </div>
     </div>
     </li>
@@ -173,21 +219,21 @@
     <div id="depense" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Depense:</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('depenses_list',{'id': app.request.get('id')}) }}">Liste Depense</a>
+            {% else %}
                 <a class="collapse-item" href="{{ path('app_depenses') }}">Depenses</a>
-                <a class="collapse-item" href="{{ path('depenses_list') }}">Liste Depense</a>
+                <a class="collapse-item" href="{{ path('depenses_list',{'id': app.user.employer.agence.id}) }}">Liste Depense</a>
+            {% endif %}
         </div>
     </div>
     </li>
-
-
-
     <!-- Divider -->
     <hr class="sidebar-divider">
 
     <!-- Heading -->
     <div class="sidebar-heading">
     Interface
-
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
@@ -226,9 +272,13 @@
     </a>
     <div id="employer" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Employer :</h6>
+            <h6 class="collapse-header">Employer</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('employer_list') }}">Liste </a>
+            {% else %}
                 <a class="collapse-item" href="{{ path('app_employer') }}">Employer</a>
                 <a class="collapse-item" href="{{ path('employer_list') }}">Liste </a>
+            {% endif %}
         </div>
     </div>
     </li>

@@ -66,10 +66,18 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Liste des fournisseurs</h6>
                                 </div>
                                 <div class="col-sm-2 mb-3 mb-sm-0">
-                                    <a href="{{ path('app_home_dashboardA', {'id': app.user.employer.agence.id}) }}" class="btn btn-success">
+                                    {% if app.user.employer is not null %}
+                                        <a href="{{ path('app_home_dashboardA', {'id': app.user.employer.agence.id}) }}" class="btn btn-success">
                                         <i class="fas fa-home"></i>
                                         Home
                                     </a>
+                                    {% else %}
+                                        <a href="{{ path('app_home_dashboardA', {'id': app.request.get('id')}) }}" class="btn btn-success">
+                                            <i class="fas fa-home"></i>
+                                            Home
+                                        </a>
+                                    {% endif %}
+                                    
                                 </div>  
                                 <div class="col-sm-2 mb-3 mb-sm-0">
                                     <a href="{{ path('app_fournisseur_a') }}" class="btn btn-success">

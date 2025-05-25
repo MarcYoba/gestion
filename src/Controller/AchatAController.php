@@ -71,10 +71,10 @@ class AchatAController extends AbstractController
         ]);
     }
 
-    #[Route('/achat/a/list', name: 'achat_a_list')]
-    public function list(EntityManagerInterface $em): Response
+    #[Route('/achat/a/list/{id}', name: 'achat_a_list')]
+    public function list(EntityManagerInterface $em, int $id): Response
     {
-        $achatA = $em->getRepository(AchatA::class)->findAll();
+        $achatA = $em->getRepository(AchatA::class)->findAll(["agence" => $id]);
         return $this->render('achat_a/list.html.twig', [
             'achats' => $achatA,
         ]);
