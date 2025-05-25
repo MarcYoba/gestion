@@ -51,7 +51,7 @@ class ProduitA
 
     #[ORM\ManyToOne(inversedBy: 'produitAs')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?agence $agence = null;
+    private ?Agence $agence = null;
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: VenteA::class)]
     private Collection $venteAs;

@@ -44,10 +44,10 @@ class ProduitAController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/a/list', name: 'produit_a_list')]
-    public function list(EntityManagerInterface $em): Response
+    #[Route('/produit/a/list/{id}', name: 'produit_a_list')]
+    public function list(EntityManagerInterface $em,$id): Response
     {
-        $produits = $em->getRepository(ProduitA::class)->findAll();
+        $produits = $em->getRepository(ProduitA::class)->findAll(["agence" => $id]);
         return $this->render('produit_a/list.html.twig', [
             'produits' => $produits,
         ]);

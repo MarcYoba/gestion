@@ -32,10 +32,10 @@ class FournisseurController extends AbstractController
         ]);
     }
 
-    #[Route('/fournisseur/list', name: 'fournisseur_list')]
-    public function list(EntityManagerInterface $entityManager): Response
+    #[Route('/fournisseur/list/{id}', name: 'fournisseur_list')]
+    public function list(EntityManagerInterface $entityManager, int $id): Response
     {
-        $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll();
+        $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll(["agence" => $id]);
         return $this->render('fournisseur/list.html.twig', [
             'fournisseurs' => $fournisseur,
         ]);

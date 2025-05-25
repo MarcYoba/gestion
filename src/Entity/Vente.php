@@ -30,7 +30,7 @@ class Vente
 
     #[ORM\ManyToOne(inversedBy: 'vente')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $user = null;
+    private ?User $user = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;

@@ -50,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $agences;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Employer $Employer;
+    private ?Employer $Employer = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Produit::class)]
     private Collection $produits;

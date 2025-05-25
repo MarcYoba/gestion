@@ -2,21 +2,40 @@
 <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
 <!-- Sidebar - Brand -->
-<a class="sidebar-brand d-flex align-items-center justify-content-center" href="home.php">
-<div class="sidebar-brand-icon rotate-n-15">
-    <i class="fas fa-laugh-wink"></i>
-</div>
-<div class="sidebar-brand-text mx-3">AB COMPTA <sup>2</sup></div>
-</a>
+{% if app.user.employer is not null %}
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ path('app_home_dashboardA', {'id': app.user.employer.agence.id}) }}">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">AB COMPTA <sup>2</sup></div>
+    </a>
+{% else %}
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ path('app_home_dashboardA', {'id': app.request.get('id')}) }}">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">AB COMPTA <sup>2</sup></div>
+    </a>
+{% endif %}
+
 
 <!-- Divider -->
 <hr class="sidebar-divider my-0">
 
 <!-- Nav Item - Dashboard -->
 <li class="nav-item active">
-<a class="nav-link" href="{{ path('app_home_dashboardA', {'id': app.user.employer.agence.id}) }}">
-    <i class="fas fa-fw fa-tachometer-alt"></i>
-    <span>Dashboard</span></a>
+    {% if app.user.employer is not null %}
+        <a class="nav-link" href="{{ path('app_home_dashboardA', {'id': app.user.employer.agence.id}) }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    {% else %}
+        <a class="nav-link" href="{{ path('app_home_dashboardA', {'id': app.request.get('id')}) }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    {% endif %}
+
 </li>
 <li class="nav-item">
 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsevente"
@@ -27,8 +46,12 @@
 <div id="collapsevente" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Operation de vente</h6>
+        {% if  "ROLE_ADMIN_ADMIN" in app.user.roles %}
+            <a class="collapse-item" href="{{ path('vente_a_list', {'id': app.request.get('id')}) }}">Liste vente</a>
+        {% else %}
             <a class="collapse-item" href="{{ path('app_vente_a') }}" id="ajouterVente"> Ajouter une vente</a>
-            <a class="collapse-item" href="{{ path('vente_a_list') }}">Liste vente</a>
+            <a class="collapse-item" href="{{ path('vente_a_list', {'id': app.user.employer.agence.id}) }}">Liste vente</a>
+        {% endif %}   
     </div>
 </div>
 </li>
@@ -41,8 +64,12 @@
 <div id="collapseahcat" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Operation des Achat</h6>
-            <a class="collapse-item" href="{{ path('app_achat_a') }}" >ajouter un Achat</a>
-            <a class="collapse-item" href="{{ path('achat_a_list') }}">liste Achat</a>
+        {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+            <a class="collapse-item" href="{{ path('achat_a_list',{id: app.request.get('id')}) }}">liste Achat</a>
+        {% else %}
+            <a class="collapse-item" href="{{ path('app_achat_a') }}" id="ajouterAchat">Ajouter un Achat</a>
+            <a class="collapse-item" href="{{ path('achat_a_list', {'id': app.user.employer.agence.id}) }}">liste Achat</a>
+        {% endif %}
     </div>
 </div>
 </li>
@@ -55,9 +82,15 @@
 <div id="collapseclient" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Operation des clients</h6>
-            <a class="collapse-item" href="phpphamacie/client/client.php" id="ajouterClient">ajouter un client</a>
-            <a class="collapse-item" href="phpphamacie/client/liste.php">liste client</a>
-            <a class="collapse-item" href="phpphamacie/client/clientInactif.php">liste des client Inactif</a>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="phpphamacie/client/liste.php">liste client</a>
+                <a class="collapse-item" href="phpphamacie/client/clientInactif.php">liste des client Inactif</a>
+            {% else %}
+                <a class="collapse-item" href="phpphamacie/client/client.php" id="ajouterClient">ajouter un client</a>
+                <a class="collapse-item" href="phpphamacie/client/liste.php">liste client</a>
+                <a class="collapse-item" href="phpphamacie/client/clientInactif.php">liste des client Inactif</a>
+            {% endif %}
+            
     </div>
 </div>
 </li>
@@ -70,9 +103,14 @@
 <div id="collapseproduit" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Operation des produits</h6>
-            <a class="collapse-item" href="{{ path('app_produit_a') }}" id="ajouterProduit">Ajouter</a>
-            <a class="collapse-item" href="{{ path('produit_a_list') }}">List</a>
-            <a class="collapse-item" href="phpphamacie/produit/Peramtion.php">Date Peramtion</a>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('produit_a_list',{'id': app.request.get('id')}) }}">List des produits</a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_produit_a') }}" id="ajouterProduit">Ajouter</a>
+                <a class="collapse-item" href="{{ path('produit_a_list',{'id': app.user.employer.agence.id}) }}">List</a>
+                <a class="collapse-item" href="phpphamacie/produit/Peramtion.php">Date Peramtion</a>
+            {% endif %}
+            
     </div>
 </div>
 </li>
@@ -85,8 +123,12 @@
 <div id="collapsefournisseur" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Operation des produit</h6>
-            <a class="collapse-item" href="{{ path('app_fournisseur_a') }}" id="ajouterFourniseur">ajouter un Fournisseur</a>
-            <a class="collapse-item" href="{{ path('fournisseur_a_list') }}">liste Fournisseur</a>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('fournisseur_a_list',{'id': app.request.get('id')}) }}">liste Fournisseur</a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_fournisseur_a') }}" id="ajouterFourniseur">ajouter un Fournisseur</a>
+                <a class="collapse-item" href="{{ path('fournisseur_a_list',{'id': app.user.employer.agence.id}) }}">liste Fournisseur</a>
+            {% endif %}
     </div>
 </div>
 </li>
@@ -115,8 +157,13 @@
 <div id="versement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">versement:</h6>
-            <a class="collapse-item" href="phpphamacie/versement/versement.php" id="ajouterVersement">ajouter versement</a>
-            <a class="collapse-item" href="phpphamacie/versement/liste.php?date='.date("Y").'">Liste versement</a>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="phpphamacie/versement/liste.php?date='.date("Y").'">Liste versement</a>
+            {% else %}
+                <a class="collapse-item" href="phpphamacie/versement/versement.php" id="ajouterVersement">ajouter versement</a>
+                <a class="collapse-item" href="phpphamacie/versement/liste.php?date='.date("Y").'">Liste versement</a>
+            {% endif %}
+            
     </div>
 </div>
 </li>
@@ -143,8 +190,12 @@
 <div id="caisse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Caisse:</h6>
-            <a class="collapse-item" href="phpphamacie/caisse/caisse.php" id="ajouterCaise">Caisse</a>
-            <a class="collapse-item" href="phpphamacie/caisse/liste.php?date='.date("Y").'">liste caisse</a>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="phpphamacie/caisse/liste.php?date='.date("Y").'">liste caisse</a>
+            {% else %}
+                <a class="collapse-item" href="phpphamacie/caisse/caisse.php" id="ajouterCaise">Caisse</a>
+                <a class="collapse-item" href="phpphamacie/caisse/liste.php?date='.date("Y").'">liste caisse</a>
+            {% endif %}
     </div>
 </div>
 </li>
@@ -158,8 +209,12 @@
 <div id="Depense" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Depense:</h6>
-            <a class="collapse-item" href="phpphamacie/depenses/depense.php">Depense</a>
-            <a class="collapse-item" href="phpphamacie/depenses/liste.php?date='.date("Y").'">Liste Depense</a>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="phpphamacie/depenses/liste.php?date='.date("Y").'">Liste Depense</a>
+            {% else %}
+                <a class="collapse-item" href="phpphamacie/depenses/depense.php">Depense</a>
+                <a class="collapse-item" href="phpphamacie/depenses/liste.php?date='.date("Y").'">Liste Depense</a>
+            {% endif %}
     </div>
 </div>
 </li>
@@ -173,8 +228,12 @@
 <div id="utilisateur" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">utilisateur:</h6>
-            <a class="collapse-item" href="phpphamacie/userCon/page.php" id="ajouterUtilisateur">ajouter utilisateur</a>
-            <a class="collapse-item" href="phpphamacie/userCon/liste.php">Liste</a>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="phpphamacie/userCon/liste.php">Liste</a>
+            {% else %}
+                <a class="collapse-item" href="phpphamacie/userCon/page.php" id="ajouterUtilisateur">ajouter utilisateur</a>
+                <a class="collapse-item" href="phpphamacie/userCon/liste.php">Liste</a>
+            {% endif %}   
     </div>
 </div>
 </li>
@@ -187,11 +246,16 @@
 </a>
 <div id="volaille" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Volaille :</h6>
+        <h6 class="collapse-header">Volaille</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="phpphamacie/volaille/liste.php?date='.date("Y").'">Liste</a>
+                <a class="collapse-item" href="phpphamacie/volaille/listecommande.php?date='.date("Y").'">Liste fourniseur</a>
+            {% else %}
                 <a class="collapse-item" href="phpphamacie/volaille/volaille.php">Commande</a>
                 <a class="collapse-item" href="phpphamacie/volaille/liste.php?date='.date("Y").'">Liste</a>
                 <a class="collapse-item" href="phpphamacie/volaille/comandefourniseur.php">Commande fourniseur</a>
                 <a class="collapse-item" href="phpphamacie/volaille/listecommande.php?date='.date("Y").'">Liste fourniseur</a>
+            {% endif %}
     </div>
 </div>
 </li>
@@ -204,11 +268,16 @@
 </a>
 <div id="Clinique" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Clinique :</h6>
+        <h6 class="collapse-header">Clinique</h6>
+        {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+            <a class="collapse-item" href="phpphamacie/vacin/tableconsultation.php?date='.date("Y").'" >liste Consultation</a> 
+            <a class="collapse-item" href="phpphamacie/vacin/listesuivi.php?date='.date("Y").'" >liste des suivi</a>
+        {% else %}
             <a class="collapse-item" href="phpphamacie/vacin/consultation.php" >Consultation</a> 
             <a class="collapse-item" href="phpphamacie/vacin/fichesuivi.php" >fiche suivi </a>
             <a class="collapse-item" href="phpphamacie/vacin/tableconsultation.php?date='.date("Y").'" >liste Consultation</a> 
             <a class="collapse-item" href="phpphamacie/vacin/listesuivi.php?date='.date("Y").'" >liste des suivi</a>
+        {% endif %}
     </div>
 </div>
 </li>
@@ -221,9 +290,13 @@
 </a>
 <div id="vaccin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Vaccin :</h6>
-            <a class="collapse-item" href="phpphamacie/vacin/vacin.php" id="ajouterUtilisateur">Adminitrer un Vaccin</a>
-            <a class="collapse-item" href="phpphamacie/vacin/liste.php?date='.date("Y").'">Liste Vaccin</a>
+        <h6 class="collapse-header">Vaccin</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="phpphamacie/vacin/liste.php?date='.date("Y").'">Liste Vaccin</a>
+            {% else %}
+                <a class="collapse-item" href="phpphamacie/vacin/vacin.php" id="ajouterUtilisateur">Adminitrer un Vaccin</a>
+                <a class="collapse-item" href="phpphamacie/vacin/liste.php?date='.date("Y").'">Liste Vaccin</a>
+            {% endif %}
     </div>
 </div>
 </li>
@@ -236,9 +309,13 @@
 </a>
 <div id="service" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Service :</h6>
+        <h6 class="collapse-header">Service </h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="phpphamacie/service/liste.php?date='.date("Y").'">Liste </a>
+            {% else %}
                 <a class="collapse-item" href="phpphamacie/service/service.php" id="ajouterUtilisateur">Descente sur terrain</a>
                 <a class="collapse-item" href="phpphamacie/service/liste.php?date='.date("Y").'">Liste </a>
+            {% endif %}
     </div>
 </div>
 </li>
@@ -251,24 +328,16 @@
 </a>
 <div id="employer" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Personnel :</h6>
+        <h6 class="collapse-header">Personnel </h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="php/employer/liste.php?date='.date("Y").'">Liste </a>
+            {% else %}
                 <a class="collapse-item" href="php/employer/employer.php">Employer</a>
                 <a class="collapse-item" href="php/employer/liste.php?date='.date("Y").'">Liste </a>
+            {% endif %}
     </div>
 </div>
 </li>
-
-<!-- Divider -->
-<hr class="sidebar-divider">
-
-<!-- Heading -->
-<div class="sidebar-heading">
-Interface
-</div>
-
-<!-- Nav Item - Pages Collapse Menu -->
-
-<!-- Nav Item - Utilities Collapse Menu -->
 
 <!-- Divider -->
 <hr class="sidebar-divider">
@@ -339,10 +408,16 @@ Administrateur
         <div id="bilan" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header"> Bilan :</h6>
-                <a class="collapse-item" href="phpphamacie/bilan/actif.php">Actif Bilan</a>
-                <a class="collapse-item" href="phpphamacie/bilan/liste.php">liste Actif</a>
-                <a class="collapse-item" href="phpphamacie/bilan/passif.php">Passif Bilan</a>
-                <a class="collapse-item" href="phpphamacie/bilan/listepasif.php">liste Passif</a>
+                {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                    <a class="collapse-item" href="phpphamacie/bilan/liste.php">liste Actif</a>
+                    <a class="collapse-item" href="phpphamacie/bilan/liste.php">liste Bilan</a>
+                {% else %}
+                    <a class="collapse-item" href="phpphamacie/bilan/actif.php">Actif Bilan</a>
+                    <a class="collapse-item" href="phpphamacie/bilan/liste.php">liste Actif</a>
+                    <a class="collapse-item" href="phpphamacie/bilan/passif.php">Passif Bilan</a>
+                    <a class="collapse-item" href="phpphamacie/bilan/listepasif.php">liste Passif</a>
+                {% endif %}
+                
             </div>
         </div>
     </li>
