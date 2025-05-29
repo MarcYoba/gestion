@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Agence;
+use App\Entity\Vente;
 use App\Form\AgenceType;
 use App\Repository\AgenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,10 +44,11 @@ class AgenceController extends AbstractController
     }
 
     #[Route('/agence/client/', name: 'app_client')]
-    public function client(): Response
+    public function client(EntityManagerInterface $em): Response
     {
+        $vente = $em->getRepository(Vente::class)->findAll(["client"=>$this->getUser()]);
         return $this->render('agence/client.html.twig', [
-            'controller_name' => 'AgenceController',
+            
         ]);
     }
 }

@@ -73,7 +73,7 @@
                                                     </a>
                                                 </div>
                                                 <div class="col-sm-2 mb-3 mb-sm-0">
-                                                    <a href="{{ path('vente_list') }}" class="btn btn-primary btn-user btn-block">
+                                                    <a href="{{ path('vente_list', {'id': app.user.employer.agence.id}) }}" class="btn btn-primary btn-user btn-block">
                                                         <i class="fas fa-list"></i>
                                                         List
                                                     </a>
@@ -92,7 +92,7 @@
                                                     <input type="date" class="form-control form-control-user"
                                                     name="datevente" id="datevente" placeholder="quantite" required>
                                                 </p>
-                                                <a class="btn btn-warning btn-user col-md-1" href="{{ path('vente_list') }}">Liste</a>
+                                                
                                                 <p class="col-md-2" >
                                                     <span id="TypePaie" class="drop" ></span>
                                                     <span id="teste" class="drop" >0</span>

@@ -373,4 +373,23 @@ class VenteAController extends AbstractController
             500);
         }
     }
+
+    /**
+     * @Route(path="/vente/dashboard/A", name="vente_dashboard")
+     */
+    public function dashboardVenteA(EntityManagerInterface $entityManager): JsonResponse
+    {
+        $ventes = $entityManager->getRepository(VenteA::class)->findAll();
+        $totalVente = 0;
+
+        foreach ($ventes as $vente) {
+            $totalVente += $vente->getPrix();
+        }
+
+        // If you want to return a JSON response
+        return new JsonResponse([
+            'ventes' => count($ventes),
+            'totalVente' => $totalVente,
+        ]);
+    }
 }
