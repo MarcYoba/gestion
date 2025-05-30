@@ -384,7 +384,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website <?php echo date('Y-m-d'); ?></span>
+                        <span>Copyright &copy; {{ "now" | date("Y-m-d") }}</span>
                     </div>
                 </div>
             </footer>
@@ -415,14 +415,16 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="index.php">Logout</a>
+                    <a class="btn btn-primary" href="{{ path('app_logout') }}">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('js/chart-area-semaine.js') }}"></script>    
+    <script src="{{ asset('js/dashboard/courbe.js') }}"></script>
+    <script src="{{ asset('js/dashboard/bar.js') }}"></script>  
+    <script src="{{ asset('js/dashboard/cercle.js') }}"></script>   
 </body>
 </html>
 

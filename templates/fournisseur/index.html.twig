@@ -59,7 +59,7 @@
                                             </a>
                                         </div>
                                         <div class="col-sm-2 mb-3 mb-sm-0">
-                                            <a href="{{ path('fournisseur_list') }}" class="btn btn-primary btn-user btn-block">
+                                            <a href="{{ path('fournisseur_list', {'id': app.user.employer.agence.id}) }}" class="btn btn-primary btn-user btn-block">
                                                 <i class="fas fa-list"></i>
                                                 List
                                             </a>

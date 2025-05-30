@@ -1,8 +1,8 @@
 // Set new default font family and font color to mimic Bootstrap's default styling
 var tab = [0, 0, 0, 0, 0, 0, 0];
 
-$(document).ready(function() {
-  fetch('php/graphe/getdatasemain.php')
+document.addEventListener("DOMContentLoaded", function() {
+  fetch('/vente/dashboard')
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');

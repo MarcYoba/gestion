@@ -433,45 +433,17 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="index.php">Logout</a>
+                    <a class="btn btn-primary" href="{{ path('app_logout') }}">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demophamacie/chart-area-semaine.js"></script>
-    <script src="js/demophamacie/chart-bar-semain.js"></script>
-    <script src="js/demophamacie/chart-pie-semain.js"></script>
-    <script src="header.js"></script>
+    <script src="{{ asset('js/dashboardA.js') }}"></script> 
    
-    <script>
-        function affichemontant(params) {
-            document.getElementById('achat').innerHTML= document.getElementById('montantachat').innerText;
-            document.getElementById('depense').innerHTML= document.getElementById('montdepense').innerText;
-            document.getElementById('dette').innerHTML= document.getElementById('montantdette').innerText;
-            document.getElementById('caise').innerHTML= document.getElementById('montcaise').innerText;
-            document.getElementById('verse').innerHTML= document.getElementById('monversement').innerText;
-            document.getElementById('vente').innerHTML= document.getElementById('montantvente').innerText;//.style.display='block';
-        }
-        $(document).ready(function() {
-            $('#monModal').modal('show');
-        });
-    </script>
-    <?php ;?>
 </body>
 </html>
 

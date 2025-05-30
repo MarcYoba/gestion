@@ -40,7 +40,7 @@ class Depenses
 
     #[ORM\ManyToOne(inversedBy: 'depenses')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?agence $agence = null;
+    private ?Agence $agence = null;
 
     #[ORM\ManyToOne(inversedBy: 'depenses')]
     #[ORM\JoinColumn(nullable: false)]

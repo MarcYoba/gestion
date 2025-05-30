@@ -5,7 +5,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'animate.css/animate.min.css';
-
+import Chart from 'chart.js/auto';
 // 2. Thème SB Admin 2 (doit venir après les librairies qu'il surcharge)
 import '../node_modules/startbootstrap-sb-admin-2/css/sb-admin-2.min.css';
 
@@ -28,7 +28,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // 4. Autres bibliothèques
 import WOW from 'wow.js';
-import Chart from 'chart.js/auto';
 
 /* ==================== */
 /* INITIALISATION */
