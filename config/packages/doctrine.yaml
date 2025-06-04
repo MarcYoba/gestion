@@ -25,6 +25,8 @@ when@test:
 
 when@prod:
     doctrine:
+        dbal:
+            logging: true
         orm:
             auto_generate_proxy_classes: false
             proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
@@ -34,9 +36,7 @@ when@prod:
             result_cache_driver:
                 type: pool
                 pool: doctrine.result_cache_pool
-        dbal:
-        # ...
-        logging: true
+        
 
     framework:
         cache:
