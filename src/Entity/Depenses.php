@@ -137,12 +137,12 @@ class Depenses
         }
     }
 
-    public function getAgence(): ?agence
+    public function getAgence(): ?Agence
     {
         return $this->agence;
     }
 
-    public function setAgence(?agence $agence): static
+    public function setAgence(?Agence $agence): static
     {
         $this->agence = $agence;
 
