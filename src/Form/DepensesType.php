@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Agence;
 use App\Entity\Depenses;
-use Dom\Entity;
+
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -46,8 +48,8 @@ class DepensesType extends AbstractType
                 'required' => false,
                 
             ])
-            ->add('agence', Entity::class, [
-                'class' => 'App\Entity\Agence',
+            ->add('agence', EntityType::class, [
+                'class' => Agence::class,
                 'choice_label' => 'name',
                 'label' => 'Agence',
                 'attr' => ['class' => 'form-control form-control-user'],
