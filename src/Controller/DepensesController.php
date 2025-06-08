@@ -39,7 +39,11 @@ class DepensesController extends AbstractController
                 );
                 $depenses->setImageName($filename);
                 $depenses->setImageSize($fillesize);
+            }else{
+                $depenses->setImageName("pas d'image");
+                $depenses->setImageSize(0);
             }
+            
             $user = $this->getUser();
             $depenses->setUser($user);
             $entityManager->persist($depenses);
