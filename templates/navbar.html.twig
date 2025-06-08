@@ -134,9 +134,9 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation des agences</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{ path('app_agence_new') }}" id="ajouterFourniseur">ajouter un Agence</a>
+                <a class="collapse-item" href="{{ path('app_agence') }}" id="ajouterFourniseur">Ajouter une Agence</a>
             {% else %}
-                <a class="collapse-item" href="{{ path('app_agence_new') }}" id="ajouterFourniseur">ajouter un Agence</a>
+                <a class="collapse-item" href="{{ path('app_agence') }}" id="ajouterFourniseur">Ajouter une Agence</a>
                 <a class="collapse-item" href="{{ path('fournisseur_list', {'id': app.request.get('id')}) }}">liste Fournisseur</a>
             {% endif %}
         </div>
