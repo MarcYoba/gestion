@@ -239,6 +239,7 @@
             <h6 class="collapse-header">Depense:</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('depenses_list',{'id': app.request.get('id')}) }}">Liste Depense</a>
+                <a class="collapse-item" href="{{ path('app_depenses') }}">Depenses</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_depenses') }}">Depenses</a>
                 <a class="collapse-item" href="{{ path('depenses_list',{'id': app.user.employer.agence.id}) }}">Liste Depense</a>
