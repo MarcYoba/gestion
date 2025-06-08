@@ -210,10 +210,11 @@
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Depense:</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="phpphamacie/depenses/liste.php?date='.date("Y").'">Liste Depense</a>
+                <a class="collapse-item" href="{{ path('depense_a_list') }}">Liste Depense</a>
+                <a class="collapse-item" href="{{ path('app_depense_a') }}">Depense</a>
             {% else %}
-                <a class="collapse-item" href="phpphamacie/depenses/depense.php">Depense</a>
-                <a class="collapse-item" href="phpphamacie/depenses/liste.php?date='.date("Y").'">Liste Depense</a>
+                <a class="collapse-item" href="{{ path('depense_a_list') }}">Liste Depense</a>
+                <a class="collapse-item" href="{{ path('app_depense_a') }}">Depense</a>
             {% endif %}
     </div>
 </div>
