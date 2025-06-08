@@ -50,7 +50,7 @@ class DepensesType extends AbstractType
             ])
             ->add('agence', EntityType::class, [
                 'class' => Agence::class,
-                'choice_label' => 'name',
+                'choice_label' => 'nom',
                 'label' => 'Agence',
                 'attr' => ['class' => 'form-control form-control-user'],
             ])
