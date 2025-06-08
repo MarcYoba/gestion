@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Agence;
 use App\Entity\Depenses;
 use App\Form\DepensesType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,12 +41,11 @@ class DepensesController extends AbstractController
                 $depenses->setImageSize($fillesize);
             }
             $user = $this->getUser();
-            dd($user);
-            $employe = $user->getAgences();
-            $depenses->setAgence($employe);
+            $depenses->setUser($user);
             $entityManager->persist($depenses);
             $entityManager->flush();
 
+            
             return $this->redirectToRoute('depenses_list');
         }
         return $this->render('depenses/index.html.twig', [
