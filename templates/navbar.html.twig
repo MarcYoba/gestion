@@ -125,6 +125,24 @@
     </div>
     </li>
     <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Agence"
+        aria-expanded="true" aria-controls="Agence">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Agence</span>
+    </a>
+    <div id="Agence" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Operation des agences</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('fournisseur_list', {'id': app.request.get('id')}) }}">liste Fournisseur</a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_agence') }}" id="ajouterFourniseur">ajouter un Agence</a>
+                <a class="collapse-item" href="{{ path('fournisseur_list', {'id': app.request.get('id')}) }}">liste Fournisseur</a>
+            {% endif %}
+        </div>
+    </div>
+    </li>
+    <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsestock"
         aria-expanded="true" aria-controls="collapsestock">
         <i class="fas fa-fw fa-folder"></i>
