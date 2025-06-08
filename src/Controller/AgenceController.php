@@ -51,4 +51,25 @@ class AgenceController extends AbstractController
             
         ]);
     }
+    #[Route('/agence/create/new', name: 'app_agence_new')]
+    public function Create(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $agence = new Agence();
+        $form = $this->createForm(AgenceType::class, $agence);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+           // $user = $this->getUser();
+            $agence->setCreatedBY($agence->getUser()->getId());
+
+            $entityManager->persist($agence);
+            $entityManager->flush();
+
+            $this->redirectToRoute("app_home");
+        }
+
+        return $this->render('agence/index.html.twig', [
+                'form' => $form->createView(),
+            ]);
+    }
 }
