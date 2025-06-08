@@ -50,7 +50,23 @@ class DepensesController extends AbstractController
             $entityManager->flush();
 
             
-            return $this->redirectToRoute('depenses_list');
+            // Récupérer l'ID de l'agence depuis le formulaire
+            $agenceId = $form->get('agence')->getData();
+            $agence = $entityManager->getRepository(Agence::class)->find($agenceId);
+            if ($agenceId) {
+                // Si le champ 'agence' retourne un objet Agence, pas besoin de find()
+                if ($agenceId instanceof Agence) {
+                    $depenses->setAgence($agenceId);
+                } else {
+                    // Sinon, récupérer l'entité Agence depuis l'ID
+                    $agence = $entityManager->getRepository(Agence::class)->find($agenceId);
+                    if ($agence) {
+                        $depenses->setAgence($agence);
+                    }
+                }
+            }
+
+            return $this->redirectToRoute('depenses_list', ['id' => $agenceId->getId()]);
         }
         return $this->render('depenses/index.html.twig', [
             'form' => $form->createView(),
