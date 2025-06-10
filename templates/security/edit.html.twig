@@ -84,8 +84,7 @@
                                     </div>
                                     <div class="col-sm-4 mb-3 mb-sm-0">
                                         {{ form_label(form.roles, 'Rôle') }}
-                                        {{ form_row(form.roles, {
-                                            <select name="{{ form.roles.vars.full_name }}" 
+                                        <select name="{{ form.roles.vars.full_name }}" 
                                                 id="{{ form.roles.vars.id }}" 
                                                 class="form-control">
                                             {% for value, label in {
@@ -98,8 +97,6 @@
                                                 </option>
                                             {% endfor %}
                                         </select>
-                                        }) }}
-                                        
                                         {{ form_errors(form.roles) }}
                                     </div>
                                 </div>
