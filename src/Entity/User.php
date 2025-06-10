@@ -103,6 +103,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: QuantiteproduitA::class)]
     private Collection $quantiteproduitAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TempAgence::class)]
+    private Collection $tempAgences;
+
     
 
     public function __construct() {
@@ -126,6 +129,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->venteAs = new ArrayCollection();
         $this->factureAs = new ArrayCollection();
         $this->quantiteproduitAs = new ArrayCollection();
+        $this->tempAgences = new ArrayCollection();
         
     }
 
@@ -797,6 +801,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($quantiteproduitA->getUser() === $this) {
                 $quantiteproduitA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TempAgence>
+     */
+    public function getTempAgences(): Collection
+    {
+        return $this->tempAgences;
+    }
+
+    public function addTempAgence(TempAgence $tempAgence): static
+    {
+        if (!$this->tempAgences->contains($tempAgence)) {
+            $this->tempAgences->add($tempAgence);
+            $tempAgence->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTempAgence(TempAgence $tempAgence): static
+    {
+        if ($this->tempAgences->removeElement($tempAgence)) {
+            // set the owning side to null (unless already changed)
+            if ($tempAgence->getUser() === $this) {
+                $tempAgence->setUser(null);
             }
         }
 
