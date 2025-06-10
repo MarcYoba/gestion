@@ -57,8 +57,11 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             if ($employer) {
                 if ($token->getUser()->getEmployer()->getPoste()) {
                     if ($token->getUser()->getEmployer()->getPoste() == "Employer") {
-                        return new RedirectResponse($this->urlGenerator->generate('app_agence'));
+                        return new RedirectResponse($this->urlGenerator->generate('app_home'));
                     } else {
+                        if ($token->getUser()->getEmployer()->getPoste() == "Directeur") {
+                            return new RedirectResponse($this->urlGenerator->generate('app_home'));
+                        }
                         return new RedirectResponse($this->urlGenerator->generate('app_employer'));
                     }
                 }else{
