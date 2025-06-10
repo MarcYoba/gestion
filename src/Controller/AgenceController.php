@@ -48,7 +48,8 @@ class AgenceController extends AbstractController
     {
         $vente = $em->getRepository(Vente::class)->findAll(["client"=>$this->getUser()]);
         return $this->render('agence/client.html.twig', [
-            
+            'vente' => $vente,
+            'user' => $this->getUser(),
         ]);
     }
     #[Route('/agence/create/new', name: 'app_agence_new')]

@@ -26,7 +26,7 @@ class EmployerController extends AbstractController
             $entityManager->persist($emplyer);
             $entityManager->flush();
 
-           return $this->redirectToRoute("employer_list");
+           return $this->redirectToRoute("employer_list", ['id' => $emplyer->getId()]);
         }
         
         return $this->render('employer/index.html.twig', [
@@ -77,5 +77,17 @@ class EmployerController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('employer_list');
+    }
+    /**
+     * @Route(path ="/agence/select/bascule", name="app_agence_bascule")
+     */
+    public function bascule(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        $employer = $em->getRepository(Employer::class)->findOneBy(["user" => $user]);
+        if ($employer) {
+            return $this->redirectToRoute("app_home");
+        }
+        return $this->redirectToRoute("app_client");
     }
 }

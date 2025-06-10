@@ -83,10 +83,58 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    
-                    
-
+                    <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-page-length='25' data-order='[[0, "desc"]]'>
+                                    <thead>
+                                       
+                                        <tr>
+                                            <th>id</th>
+                                            <th>Type</th>
+                                            <th>Quantite</th>
+                                            <th>M.Total</th>
+                                            <th>Aliment</th>
+                                            <th>Statut vente</th>
+                                            <th>Date</th>
+                                            <th>Operation</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>id</th>
+                                            <th>Type</th>
+                                            <th>Quantite</th>
+                                            <th>M.Total</th>
+                                            <th>Aliment</th>
+                                            <th>Statut vente</th>
+                                            <th>Date</th>
+                                            <th>Operation</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for ventes in vente %}
+                                           <tr>
+                                            <td>{{ ventes.id }}</td>
+                                            <td>{{ ventes.type }}</td>
+                                            <td>{{ ventes.quantite }}</td>
+                                            <td>{{ ventes.prix }}</td>
+                                            <td>{{ ventes.aliment }}</td>
+                                            <td>{{ ventes.statusvente }}</td>
+                                            <td>{{ ventes.createdAt|date("d/m/Y") }}</td>
+                                            <td>
+                                                <button class='btn btn-primary' ><i class='fas fa-pencil-alt'></i></button>
+                                            <a href='edite.php?id=" . $row["id"] ."&nom=".urlencode("salaire"). "' class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer cette vente ?");'>
+                                                <i class='fas fa-trash-alt'></i></a>
+                                            </td>
+                                           </tr> 
+                                        {% endfor %}
+                                   
+                                            
+                                            
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                 </div>
                 <!-- /.container-fluid -->
 
