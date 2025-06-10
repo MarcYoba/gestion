@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edite{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="assets/img/ico/favicon.png">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Gestion de Stock</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .drop{
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-12">
+                        <div class="p-5">
+                            <div class="card-header py-3">
+                                <h1 class="m-0 font-weight-bold text-primary">Creation de compte!</h1>
+                            </div><br>
+                            {{ form_errors(form) }}
+                            {{ form_start(form) }}
+                             
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_row(form.email,{
+                                         'help': 'Email actuel : ' ~ user.email
+                                        })}}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{ form_row(form.password, {
+                                            
+                                        }) }}
+                                    </div>
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_row(form.username, {
+                                            'help': 'Nom d\'utilisateur actuel : ' ~ user.username
+                                        }) }}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_row(form.telephone, {
+                                            'help': 'Téléphone actuel : ' ~ user.telephone
+                                        }) }}
+                                    </div>
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_row(form.speculation, {
+                                            'help': 'Spécialisation actuelle : ' ~ user.speculation
+                                        }) }}
+                                    </div>
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_row(form.localisation, {
+                                            'help': 'Localisation actuelle : ' ~ user.localisation
+                                        }) }}
+                                    </div>
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_label(form.roles, 'Rôle') }}
+                                        {{ form_row(form.roles, {
+                                            <select name="{{ form.roles.vars.full_name }}" 
+                                                id="{{ form.roles.vars.id }}" 
+                                                class="form-control">
+                                            {% for value, label in {
+                                                'ROLE_ADMIN': 'Administrateur',
+                                                'ROLE_USER': 'Utilisateur'
+                                            } %}
+                                                <option value="{{ value }}" 
+                                                    {{ value == form.roles.vars.value ? 'selected' : '' }}>
+                                                    {{ label }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        }) }}
+                                        
+                                        {{ form_errors(form.roles) }}
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" name="create" id="create" class="btn btn-primary btn-user btn-block">
+                                    Enregistrer
+                                </button>
+                                <hr>
+                            {{ form_end(form) }}    
+                            
+                            <hr>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   
+</body>
+
+</html>        
+    
+{% endblock %}
