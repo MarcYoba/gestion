@@ -43,6 +43,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation de vente</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_vente') }}"> Ajouter une vente</a>
                 <a class="collapse-item" href="{{ path('vente_list',{'id': app.request.get('id')}) }}">Liste vente</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_vente') }}"> Ajouter une vente</a>
@@ -62,6 +63,7 @@
             <h6 class="collapse-header">Operation des Achat</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('achat_list',{'id': app.request.get('id')}) }}">Liste Achat</a>
+                <a class="collapse-item" href="{{ path('app_achat') }}" >Ajouter un Achat</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_achat') }}" >Ajouter un Achat</a>
                 <a class="collapse-item" href="{{ path('achat_list',{'id': app.user.employer.agence.id}) }}">Liste Achat</a>
@@ -99,6 +101,7 @@
             <h6 class="collapse-header">Operation des produits</h6>
                 {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                     <a class="collapse-item" href="{{ path('produit_list', {'id': app.request.get('id')}) }}">Liste produit</a>
+                    <a class="collapse-item" href="{{ path('app_produit') }}" id="ajouterProduit">Ajouter un produit</a>
                 {% else %}
                     <a class="collapse-item" href="{{ path('app_produit') }}" id="ajouterProduit">Ajouter un produit</a>
                     <a class="collapse-item" href="{{ path('produit_list', {'id': app.user.employer.agence.id}) }}">Liste produit</a>
@@ -116,6 +119,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation des produit</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+            <a class="collapse-item" href="{{ path('app_fournisseur') }}" id="ajouterFourniseur">ajouter un Fournisseur</a>
                 <a class="collapse-item" href="{{ path('fournisseur_list', {'id': app.request.get('id')}) }}">liste Fournisseur</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_fournisseur') }}" id="ajouterFourniseur">ajouter un Fournisseur</a>
@@ -134,6 +138,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation des agences</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_agence') }}" id="ajouterFourniseur">Ajouter une Agence</a>
                 <a class="collapse-item" href="{{ path('app_agence') }}" id="ajouterFourniseur">Ajouter une Agence</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_agence') }}" id="ajouterFourniseur">Ajouter une Agence</a>
@@ -169,6 +174,7 @@
             <h6 class="collapse-header">versement:</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('versement_list' , {'id': app.request.get('id')}) }}">Liste versement</a>
+                <a class="collapse-item" href="{{ path('app_versement') }}" >ajouter versement</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_versement') }}" >ajouter versement</a>
                 <a class="collapse-item" href="{{ path('versement_list' , {'id': app.request.get('id')}) }}">Liste versement</a>
@@ -220,6 +226,7 @@
             <h6 class="collapse-header">utilisateur:</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('user_list', {'id': app.request.get('id')}) }}">Liste</a>
+                <a class="collapse-item" href="{{ path('app_register') }}" id="ajouterUtilisateur">ajouter utilisateur</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_register') }}" id="ajouterUtilisateur">ajouter utilisateur</a>
                 <a class="collapse-item" href="{{ path('user_list', {'id': app.request.get('id')}) }}">Liste</a>
@@ -294,6 +301,7 @@
             <h6 class="collapse-header">Employer</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('employer_list') }}">Liste </a>
+                <a class="collapse-item" href="{{ path('app_employer') }}">Employer</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_employer') }}">Employer</a>
                 <a class="collapse-item" href="{{ path('employer_list') }}">Liste </a>
