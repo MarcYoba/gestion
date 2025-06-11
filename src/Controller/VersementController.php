@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Versement;
 use App\Form\VersementType;
 use App\Entity\Clients;
+use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,10 +35,13 @@ class VersementController extends AbstractController
     }
 
     /**
-     * @Route( path ="/versement/list/{id}", name="versement_list")
+     * @Route( path ="/versement/list", name="versement_list")
      */
-    public function list(EntityManagerInterface $entityManager, int $id): Response
+    public function list(EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+        $id = $tempagence->getAgence()->getId();
         $versement = $entityManager->getRepository(Versement::class)->findAll(["id" => $id]);
         $clients = $entityManager->getRepository(Clients::class)->findAll();
         return $this->render('versement/list.html.twig', [

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Achat;
 use App\Entity\Agence;
+use App\Entity\TempAgence;
 use App\Entity\Fournisseur;
 use App\Entity\Produit;
 use App\Form\AchatType;
@@ -50,7 +51,8 @@ class AchatController extends AbstractController
                     $achat->setQuantite($key["quantite"]);
                     $achat->setMontant($key["total"]);
                     $achat->setUser($this->getUser());
-                    $achat->setAgence($this->getUser()->getEmployer()->getAgence());
+                    $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $this->getUser()]);
+                    $achat->setAgence($tempagence->getAgence());
                     $achat->setFournisseur($fournisseur);
                     $achat->setProduit($produit);
 
@@ -73,9 +75,12 @@ class AchatController extends AbstractController
         ]);
     }
 
-    #[Route('/achat/list/{id}', name: 'achat_list')]
-    public function list(EntityManagerInterface $entityManager, int $id): Response
+    #[Route('/achat/list', name: 'achat_list')]
+    public function list(EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" =>$user]);
+        $id = $tempagence->getTempAgence()->getAgence()->getId();
         $produit = $entityManager->getRepository(Achat::class)->findAll(["agence" => $id]);
         $achat = $entityManager->getRepository(Achat::class)->findAll(["agence" => $id]);
         $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll(["agence" => $id]);
