@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AgenceController extends AbstractController
 {
-    #[Route('/agence/create', name: 'app_agence')]
+    #[Route('/agence/home', name: 'app_agence')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $agence = new Agence();

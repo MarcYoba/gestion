@@ -47,23 +47,23 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class);
         $form->handleRequest($request);
         $userExite = 0;
-        //dd($request->request->get('email'));
-        if ($form->isSubmitted() && $form->isValid()) {
-            dd("bonjour");
-            $data = $form->getData();
-            $email = $form->get('email')->getData();
-            dd($email);
+        if ($request->isMethod('POST') && $request->request->has('user')) {
+            $reponse = $request->request->all();
+            $email = $reponse['user']['email'];
+
             $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
             if ($user) {
                 $userExite = 1;
+                $this->addFlash('success', 'Utilisateur trouvé avec cet email.');
             } else {
                 $this->addFlash('error', 'Aucun utilisateur trouvé avec cet email.');
                 $userExite = 0;
             }
 
-            if (!empty($data['password'])) {
+            if (isset($reponse['user']['password']) && !empty($reponse['user']['password'])) {
                 // Hachage et mise à jour du mot de passe
-                $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
+                $password = $reponse['user']['password'];
+                $hashedPassword = $userPasswordHasher->hashPassword($user, $password);
                 $user->setPassword($hashedPassword);
                 
                 $entityManager->flush();
@@ -75,7 +75,7 @@ class UserController extends AbstractController
         }
         return $this->render('security/fotgot_password.html.twig',[
             'form' => $form->createView(),
-            'user' => $userExite,
+            'userExist' => $userExite,
         ]);
     }
 
