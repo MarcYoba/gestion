@@ -36,7 +36,7 @@ class VenteAController extends AbstractController
                     $heure = date("H:i:s");
                     $idclient = $lignevente['client'];
                     $user = $this->getUser();
-                    $client = $em->getRepository(Clients::class)->findOneBy(["nom" => $idclient]);
+                    $client = $em->getRepository(Clients::class)->findOneBy(["id" => $idclient]);
                     $vente->setUser($user);
                     $vente->setClient($client);
                     if ($lignevente['momo'] > 0) {

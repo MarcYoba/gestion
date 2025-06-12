@@ -41,7 +41,7 @@ class FactureA
     private ?float $montant = null;
 
     #[ORM\ManyToOne(inversedBy: 'factureAs')]
-    private ?agence $agence = null;
+    private ?Agence $agence = null;
 
     public function getId(): ?int
     {
