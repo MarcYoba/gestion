@@ -43,4 +43,34 @@ class DepenseAController extends AbstractController
             'depenses' => $depenses,
         ]);
     }
+    /**
+     * @Route(path="/depense/a/delete/{id}", name="depense_a_delete")
+     */
+    public function delete(DepenseA $depense, EntityManagerInterface $em): Response
+    {
+        $em->remove($depense);
+        $em->flush();
+
+        return $this->redirectToRoute('depense_a_list');
+    }
+    /**
+     * @Route(path="/depense/a/edit/{id}", name="depense_a_edit")
+     */
+    public function edit(DepenseA $depense, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(DepenseAType::class, $depense);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($depense);
+            $em->flush();
+
+            return $this->redirectToRoute('depense_a_list');
+        }
+
+        return $this->render('depense_a/index.html.twig', [
+            'form' => $form->createView(),
+            'depense' => $depense,
+        ]);
+    }
 }

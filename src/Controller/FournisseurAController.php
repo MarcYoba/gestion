@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\FournisseurA;
+use App\Entity\TempAgence;
 use App\Form\FournisseurAType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +23,8 @@ class FournisseurAController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $fournisseurA->setCreatedAt(new \DateTimeImmutable());
             $fournisseurA->setUser($this->getUser());
-            $fournisseurA->setAgence($this->getUser()->getEmployer()->getAgence());
+            $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+            $fournisseurA->setAgence($tempagence->getAgence());
             $em->persist($fournisseurA);
             $em->flush();
 
@@ -33,9 +35,12 @@ class FournisseurAController extends AbstractController
         ]);
     }
 
-    #[Route('/fournisseur/a/list/{id}', name: 'fournisseur_a_list')]
-    public function list(EntityManagerInterface $em, int $id): Response
+    #[Route('/fournisseur/a/list', name: 'fournisseur_a_list')]
+    public function list(EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
         $fournisseurs = $em->getRepository(FournisseurA::class)->findAll(["agence" => $id]);
 
         return $this->render('fournisseur_a/list.html.twig', [
