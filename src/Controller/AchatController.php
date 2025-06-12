@@ -80,7 +80,7 @@ class AchatController extends AbstractController
     {
         $user = $this->getUser();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" =>$user]);
-        $id = $tempagence->getTempAgence()->getAgence()->getId();
+        $id = $tempagence->getAgence()->getId();
         $produit = $entityManager->getRepository(Achat::class)->findAll(["agence" => $id]);
         $achat = $entityManager->getRepository(Achat::class)->findAll(["agence" => $id]);
         $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll(["agence" => $id]);

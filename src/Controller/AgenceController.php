@@ -29,7 +29,7 @@ class AgenceController extends AbstractController
             $entityManager->persist($agence);
             $entityManager->flush();
 
-            $this->redirectToRoute("app_home");
+           return $this->redirectToRoute("app_home");
         }
 
         if (count($nbagence) <= 0) {
@@ -65,11 +65,54 @@ class AgenceController extends AbstractController
             $entityManager->persist($agence);
             $entityManager->flush();
 
-            $this->redirectToRoute("app_home");
+            return$this->redirectToRoute("app_agence_list");
         }
 
         return $this->render('agence/index.html.twig', [
                 'form' => $form->createView(),
             ]);
+    }
+    /**
+     * @Route(path="/agence/list", name="app_agence_list")
+     */
+    public function list(AgenceRepository $agenceRepository): Response
+    {
+        $agences = $agenceRepository->findAll();
+        return $this->render('agence/list.html.twig', [
+            'agences' => $agences,
+        ]);
+    }
+    /**
+     * @Route(path="/agence/delete/{id}", name="app_agence_delete")
+     */
+    public function delete(Agence $agence, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($agence);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_agence_list');
+    }
+    /**
+     * @Route(path="/agence/edit/{id}", name="app_agence_edit")
+     */
+    public function edit(Agence $agence, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $agence = new Agence();
+        $form = $this->createForm(AgenceType::class,$agence);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+           // $user = $this->getUser();
+            $agence->setCreatedBY($agence->getUser()->getId());
+
+            $entityManager->persist($agence);
+            $entityManager->flush();
+
+           return $this->redirectToRoute("app_home");
+        }  
+        return $this->render('agence/index.html.twig', [
+            'form' => $form->createView(),
+            'agence' => $agence,
+        ]);
     }
 }

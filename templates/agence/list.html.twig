@@ -78,7 +78,7 @@
                                     
                                 </div>
                                 <div class="col-sm-2 mb-3 mb-sm-0">
-                                    <a href="{{ path('app_fournisseur') }}" class="btn btn-primary"><i class="fas fa-plus"></i>Ajouter</a>
+                                    <a href="{{ path('app_agence_new') }}" class="btn btn-primary"><i class="fas fa-plus"></i>Ajouter</a>
                                 </div>
                             </div>
                             
@@ -92,13 +92,8 @@
                                             <th>id</th>
                                             <th>Nom</th>
                                             <th>adresse</th>
-                                            <th>telephone</th>
-                                            <th>email</th>
-                                            <th>Date enregistrement</th>
-                                            <th>numero facture</th>
-                                            <th>Date achat</th>
+                                            <th>Date </th>
                                             <th>Action</th>
-                                            
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -106,51 +101,39 @@
                                             <th>id</th>
                                             <th>Nom</th>
                                             <th>adresse</th>
-                                            <th>telephone</th>
-                                            <th>email</th>
-                                            <th>Date enregistrement</th>
-                                            <th>numero facture</th>
-                                            <th>Date achat</th>
+                                            <th>Date </th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         {% if is_granted('ROLE_ADMIN_ADMIN') %}
-                                            {% for fournisseur in fournisseurs %}
+                                            {% for agence in agences %}
                                                 <tr>
-                                                    <td>{{ fournisseur.id }}</td>
-                                                    <td>{{ fournisseur.nom }}</td>
-                                                    <td>{{ fournisseur.address }}</td>
-                                                    <td>{{ fournisseur.telephone }}</td>
-                                                    <td>{{ fournisseur.email }}</td>
-                                                    <td>{{ fournisseur.createdAt|date('d-m-Y') }}</td>
-                                                    <td>{{ fournisseur.numfacture }}</td>
-                                                    <td>{{ fournisseur.datefacture|date('d-m-Y') }}</td>
+                                                    <td>{{ agence.id }}</td>
+                                                    <td>{{ agence.nom }}</td>
+                                                    <td>{{ agence.adress }}</td>
+                                                    <td>{{ agence.datecreation |date('d-m-Y') }}</td>
                                                     <td>
-                                                        <a href="{{ path('fournisseur_edit', {'id': fournisseur.id}) }}" class='btn btn-primary'>
+                                                        <a href="{{ path('app_agence_edit', {'id': agence.id}) }}" class='btn btn-primary'>
                                                             <i class='fas fa-pencil-alt'></i></a>
-                                                        <a href="{{ path('fournisseur_delete', {'id': fournisseur.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce fournisseur ?");'>
+                                                        <a href="{{ path('app_agence_delete', {'id': agence.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce fournisseur ?");'>
                                                             <i class='fas fa-trash-alt'></i></a>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
                                         {% elseif is_granted('ROLE_CLIENTS') %}
                                             
-                                                {% for fournisseur in fournisseurs %}
-                                                    {% if fournisseur.agence.id == app.user.employer.agence.id %}
+                                                {% for agence in agences %}
+                                                    {% if agence.id == app.user.employer.agence.id %}
                                                         <tr>
-                                                            <td>{{ fournisseur.id }}</td>
-                                                            <td>{{ fournisseur.nom }}</td>
-                                                            <td>{{ fournisseur.address }}</td>
-                                                            <td>{{ fournisseur.telephone }}</td>
-                                                            <td>{{ fournisseur.email }}</td>
-                                                            <td>{{ fournisseur.createdAt|date('d-m-Y') }}</td>
-                                                            <td>{{ fournisseur.numfacture }}</td>
-                                                            <td>{{ fournisseur.datefacture|date('d-m-Y') }}</td>
+                                                            <td>{{ agence.id }}</td>
+                                                            <td>{{ agence.nom }}</td>
+                                                            <td>{{ agence.adress }}</td>
+                                                            <td>{{ agence.datecreation |date('d-m-Y') }}</td>
                                                             <td>
-                                                                <a href="{{ path('fournisseur_edit', {'id': fournisseur.id}) }}" class='btn btn-primary'>
+                                                                <a href="{{ path('app_agence_edit', {'id': agence.id}) }}" class='btn btn-primary'>
                                                                     <i class='fas fa-pencil-alt'></i></a>
-                                                                <a href="{{ path('fournisseur_delete', {'id': fournisseur.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce fournisseur ?");'>
+                                                                <a href="{{ path('app_agence_delete', {'id': agence.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce fournisseur ?");'>
                                                                     <i class='fas fa-trash-alt'></i></a>
                                                             </td>
                                                         </tr>
