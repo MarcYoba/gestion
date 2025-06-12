@@ -6,6 +6,7 @@ use App\Entity\AchatA;
 use App\Form\AchatAType;
 use App\Entity\FournisseurA;
 use App\Entity\ProduitA;
+use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +39,8 @@ class AchatAController extends AbstractController
                     $achatA->setQuantite($key["quantite"]);
                     $achatA->setMontant($key["total"]);
                     $achatA->setUser($this->getUser());
-                    $achatA->setAgence($this->getUser()->getEmployer()->getAgence());
+                    $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+                    $achatA->setAgence($tempagence->getAgence());
                     $achatA->setForunisseur($fournisseurA);
                     $achatA->setProduit($produitA);
     
@@ -71,9 +73,11 @@ class AchatAController extends AbstractController
         ]);
     }
 
-    #[Route('/achat/a/list/{id}', name: 'achat_a_list')]
-    public function list(EntityManagerInterface $em, int $id): Response
+    #[Route('/achat/a/list', name: 'achat_a_list')]
+    public function list(EntityManagerInterface $em): Response
     {
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+        $id = $tempagence->getAgence()->getId();
         $achatA = $em->getRepository(AchatA::class)->findAll(["agence" => $id]);
         return $this->render('achat_a/list.html.twig', [
             'achats' => $achatA,

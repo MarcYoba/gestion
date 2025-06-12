@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Employer;
 use App\Entity\ProduitA;
+use App\Entity\TempAgence;
 use App\Form\ProduitAType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,8 +28,9 @@ class ProduitAController extends AbstractController
             $produitA->setStockdebut($produitA->getQuantite());
 
             $employer = new Employer();
-            if ($user->getEmployer()->getAgence()) {
-               $employer = $user->getEmployer()->getAgence();
+            $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+            if ($tempagence->getAgence()) {
+               $employer = $tempagence->getAgence();
             }else{
                 $this->addFlash('error', 'Agence introuvable pour cet utilisateur vous ne pouvez enregistrer de produit.');
                 return $this->redirectToRoute("produit_list");
@@ -44,9 +46,12 @@ class ProduitAController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/a/list/{id}', name: 'produit_a_list')]
-    public function list(EntityManagerInterface $em,$id): Response
+    #[Route('/produit/a/list', name: 'produit_a_list')]
+    public function list(EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
         $produits = $em->getRepository(ProduitA::class)->findAll(["agence" => $id]);
         return $this->render('produit_a/list.html.twig', [
             'produits' => $produits,

@@ -39,8 +39,10 @@
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                    <div class="col-lg-12">
+                    <div class="col-lg-2 d-none d-lg-block bg-register-image">
+                        {% include "navbarA.html.twig" %}
+                    </div>
+                    <div class="col-lg-10">
                         <div class="p-5">
                                     <!-- DataTales Example -->
                                     <div class="card shadow mb-4">
@@ -51,12 +53,20 @@
                                             
                                             </div>
                                             <div class="col-sm-2">
-                                                <i class="fa fa-home"></i>
-                                                <a href="{{ path('app_home_dashboardA', {'id': app.user.employer.agence.id}) }}" class="btn btn-success">Home</a> 
+                                                
+                                                {% for tempagence in app.user.tempAgences %}
+                                                    <a href="{{ path('app_home_dashboardA', {'id': tempagence.agence.id}) }}" class="btn btn-success">
+                                                        <i class="fa fa-home"></i>
+                                                        Home
+                                                    </a> 
+                                                {% endfor %}
                                             </div>
                                             <div class="col-sm-2">
-                                                <i class="fa fa-list"></i> 
-                                                <a href="{{ path('vente_a_list') }}" class="btn btn-success"> List</a>
+                                                
+                                                <a href="{{ path('vente_a_list') }}" class="btn btn-success"> 
+                                                    <i class="fa fa-list"></i> 
+                                                    List
+                                                </a>
                                                 
                                             </div>
                                             <!--<div class="btn btn-warning"><i class="fa fa-arrow-left"></i> Retour</div>  -->  

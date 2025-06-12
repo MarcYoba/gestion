@@ -8,6 +8,7 @@ use App\Form\VenteAType;
 use App\Entity\FactureA;
 use App\Entity\ProduitA;
 use App\Entity\QuantiteproduitA;
+use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -81,7 +82,8 @@ class VenteAController extends AbstractController
                     $vente->setCash($lignevente['cash']);
                     $vente->setMomo($lignevente['momo']);
                     $vente->setReduction($lignevente['reduction']);
-                    $vente->setAgence($user->getEmployer()->getAgence());
+                    $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+                    $vente->setAgence($tempagence->getAgence());
                     $vente->setUser($user);
 
                     $em->persist($vente);
@@ -119,7 +121,8 @@ class VenteAController extends AbstractController
                         $quantiterestant->setProduit($produit);
 
                         $facture->setUser($user);
-                        $facture->setAgence($user->getEmployer()->getAgence());
+                        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+                        $facture->setAgence($tempagence->getAgence());
 
                         $facture->setClient($client);
                         $facture->setProduit($produit);
@@ -154,9 +157,11 @@ class VenteAController extends AbstractController
         ]);
     }
 
-    #[Route('/vente/a/list/{id}', name: 'vente_a_list')]
-    public function list(EntityManagerInterface $em, int $id): Response
+    #[Route('/vente/a/list', name: 'vente_a_list')]
+    public function list(EntityManagerInterface $em): Response
     {
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+        $id = $tempagence->getAgence()->getId();
         $ventes = $em->getRepository(VenteA::class)->findAll(["agence" => $id]);
         $produit = $em->getRepository(ProduitA::class)->findAll(["agence" => $id]);
         $client = $em->getRepository(Clients::class)->findAll();
@@ -335,7 +340,8 @@ class VenteAController extends AbstractController
                             $facture->setMontant($newfacture["total"]);
                             $facture->setPrix($newfacture["prix"]);
                             $facture->setType($type);
-                            $facture->setAgence($user->getEmployer()->getAgence());
+                            $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+                            $facture->setAgence($tempagence->getAgence());
 
                             if (empty($newfacture["date"])) {
                                 $facture->setCreateAt(new \DateTimeImmutable());

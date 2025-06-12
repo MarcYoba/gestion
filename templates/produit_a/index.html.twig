@@ -34,9 +34,11 @@
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                    <div class="col-lg-12">
+                <div class=" form-group row">
+                    <div class="col-lg-2 d-none d-lg-block bg-register-image">
+                        {% include "navbarA.html.twig" %}
+                    </div>
+                    <div class="col-lg-10">
                         <div class="p-5">
                             <div class="card-header py-3">
                                 <div class="form-group row">
@@ -50,11 +52,11 @@
                                     {% endfor %}
                                     <div class="col-sm-2 mb-3 mb-sm-0">
                                         {% for tempagence in app.user.tempAgences %}
-                                                        <a href="{{ path('app_home_dashboardA', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
-                                                            <i class="fas fa-home"></i>
-                                                            home
-                                                        </a>  
-                                                    {% endfor %}
+                                            <a href="{{ path('app_home_dashboardA', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
+                                                <i class="fas fa-home"></i>
+                                                home
+                                            </a>  
+                                        {% endfor %}
                                     </div>
                                     <div class="col-sm-2 mb-3 mb-sm-0">
                                         <a href="{{ path('produit_a_list') }}" class="btn btn-success btn-user btn-block">
