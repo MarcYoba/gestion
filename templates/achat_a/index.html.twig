@@ -58,10 +58,12 @@
                                                         </div>
                                                     {% endfor %}
                                                     <div class="col-sm-2 mb-3 mb-sm-0">
-                                                        <a href="{{ path('app_home_dashboardA', {'id': app.user.employer.agence.id}) }}" class="btn btn-success btn-user btn-block">
-                                                            <i class="fas fa-home"></i>
-                                                            home
-                                                        </a>
+                                                        {% for tempagence in app.user.tempAgences %}
+                                                            <a href="{{ path('app_home_dashboardA', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
+                                                                <i class="fas fa-home"></i>
+                                                                home
+                                                            </a>  
+                                                        {% endfor %}
                                                     </div>
                                                     <div class="col-sm-2 mb-3 mb-sm-0">
                                                         <a href="{{ path('achat_a_list') }}" class="btn btn-sucess btn-user btn-block">
