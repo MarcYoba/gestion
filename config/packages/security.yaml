@@ -25,6 +25,7 @@ security:
                 secret: '%kernel.secret%'
                 lifetime: 7200
                 path: /
+                same_site: lax
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
