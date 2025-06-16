@@ -153,12 +153,12 @@ function recherchePrix(){
                 document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> Rupture de stock en cour : '+data.quantite+'</p>';
                 if (data.quantite >= 1 && data.quantite <= 5) {
                    document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-danger"> fin de stock pour ce produit: '+data.quantite+'</p>';  
-                   document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')">Enregistrer</button>'
+                   document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')" id="enregistrer">Enregistrer</button>'
                 }else if(data.quantite <= 0){
                     if (document.getElementById("modifiervente").textContent == "Modifier vente") {
                         
                     } else {
-                        document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')" >Enregistrer vente</button>';
+                        document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')" id="enregistrer">Enregistrer vente</button>';
                     }
                 }
             } else {
@@ -167,10 +167,10 @@ function recherchePrix(){
                 if (document.getElementById("modifiervente").textContent == "Modifier vente") {
                     
                 } else {
-                    document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')" >Enregistrer vente</button>'
+                    document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')" id="enregistrer">Enregistrer vente</button>'
                 }
             }
-            document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')">Enregistrer</button>'
+            document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')" id="enregistrer">Enregistrer</button>'
             document.getElementById("prixglobal").value = data.message;
             document.getElementById("quantiteStokage").value = data.quantite;
             console.log(data);
@@ -319,6 +319,8 @@ function enregistrementBD(){
 
     let donnees =[];
     donnees = recuperationdonneTable();
+    document.getElementById("enregistrer").style.display = "none";
+    
     fetch('/vente/a/create',{
         method:'POST',
         headers:{
