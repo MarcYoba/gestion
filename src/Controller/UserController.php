@@ -28,7 +28,9 @@ class UserController extends AbstractController
                 $entityManager->flush();
             }else{
                 if ($user->getLastLogin() < new \DateTime('-6 hours')) {
-                    return $this->redirectToRoute('app_logout');
+                    $user->setLastLogin(new \DateTime());
+                    $entityManager->flush();
+                    //return $this->redirectToRoute('app_logout');
                 }
             }
             return $this->redirectToRoute('app_home');
@@ -108,6 +110,7 @@ class UserController extends AbstractController
     }
     #[Route(path : '/user/edit/{id}' , name: 'user_edit')]
     public function edit(EntityManagerInterface $entityManager, Request $request, int $id) : Response {
+        
         $user = $entityManager->getRepository(User::class)->find($id);
         if (!$user) {
             throw $this->createNotFoundException('No user found for id '.$id);
