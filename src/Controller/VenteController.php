@@ -27,7 +27,8 @@ class VenteController extends AbstractController
         $form = $this->createForm(VenteType::class, $vente);
         $form->handleRequest($request);
         $produit = $entityManager->getRepository(Produit::class)->findAll();
-
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
         if($request->isXmlHttpRequest() || $request->getContentType()==='json') {
             $data = json_decode($request->getContent(), true);
             
@@ -92,7 +93,6 @@ class VenteController extends AbstractController
                     $vente->setMontantcredit($lignevente['credit']);
                     $vente->setMontantmomo($lignevente['momo']);
                     $vente->setReduction($lignevente['reduction']);
-                    $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
 
                     $vente->setAgence($tempagence->getAgence());
                     $entityManager->persist($vente);
@@ -102,7 +102,7 @@ class VenteController extends AbstractController
                             $facture = new Facture();
                             $quantitereste = new Quantiteproduit;
 
-                            $produit = $entityManager->getRepository(Produit::class)->find($value['produit']);
+                            $produit = $entityManager->getRepository(Produit::class)->findOneBy(["nom" =>$value['produit']]);
                             $facture->setQuantite($value['quantite']);
                             $facture->setPrix($value['prix']);
                             $facture->setMontant($value['total']);
@@ -119,17 +119,16 @@ class VenteController extends AbstractController
                             if ($produit) {
                                 $reste = $produit->getQuantite();
                                 $reste = $reste - $value['quantite'];
+                            $produit->setQuantite($reste);
                             $quantitereste->setQuantiteRestant($reste);
                             $quantitereste->setCreatedAt($date);
                             }
-
-                            $produit ->setQuantite($reste);
 
                             $quantitereste->setUser($user);
                             $quantitereste->setVente($vente);
                             $quantitereste->setProduit($produit);
                             $facture->setUser($user);
-                            $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+                            
                             $facture->setAgence($tempagence->getAgence());
 
                             $facture->setClient($client);
