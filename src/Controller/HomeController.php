@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Agence;
 use App\Entity\TempAgence;
+use App\Entity\User;
 use App\Entity\Vente;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,15 @@ class HomeController extends AbstractController
     #[Route('/home', name: 'app_home')]
     public function index(EntityManagerInterface $entityManager): Response
     {
+
         $agence = $entityManager->getRepository(Agence::class)->findAll();
+        $user = $this->getUser();
+        $user = $entityManager->getRepository(User::class)->find($user);
+        if($user->getLastLogin() === null) {
+            $user->setLastLogin(new \DateTime());
+            $entityManager->flush();
+        }
+        
         return $this->render('home/index.html.twig', [
             'agence' => $agence,
         ]);

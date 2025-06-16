@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Agence;
+use App\Entity\User;
 use App\Entity\Vente;
 use App\Form\AgenceType;
 use App\Repository\AgenceRepository;
@@ -21,7 +22,12 @@ class AgenceController extends AbstractController
         $nbagence = $entityManager->getRepository(Agence::class)->findAll();
         $form = $this->createForm(AgenceType::class,$agence);
         $form->handleRequest($request);
-
+        $user = $this->getUser();
+        $user = $entityManager->getRepository(User::class)->find($user);
+        if($user->getLastLogin() === null) {
+            $user->setLastLogin(new \DateTime());
+            $entityManager->flush();
+        }
         if ($form->isSubmitted() && $form->isValid()) {
            // $user = $this->getUser();
             $agence->setCreatedBY($agence->getUser()->getId());
