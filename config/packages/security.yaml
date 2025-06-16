@@ -19,12 +19,11 @@ security:
             custom_authenticator: App\Security\UserAuthenticator
             logout:
                 path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
+            user_checker: App\Security\SessionExpirationChecker
 
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 21600
+                lifetime: 7200
                 path: /
 
             # activate different ways to authenticate
