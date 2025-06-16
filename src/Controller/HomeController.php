@@ -34,6 +34,7 @@ class HomeController extends AbstractController
     public function dashboard(EntityManagerInterface $entityManager,int $id): Response
     {
         $user = $this->getUser();
+        
         $agence = $entityManager->getRepository(Agence::class)->findAll();
         //$sommevente = $entityManager->getRepository(Vente::class)->findTotalPriceByYear(date('Y'));
         $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);

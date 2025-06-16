@@ -54,6 +54,7 @@ class EmployerType extends AbstractType
                     'Comptable'=>'Comptable',
                     'Secretaire'=>'Secretaire',
                     'Chauffeur'=>'Chauffeur',
+                    'temporaire'=>'temporaire',
                 ],
                 'attr' => ['class' => 'form-control form-control-user'],
                 'label' => 'Poste Employé'
