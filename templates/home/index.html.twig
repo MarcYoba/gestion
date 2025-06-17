@@ -49,7 +49,7 @@
 
         <!-- Navigation -->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top wow animate__animated animate__fadeInDown" 
-        data-wow-delay="0.2s">
+            data-wow-delay="0.2s">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header page-scroll">
@@ -59,18 +59,18 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand smoothie" href="index.php">ABGROUP<span class="theme-accent-color">SARL</span></a>
+                    <a class="navbar-brand smoothie" href="index.php">AB COMPTA<span class="theme-accent-color">V2</span></a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="main-navigation">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#about" class="page-scroll">About Us</a></li>  
-                       <!--  <li><a href="#about" class="page-scroll">Specials</a></li> -->   
-                        <li><a href="#provenderie" class="page-scroll">Provenderie</a></li>      
-                        <li><a href="#pharmacie" class="page-scroll">Pharmacie</a></li>   
-                        <li><a href="#Client" class="page-scroll">Client</a></li>                
-                        <li><a href="#search"><i class="fa fa-search"></i></a></li>
+                    <ul class="nav navbar-nav navbar-right" style="color: #fff;">
+                        <li><a href="#about" class="page-scroll" style="color: #fff;">About Us</a></li>  
+                        <!--  <li><a href="#about" class="page-scroll" style="color: #fff;">Specials</a></li> -->   
+                        <li><a href="#provenderie" class="page-scroll" style="color: #fff;">Provenderie</a></li>      
+                        <li><a href="#pharmacie" class="page-scroll" style="color: #fff;">Pharmacie</a></li>   
+                        <li><a href="#Client" class="page-scroll" style="color: #fff;">Client</a></li>                
+                        <li><a href="#search" style="color: #fff;"><i class="fa fa-search"></i></a></li>
                     </ul>
 
                 </div>
@@ -83,37 +83,32 @@
         <div id="search-wrapper">
             <button type="button" class="close">×</button>
             <form>
-                <input type="search" value="" placeholder="Enter Search Term" >
+                <input type="search" value="" placeholder="Enter Search Term" class="form-control" name="search">
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
         </div>
 
         <!-- Header -->
-        <header id="headerwrap" class="backstretched fullheight">
-            <div class="container-fluid fullheight">
-                <div class="vertical-center row">
-                    <div class="col-sm-1 pull-left text-center slider-control match-height">
-                        <a href="#" class="prev-bs-slide vertical-center wow fadeInLeft" data-wow-delay="0.8s"><i class="fa fa-long-arrow-left"></i></a>
-                    </div>
-                    <div class="intro-text text-center smoothie col-sm-10 match-height">                    
-                        <div class="intro-heading wow fadeIn heading-font" data-wow-delay="0.8s"><img src="{{ asset('assets/img/intro-logo.png') }}"></div>              
-                    </div>
-                    <div class="col-sm-1 pull-right text-center slider-control match-height">
-                        <a href="#" class="next-bs-slide vertical-center wow fadeInRight" data-wow-delay="0.8s"><i class="fa fa-long-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </header>
+        
 
         <section id="about" class="top-border-me">
             <div class="section-inner">
 
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-12 text-center mb100">                        
+                        <div class="col-lg-6 text-center mb100">                        
                             <h2 class="section-heading">WE <span class="theme-accent-color">are</span> Welcome</h2>
                             <hr class="thin-hr">
                             <h3 class="section-subheading secondary-font">Nous sommes très heureux de te voir.</h3>
+                        </div>
+                        <div class="col-lg-2 text-center mb100">
+                            <i class="fas fa-arrow-right" style="font-size: 80px; color: #34c759;"></i>
+                        </div>
+                        <div class="col-lg-4 text-center mb100">
+                            <video width="100%" controls autoplay muted>
+                                <source src="{{ asset('uploads/video/a.mp4') }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
                         <div class="card btn btn-success col-lg-12 text-center mb100" style="background: #e6f9e6; border-radius: 12px; box-shadow: 0 2px 8px rgba(103,61,230,0.08); padding: 24px 32px; margin-bottom: 16px; max-width: 400px; text-align: center; border: 1px solid #34c759;">
                             <h2 style="font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 700; color: #228B22; margin: 0 0 12px 0;">Bienvenue !</h2>
@@ -842,14 +837,6 @@
 
     </div>
 
-    
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
     
     
 
