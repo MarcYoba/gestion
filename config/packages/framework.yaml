@@ -12,8 +12,8 @@ framework:
         cookie_secure: auto
         cookie_samesite: lax
         storage_factory_id: session.storage.factory.native
-        cookie_lifetime: 7200  # 2 * 60 * 60 = 7200
-        gc_maxlifetime: 7200 # 2 * 60 * 60 = 7200
+        cookie_lifetime: 86400  # 24 * 60 * 60 = 86400
+        gc_maxlifetime: 86400 # 24 * 60 * 60 = 86400
 
     #esi: true
     #fragments: true

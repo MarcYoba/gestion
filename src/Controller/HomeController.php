@@ -35,6 +35,14 @@ class HomeController extends AbstractController
     {
         $user = $this->getUser();
         
+        if ($id == 0) {
+            $agence = 0;
+                return $this->render('home/dashboard.html.twig', [
+                'agence' => $agence,
+                //'sommevente' => $sommevente,
+            ]);
+        }
+
         $agence = $entityManager->getRepository(Agence::class)->findAll();
         //$sommevente = $entityManager->getRepository(Vente::class)->findTotalPriceByYear(date('Y'));
         $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
