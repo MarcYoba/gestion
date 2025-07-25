@@ -16,96 +16,97 @@
 
     <title>Login</title>
 
-    
-    
-    <style>
-      .image-container {
-    text-align: center;
-    margin: 20px;
-    background-image: url('{{ asset('img/poul3.jpg') }}'); 
-    background-size: cover; 
-    background-position: center; 
-    }
-    </style>
-
 </head>
 
 <body class="bg-gradient-primary">
-
-    <div class="container">
-
-       
-        <div class="row justify-content-center " >
-
-            <div class="col-xl-10 col-lg-12 col-md-9 ">
-
-                <div class="card o-hidden border-0 shadow-lg my-5 image-container">
-                    <div class="card-body p-0">
-                       
-                        <div class="row">
-                            
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-white mb-4 ">Welcome Back!</h1>
-                                    </div>
-                                    <form class="user"  method="post" action="{{ path('app_login') }}">
-                                        {% if error %}
-                                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                                        {% endif %}
-
-                                        {% if app.user %}
-                                            <div class="mb-3">
-                                                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-                                            </div>
-                                        {% endif %}
-                                        <div class="form-group">
-                                            <label for="inputEmail">Email</label>
-                                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputPassword">Password</label>
-                                            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                                                <label class="custom-control-label text-white" for="customCheck">Remember
-                                                    Me</label>
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-lg btn-primary" type="submit">
-                                            Sign in
-                                        </button>
-                                        
-                                        <hr>
-                                        <a href="home.html" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
-                                        <a href="home.html" class="btn btn-facebook btn-user btn-block">
-                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                        </a>
-                                    </form>
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="{{ path('app_forgot') }}">Forgot Password?</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="small" href="{{ path('app_register') }}">Create Account</a>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-6 col-lg-6 col-xl-5">
+            <img src="{{ asset('img/img4.jpeg') }}" class="img-fluid" alt="Sample image" style="width: 100%; height: 300px; object-fit: cover;">
         </div>
-
+        <div class="col-md-6 col-lg-6 col-xl-4 offset-xl-1">
+            <form method="post">
+                 {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                {% if app.user %}
+                    <div class="mb-3">
+                        Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
+                    </div>
+                {% endif %}
+                <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                    <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+                    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
+                    <i class="fas fa-facebook-f"></i>
+                    </button>
+                    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
+                    <i class="fas fa-twitter"></i>
+                    </button>
+                    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
+                    <i class="fas fa-linkedin-in"></i>
+                    </button>
+                </div>
+                <div class="divider d-flex align-items-center my-4">
+                    <p class="text-center fw-bold mx-3 mb-0">Or</p>
+                </div>
+                <!-- Email input -->
+                <div data-mdb-input-init class="form-outline mb-4">
+                    <label for="inputEmail">Email</label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                    <label class="form-label" for="inputEmail">Email address</label>
+                </div>
+                <!-- Password input -->
+                <div data-mdb-input-init class="form-outline mb-3">
+                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                    <label class="form-label" for="inputPassword">Password</label>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Checkbox -->
+                    <div class="form-check mb-0">
+                    <input type="hidden" name="_csrf_token"
+                                    value="{{ csrf_token('authenticate') }}"
+                                >
+                    </div>
+                    <a href="#!" class="text-body">Forgot password?</a>
+                </div>
+                <div class="text-center text-lg-start mt-4 pt-2">
+                    <button class="btn btn-lg btn-primary w-100" type="submit">
+                        Connexion
+                    </button>
+                    <p class="small fw-bold mt-2 pt-1 mb-0">Vous n'avez pas de compte ? <a href="register"
+                        class="link-danger">Inscrivez-vous</a></p>
+                </div>
+            </form>
+            </div>
+        </div>
     </div>
+  <div
+    class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
+    <!-- Copyright -->
+    <div class="text-white mb-3 mb-md-0 text-center text-md-start">
+      Production © {{ "now"|date("Y") }}. 
+    </div>
+    <!-- Copyright -->
 
+    <!-- Right -->
+    <div>
+      <a href="#!" class="text-white me-4">
+        <i class="fas fa-facebook-f"></i>
+      </a>
+      <a href="#!" class="text-white me-4">
+        <i class="fas fa-twitter"></i>
+      </a>
+      <a href="#!" class="text-white me-4">
+        <i class="fas fa-google"></i>
+      </a>
+      <a href="#!" class="text-white">
+        <i class="fas fa-linkedin-in"></i>
+      </a>
+    </div>
+    <!-- Right -->
+  </div>
+</section>
 
 </body>
 </html>  

@@ -25,9 +25,26 @@ import 'jquery.easing/jquery.easing.min.js';
 
 // 3. Bootstrap (avec Popper)
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'slick-carousel';
+
+// Initialisation du carousel
+$(document).ready(() => {
+  $('.your-slider-class').slick({
+    // Options de configuration
+    dots: true,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 1
+  });
+});
 
 // 4. Autres bibliothèques
 import WOW from 'wow.js';
+
+// Votre code jQuery
+$(document).ready(() => {
+  console.log("jQuery 3.4.1 chargé !");
+});
 
 /* ==================== */
 /* INITIALISATION */

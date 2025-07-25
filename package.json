@@ -27,10 +27,11 @@
         "animate.css": "^4.1.1",
         "bootstrap": "^4.6.0",
         "chart.js": "^4.4.9",
-        "jquery": "^3.6.0",
+        "jquery": "3.4.1",
         "jquery-backstretch": "2.1.18",
         "jquery.easing": "^1.4.1",
         "popper.js": "1.16.1",
+        "slick-carousel": "^1.8.1",
         "startbootstrap-sb-admin-2": "4.1.4",
         "waypoints": "4.0.1",
         "wow.js": "^1.2.2"

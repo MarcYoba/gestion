@@ -1,0 +1,193 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" href="/style.css"> -->
+    <title> E-COMMERCE </title>
+    <!-- favicon -->
+    
+    <!-- slider links -->
+    <!-- <script src="http://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
+    <script src="{{ asset('js/jQuery3.4.1.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/content.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+    <style>
+        body
+        {
+            margin: 0;
+        }
+        #containerSlider
+        {
+            margin: auto;
+            width: 90%;
+            text-align: center;
+            padding-top: 100px;
+            box-sizing: border-box;
+        }
+        #containerSlider img
+        {
+            width: 100%;
+            height: 140%;
+            text-align: center;
+            align-content: center;
+        }
+        @media(max-width: 732px)
+        {
+            #containerSlider img
+            {
+                height: 12em;
+            }
+        }
+        @media(max-width: 500px)
+        {
+            #containerSlider img
+            {
+                height: 10em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <section>
+            <!-- MAIN CONTAINER -->
+            <div id="container">
+                <!-- SHOP NAME -->
+                <div id="shopName"><a href="#"> <h4>AB COMPTA V <sup>2</sup></h4> </a></div>
+                    <!-- COLLCETIONS ON WEBSITE -->
+                    <nav id="collection" style="display: flex; gap: 2rem; align-items: center; margin-left: 2rem;">
+                        <div id="clothing">
+                            <a href="#" style="text-decoration: none; color: inherit; font-weight: bold;">NOS SERVICES</a>
+                        </div>
+                        <div id="accessories">
+                            <a href="#" style="text-decoration: none; color: inherit; font-weight: bold;">ACCESSORIES</a>
+                        </div>
+                        <div id="entreprise">
+                            <a href="login" style="text-decoration: none; color: inherit; font-weight: bold;">ENTRPRISE</a>
+                        </div>
+                    </nav>
+                    <!-- SEARCH SECTION -->
+                    <div id="search">
+                        <i class="fas fa-search search"></i>
+                        <input type="text" id="input" name="searchBox" placeholder="Search for Clothing and Accessories">
+                    </div>
+                    <!-- USER SECTION (CART AND USER ICON) -->
+                    <div id="user">
+                        <a href="#"> <i class="fas fa-shopping-cart addedToCart"><div id="badge"> 0 </div></i></a>
+                        <a href="#"> <i class="fas fa-user-circle userIcon"></i> </a>
+                    </div>
+            </div>
+
+        </section>
+    </header>
+    <!-- SLIDER -->
+    <div id="3"></div>
+    <section>
+            <div id="containerSlider">
+                <div id="slidingImage">
+                    <img src="img/img1.png" alt="image1" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+                <div id="slidingImage">
+                     <img src="img/img2.jpeg" alt="image2" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+                <div id="slidingImage"> 
+                    <img src="img/img3.jpeg" alt="image3" style="width: 100%; height: 300px; object-fit: cover;"> 
+                </div>
+                <div id="slidingImage"> 
+                    <img src="img/img4.jpeg" alt="image4" style="width: 100%; height: 300px; object-fit: cover;"> 
+                </div>
+            </div>
+    </section>
+
+    <!-- CONTENT SECTION -->
+    <div id="3"></div>
+    {# {% include "produit/produit.html.twig" %} #}
+
+    <!-- FOOTER -->
+    <div id="4"></div>
+    <footer>
+        <section>    
+            <div id="containerFooter">
+                
+                <div id="webFooter">
+                    <h3> online store </h3>
+                    <p> men clothing </p>
+                    <p> women clothing </p>
+                    <p> men accessories </p>
+                    <p> women accessories </p>
+                </div>
+                <div id="webFooter">
+                    <h3> helpful link </h3>
+                    <p> home </p>
+                    <p> about </p>
+                    <p> contact </p>
+                </div>
+                <div id="webFooter">
+                    <h3> partners </h3>
+                    <p> zara </p>
+                    <p> pantaloons </p>
+                    <p> levis </p>
+                    <p> ucb </p>
+                    <p> + many more </p>
+                </div>
+                <div id="webFooter">
+                    <h3> address </h3>
+                    <p> building 101 </p>
+                    <p> central avenue </p>
+                    <p> la - 902722 </p>
+                    <p> united states </p>
+                </div>
+            </div>
+            <div id="credit"> ©  Production </div>
+        </section>
+
+    </footer>
+
+
+
+<!-- slider JS START -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+<script>
+    $(document).ready(function()
+    {
+    $('#containerSlider').slick({
+        dots: true,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 1500,
+        });
+    });
+</script>
+<!-- slider JS ENDS -->
+
+<!-- content JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+    <script>
+        $(document).ready(function()
+        {
+        $('#containerSlider').slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            });
+        });
+    </script>
+<script src="{{ asset('js/content.js') }}"></script>
+</body>
+</html>
+{% endblock %}
