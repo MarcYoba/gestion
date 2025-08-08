@@ -110,6 +110,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastLogin = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Caisse::class)]
+    private Collection $caisses;
+
     
 
     public function __construct() {
@@ -134,6 +137,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->factureAs = new ArrayCollection();
         $this->quantiteproduitAs = new ArrayCollection();
         $this->tempAgences = new ArrayCollection();
+        $this->caisses = new ArrayCollection();
         
     }
 
@@ -849,6 +853,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastLogin(?\DateTimeInterface $lastLogin): static
     {
         $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Caisse>
+     */
+    public function getCaisses(): Collection
+    {
+        return $this->caisses;
+    }
+
+    public function addCaiss(Caisse $caiss): static
+    {
+        if (!$this->caisses->contains($caiss)) {
+            $this->caisses->add($caiss);
+            $caiss->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCaiss(Caisse $caiss): static
+    {
+        if ($this->caisses->removeElement($caiss)) {
+            // set the owning side to null (unless already changed)
+            if ($caiss->getUser() === $this) {
+                $caiss->setUser(null);
+            }
+        }
 
         return $this;
     }
