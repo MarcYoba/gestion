@@ -136,13 +136,13 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                    {% for caisse in caisses %}
+                                    {% for caisseA in caisseAs %}
                                         <tr>
-                                            <td>{{ caisse.id }}</td>
-                                            <td>{{ caisse.operation }}</td>
-                                            <td>{{ caisse.montant }}</td>
-                                            <td>{{ caisse.motif }}</td>
-                                            <td>{{ caisse.createAt | date('Y-m-d') }}</td>
+                                            <td>{{ caisseA.id }}</td>
+                                            <td>{{ caisseA.operation }}</td>
+                                            <td>{{ caisseA.montant }}</td>
+                                            <td>{{ caisseA.motif }}</td>
+                                            <td>{{ caisseA.createAt | date('Y-m-d') }}</td>
                                             <td>  
                                             <a href='#' class='btn btn-primary'><i class='fas fa-pencil-alt'></i></a>
                                             <a href='#' class='btn btn-danger'><i class='fas fa-trash-alt'></i></a>
