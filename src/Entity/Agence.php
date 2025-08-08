@@ -71,6 +71,9 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: TempAgence::class)]
     private Collection $tempAgences;
 
+    #[ORM\OneToMany(mappedBy: 'Agence', targetEntity: Caisse::class)]
+    private Collection $caisses;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -86,6 +89,7 @@ class Agence
         $this->venteAs = new ArrayCollection();
         $this->factureAs = new ArrayCollection();
         $this->tempAgences = new ArrayCollection();
+        $this->caisses = new ArrayCollection();
     }
 
    
@@ -539,6 +543,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($tempAgence->getAgence() === $this) {
                 $tempAgence->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Caisse>
+     */
+    public function getCaisses(): Collection
+    {
+        return $this->caisses;
+    }
+
+    public function addCaiss(Caisse $caiss): static
+    {
+        if (!$this->caisses->contains($caiss)) {
+            $this->caisses->add($caiss);
+            $caiss->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCaiss(Caisse $caiss): static
+    {
+        if ($this->caisses->removeElement($caiss)) {
+            // set the owning side to null (unless already changed)
+            if ($caiss->getAgence() === $this) {
+                $caiss->setAgence(null);
             }
         }
 
