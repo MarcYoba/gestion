@@ -113,6 +113,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Caisse::class)]
     private Collection $caisses;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CaisseA::class)]
+    private Collection $caisseAs;
+
     
 
     public function __construct() {
@@ -138,6 +141,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->quantiteproduitAs = new ArrayCollection();
         $this->tempAgences = new ArrayCollection();
         $this->caisses = new ArrayCollection();
+        $this->caisseAs = new ArrayCollection();
         
     }
 
@@ -881,6 +885,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($caiss->getUser() === $this) {
                 $caiss->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CaisseA>
+     */
+    public function getCaisseAs(): Collection
+    {
+        return $this->caisseAs;
+    }
+
+    public function addCaisseA(CaisseA $caisseA): static
+    {
+        if (!$this->caisseAs->contains($caisseA)) {
+            $this->caisseAs->add($caisseA);
+            $caisseA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCaisseA(CaisseA $caisseA): static
+    {
+        if ($this->caisseAs->removeElement($caisseA)) {
+            // set the owning side to null (unless already changed)
+            if ($caisseA->getUser() === $this) {
+                $caisseA->setUser(null);
             }
         }
 
