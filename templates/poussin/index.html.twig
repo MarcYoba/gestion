@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Poussin{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>AB-COMPTA</title>
+
+</head>
+
+<body class="bg-gradient-success">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-12">
+                        <div class="p-5">
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                <h6 class="m-0 font-weight-bold text-primary">Créer une Commande</h6>     
+                                </div>
+                                <div class="col-sm-2">
+                                    {% for tempagence in app.user.tempAgences %}
+                                        <a href="{{ path('app_home_dashboardA', {'id': tempagence.agence.id}) }}" class="btn btn-success">
+                                            <i class="fa fa-home"></i>
+                                            Home
+                                        </a> 
+                                    {% endfor %} 
+                                </div>
+                                <div class="col-sm-2"> 
+                                    <a href="{{ path('app_poussin_list')}}" class="btn btn-success"> 
+                                        <i class="fa fa-list"></i>
+                                        Liste
+                                    </a>             
+                                </div>
+                                <!--<div class="btn btn-warning"><i class="fa fa-arrow-left"></i> Retour</div>  -->  
+                            </div>
+                                <hr>
+                                <h6 class="text-center">Enregistrer un nouveau Client</h6>
+                                <hr>
+                                <span id="message"></span>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user" id="nom"
+                                           name="nom" placeholder="Nom du client" required>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="tel" class="form-control form-control-user" id="telephone" 
+                                           name="telephone" placeholder="Téléphone" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button  class="btn btn-success btn-user btn-block" onclick='add_client()'>
+                                        Enregistrer
+                                    </button>
+                                </div>
+                            
+                            {{ form_start(form)}}
+                                <hr><hr>
+                                <h10 class="text-center">Enregistrer Commande</h10>
+                                <hr>
+                                <div class="form-group row">
+                                    <div class="col-sm-3 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user" id="recherche"
+                                        name="recherche" placeholder="Recherche client" onkeyup="myFunctionP()"> 
+                                        Date Commande
+                                        {{ form_widget(form.datecommande)}}  
+                                    </div>
+                                    <div class="col-sm-3 mb-3 mb-sm-0">
+                                        {{ form_widget(form.client)}}
+                                    </div>    
+                                    <div class="col-sm-2">
+                                        Quantite
+                                        {{ form_widget(form.quantite)}}
+                                            Souche
+                                        {{ form_widget(form.souche)}}
+                                    </div>
+                                    <div class="col-sm-2">
+                                        Prix
+                                        {{ form_widget(form.prix)}}
+                                           Date livraison
+                                        {{ form_widget(form.datelivaison)}}     
+                                    </div>
+                                    <div class="col-sm-2">
+                                        Montant
+                                        {{ form_widget(form.montant)}}
+                                           Date rappel 
+                                        {{ form_widget(form.daterapelle) }}  
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                        OM/MOMO
+                                        {{ form_widget(form.mobilepay) }} 
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Credit
+                                        {{ form_widget(form.credit) }}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Cash
+                                        {{ form_widget(form.cash) }}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Reste
+                                        {{ form_widget(form.reste) }}
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" name="submit" id="submit" class="btn btn-success btn-user btn-block">
+                                    Enregistrer
+                                </button>  
+                            {{ form_end(form)}}
+                            <hr>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script>
+        const  inputQuantite = document.getElementById("poussin_quantite");
+        const  inputPrix = document.getElementById("poussin_prix");
+
+        function calculeTotal(params) {
+           document.getElementById("poussin_montant").value=  document.getElementById("poussin_quantite").value* document.getElementById("poussin_prix").value;
+        }
+
+        inputQuantite.addEventListener('input',calculeTotal);
+        inputPrix.addEventListener('input',calculeTotal);
+
+    </script>
+    <script src="{{ asset('js/client/client.js') }}"></script>
+
+</body>
+
+</html>
+{% endblock %}

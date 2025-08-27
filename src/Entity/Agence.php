@@ -77,6 +77,9 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: CaisseA::class)]
     private Collection $caisseAs;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Poussin::class)]
+    private Collection $poussins;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -94,6 +97,7 @@ class Agence
         $this->tempAgences = new ArrayCollection();
         $this->caisses = new ArrayCollection();
         $this->caisseAs = new ArrayCollection();
+        $this->poussins = new ArrayCollection();
     }
 
    
@@ -607,6 +611,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($caisseA->getAgence() === $this) {
                 $caisseA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Poussin>
+     */
+    public function getPoussins(): Collection
+    {
+        return $this->poussins;
+    }
+
+    public function addPoussin(Poussin $poussin): static
+    {
+        if (!$this->poussins->contains($poussin)) {
+            $this->poussins->add($poussin);
+            $poussin->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removePoussin(Poussin $poussin): static
+    {
+        if ($this->poussins->removeElement($poussin)) {
+            // set the owning side to null (unless already changed)
+            if ($poussin->getAgence() === $this) {
+                $poussin->setAgence(null);
             }
         }
 

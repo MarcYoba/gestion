@@ -40,6 +40,7 @@ class RegistrationController extends AbstractController
             }
             $user->setCreatedAt(new \DateTimeImmutable());
             $user->getClients()->setNom($form->get('username')->getData());
+            $user->getClients()->setTelephone($form->get('telephone')->getData());
             $user->getClients()->setCreatedAt(new \DateTimeImmutable());
             $entityManager->persist($user);
             $entityManager->flush();

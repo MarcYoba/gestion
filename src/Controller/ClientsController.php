@@ -2,19 +2,34 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Clients;
 use App\Form\ClientsType;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\Calculation\TextData\Replace;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ClientsController extends AbstractController
 {
     #[Route('/clients/create', name: 'app_clients')]
-    public function index(): Response
+    public function index(Request $request, EntityManagerInterface $em): Response
     {
+        $clients = new Clients();
+        $form = $this->createForm(ClientsType::class, $clients);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $clients->setCreatedAt(new DateTimeImmutable());
+            $clients->setUser($this->getUser());
+            $em->persist($clients);
+            $em->flush();
+            return $this->redirectToRoute('clients_list');
+        }
         return $this->render('clients/index.html.twig', [
             'controller_name' => 'ClientsController',
         ]);
@@ -62,5 +77,50 @@ class ClientsController extends AbstractController
 
         }
         return $this->json(['error' => 'Client non spécifié'], 404);
+    }
+
+    #[Route('/clients/add/client', name:'clients_add')]
+    public function add_client(Request $request, EntityManagerInterface $entityManager,UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        $clients = new Clients();
+        if ($request->isXmlHttpRequest() || $request->getContentType()=== 'json') {
+
+            $user = new User();
+            $json = $request->getContent();
+            $tab = json_decode($json, true);
+            if (!empty($tab['nom']) && !empty($tab['telephone'])) {
+                $defaulpass = "123456789";
+                $heure = date("s");
+                $nom = str_replace(" ","", $tab["nom"]);
+                $defaultEmail = $tab['nom'].$heure.'@gmail.com';
+
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $defaulpass
+                    )
+                );
+                $user->setUsername($tab['nom']);
+                $user->setRoles(['ROLE_CLIENTS']);
+                $user->setEmail($defaultEmail);
+                $user->setCreatedAt(new \DateTimeImmutable());
+                $user->setTelephone($tab['telephone']);
+                $user->setLocalisation('000');
+                $user->setSpeculation('000');
+
+
+                $user->getClients()->setNom( $tab['nom'] );
+                $user->getClients()->setTelephone( $tab['telephone'] );
+                $user->getClients()->setCreatedAt( new \DateTimeImmutable);
+
+            $entityManager->persist($user);
+                $entityManager->flush();
+                return $this->json(['success'=> true,'message'=> 'success']);
+            } else {
+                return $this->json(['error' => false, 'message' => 'Vous deviez entrer les informations du clients']);
+            }
+            
+        }
+        return $this->json(['error' => false, 'message' => 'Vous deviez entrer les informations du clients']);
     }
 }

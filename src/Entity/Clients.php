@@ -46,6 +46,12 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: FactureA::class)]
     private Collection $factureAs;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Poussin::class)]
+    private Collection $poussins;
+
+    #[ORM\Column(length: 20)]
+    private ?string $telephone = null;
+
     public function __construct()
     {
         $this->versements = new ArrayCollection();
@@ -55,6 +61,7 @@ class Clients
         $this->versementAs = new ArrayCollection();
         $this->venteAs = new ArrayCollection();
         $this->factureAs = new ArrayCollection();
+        $this->poussins = new ArrayCollection();
     }
 
     
@@ -306,6 +313,48 @@ class Clients
                 $factureA->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Poussin>
+     */
+    public function getPoussins(): Collection
+    {
+        return $this->poussins;
+    }
+
+    public function addPoussin(Poussin $poussin): static
+    {
+        if (!$this->poussins->contains($poussin)) {
+            $this->poussins->add($poussin);
+            $poussin->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removePoussin(Poussin $poussin): static
+    {
+        if ($this->poussins->removeElement($poussin)) {
+            // set the owning side to null (unless already changed)
+            if ($poussin->getClient() === $this) {
+                $poussin->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): static
+    {
+        $this->telephone = $telephone;
 
         return $this;
     }
