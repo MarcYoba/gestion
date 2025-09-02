@@ -59,11 +59,15 @@ class Produit
     #[ORM\ManyToOne(inversedBy: 'produits')]
     private ?Agence $agence = null;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Historique::class)]
+    private Collection $historiques;
+
     public function __construct()
     {
         $this->achat = new ArrayCollection();
         $this->facture = new ArrayCollection();
         $this->quantiteproduits = new ArrayCollection();
+        $this->historiques = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -289,6 +293,36 @@ class Produit
     public function setAgence(?Agence $agence): static
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Historique>
+     */
+    public function getHistoriques(): Collection
+    {
+        return $this->historiques;
+    }
+
+    public function addHistorique(Historique $historique): static
+    {
+        if (!$this->historiques->contains($historique)) {
+            $this->historiques->add($historique);
+            $historique->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistorique(Historique $historique): static
+    {
+        if ($this->historiques->removeElement($historique)) {
+            // set the owning side to null (unless already changed)
+            if ($historique->getProduit() === $this) {
+                $historique->setProduit(null);
+            }
+        }
 
         return $this;
     }

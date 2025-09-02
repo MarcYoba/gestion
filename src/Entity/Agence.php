@@ -80,6 +80,12 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Poussin::class)]
     private Collection $poussins;
 
+    #[ORM\OneToMany(mappedBy: 'agance', targetEntity: Historique::class)]
+    private Collection $historiques;
+
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: HistoriqueA::class)]
+    private Collection $historiqueAs;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -98,6 +104,8 @@ class Agence
         $this->caisses = new ArrayCollection();
         $this->caisseAs = new ArrayCollection();
         $this->poussins = new ArrayCollection();
+        $this->historiques = new ArrayCollection();
+        $this->historiqueAs = new ArrayCollection();
     }
 
    
@@ -641,6 +649,66 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($poussin->getAgence() === $this) {
                 $poussin->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Historique>
+     */
+    public function getHistoriques(): Collection
+    {
+        return $this->historiques;
+    }
+
+    public function addHistorique(Historique $historique): static
+    {
+        if (!$this->historiques->contains($historique)) {
+            $this->historiques->add($historique);
+            $historique->setAgance($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistorique(Historique $historique): static
+    {
+        if ($this->historiques->removeElement($historique)) {
+            // set the owning side to null (unless already changed)
+            if ($historique->getAgance() === $this) {
+                $historique->setAgance(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HistoriqueA>
+     */
+    public function getHistoriqueAs(): Collection
+    {
+        return $this->historiqueAs;
+    }
+
+    public function addHistoriqueA(HistoriqueA $historiqueA): static
+    {
+        if (!$this->historiqueAs->contains($historiqueA)) {
+            $this->historiqueAs->add($historiqueA);
+            $historiqueA->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoriqueA(HistoriqueA $historiqueA): static
+    {
+        if ($this->historiqueAs->removeElement($historiqueA)) {
+            // set the owning side to null (unless already changed)
+            if ($historiqueA->getAgence() === $this) {
+                $historiqueA->setAgence(null);
             }
         }
 
