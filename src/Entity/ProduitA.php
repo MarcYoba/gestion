@@ -62,12 +62,16 @@ class ProduitA
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: QuantiteproduitA::class)]
     private Collection $quantiteproduitAs;
 
+    #[ORM\OneToMany(mappedBy: 'produitA', targetEntity: HistoriqueA::class)]
+    private Collection $historiqueAs;
+
     public function __construct()
     {
         $this->achatAs = new ArrayCollection();
         $this->venteAs = new ArrayCollection();
         $this->factureAs = new ArrayCollection();
         $this->quantiteproduitAs = new ArrayCollection();
+        $this->historiqueAs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -321,6 +325,36 @@ class ProduitA
             // set the owning side to null (unless already changed)
             if ($quantiteproduitA->getProduit() === $this) {
                 $quantiteproduitA->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HistoriqueA>
+     */
+    public function getHistoriqueAs(): Collection
+    {
+        return $this->historiqueAs;
+    }
+
+    public function addHistoriqueA(HistoriqueA $historiqueA): static
+    {
+        if (!$this->historiqueAs->contains($historiqueA)) {
+            $this->historiqueAs->add($historiqueA);
+            $historiqueA->setProduitA($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoriqueA(HistoriqueA $historiqueA): static
+    {
+        if ($this->historiqueAs->removeElement($historiqueA)) {
+            // set the owning side to null (unless already changed)
+            if ($historiqueA->getProduitA() === $this) {
+                $historiqueA->setProduitA(null);
             }
         }
 
