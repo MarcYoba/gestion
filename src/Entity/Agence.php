@@ -86,6 +86,9 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: HistoriqueA::class)]
     private Collection $historiqueAs;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Actif::class)]
+    private Collection $actifs;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -106,6 +109,7 @@ class Agence
         $this->poussins = new ArrayCollection();
         $this->historiques = new ArrayCollection();
         $this->historiqueAs = new ArrayCollection();
+        $this->actifs = new ArrayCollection();
     }
 
    
@@ -709,6 +713,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($historiqueA->getAgence() === $this) {
                 $historiqueA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Actif>
+     */
+    public function getActifs(): Collection
+    {
+        return $this->actifs;
+    }
+
+    public function addActif(Actif $actif): static
+    {
+        if (!$this->actifs->contains($actif)) {
+            $this->actifs->add($actif);
+            $actif->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActif(Actif $actif): static
+    {
+        if ($this->actifs->removeElement($actif)) {
+            // set the owning side to null (unless already changed)
+            if ($actif->getAgence() === $this) {
+                $actif->setAgence(null);
             }
         }
 
