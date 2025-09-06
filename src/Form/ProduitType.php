@@ -56,7 +56,12 @@ class ProduitType extends AbstractType
                     'class' => 'form-control form-control-user'
                 ]
             ])
-            ->add('createdAt')
+            ->add('createdAt',DateType::class,[
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'form-control form-control-user'
+                ]
+            ])
             ->add('type',ChoiceType::class,[
                 'choices' => [
                     'Provenderie' => 'Provenderie',
