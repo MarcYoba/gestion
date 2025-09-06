@@ -57,7 +57,8 @@ class FournisseurAType extends AbstractType
                 'widget' => 'single_text',
                 'attr' => [
                     'placeholder' => 'Sélectionnez la date d\'achat',
-                    'class' => 'form-control form-control-user'
+                    'class' => 'form-control form-control-user',
+                    'value' => (new \DateTime())->format('Y-m-d')
                 ]
             ])
             ->add('button', SubmitType::class, [
