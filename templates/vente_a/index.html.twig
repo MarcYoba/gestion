@@ -91,6 +91,7 @@
                                                 </p>
                                             </div>
                                             <br>
+                                            <span id="message"></span>
                                             <div class="row">
                                                 
                                                 <p class="col-md-2" >
@@ -127,9 +128,9 @@
                                             </div>
                                             <div class="row">
                                                 <p class="col-md-2 btn btn-info">
-                                                    <input type="search" id="recherche" onkeyup="myFunction()"  class="form-control form-control-user" placeholder="recherche"><br>
+                                                    <input type="search" id="nom" onkeyup="myFunction()"  class="form-control form-control-user" placeholder="recherche"><br>
                                                     <input type="tel" id="telephone"   class="form-control form-control-user" placeholder="telephone"> <br>
-                                                    <button class="btn btn-success btn-user" onclick="enregistremetnclient()">enregistrer client</button>
+                                                    <button class="btn btn-success btn-user" onclick="add_client()">enregistrer client</button>
                                                 </p>
                                                 <p class="col-md-3" >
                                                     <select id="fournisseur"  name="fournisseur"   class="form-control form-select"  size="10" multiple aria-label="multiple select "  required>
@@ -245,6 +246,7 @@
 
     </div>
     <script src="{{ asset('js/venteA.js') }}"> </script>
+    <script src="{{ asset('js/client/client_vente.js') }}"></script>
 
 </body>
 
