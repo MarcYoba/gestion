@@ -30,7 +30,7 @@ class FournisseurAType extends AbstractType
                     'class' => 'form-control form-control-user'
                 ]
             ])
-            ->add('telephone' ,NumberType::class, [
+            ->add('telephone' ,TextType::class, [
                 'label' => 'Téléphone',
                 'attr' => [
                     'placeholder' => 'Entrez le numéro de téléphone du fournisseur',
