@@ -54,6 +54,7 @@ class FournisseurAType extends AbstractType
             ->add('dateAchat', DateType::class, [
                 'label' => 'Date d\'achat',
                 'input' => 'datetime_immutable',
+                'widget' => 'single_text',
                 'attr' => [
                     'placeholder' => 'Sélectionnez la date d\'achat',
                     'class' => 'form-control form-control-user'
