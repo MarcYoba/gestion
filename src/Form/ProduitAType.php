@@ -83,7 +83,8 @@ class ProduitAType extends AbstractType
                 'widget' => 'single_text',
                 'attr' => [
                     'class' => 'form-control form-control-user',
-                    'placeholder' => 'Date de création'
+                    'placeholder' => 'Date de création',
+                    'value' => (new \DateTime())->format('Y-m-d')
                 ],
             ])
             ->add('type', ChoiceType::class,[

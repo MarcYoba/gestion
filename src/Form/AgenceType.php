@@ -21,6 +21,7 @@ class AgenceType extends AbstractType
                 'attr' => ['class' => 'form-control form-control-user']
             ])
             ->add('datecreation', DateType::class,[
+                'widget' => 'single_text',
                 'attr' => [
                     'class' => 'form-control form-control-user',
                     'value' => (new \DateTime())->format('Y-m-d')
