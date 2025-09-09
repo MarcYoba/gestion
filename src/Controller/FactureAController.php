@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\FactureA;
 use App\Entity\VenteA;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,5 +30,43 @@ class FactureAController extends AbstractController
             'client' => $client,
             'vente' => $vente,
         ]);
+    }
+
+    #[Route('/facture/a/print/{id}', name:'app_print_facture_a')]
+    public function Print(EntityManagerInterface $entityManger, int $id, string $filename = 'facture.pdf')
+    {
+        $facture = $entityManger->getRepository(FactureA::class)->findBy(['vente'=>$id]);
+        $client = null;
+        $vente = null;
+        if (is_array($facture) && count($facture) > 0) {
+            $client = $facture[0]->getClient();
+            $vente = $facture[0]->getVente();
+        }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+
+        $html = $this->renderView('facture_a/print.html.twig', [
+        'vente' => $vente,
+        'client' => $client,
+        'factures' => $facture
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A5', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="Facture.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
     }
 }

@@ -1,0 +1,58 @@
+{# templates/pdf/products.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Facture</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .header { margin-bottom: 30px; }
+        .footer { margin-top: 50px; text-align: right; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CABINET VETERINAIRE DE SOA <br> Client : {{client.nom}}
+            <br> Telephone : {{client.user.telephone}}
+            <br> Formule  Vente N= {{ vente.id}} 
+            <br>  NRCCM:RC/YAE2022/B/2852
+        </h1>
+        
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>QT</th>
+                <th>P.U</th>
+                <th>M</th>
+                <th>Paie</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for facture in factures %}
+            <tr>
+                <td>{{ facture.produit.nom }}</td>
+                <td>{{ facture.quantite }} </td>
+                <td>{{ facture.prix }}</td>
+                <td>{{ facture.montant }}</td>
+                <td>{{ facture.typepaiement }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center;">Aucun produit trouvé</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        Page 1/1
+    </div>
+</body>
+</html>
