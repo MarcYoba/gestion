@@ -83,7 +83,7 @@
                                         {{ form_widget (form.net)}}
                                     </div>
                                     <div class="col-sm-6">
-                                        {{ form_widget (form.created)}}
+                                        {{ form_widget (form.created | date("Y-m-d"))}}
                                     </div>
                                 </div>    
                             
