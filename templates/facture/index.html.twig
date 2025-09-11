@@ -73,7 +73,7 @@
                                     <p class="col-md-2"> Nom Client : {{client.nom}}</p>
                                     <p class="col-md-2"> Telephone : {{ client.user.telephone }} </p>
                                     
-                                    <p class='col-md-2 '> <a href='../pdf/getfacture.php?id=" . $_GET["id"] . "' class='btn btn-info btn-user'>Imprimer</a></p>  
+                                    <p class='col-md-2 '> <a href="{{ path('app_print_facture', {'id':id}) }}" class='btn btn-info btn-user'>Imprimer</a></p>  
                                       
                                     <p class='col-md-1 '> <button  class='btn btn-warning btn-user' onclick="editefacture()">Edite</button></p> 
                                     <p class='col-md-2 '> <button  class='btn btn-danger btn-user' onclick=''>Supprimer</button></p>

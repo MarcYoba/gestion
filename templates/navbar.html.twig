@@ -377,7 +377,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header"> Bilan :</h6>
                     <a class="collapse-item" href="{{ path('app_actif')}}">Actif Bilan</a>
-                    <a class="collapse-item" href="php/bilan/liste.php">liste Actif</a>
+                    <a class="collapse-item" href="{{ path('app_actif_list',{'date': 'now' | date('Y')})}}">liste Actif</a>
                     <a class="collapse-item" href="php/bilan/passif.php">Passif Bilan</a>
                     <a class="collapse-item" href="php/bilan/listepasif.php">liste Passif</a>
                 </div>

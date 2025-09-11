@@ -420,8 +420,8 @@ Administrateur
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header"> Bilan :</h6>
                 {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                    <a class="collapse-item" href="phpphamacie/bilan/liste.php">liste Actif</a>
-                    <a class="collapse-item" href="phpphamacie/bilan/liste.php">liste Bilan</a>
+                    <a class="collapse-item" href="{{ path('app_actif_a')}}">Ajouter un Actif</a>
+                    <a class="collapse-item" href="{{ path('app_actif_a_list', {'date': 'now'| date("Y")})}}">liste Actif</a>
                 {% else %}
                     <a class="collapse-item" href="phpphamacie/bilan/actif.php">Actif Bilan</a>
                     <a class="collapse-item" href="phpphamacie/bilan/liste.php">liste Actif</a>
