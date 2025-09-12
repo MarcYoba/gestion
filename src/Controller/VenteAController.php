@@ -398,4 +398,18 @@ class VenteAController extends AbstractController
             'totalVente' => $totalVente,
         ]);
     }
+
+    #[Route(path:"/vente/a/rapport/semaine/prix", name: "vente_a_rapport_semain_prix")]
+    public function Vente_semain_prix(EntityManagerInterface $entityManager): Response
+    {
+
+        return $this->json(['success'=> true,'message'=> 'success']);
+    }
+
+    #[Route(path:"/vente/a/rapport/semaine/quantite", name: "vente_a_rapport_semain_quantite")]
+    public function Vente_semain_quantite(EntityManagerInterface $entityManager): Response
+    {
+        
+        return $this->json(['success'=> true,'message'=> 'success']);
+    }
 }

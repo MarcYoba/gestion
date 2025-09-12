@@ -48,4 +48,9 @@ class CaisseController extends AbstractController
             'caisses' => $caisse,
         ]);
     }
+
+    #[Route('/caisse/etat', name : 'etat de la caisse')]
+    public function Etat_Caisse(){
+         return $this->json(['success'=> true,'message'=> 'success']);
+    }
 }
