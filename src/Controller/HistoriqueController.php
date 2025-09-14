@@ -17,9 +17,15 @@ class HistoriqueController extends AbstractController
     {
         $tempAgence = $em->getRepository(TempAgence::class)->findOneBy(["user"=> $this->getUser()]) ;
         $id = $tempAgence->getAgence()->getId();
-        $client = $em->getRepository(Clients::class)->findAll(["agence"=> $id]);
-
-        $historique = $em->getRepository(Historique::class)->findAll(["agance"=> $id]);
+        $client = new Clients();
+        $historique = new Historique();
+        if ($tempAgence->isGenerale()== 1) {
+            $client = $em->getRepository(Clients::class)->findAll();
+            $historique = $em->getRepository(Historique::class)->findAll();
+        }else{
+            $client = $em->getRepository(Clients::class)->findBy(["agence"=> $id]);
+            $historique = $em->getRepository(Historique::class)->findBy(["agance"=> $id]);
+        }
 
         return $this->render('historique/index.html.twig', [
             'client' => $client,

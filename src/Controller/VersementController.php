@@ -40,9 +40,18 @@ class VersementController extends AbstractController
     public function list(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        $clients = new Clients();
+        $versement = new Versement();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
         $id = $tempagence->getAgence()->getId();
-        $versement = $entityManager->getRepository(Versement::class)->findAll(["id" => $id]);
+        if ($tempagence->isGenerale()== 1) {
+            $clients = $entityManager->getRepository(Clients::class)->findAll();
+            $versement = $entityManager->getRepository(Versement::class)->findAll(["id" => $id]);
+        }else{
+            $clients = $entityManager->getRepository(Clients::class)->findBy(["agence"=> $id]);
+           $versement = $entityManager->getRepository(Versement::class)->findAll(["id" => $id]);
+        }
+        
         $clients = $entityManager->getRepository(Clients::class)->findAll();
         return $this->render('versement/list.html.twig', [
             'versement' => $versement,

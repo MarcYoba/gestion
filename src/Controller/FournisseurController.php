@@ -38,9 +38,15 @@ class FournisseurController extends AbstractController
     public function list(EntityManagerInterface $entityManager): Response
     {   
         $user = $this->getUser();
+        $fournisseur = new Fournisseur();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
         $id = $tempagence->getAgence()->getId();
-        $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll(["agence" => $id]);
+        if ($tempagence->isGenerale()== 1) {
+            $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll();
+        }else{
+            $fournisseur = $entityManager->getRepository(Fournisseur::class)->findBy(["agence" => $id]);
+        }
+        
         return $this->render('fournisseur/list.html.twig', [
             'fournisseurs' => $fournisseur,
         ]);

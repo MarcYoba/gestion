@@ -36,32 +36,43 @@ class HomeController extends AbstractController
         $user = $this->getUser();
         
         if ($id == 0) {
-            $agence = 0;
-                return $this->render('home/dashboard.html.twig', [
-                'agence' => $agence,
-                //'sommevente' => $sommevente,
-            ]);
+            $agence = $entityManager->getRepository(Agence::class)->findAll();
+            $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+            if ($temoporayagence) {
+                $temoporayagence->setGenerale(1);
+                $entityManager->flush();
+            }else{
+                $idagence = $entityManager->getRepository(Agence::class)->find(1);
+                $temoporayagence = new TempAgence();
+                $temoporayagence->setUser($user);
+                $temoporayagence->setAgence($idagence);
+                $temoporayagence->setGenerale(1);
+                $entityManager->persist($temoporayagence);
+                $entityManager->flush();
+            }
+            
+        }else{
+            $agence = $entityManager->getRepository(Agence::class)->findAll();
+            $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+            if ($temoporayagence) {
+                $idagence = $entityManager->getRepository(Agence::class)->find($id);
+                $temoporayagence->setGenerale(0);
+                $temoporayagence->setAgence($idagence);
+                $entityManager->flush();
+            }else{
+                $idagence = $entityManager->getRepository(Agence::class)->find($id);
+                $temoporayagence = new TempAgence();
+                $temoporayagence->setUser($user);
+                $temoporayagence->setAgence($idagence);
+                $temoporayagence->setGenerale(0);
+                $entityManager->persist($temoporayagence);
+                $entityManager->flush();
+            }
         }
 
-        $agence = $entityManager->getRepository(Agence::class)->findAll();
-        //$sommevente = $entityManager->getRepository(Vente::class)->findTotalPriceByYear(date('Y'));
-        $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
-        if ($temoporayagence) {
-            $idagence = $entityManager->getRepository(Agence::class)->find($id);
-            //$temoporayagence = new TempAgence();
-            $temoporayagence->setAgence($idagence);
-            $entityManager->flush();
-        }else{
-            $idagence = $entityManager->getRepository(Agence::class)->find($id);
-            $temoporayagence = new TempAgence();
-            $temoporayagence->setUser($user);
-            $temoporayagence->setAgence($idagence);
-            $entityManager->persist($temoporayagence);
-            $entityManager->flush();
-        }
+        
         return $this->render('home/dashboard.html.twig', [
             'agence' => $agence,
-            //'sommevente' => $sommevente,
         ]);
     }
 
@@ -69,20 +80,40 @@ class HomeController extends AbstractController
     public function dashboardA(EntityManagerInterface $entityManager,int $id): Response
     {
         $user = $this->getUser();
-        $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
-        if ($temoporayagence) {
-            $idagence = $entityManager->getRepository(Agence::class)->find($id);
-            //$temoporayagence = new TempAgence();
-            $temoporayagence->setAgence($idagence);
-            $entityManager->flush();
+
+        if ($id == 0) {
+            $agence = $entityManager->getRepository(Agence::class)->findAll();
+            $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+            if ($temoporayagence) {
+                $temoporayagence->setGenerale(1);
+                $entityManager->flush();
+            }else{
+                $idagence = $entityManager->getRepository(Agence::class)->find(1);
+                $temoporayagence = new TempAgence();
+                $temoporayagence->setUser($user);
+                $temoporayagence->setAgence($idagence);
+                $temoporayagence->setGenerale(1);
+                $entityManager->persist($temoporayagence);
+                $entityManager->flush();
+            } 
         }else{
-            $idagence = $entityManager->getRepository(Agence::class)->find($id);
-            $temoporayagence = new TempAgence();
-            $temoporayagence->setUser($user);
-            $temoporayagence->setAgence($idagence);
-            $entityManager->persist($temoporayagence);
-            $entityManager->flush();
+            $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+            if ($temoporayagence) {
+                $idagence = $entityManager->getRepository(Agence::class)->find($id);
+                $temoporayagence->setGenerale(0);
+                $temoporayagence->setAgence($idagence);
+                $entityManager->flush();
+            }else{
+                $idagence = $entityManager->getRepository(Agence::class)->find($id);
+                $temoporayagence = new TempAgence();
+                $temoporayagence->setUser($user);
+                $temoporayagence->setAgence($idagence);
+                $temoporayagence->setGenerale(0);
+                $entityManager->persist($temoporayagence);
+                $entityManager->flush();
+            }
         }
+        
         $agence = $entityManager->getRepository(Agence::class)->findAll();
         return $this->render('home/dashboardA.html.twig', [
             'agence' => $agence,

@@ -21,6 +21,9 @@ class TempAgence
     #[ORM\JoinColumn(nullable: false)]
     private ?Agence $agence = null;
 
+    #[ORM\Column]
+    private ?bool $generale = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +49,18 @@ class TempAgence
     public function setAgence(?Agence $agence): static
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    public function isGenerale(): ?bool
+    {
+        return $this->generale;
+    }
+
+    public function setGenerale(bool $generale): static
+    {
+        $this->generale = $generale;
 
         return $this;
     }

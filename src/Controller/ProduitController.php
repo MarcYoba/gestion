@@ -50,9 +50,15 @@ class ProduitController extends AbstractController
     public function list(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        $produit = new Produit();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
-        $produit = $entityManager->getRepository(Produit::class)->findAll(["agence" => $id]);
+         if ($tempagence->isGenerale()== 1) {
+            $produit = $entityManager->getRepository(Produit::class)->findAll();
+        }else{
+            $produit = $entityManager->getRepository(Produit::class)->findBy(["agence" => $id]);
+        }
+        
         return $this->render('produit/list.html.twig', [
             'produits' => $produit,
         ]);

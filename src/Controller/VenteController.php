@@ -168,9 +168,14 @@ class VenteController extends AbstractController
     public function list(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        $vente = new Vente();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
         $id = $tempagence->getAgence()->getId();
-        $vente = $entityManager->getRepository(Vente::class)->findAll(["agence" => $id]);
+        if ($tempagence->isGenerale()== 1) {
+            $vente = $entityManager->getRepository(Vente::class)->findAll();
+        }else{
+            $vente = $entityManager->getRepository(Vente::class)->findBy(["agence" => $id]);
+        }
         $produit = $entityManager->getRepository(Produit::class)->findAll();
         $client = $entityManager->getRepository(Clients::class)->findAll();
         return $this->render('vente/list.html.twig', [
