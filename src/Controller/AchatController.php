@@ -79,11 +79,21 @@ class AchatController extends AbstractController
     public function list(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        $produit = 0;
+        $achat = 0;
+        $fournisseur = 0;
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" =>$user]);
         $id = $tempagence->getAgence()->getId();
-        $produit = $entityManager->getRepository(Achat::class)->findAll(["agence" => $id]);
-        $achat = $entityManager->getRepository(Achat::class)->findAll(["agence" => $id]);
-        $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll(["agence" => $id]);
+        if ($tempagence->isGenerale()== 1) {
+            $produit = $entityManager->getRepository(Achat::class)->findAll();
+            $achat = $entityManager->getRepository(Achat::class)->findAll();
+            $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll();
+        }else{
+            $produit = $entityManager->getRepository(Achat::class)->findBy(["agence" => $id]);
+            $achat = $entityManager->getRepository(Achat::class)->findBy(["agence" => $id]);
+            $fournisseur = $entityManager->getRepository(Fournisseur::class)->findBy(["agence" => $id]);
+        }
+        
         return $this->render('achat/list.html.twig', [
             'achat' => $achat,
             'produit' => $produit,

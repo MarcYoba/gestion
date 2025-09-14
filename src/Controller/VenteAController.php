@@ -160,9 +160,15 @@ class VenteAController extends AbstractController
     #[Route('/vente/a/list', name: 'vente_a_list')]
     public function list(EntityManagerInterface $em): Response
     {
+        $vente = new VenteA();
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
         $id = $tempagence->getAgence()->getId();
-        $ventes = $em->getRepository(VenteA::class)->findAll(["agence" => $id]);
+        if ($tempagence->isGenerale()== 1) {
+            $ventes = $em->getRepository(VenteA::class)->findAll();
+        }else{
+            $ventes = $em->getRepository(VenteA::class)->findBy(["agence" => $id]);
+        }
+        
         $produit = $em->getRepository(ProduitA::class)->findAll(["agence" => $id]);
         $client = $em->getRepository(Clients::class)->findAll();
         return $this->render('vente_a/list.html.twig', [
