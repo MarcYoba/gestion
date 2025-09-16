@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rapport du jour{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* CSS personnalisé pour le PDF */
+        body { font-family: Arial, sans-serif; }
+        .header { color: #333; }
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
+    </style>
+</head>
+<body>
+<table style="width:100%">
+    <thead>
+        <tr>
+            <th colspan="6" align="center"> rapport Vente du : </th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for vente in ventes %}
+                <tr>
+                    <td colspan="6" align="center"> Formule   Vente N= {{ vente.id}} / Client : {{ vente.client.nom}} /Tel:{{ vente.client.telephone}}/ utilisateur:{{ app.user.username}}/ heure: {{ vente.heure}}</td>
+                </tr>
+                <tr>
+                    <th scope="col">Nom produit</th>
+                    <th scope="col">quantite</th>
+                    <th scope="col">prix</th>
+                    <th scope="col">montant </th>
+                    <th scope="col">Typepaiement</th>
+                    <th scope="col">datevente</th>
+                </tr>
+                {% for item in items %}
+                    <tr>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            
+        </tbody>
+    </table>        
+</body>
+</html>
+{% endblock %}
