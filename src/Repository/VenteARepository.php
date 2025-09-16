@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\VenteA;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Twig\Node\Expression\Binary\SubBinary;
 
 /**
  * @extends ServiceEntityRepository<VenteA>
@@ -46,7 +47,8 @@ class VenteARepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function findRapportToDay($date) : array {
+    public function findRapportToDay($date) : array 
+    {
         $startDate = (clone $date)->setTime(0, 0, 0);
         $endDate = (clone $date)->setTime(23, 59, 59);
     
@@ -59,4 +61,43 @@ class VenteARepository extends ServiceEntityRepository
         
         ;
     }
+
+    public function findVentesByWeekWithDaysPrix($date): float
+    {
+        $date = new \DateTimeImmutable($date);
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+    
+        $query =  $this->createQueryBuilder('v')
+            ->select('SUM(v.prix)')
+            ->where('v.createAt BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+        ;
+
+        $result = $query->getSingleScalarResult();
+    
+        return (float) $result; // Retourne un float
+    }
+
+    public function findVentesByWeekWithDaysQuantite($date): float
+    {
+        $date = new \DateTimeImmutable($date);
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+    
+        $query =  $this->createQueryBuilder('v')
+            ->select('SUM(v.quantite)')
+            ->where('v.createAt BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+        ;
+
+        $result = $query->getSingleScalarResult();
+    
+        return (float) $result; // Retourne un float
+    }
+        
 }

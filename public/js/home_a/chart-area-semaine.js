@@ -10,17 +10,12 @@ $(document).ready(function() {
       return response.json();
     })
     .then(data => {
-      //console.log(data);   
-      // Parcours des données et affichage
-     for (let proriete in data) {
-      value = data[proriete];
-      index = 0;
-      // for (let  key in value) { 
-      //   tab[index] = value[key];
-      //   //console.log(tab);
-      //   index +=1;
-      // }
-     }
+      let  value = data["message"];
+      let index = 0;
+        for (let  key in value) { 
+          tab[index] = value[key];
+          index +=1;
+        }
      creationGrapeh();
     })
     .catch(error => {
