@@ -31,31 +31,220 @@
 <table style="width:100%">
     <thead>
         <tr>
-            <th colspan="6" align="center"> rapport Vente du : </th>
+            <th colspan="6" align="center"> rapport Vente du : {{ "now" | date("Y-m-d")}} </th>
         </tr>
     </thead>
         <tbody>
+        {%  set sommeVente = 0 %}
+        {%   set sommeCash = 0 %}
+        {%   set sommeOm = 0 %}
+        {%   set sommeCredit = 0 %}
+        {%   set sommeReduction = 0 %}
+         
             {% for vente in ventes %}
                 <tr>
-                    <td colspan="6" align="center"> Formule   Vente N= {{ vente.id}} / Client : {{ vente.client.nom}} /Tel:{{ vente.client.telephone}}/ utilisateur:{{ app.user.username}}/ heure: {{ vente.heure}}</td>
+                    <td colspan="6" align="center"> Formule   Vente N= {{ vente.id}} / Client : {{ vente.client.nom}} /Tel:{{ vente.client.telephone}}/ utilisateur:{{ vente.user.username}}/ heure: {{ vente.heure}}</td>
                 </tr>
                 <tr>
                     <th scope="col">Nom produit</th>
                     <th scope="col">quantite</th>
                     <th scope="col">prix</th>
                     <th scope="col">montant </th>
-                    <th scope="col">Typepaiement</th>
-                    <th scope="col">datevente</th>
+                    <th scope="col">Type paiement</th>
+                    <th scope="col">date vente</th>
                 </tr>
-                {% for item in items %}
+                {% for facture in vente.factureAs %}
                     <tr>
-                        <td></td>
+                        <td> {{ facture.produit.nom}} </td>
+                        <td> {{ facture.quantite}} </td>
+                        <td> {{ facture.prix}} </td>
+                        <td> {{ facture.prix * facture.quantite}} </td>
+                        <td> {{ vente.type}} </td>
+                        <td> {{ facture.createAt | date("Y-m-d")}} </td>
                     </tr>
                 {% endfor %}
+                <tr>
+                    <td>Total</td>
+                    <td>{{ vente.quantite}}</td>
+                    <td>{{ vente.prix / vente.quantite}}</td>
+                    <td>{{ vente.prix}} </td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Reduction</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>{{ vente.reduction}} </td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Net a payer</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>{{ vente.prix}} </td>
+                    <td>FCFA</td>
+                    <td>{{ vente.type}}</td>
+                </tr>
+                {% set sommeVente = sommeVente + vente.prix %}
+                {% set sommeCash = sommeCash + vente.cash %}
+                {% set sommeCredit = sommeCredit + vente.credit %}
+                {% set sommeOm = sommeOm + vente.momo %}
+                {% set sommeReduction = sommeReduction + vente.reduction %}
             {% endfor %}
             
         </tbody>
-    </table>        
+    </table> 
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="10" align="center"> Resultat vente du : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th colspan="10" align="center"> Recapitulatif Vente </th>
+            </tr>
+            <tr>
+                <th scope="col">Total Vente</th>
+                <th scope="col">Total Cash</th>
+                <th scope="col">Total OM</th>
+                <th scope="col">Total Credit </th>
+                <th scope="col">Total reduction</th>
+                <th scope="col">Total Depense</th>
+                <th scope="col">Total Versement</th>
+                <th scope="col">Sortie caise</th>
+                <th scope="col">Net en Caise</th>
+            </tr>
+        </thead>
+            <tbody>
+                <td>{{ sommeVente }}</td>
+                <td> {{ sommeCash }}</td>
+                <td> {{ sommeOm }}</td>
+                <td>{{ sommeCredit }}</td>
+                <td>{{ sommeReduction }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tbody>
+        </thead>
+    </table> 
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="4" align="center"> Tableau Caise : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th colspan="4" align="center"> Recapitulatif Operation caise : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+                <tr>
+                    <th scope="col">operation</th>
+                    <th scope="col">montant</th>
+                    <th scope="col">date</th>
+                    <th scope="col">motif</th>
+                </tr>
+        </thead>
+            <tbody>
+                {% set sommesaisse = 0 %}
+                {% for caisse in caisses %}
+                <tr>
+                    <td>{{caisse.operation}}</td>
+                    <td> {{ caisse.montant}}</td>
+                    <td>{{ caisse.createAt | date("Y-m-d")}}</td>
+                    <td>{{ caisse.motif}}</td>
+                </tr>
+                    {% set sommesaisse = sommesaisse + caisse.nomtant %}
+                {% endfor %}
+                <tr>
+                    <td>Total </td>
+                    <td>{{sommesaisse}}</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </thead>
+    </table>
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="5" align="center"> Quantite Pour chaque produit : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th colspan="5" align="center"> Recapitulatif Quantite Vendue </th>
+            </tr>
+            <tr>
+                <th scope="col">Mon du produit </th>
+                <th scope="col">Quantite debut</th>
+                <th scope="col">Quantite</th>
+                <th scope="col">Quantite fin</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+            <tbody>
+                <th scope="col">0 </th>
+                <th scope="col">0</th>
+                <th scope="col">0</th>
+                <th scope="col">0</th>
+                <th scope="col">0</th>
+            </tbody>
+        </thead>
+    </table>
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="6" align="center"> Tableau Achat  : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th colspan="6" align="center">  Recapitulatif Achat </th>
+            </tr>
+            <tr>
+                <th scope="col">Nom produit</th>
+                <th scope="col">quantite</th>
+                <th scope="col">prix Acaht</th>
+                <th scope="col">montant</th>
+                <th scope="col">fournisseur</th>
+                <th scope="col">date</th>
+            </tr>
+        </thead>
+            <tbody>
+            {% for achat in achats %}
+                <td> {{achat.produit.nom}}</td>
+                <td> {{achat.quantite }} </td>
+                <td> {{achat.prix}} </td>
+                <td> {{achat.montant}}</td>
+                <td>{{achat.forunisseur.nom}}</td>
+                <td>{{achat.createdAt | date("Y-m-d")}}</td>
+            {% endfor %}
+            </tbody>
+        </thead>
+    </table>
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="4" align="center">  : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th colspan="4" align="center">  : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                    <th scope="col">operation</th>
+                    <th scope="col">montant</th>
+                    <th scope="col">date</th>
+                    <th scope="col">motif</th>
+                </tr>
+        </thead>
+            <tbody>
+            
+            </tbody>
+        </thead>
+    </table>
+
 </body>
 </html>
 {% endblock %}
