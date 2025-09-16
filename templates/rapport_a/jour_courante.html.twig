@@ -213,12 +213,14 @@
         </thead>
             <tbody>
             {% for achat in achats %}
-                <td> {{achat.produit.nom}}</td>
-                <td> {{achat.quantite }} </td>
-                <td> {{achat.prix}} </td>
-                <td> {{achat.montant}}</td>
-                <td>{{achat.forunisseur.nom}}</td>
-                <td>{{achat.createdAt | date("Y-m-d")}}</td>
+                <tr>
+                    <td> {{achat.produit.nom}}</td>
+                    <td> {{achat.quantite }} </td>
+                    <td> {{achat.prix}} </td>
+                    <td> {{achat.montant}}</td>
+                    <td>{{achat.forunisseur.nom}}</td>
+                    <td>{{achat.createdAt | date("Y-m-d")}}</td>
+                <tr>
             {% endfor %}
             </tbody>
         </thead>
