@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\AchatA;
+use App\Entity\CaisseA;
 use App\Entity\VenteA;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -9,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Symfony\Component\HttpFoundation\Request;
 
 class RapportAController extends AbstractController
 {
@@ -20,10 +23,61 @@ class RapportAController extends AbstractController
         $dompdf = new Dompdf($options);
         $date = date("Y-m-d");
         $date = new \DateTimeImmutable($date);
+        $caisse = $em->getRepository(CaisseA::class)->findBy(["createAt" => $date]);
         $vente = $em->getRepository(VenteA::class)->findRapportToDay( $date);
+        $achat = $em->getRepository(AchatA::class)->findByDate($date);
+        
         //dd($vente);
         $html = $this->renderView('rapport_a/jour_courante.html.twig', [
-        'ventes' => $vente
+        'ventes' => $vente,
+        'achats' => $achat,
+        'caisses' => $caisse
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="document.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
+    }
+
+    #[Route('/rapport/a/hier', name: 'app_rapport_a_hier')]
+    public function rapport_hier(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $date = date("Y-m-d");
+        if ($request->isMethod('POST')) {
+           $date = $request->request->get('date');
+           if(empty($date))
+           {
+                $this->addFlash("error", "Vous deviez selectiion aune date valide");
+                return $this->redirectToRoute("app_rapport_a");
+           }
+        }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        
+        $date = new \DateTimeImmutable($date);
+        $caisse = $em->getRepository(CaisseA::class)->findBy(["createAt" => $date]);
+        $vente = $em->getRepository(VenteA::class)->findRapportToDay( $date);
+        $achat = $em->getRepository(AchatA::class)->findByDate($date);
+        
+        //dd($vente);
+        $html = $this->renderView('rapport_a/jour_courante.html.twig', [
+        'ventes' => $vente,
+        'achats' => $achat,
+        'caisses' => $caisse
         ]);
 
         $dompdf->loadHtml($html);

@@ -57,16 +57,16 @@
                                 </div>
                                 
                                 <hr>
-                            <form class="user" action="#" method="post">
+                            <form class="user" action="{{path('app_rapport_a_hier')}}" method="post">
                                 <hr>
                                 <div class="form-group row">
                                     <div class="col-sm-4">
                                         <input type="date" class="form-control form-control-user" id="date"
-                                        name="date" placeholder="telephone client">
+                                        name="date" required>
                                     </div>
                                     <div class="col-sm-4"></div>
                                     <div class="col-sm-4">
-                                    <a href="#">
+                                    <a href="{{path('app_rapport_a_hier')}}">
                                             <button type="" name="" id="" class="btn btn-success btn-user btn-block">
                                             Rapport pour chaque Date
                                             </button> 
