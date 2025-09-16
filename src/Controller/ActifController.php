@@ -38,7 +38,7 @@ class ActifController extends AbstractController
             $em->flush();
 
             $this->addFlash('success','');
-            return $this->redirectToRoute('app_actif_list'.date("Y"));
+            return $this->redirectToRoute('app_actif_list', ['date' => date("Y")]);
         }
         return $this->render('actif/index.html.twig', [
             'form' => $form->createView(),
@@ -77,7 +77,7 @@ class ActifController extends AbstractController
     public function edite(EntityManagerInterface $entityManager, Request $request, int $id){
         $Actif = $entityManager->getRepository(Actif::class)->find(["id" => $id]);
         $form = $this->createForm(ActifType::class, $Actif);
-        $form->handleRequest($Request);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             
@@ -88,10 +88,10 @@ class ActifController extends AbstractController
         ]);
     }
 
-    #[Route('/actif/edit/{id}', name: 'app_actif_delete')]
-    public function delete(EntityManagerInterface $entityManager, int $id) : Returntype {
+    #[Route('/actif/delete/{id}', name: 'app_actif_delete')]
+    public function delete(EntityManagerInterface $entityManager, int $id) : Response {
        $Actif = $entityManager->getRepository(Actif::class)->find(["id" => $id]);
        $entityManager->remove($Actif);
-        return $this->redirectToRoute('app_actif_list'.date("Y"));
+        return $this->redirectToRoute('app_actif_list', ['date' => date("Y")]);
     }
 }
