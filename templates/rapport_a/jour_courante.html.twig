@@ -212,6 +212,9 @@
             </tr>
         </thead>
             <tbody>
+            {% set sommeachat = 0 %}
+            {% set achatquantite = 0 %}
+            {% set achatPrix = 0 %}
             {% for achat in achats %}
                 <tr>
                     <td> {{achat.produit.nom}}</td>
@@ -220,8 +223,20 @@
                     <td> {{achat.montant}}</td>
                     <td>{{achat.forunisseur.nom}}</td>
                     <td>{{achat.createdAt | date("Y-m-d")}}</td>
+
+                    {% set sommeachat = sommeachat + achat.montant %}
+                    {% set achatquantite = achatquantite + achat.quantite %}
+                    {% set achatPrix = achatPrix + achat.prix %}
                 </tr>
             {% endfor %}
+            <tr>
+                <td>Total</td>
+                <td>{{ achatquantite }}</td>
+                <td>{{ achatPrix }}</td>
+                <td> {{ sommeachat }} </td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
             </tbody>
         </thead>
     </table>
