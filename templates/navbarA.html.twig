@@ -154,7 +154,7 @@
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Operation des Stock</h6>
             <a class="collapse-item" href="{{ path('app_historique_a')}}">Historique </a>
-            <a class="collapse-item" href="#">Recapitulatif</a>
+            <a class="collapse-item" href="{{ path('app_stock_a_recapitulatif')}}">Recapitulatif</a>
             <a class="collapse-item" href="#" >Stock Initiale / Inventaire</a>
     </div>
 </div>
@@ -380,7 +380,7 @@ Administrateur
         <div id="jounale" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Journal Comptable:</h6>
-                <a class="collapse-item" href="phpphamacie/comptabilite/Journale.php">Jounal</a> 
+                <a class="collapse-item" href="#">Jounal</a> 
             </div>
         </div>
 </li>
@@ -393,8 +393,8 @@ Administrateur
         <div id="inventaire" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Analyse Evolutive:</h6>
-                <a class="collapse-item" href="phpphamacie/comptabilite/inventaire.php">Analyse Evolutive Moi</a> 
-                <a class="collapse-item" href="phpphamacie/comptabilite/invantairesemaine.php">Analyse Evolutive Semaine</a> 
+                <a class="collapse-item" href="#">Analyse Evolutive Moi</a> 
+                <a class="collapse-item" href="#">Analyse Evolutive Semaine</a> 
             </div>
         </div>
 </li>
@@ -408,9 +408,9 @@ Administrateur
         <div id="etatresultat" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Etat des resultats:</h6>
-                <a class="collapse-item" href="phpphamacie/comptabilite/etatresultat.php">marge beneficiere</a> 
-                <a class="collapse-item" href="phpphamacie/comptabilite/chiffreaffaire.php">CHIFFRE AFFAIRES</a>
-                <a class="collapse-item" href="phpphamacie/comptabilite/ProduitStocks.php">Production et Stocks</a>  
+                <a class="collapse-item" href="#">marge beneficiere</a> 
+                <a class="collapse-item" href="#">CHIFFRE AFFAIRES</a>
+                <a class="collapse-item" href="#">Production et Stocks</a>  
             </div>
         </div>
     </li>
@@ -427,10 +427,10 @@ Administrateur
                     <a class="collapse-item" href="{{ path('app_actif_a')}}">Ajouter un Actif</a>
                     <a class="collapse-item" href="{{ path('app_actif_a_list', {'date': 'now'| date("Y")})}}">liste Actif</a>
                 {% else %}
-                    <a class="collapse-item" href="phpphamacie/bilan/actif.php">Actif Bilan</a>
-                    <a class="collapse-item" href="phpphamacie/bilan/liste.php">liste Actif</a>
-                    <a class="collapse-item" href="phpphamacie/bilan/passif.php">Passif Bilan</a>
-                    <a class="collapse-item" href="phpphamacie/bilan/listepasif.php">liste Passif</a>
+                    <a class="collapse-item" href="#">Actif Bilan</a>
+                    <a class="collapse-item" href="#">liste Actif</a>
+                    <a class="collapse-item" href="#">Passif Bilan</a>
+                    <a class="collapse-item" href="$">liste Passif</a>
                 {% endif %}
                 
             </div>
