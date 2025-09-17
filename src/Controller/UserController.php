@@ -108,6 +108,17 @@ class UserController extends AbstractController
             'user' => $user,
         ]);
     }
+
+    /**
+     *@Route(path ="/user/list/a" , name="user_list_a")
+     */
+    public function list_a(EntityManagerInterface $entityManager) : Response {
+        
+       $user = $entityManager->getRepository(User::class)->findAll();
+        return $this->render('security/list_a.html.twig',[
+            'user' => $user,
+        ]);
+    }
     #[Route(path : '/user/edit/{id}' , name: 'user_edit')]
     public function edit(EntityManagerInterface $entityManager, Request $request, int $id) : Response {
         

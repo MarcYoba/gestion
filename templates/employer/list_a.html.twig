@@ -1,10 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}List{% endblock %}
+{% block title %} Employer{% endblock %}
 
 {% block body %}
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,19 +14,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Liste utilisateur</title>
+    <title>Gestion de stock</title>
 
     <!-- Custom fonts for this template -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -38,7 +26,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        {% include "navbar.html.twig" %}
+        {% include "navbarA.html.twig" %}
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -55,25 +43,34 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Utilisateur</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Table des Salaires</h1>
                     <p class="mb-4">
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Tables Utilisateur</h6>
+                        <div class="form-group row">
+                                <div class="col-sm-10">
+                                    <h6 class="m-0 font-weight-bold text-primary">Tables des Salaire</h6>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="{{ path('app_employer_a')}}" class="btn btn-primary btn-user btn-block">
+                                        <i class="fas fa-plus"></i> Personnel
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-page-length='25' data-order='[[0, "desc"]]'>
                                     <thead>
                                        
                                         <tr>
                                             <th>id</th>
                                             <th>Nom</th>
-                                            <th>Email</th>
-                                            <th>Role</th>
-                                            <th>Telephone</th>
+                                            <th>Agence</th>
+                                            <th>Date</th>
+                                            <th>Roles</th>
                                             <th>Operation</th>
                                         </tr>
                                     </thead>
@@ -81,32 +78,33 @@
                                         <tr>
                                             <th>id</th>
                                             <th>Nom</th>
-                                            <th>Email</th>
-                                            <th>Role</th>
-                                            <th>Telephone</th>
+                                            <th>Agence</th>
+                                            <th>Date</th>
+                                            <th>Roles</th>
                                             <th>Operation</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        {% for users in user %}
-                                        <tr>
-                                            <td>{{ users.id }}</td>
-                                            <td>{{ users.username }}</td>
-                                            <td>{{ users.email }}</td>
-                                            <td> 
-                                                {% for role in users.roles %}
-                                                    {{ role }}
-                                                {% endfor %}
-                                            </td>
-                                            <td>{{ users.telephone }}</td>
+                                        {% for employ in employers %}
+                                           <tr>
+                                            <td>{{ employ.id }}</td>
+                                            <td>{{ employ.nom }}</td>
+                                            <td>{{ employ.agence.nom }}</td>
+                                            <td>{{ employ.createdAt|date("d/m/Y") }}</td>
                                             <td>
-                                                <a href="{{ path('user_edit', {'id': users.id}) }}" class='btn btn-primary'><i class='fas fa-pencil-alt '></i></a>
-                                                <a href="{{ path('user_delete', {'id': users.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur");'><i class='fas fa-trash-alt'></i></a>
-                                            </td> 
-                                        </tr>
+                                                {{ employ.poste }}
+                                                
+                                            </td>
+                                            <td>
+                                                <button class='btn btn-primary' ><i class='fas fa-pencil-alt'></i></button>
+                                                <a href='#' class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer cette vente ?");'>
+                                                <i class='fas fa-trash-alt'></i></a>
+                                            </td>
+                                           </tr> 
                                         {% endfor %}
-                                        
-                                          
+                                   
+                                            
+                                            
                                     </tbody>
                                 </table>
                             </div>
@@ -123,7 +121,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Production &copy;  {{ "now" | date("Y")}}</span>
+                        <span> {{ "now"|date("d/m/Y") }}</span>
                     </div>
                 </div>
             </footer>
@@ -147,5 +145,4 @@
 </body>
 
 </html>
-
 {% endblock %}
