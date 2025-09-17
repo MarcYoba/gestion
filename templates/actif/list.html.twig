@@ -51,18 +51,19 @@
                             <h6 class="m-0 font-weight-bold text-primary">Structure du bilan</h6>
                             <br>
                             <div class=" form-group row">
-                                <div class="col-md-2" >
-                                    <button class="btn btn-info btn-user btn-block">Bilan au </button>
-                                </div>
                                 <div class="col-md-2">
+                                <button class="btn btn-info btn-user btn-block">Bilan au </button>
                                     <select class="form-control" id="annee" name="annee" onchange="AnneBilan()">
                                         {% for currentYear in 2022..2040 %}
                                             <option value="{{ currentYear }}"> {{ currentYear }} </option>
                                         {% endfor %}
                                     </select>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <button class="btn btn-primary btn-user" onclick="UpdateActif()">Mise à jour de l'actif</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <a class="btn btn-primary btn-user"  href="{{ path('app_actif') }}"><i class="fas fa-plus"></i> actif</a>
                                 </div>
                                 <form action="registerbilan.php" method="post">
                                     <div class="col-md-3">
@@ -78,28 +79,34 @@
                                 <table class="table table-bordered" id="tableactif" width="100%" cellspacing="0" data-page-length='50' >
                                     <thead>
                                         <tr>
+                                            <th rowspan="2" style="text-align: center;">REF</th>
                                             <th rowspan="2" style="text-align: center;">Actif</th>
                                             <th colspan="4" style="text-align: center;" id="date">{{ date}}</th>
+                                            <th style="text-align: center;">EXERCICE N-1</th>
                                         </tr>
                                         <tr>
                                             <th>BRUT</th>
                                             <th>AMORT/PROV</th>
                                             <th>NET</th>
                                             <th>Operation</th>
+                                            <th>NET</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th>REF</th>
                                             <th>Actif</th>
                                             <th>BRUT</th>
                                             <th>AMORT/PROV</th>
                                             <th>NET</th>
                                             <th>Operation</th>
+                                            <th>NET</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         {% for actif in Actifs %}
-                                            <tr>    
+                                            <tr> 
+                                                <td style="color: blue;">{{ actif.REF }}</td>   
                                                 <td style="color: blue;">{{ actif.libelle }}</td>
                                                 <td style="color: blue;">{{ actif.brut }}</td>
                                                 <td style="color: blue;">{{ actif.amortissement }}</td>
@@ -107,9 +114,19 @@
                                                 <td>
                                                     <a href="{{ path('app_actif_edite',{'id': actif.id})}}" class='btn btn-primary' id='modification'><i class='fas fa-pencil-alt '></i></a>
                                                     <a href="{{ path('app_actif_delete',{'id': actif.id})}}" class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de supprimer cette ligne ?\");'><i class='fas fa-trash-alt'></i></a>
-                                                </td>        
+                                                </td> 
+                                                <td></td>        
                                             </tr>
                                         {% endfor %} 
+                                        <tr>
+                                            <td style="color: blue;">Total GENERALE</td>    
+                                                <td style="color: blue;"></td>
+                                                <td style="color: blue;"></td>
+                                                <td style="color: blue;"></td>
+                                                <td style="color: blue;"></td> 
+                                                <td></td> 
+                                                <td></td>        
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
