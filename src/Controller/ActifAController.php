@@ -28,8 +28,6 @@ class ActifAController extends AbstractController
             if ($nombre) {
                 $ordre = $nombre->getId();
             }
-            
-
             $Actif->setOrdre($ordre+1 );
             $Actif->setAgence($tempAgence->getAgence());
             $Actif->setUser($this->getUser());
@@ -38,7 +36,7 @@ class ActifAController extends AbstractController
             $em->flush();
 
             $this->addFlash('success','');
-            return $this->redirectToRoute('app_actif_list'.date("Y"));
+            return $this->redirectToRoute('app_actif_a_list', ["date" => date("Y")]);
         }
         return $this->render('actif_a/index.html.twig', [
             'form' => $form->createView(),
@@ -50,7 +48,7 @@ class ActifAController extends AbstractController
     {
         $tempAgence = $em->getRepository(TempAgence::class)->findOneBy(["user"=> $this->getUser()]) ;
         $id = $tempAgence->getAgence()->getId();
-        $Actif =  $em->getRepository(ActifA::class)->findAll(["agence"=> $id]);
+        $Actif =  $em->getRepository(ActifA::class)->findBy(["agence"=> $id]);
         return $this->render('actif_a/list.html.twig', [
             'Actifs' => $Actif,
             'date' => $date,
@@ -64,20 +62,17 @@ class ActifAController extends AbstractController
             $json = $request->getContent();
             $donnees = json_decode($json, true);
             if (isset($donnees)) {
-                
                 return $this->json(['error' => 'Mise a jour du bilan','donne'=>$donnees], 200);
-                
             }
-
         }
         return $this->json(['error' => 'Erreur de bilan'], 404);
     }
 
     #[Route('/actif/a/edit/{id}', name: 'app_actif_a_edite')]
     public function edite(EntityManagerInterface $entityManager, Request $request, int $id){
-        $Actif = $entityManager->getRepository(Actif::class)->find(["id" => $id]);
-        $form = $this->createForm(ActifType::class, $Actif);
-        $form->handleRequest($Request);
+        $Actif = $entityManager->getRepository(ActifA::class)->find(["id" => $id]);
+        $form = $this->createForm(ActifAType::class, $Actif);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             
@@ -89,9 +84,9 @@ class ActifAController extends AbstractController
     }
 
     #[Route('/actif/a/edit/{id}', name: 'app_actif_a_delete')]
-    public function delete(EntityManagerInterface $entityManager, int $id) : Returntype {
-       $Actif = $entityManager->getRepository(Actif::class)->find(["id" => $id]);
+    public function delete(EntityManagerInterface $entityManager, int $id) : Response {
+       $Actif = $entityManager->getRepository(ActifA::class)->find(["id" => $id]);
        $entityManager->remove($Actif);
-        return $this->redirectToRoute('app_actif_list'.date("Y"));
+        return $this->redirectToRoute('app_actif_list', ["date" => date("Y")]);
     }
 }

@@ -41,6 +41,9 @@ class ActifA
     #[ORM\ManyToOne(inversedBy: 'actifAs')]
     private ?Agence $agence = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $REF = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -150,6 +153,18 @@ class ActifA
     public function setAgence(?Agence $agence): static
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    public function getREF(): ?string
+    {
+        return $this->REF;
+    }
+
+    public function setREF(string $REF): static
+    {
+        $this->REF = $REF;
 
         return $this;
     }
