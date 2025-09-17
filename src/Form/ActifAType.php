@@ -22,6 +22,12 @@ class ActifAType extends AbstractType
                 'placeholder'=> "Libelle Actif"
                 ],
             ])
+            ->add('REF',TextType::class,[
+                'label'=> 'Libelle',
+                'attr' => [ "class" => "form-control form-control-user",
+                'placeholder'=> "Liste des actif REF"
+                ],
+            ])
             ->add('brut', NumberType::class,[
                 'label'=> 'Montant Brut',
                 'attr' => [ "class" => "form-control form-control-user",
@@ -55,12 +61,12 @@ class ActifAType extends AbstractType
                     'placeholder'=> "Choisir une cathegorie"
                 ],
                 'choices' => [
-                     "Incorporelles"=>"Immobilisations Incorporelles",
-                     "corporelles"=>"Immobilisations corporelles",
-                     "financieres"=>"Immobilisations financières",
-                     "circulant"=>"ACTIF CIRCULANT",
-                     "trsorerieactif"=>"TRESORERIE-ACTIF",
-                     "differentiels"=>"produits différentiels",
+                     "Immobilisations Incorporelles" => "Incorporelles",
+                     "corporelles Immobilisations"=>"corporelles",
+                     "financieres Immobilisations"=>"financières",
+                     " ACTIF immobilise"=>"IMMOBILISE",
+                     " ACTIF circulant"=>"CIRCULANT",
+                     "TRESORERIE-ACTIF"=> "tresorerie",
                 ],
             ])
         ;
