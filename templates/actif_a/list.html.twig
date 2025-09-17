@@ -81,21 +81,25 @@
                                             <th rowspan="2" style="text-align: center;">REF</th>
                                             <th rowspan="2" style="text-align: center;">Actif</th>
                                             <th colspan="4" style="text-align: center;" id="date">{{ date}}</th>
+                                            <th style="text-align: center;">EXERCICE N-1</th>
                                         </tr>
                                         <tr>
                                             <th>BRUT</th>
                                             <th>AMORT/PROV</th>
                                             <th>NET</th>
                                             <th>Operation</th>
+                                            <th>NET</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th>REF</th>
                                             <th>Actif</th>
                                             <th>BRUT</th>
                                             <th>AMORT/PROV</th>
                                             <th>NET</th>
                                             <th>Operation</th>
+                                            <th>NET</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -109,9 +113,19 @@
                                                 <td>
                                                     <a href="{{ path('app_actif_a_edite',{'id': actif.id})}}" class='btn btn-primary' id='modification'><i class='fas fa-pencil-alt '></i></a>
                                                     <a href="{{ path('app_actif_a_delete',{'id': actif.id})}}" class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de supprimer cette ligne ?\");'><i class='fas fa-trash-alt'></i></a>
-                                                </td>        
+                                                </td>  
+                                                <td></td>       
                                             </tr>
                                         {% endfor %} 
+                                        <tr>
+                                            <td style="color: blue;">Total GENERALE</td>    
+                                                <td style="color: blue;"></td>
+                                                <td style="color: blue;"></td>
+                                                <td style="color: blue;"></td>
+                                                <td style="color: blue;"></td> 
+                                                <td></td> 
+                                                <td></td>        
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
