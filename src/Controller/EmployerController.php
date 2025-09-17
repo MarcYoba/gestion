@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Employer;
 use App\Entity\User;
 use App\Entity\Agence;
+use App\Entity\TempAgence;
 use App\Form\EmployerType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,6 +34,30 @@ class EmployerController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/employer/a/create', name: 'app_employer_a')]
+    public function index_a(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $emplyer = new Employer();
+        $form = $this->createForm(EmployerType::class,$emplyer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+           $emplyer->setNom($emplyer->getUser()->getUsername());
+            $entityManager->persist($emplyer);
+            $entityManager->flush();
+
+           return $this->redirectToRoute("employer_list_a", ['id' => $emplyer->getId()]);
+        }
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+        $id = $tempagence->getAgence()->getId();
+        
+        return $this->render('employer/index_a.html.twig', [
+            'form' => $form->createView(),
+            'id' => $id
+        ]);
+    }
+
     /**
      * @Route(path ="/employer/list", name="employer_list")
      */
@@ -42,6 +67,21 @@ class EmployerController extends AbstractController
         $agence = $entityManager->getRepository(Agence::class)->findAll();
         $user = $entityManager->getRepository(User::class)->findAll();
         return $this->render('employer/list.html.twig', [
+            'employers' => $emplyer,
+            'agence' => $agence,
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * @Route(path ="/employer/a/list", name="employer_list_a")
+     */
+    public function list_a(EntityManagerInterface  $entityManager): Response
+    {
+        $emplyer = $entityManager->getRepository(Employer::class)->findAll();
+        $agence = $entityManager->getRepository(Agence::class)->findAll();
+        $user = $entityManager->getRepository(User::class)->findAll();
+        return $this->render('employer/list_a.html.twig', [
             'employers' => $emplyer,
             'agence' => $agence,
             'user' => $user,

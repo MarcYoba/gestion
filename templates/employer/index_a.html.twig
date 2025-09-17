@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EmployerController!{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+    
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    
+    <style>
+        .drop{
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body class="bg-gradient-success">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="form-group row">
+                    <div class="col-lg-2 d-none d-lg-block bg-register-image">
+                        {% include "navbarA.html.twig" %}
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <div class="form-group row">
+                                    <div class="col-sm-10">
+                                        <h1 class="h4 text-gray-900 mb-4">Enregistrement Employer ( Ajouter un employer a une agence )</h1>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a  href="{{ path('app_home_dashboardA', {'id': id}) }}" class="btn btn-primary btn-user btn-block"> Retour</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_errors(form) }}
+                            {{ form_start(form) }}
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_row(form.createdAt) }} 
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        {{ form_label(form.user) }}<br>
+                                            {{ form_widget(form.user,{
+                                                'attr':{
+                                                    'class':'form-control form-control-user',
+                                                    'required':'required',
+                                                    'size':'4'
+                                                }
+                                            }) }}
+                                        {{ form_errors(form.user) }}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    
+                                    <div class="col-sm-6">
+                                        {{ form_label(form.agence) }}<br>
+                                            {{ form_widget(form.agence,{
+                                                'attr':{
+                                                    'class':'form-control form-control-user',
+                                                    
+                                                    'required':'required',
+                                                    'size':'4'
+                                                }
+                                            }) }}
+                                        {{ form_errors(form.agence) }}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        {{ form_label(form.poste) }}
+                                        {{ form_widget(form.poste,{
+                                            'attr':{
+                                                'class':'form-control form-control-user',
+                                                'required':'required',
+                                                'size':'4'
+                                            }
+                                        }) }}
+                                        {{ form_errors(form.poste) }}
+                                        
+                                    </div>
+                                    
+                                </div>
+                                <hr>
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                <button type="submit"  class="btn btn-primary btn-user btn-block">
+                                    Enregistrer un nouveau employer
+                                </button>
+                                </span>
+                           
+                            {{ form_end(form) }}
+                            <hr>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+
+</body>
+</html>
+{% endblock %}
