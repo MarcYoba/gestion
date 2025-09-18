@@ -116,10 +116,12 @@
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('app_produit_a') }}" id="ajouterProduit">Ajouter</a>
                 <a class="collapse-item" href="{{ path('produit_a_list') }}">List des produits</a>
+                <a class="collapse-item" href="{{ path('app_produit_a_import') }}">Import des produits</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_produit_a') }}" id="ajouterProduit">Ajouter</a>
                 <a class="collapse-item" href="{{ path('produit_a_list') }}">List</a>
-                <a class="collapse-item" href="phpphamacie/produit/Peramtion.php">Date Peramtion</a>
+                <a class="collapse-item" href="#">Date Peramtion</a>
+                <a class="collapse-item" href="{{ path('app_produit_a_import') }}">Import des produits</a>
             {% endif %}
             
     </div>
