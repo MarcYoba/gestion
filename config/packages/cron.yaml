@@ -1,0 +1,3 @@
+cron_cron:
+    manager:
+        type: 'memory'  # Au lieu de 'orm'

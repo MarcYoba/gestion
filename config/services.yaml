@@ -30,3 +30,5 @@ services:
     App\EventSubscriber\ActivitySubscriber:
         tags:
             - { name: kernel.event_subscriber }
+    App\Service\ProductHistoryService:
+        tags: ['cron.job']
