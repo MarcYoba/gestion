@@ -93,12 +93,15 @@
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Operation des clients</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="#">liste client</a>
+                <a class="collapse-item" href="{{ path('app_client_a_create')}}" >ajouter un client</a>
+                <a class="collapse-item" href="{{ path("app_cleints_a_list")}}">liste client</a>
                 <a class="collapse-item" href="#">liste des client Inactif</a>
+                <a class="collapse-item" href="{{ path('app_client_a_import')}}">Importer une liste</a>
             {% else %}
-                <a class="collapse-item" href="#" >ajouter un client</a>
-                <a class="collapse-item" href="#">liste client</a>
+                <a class="collapse-item" href="{{ path('app_client_a_create')}}" >ajouter un client</a>
+                <a class="collapse-item" href="{{ path("app_cleints_a_list")}}">liste client</a>
                 <a class="collapse-item" href="#">liste des client Inactif</a>
+                <a class="collapse-item" href="{{ path('app_client_a_import')}}">Importer une liste</a>
             {% endif %}
             
     </div>
