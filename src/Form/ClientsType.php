@@ -15,11 +15,16 @@ class ClientsType extends AbstractType
         $builder
             ->add('nom',TextType::class,[
                 'label'=> 'nom du client',
-                'class' => 'form-control form-control-user'
+                "attr" =>[
+                    'class' => 'form-control form-control-user'
+                ]
+                
             ])
             ->add('telephone', TextType::class,[
                 'label'=> 'Telephone client',
-                'class' => 'form-control form-control-user'
+                "attr" =>[
+                    'class' => 'form-control form-control-user'
+                ]
             ])
         ;
     }

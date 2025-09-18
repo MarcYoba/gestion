@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Clients;
+use App\Entity\TempAgence;
 use App\Form\ClientsType;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Func;
 use PhpOffice\PhpSpreadsheet\Calculation\TextData\Replace;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -123,4 +125,84 @@ class ClientsController extends AbstractController
         }
         return $this->json(['error' => false, 'message' => 'Vous deviez entrer les informations du clients']);
     }
+
+    #[Route('/clients/a/list', name:'app_cleints_a_list')]
+    public function List_a(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+            $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
+            $agence = $tempagence->getAgence()->getId();
+        $client = $entityManager->getRepository(Clients::class)->findAll();
+
+        return $this->render("clients/list_a.html.twig",[
+            "clients" => $client,
+            "id" => $agence
+        ]);
+    }
+
+    #[Route('/clients/a/creat', name:'app_client_a_create')]
+    public function create(Request $request, EntityManagerInterface $entityManager,UserPasswordHasherInterface $userPasswordHasher) : Response 
+    {
+
+        $user = $this->getUser();
+            $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
+            $agence = $tempagence->getAgence()->getId();
+        
+        $clients = new Clients();
+        $form = $this->createForm(ClientsType::class,$clients);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {   
+            $user = new User();
+            $adresse = $request->request->get('Adress');
+            $data = $form->getData();
+
+            $defaulpass = "123456789";
+                $heure = date("s");
+                $nom = str_replace(" ","", $data->getNom());
+                $defaultEmail = $nom.$heure.'@gmail.com';
+
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $defaulpass
+                    )
+                );
+            
+            $user->setUsername($data->getNom());
+                $user->setRoles(['ROLE_CLIENTS']);
+                $user->setEmail($defaultEmail);
+                $user->setCreatedAt(new \DateTimeImmutable());
+                $user->setTelephone($data->getTelephone());
+                $user->setLocalisation($adresse);
+                $user->setSpeculation('000');
+
+
+                $user->getClients()->setNom( $data->getNom());
+                $user->getClients()->setTelephone( $data->getTelephone() );
+                $user->getClients()->setCreatedAt( new \DateTimeImmutable);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute("app_cleints_a_list");
+        }
+        return $this->render("clients/index_a.html.twig",[
+            "form" => $form->createView(),
+            "id" => $agence
+        ]);
+    }
+
+    #[Route('/clients/a/import', name:'app_client_a_import')] 
+    public function import(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
+            $agence = $tempagence->getAgence()->getId();
+        return $this->render("clients/import.html.twig",[
+            "id" => $agence
+        ]);
+    }   
+
 }

@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clients{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+</head>
+
+<body class="bg-gradient-success">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-12">
+                        <div class="p-5">
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                <h6 class="m-0 font-weight-bold text-primary">Tables des Clients</h6>     
+                                </div>
+                                <div class="col-sm-2">
+                                <i class="fa fa-home"></i>
+                                    <a href="{{ path('app_home_dashboardA', {'id': id}) }}" class="btn btn-primary">Home</a> 
+                                </div>
+                                <div class="col-sm-2">
+                                    <i class="fa fa-list"></i> 
+                                    <a href="{{ path('app_cleints_a_list')}}" class="btn btn-success"> Liste</a>
+                                                
+                                </div>
+                                <!--<div class="btn btn-warning"><i class="fa fa-arrow-left"></i> Retour</div>  -->  
+                            </div>
+                            <hr>
+                            <form class="user" action="#" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <p>
+                                        <h6>Pour enregistrer une liste de clients, vous devez télécharger le template suivant.<br>
+                                            1. Enregistrez les informations comme les colonnes l'indiquent.<br>
+                                            2. Enregistrez le template sous un nom court sans espace en cas de modification.<br>
+                                            3. Importez le modèle dans l'application.<br>
+                                            4. Enfin, cliquez sur enregistrer.<br>
+
+                                        </h6>                                        
+                                            <button type="template" name="template" id="template" class="btn btn-info btn-user btn-block">
+                                                Télécharger le Template
+                                            </button>
+                                    </p>
+                                    <input type="file" class="form-control form-control-user" id="file_excel"
+                                       name="file_excel" >
+                                </div>
+                                <button type="submit" name="submit" id="submit" class="btn btn-primary btn-user btn-block">
+                                    Telecharger
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+{% endblock %}
