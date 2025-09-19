@@ -26,7 +26,7 @@ class Achat
     #[ORM\Column]
     private ?float $montant = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: 'created_at', type: 'datetime_immutable')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'achat')]

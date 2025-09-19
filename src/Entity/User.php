@@ -122,6 +122,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ActifA::class)]
     private Collection $actifAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Passif::class)]
+    private Collection $passifs;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PassifA::class)]
+    private Collection $passifAs;
+
     
 
     public function __construct() {
@@ -150,6 +156,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->caisseAs = new ArrayCollection();
         $this->actifs = new ArrayCollection();
         $this->actifAs = new ArrayCollection();
+        $this->passifs = new ArrayCollection();
+        $this->passifAs = new ArrayCollection();
         
     }
 
@@ -983,6 +991,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($actifA->getUser() === $this) {
                 $actifA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Passif>
+     */
+    public function getPassifs(): Collection
+    {
+        return $this->passifs;
+    }
+
+    public function addPassif(Passif $passif): static
+    {
+        if (!$this->passifs->contains($passif)) {
+            $this->passifs->add($passif);
+            $passif->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePassif(Passif $passif): static
+    {
+        if ($this->passifs->removeElement($passif)) {
+            // set the owning side to null (unless already changed)
+            if ($passif->getUser() === $this) {
+                $passif->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PassifA>
+     */
+    public function getPassifAs(): Collection
+    {
+        return $this->passifAs;
+    }
+
+    public function addPassifA(PassifA $passifA): static
+    {
+        if (!$this->passifAs->contains($passifA)) {
+            $this->passifAs->add($passifA);
+            $passifA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePassifA(PassifA $passifA): static
+    {
+        if ($this->passifAs->removeElement($passifA)) {
+            // set the owning side to null (unless already changed)
+            if ($passifA->getUser() === $this) {
+                $passifA->setUser(null);
             }
         }
 

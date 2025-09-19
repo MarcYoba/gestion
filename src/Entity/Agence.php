@@ -92,6 +92,12 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: ActifA::class)]
     private Collection $actifAs;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Passif::class)]
+    private Collection $passifs;
+
+    #[ORM\OneToMany(mappedBy: 'Agence', targetEntity: PassifA::class)]
+    private Collection $passifAs;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -114,6 +120,8 @@ class Agence
         $this->historiqueAs = new ArrayCollection();
         $this->actifs = new ArrayCollection();
         $this->actifAs = new ArrayCollection();
+        $this->passifs = new ArrayCollection();
+        $this->passifAs = new ArrayCollection();
     }
 
    
@@ -777,6 +785,66 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($actifA->getAgence() === $this) {
                 $actifA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Passif>
+     */
+    public function getPassifs(): Collection
+    {
+        return $this->passifs;
+    }
+
+    public function addPassif(Passif $passif): static
+    {
+        if (!$this->passifs->contains($passif)) {
+            $this->passifs->add($passif);
+            $passif->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removePassif(Passif $passif): static
+    {
+        if ($this->passifs->removeElement($passif)) {
+            // set the owning side to null (unless already changed)
+            if ($passif->getAgence() === $this) {
+                $passif->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PassifA>
+     */
+    public function getPassifAs(): Collection
+    {
+        return $this->passifAs;
+    }
+
+    public function addPassifA(PassifA $passifA): static
+    {
+        if (!$this->passifAs->contains($passifA)) {
+            $this->passifAs->add($passifA);
+            $passifA->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removePassifA(PassifA $passifA): static
+    {
+        if ($this->passifAs->removeElement($passifA)) {
+            // set the owning side to null (unless already changed)
+            if ($passifA->getAgence() === $this) {
+                $passifA->setAgence(null);
             }
         }
 
