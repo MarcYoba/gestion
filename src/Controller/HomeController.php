@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Agence;
+use App\Entity\Produit;
+use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use App\Entity\User;
 use App\Entity\Vente;
@@ -70,9 +72,11 @@ class HomeController extends AbstractController
             }
         }
 
-        
+        $produi = $entityManager->getRepository(Produit::class)->findAll();
+
         return $this->render('home/dashboard.html.twig', [
             'agence' => $agence,
+            'prosuits' => $produi,
         ]);
     }
 
@@ -113,10 +117,11 @@ class HomeController extends AbstractController
                 $entityManager->flush();
             }
         }
-        
+        $produi = $entityManager->getRepository(ProduitA::class)->findAll();
         $agence = $entityManager->getRepository(Agence::class)->findAll();
         return $this->render('home/dashboardA.html.twig', [
             'agence' => $agence,
+            'produits' => $produi,
         ]);
     }
 }
