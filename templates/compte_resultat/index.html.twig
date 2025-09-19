@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CompteResultat!{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-12">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Compte de Resultat</h1>
+                             </div>
+                            
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <div class="form-group row">
+                                        <div class="col-sm-10 ">
+                                        <h6 class="m-0 font-weight-bold text-primary">Compte de Resultat</h6>
+                                        </div>
+                                        
+                                        <div class="col-sm-2 ">
+                                        <a class="m-0 font-weight-bold text-warning" href="{{path('app_home_dashboard', {'id': id})}}">Retour</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form class="user" action="{{ path('app_compte_resultat')}}" method="post">
+                                    <div class="form-group row">
+                                        
+                                            <div class="col-sm-4 mb-3 mb-sm-0">
+                                                <label for="annee">Année recherche</label>
+                                                <select class="form-control" id="annee" name="annee" onchange="reload()">
+                                                    {% for currentYear in 2022..2040 %}
+                                                        <option value="{{ currentYear }}"> {{ currentYear }} </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4 mb-3 mb-sm-0">
+                                                <label for="annee">Tlecharger le compte de Resultat</label>
+                                                <button type="submit" name="" id="" class="btn btn-warning btn-user btn-block">
+                                                    Compte de Resultat
+                                                </button> 
+                                            </div>
+                                        
+                                    </div>
+                                </form>
+
+                                </div>
+                                <hr>
+                            </div>
+                            
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+
+</body>
+
+</html>
+{% endblock %}
