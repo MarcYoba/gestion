@@ -99,5 +99,43 @@ class VenteARepository extends ServiceEntityRepository
     
         return (float) $result; // Retourne un float
     }
-        
+    
+    public function findVenteMontantYear($agence,$year) : float 
+    {
+        $startDate = new \DateTime($year . '-01-01');
+        $endDate = new \DateTime($year . '-12-31 23:59:59');
+
+        $query = $this->createQueryBuilder('v')
+            ->select('SUM(v.prix)')
+            ->where('v.agence = :agence')
+            ->andWhere('v.createAt BETWEEN :startDate AND :endDate')
+            ->setParameter('agence', $agence)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery();
+
+        $result = $query->getSingleScalarResult();
+
+        return $result !== null ? (float) $result : 0.0;
+    }
+
+    public function findVenteMontantLastYear($agence,$year) : float 
+    {
+        $year = $year -1;
+        $startDate = new \DateTime($year . '-01-01');
+        $endDate = new \DateTime($year . '-12-31 23:59:59');
+
+        $query = $this->createQueryBuilder('v')
+            ->select('SUM(v.prix)')
+            ->where('v.agence = :agence')
+            ->andWhere('v.createAt BETWEEN :startDate AND :endDate')
+            ->setParameter('agence', $agence)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery();
+
+        $result = $query->getSingleScalarResult();
+
+        return $result !== null ? (float) $result : 0.0;
+    }
 }

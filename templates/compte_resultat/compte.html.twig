@@ -1,0 +1,430 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CompteResultat{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Facture</title>
+    <style>
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
+</style>
+</head>
+<body>
+
+<br><br><br> <table style="width:100%">
+        <thead>
+        
+        
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="col" colspan="6">Cahier de charge</th>
+        </tr>
+        
+        <tr>
+            <th scope="col">REF</th>
+            <th scope="col">Libelle</th>
+            <th scope="col">Signe</th>
+            <th scope="col">Coef</th>
+            <th scope="col">{{ year}}</th>
+            <th scope="col">Exercice -1 </th>
+        </tr>
+        
+        <tr>
+            <td>TA</td>
+            <th scope="col">Ventes de marchandises (A)</th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>RA</td>
+            <th scope="col">Achats de marchandises </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+            
+        <tr>
+            <td>RB</td>
+            <th scope="col">Variation de stocks de marchandises</th>
+            <th scope="col">-/+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>XA</td>
+            <th scope="col" style="color: blue;">MARGE COMMERCIALE (Somme TA à RB)</th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">0</th>
+        </tr>
+        
+        <tr>
+            <td>TB</td>
+            <th scope="col">Ventes de produits fabriqués (B)</th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+          
+        <tr>
+            <td>TC</td>
+            <th scope="col">Travaux, services vendus (C)</th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>TD</td>
+            <th scope="col">Produits accessoires (D)</th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>XB</td>
+            <th scope="col" style="color: blue;">CHIFFRE AFFAIRES (TA+TB+TC+TD)</th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">0</th>
+        </tr>
+        
+        <tr>
+            <td>TE</td>
+            <th scope="col">Production stockée (ou déstockage) </th>
+            <th scope="col">-/+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>TF</td>
+            <th scope="col">Production immobilisée </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>TG</td>
+            <th scope="col">Subventions d’exploitation</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>TH</td>
+            <th scope="col">Autres produits</th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>TI</td>
+            <th scope="col">Transferts de charges exploitation   </th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>RC</td>
+            <th scope="col">Achats de matières premières et fournitures liées  </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>RD</td>
+            <th scope="col">Variation de stocks de matières premières et fournitures liées  </th>
+            <th scope="col">-/+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>RE</td>
+            <th scope="col">Autres achats   </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>RF</td>
+            <th scope="col">Variation de stocks d’autres approvisionnements</th>
+            <th scope="col">-/+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>RG</td>
+            <th scope="col">Transports</th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col"> 0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>RH</td>
+            <th scope="col">Services extérieurs </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>RI</td>
+            <th scope="col">Impôts et taxes </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>RJ</td>
+            <th scope="col">Autres charges  </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>XC</td>
+            <th scope="col" style="color: blue;">VALEUR AJOUTEE (XB +RA+RB) + (somme TE à RJ)  </th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">0</th>
+        </tr>
+        
+        <tr>
+            <td>RK</td>
+            <th scope="col">Charges de personnel  </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>RD</td>
+            <th scope="col" style="color: blue;">EXCEDENT BRUT EXPLOITATION (XC+RK)   </th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">0</th>
+        </tr>
+
+        <tr>
+            <td>TJ</td>
+            <th scope="col">Reprises d’amortissements, provisions et dépréciations</th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>RL</td>
+            <th scope="col">Dotations aux amortissements, aux provisions et dépréciations</th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>XE</td>
+            <th scope="col" style="color: blue;">RESULTAT EXPLOITATION (XD+TJ+ RL)  </th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">0</th>
+        </tr>
+
+        <tr>
+            <td>TK</td>
+            <th scope="col">Revenus financiers et assimilés </th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        <tr>
+            <td>TL</td>
+            <th scope="col">Reprises de provisions et dépréciations financières </th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+
+        <tr>
+            <td>TM</td>
+            <th scope="col">Transferts de charges financières </th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+
+        <tr>
+            <td>RM</td>
+            <th scope="col">Frais financiers et charges assimilées </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+
+        <tr>
+            <td>RN</td>
+            <th scope="col">Dotations aux provisions et aux dépréciations financières  </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>XF</td>
+            <th scope="col" style="color: blue;">RESULTAT FINANCIER (somme TK à RN)  </th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">0</th>
+        </tr>
+        
+        <tr>
+            <td>XG</td>
+            <th scope="col" style="color: blue;">RESULTAT DES ACTIVITES ORDINAIRES (XE+XF)  </th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+        </tr>
+
+        <tr>
+            <td>TN</td>
+            <th scope="col">Produits des cessions d immobilisations   </th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+
+        <tr>
+            <td>TO</td>
+            <th scope="col">Autres Produits HAO   </th>
+            <th scope="col">+</th>
+            <th scope="col">1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+
+        <tr>
+            <td>RO</td>
+            <th scope="col">Valeurs comptables des cessions d immobilisations   </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+
+        <tr>
+            <td>RP</td>
+            <th scope="col">Autres Charges HAO   </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>XH</td>
+            <th scope="col" style="color: blue;">RESULTAT HORS ACTIVITES ORDINAIRES (somme TN à RP)  </th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">0</th>
+        </tr>
+
+        <tr>
+            <td>RQ</td>
+            <th scope="col">Participation des travailleurs    </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+
+        <tr>
+            <td>RS</td>
+            <th scope="col">Impôts sur le résultat     </th>
+            <th scope="col">-</th>
+            <th scope="col">-1</th>
+            <th scope="col">0</th>
+            <th scope="col">0</th>
+        </tr>
+        
+        <tr>
+            <td>XI</td>
+            <th scope="col" style="color: blue;">RESULTAT NET (XG+XH+RQ+RS)  </th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">0</th>
+        </tr>
+        
+        </tbody>
+    </table
+</body>
+</html>
+
+{% endblock %}
