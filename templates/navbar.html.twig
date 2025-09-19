@@ -382,8 +382,8 @@
                     <h6 class="collapse-header"> Bilan :</h6>
                     <a class="collapse-item" href="{{ path('app_actif')}}">Actif Bilan</a>
                     <a class="collapse-item" href="{{ path('app_actif_list',{'date': 'now' | date('Y')})}}">liste Actif</a>
-                    <a class="collapse-item" href="#">Passif Bilan</a>
-                    <a class="collapse-item" href="#">liste Passif</a>
+                    <a class="collapse-item" href="{{ path('app_passif')}}">Passif Bilan</a>
+                    <a class="collapse-item" href="{{ path('app_passif_list',{'date': 'now' | date('Y')})}}">liste Passif</a>
                 </div>
             </div>
         </li>
