@@ -45,4 +45,17 @@ class CaisseARepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findRapportCaisseToWeek($date_debut, $date_fin) : array 
+    {
+        
+        return $this->createQueryBuilder('c')
+            ->where('c.createAt BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate', $date_debut)
+            ->setParameter('endDate', $date_fin)
+            ->getQuery()
+            ->getResult()
+        
+        ;
+    } 
 }

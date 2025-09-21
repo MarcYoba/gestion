@@ -76,22 +76,20 @@
                                 <hr>
                                 <hr>  
                             </form>
-                            <form class="user" action="#" method="post">
+                            <form class="user" action="{{ path('app_rapport_a_semaine')}}" method="post">
                             <div class="form-group row">
                                     <div class="col-sm-4">
-                                        <input type="date" class="form-control form-control-user" id="date"
-                                        name="datedebutsemain" placeholder="telephone client" >
+                                        <input type="date" class="form-control form-control-user" id="date_debut"
+                                        name="date_debut" placeholder="telephone client" >
                                     </div>
                                     <div class="col-sm-4">
-                                        <input type="date" class="form-control form-control-user" id="date"
-                                        name="datefinsemain" placeholder="telephone client" >
+                                        <input type="date" class="form-control form-control-user" id="date_fin"
+                                        name="date_fin" placeholder="telephone client" >
                                     </div>
                                     <div class="col-sm-4">
-                                    <a href="#">
-                                            <button type="" name="" id="" class="btn btn-success btn-user btn-block">
+                                            <button type="submit" class="btn btn-success btn-user btn-block">
                                             Rapport part semain / MOI
                                             </button> 
-                                        </a>
                                     </div>
                                 </div>
                                 <hr>
