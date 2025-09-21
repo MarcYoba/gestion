@@ -138,4 +138,19 @@ class VenteARepository extends ServiceEntityRepository
 
         return $result !== null ? (float) $result : 0.0;
     }
+
+    public function findRapportVenteToWeek($date_debut, $date_fin) : array 
+    {
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createAt BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getResult()
+        
+        ;
+    }    
 }

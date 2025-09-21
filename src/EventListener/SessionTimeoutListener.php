@@ -1,6 +1,6 @@
 <?php
 // src/EventListener/SessionTimeoutListener.php
-namespace App\Middleware;
+namespace App\EventListener;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class SessionTimeoutMiddleware
+class SessionTimeoutListener
 {
     use TargetPathTrait;
 
