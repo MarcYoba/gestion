@@ -98,6 +98,9 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'Agence', targetEntity: PassifA::class)]
     private Collection $passifAs;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Vaccin::class)]
+    private Collection $vaccins;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -122,6 +125,7 @@ class Agence
         $this->actifAs = new ArrayCollection();
         $this->passifs = new ArrayCollection();
         $this->passifAs = new ArrayCollection();
+        $this->vaccins = new ArrayCollection();
     }
 
    
@@ -845,6 +849,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($passifA->getAgence() === $this) {
                 $passifA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vaccin>
+     */
+    public function getVaccins(): Collection
+    {
+        return $this->vaccins;
+    }
+
+    public function addVaccin(Vaccin $vaccin): static
+    {
+        if (!$this->vaccins->contains($vaccin)) {
+            $this->vaccins->add($vaccin);
+            $vaccin->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVaccin(Vaccin $vaccin): static
+    {
+        if ($this->vaccins->removeElement($vaccin)) {
+            // set the owning side to null (unless already changed)
+            if ($vaccin->getAgence() === $this) {
+                $vaccin->setAgence(null);
             }
         }
 

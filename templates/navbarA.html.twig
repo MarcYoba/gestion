@@ -312,9 +312,10 @@
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Vaccin</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{path('app_vaccin')}}" >Adminitrer un Vaccin</a>
                 <a class="collapse-item" href="#">Liste Vaccin</a>
             {% else %}
-                <a class="collapse-item" href="#" >Adminitrer un Vaccin</a>
+                <a class="collapse-item" href="{{path('app_vaccin')}}" >Adminitrer un Vaccin</a>
                 <a class="collapse-item" href="#">Liste Vaccin</a>
             {% endif %}
     </div>

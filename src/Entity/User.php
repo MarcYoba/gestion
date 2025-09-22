@@ -128,6 +128,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PassifA::class)]
     private Collection $passifAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Vaccin::class)]
+    private Collection $vaccins;
+
     
 
     public function __construct() {
@@ -158,6 +161,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->actifAs = new ArrayCollection();
         $this->passifs = new ArrayCollection();
         $this->passifAs = new ArrayCollection();
+        $this->vaccins = new ArrayCollection();
         
     }
 
@@ -1051,6 +1055,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($passifA->getUser() === $this) {
                 $passifA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vaccin>
+     */
+    public function getVaccins(): Collection
+    {
+        return $this->vaccins;
+    }
+
+    public function addVaccin(Vaccin $vaccin): static
+    {
+        if (!$this->vaccins->contains($vaccin)) {
+            $this->vaccins->add($vaccin);
+            $vaccin->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVaccin(Vaccin $vaccin): static
+    {
+        if ($this->vaccins->removeElement($vaccin)) {
+            // set the owning side to null (unless already changed)
+            if ($vaccin->getUser() === $this) {
+                $vaccin->setUser(null);
             }
         }
 
