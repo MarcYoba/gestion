@@ -132,10 +132,10 @@
                                     <tbody id="liste">
                                         {% for historique in historiques %}
                                             <tr>
-                                                <th>{{ historiques.produit.id }}</th>
-                                                <th>{{ historiques.produit.nom }}</th>
-                                                <th>{{ historiques.quantite }}</th>    
-                                                <th>{{ historiques.createdAt | date("d-m-Y") }}</th> 
+                                                <th>{{ historique.produitA.id }}</th>
+                                                <th>{{ historique.produitA.nom }}</th>
+                                                <th>{{ historique.quantite }}</th>    
+                                                <th>{{ historique.createtAd | date("d-m-Y") }}</th> 
                                             </tr>
                                         {% endfor %}
                                     </tbody>
