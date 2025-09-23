@@ -55,6 +55,9 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Vaccin::class)]
     private Collection $vaccins;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Consultation::class)]
+    private Collection $consultations;
+
     public function __construct()
     {
         $this->versements = new ArrayCollection();
@@ -66,6 +69,7 @@ class Clients
         $this->factureAs = new ArrayCollection();
         $this->poussins = new ArrayCollection();
         $this->vaccins = new ArrayCollection();
+        $this->consultations = new ArrayCollection();
     }
 
     
@@ -387,6 +391,36 @@ class Clients
             // set the owning side to null (unless already changed)
             if ($vaccin->getClient() === $this) {
                 $vaccin->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Consultation>
+     */
+    public function getConsultations(): Collection
+    {
+        return $this->consultations;
+    }
+
+    public function addConsultation(Consultation $consultation): static
+    {
+        if (!$this->consultations->contains($consultation)) {
+            $this->consultations->add($consultation);
+            $consultation->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConsultation(Consultation $consultation): static
+    {
+        if ($this->consultations->removeElement($consultation)) {
+            // set the owning side to null (unless already changed)
+            if ($consultation->getClient() === $this) {
+                $consultation->setClient(null);
             }
         }
 

@@ -57,7 +57,7 @@ class VaccinType extends AbstractType
                 'widget'=>'single_text',
             ])
             ->add('typeVaccin',ChoiceType::class,[
-                'placeholder' => 'Slectionner un Type de vaccin',
+                'placeholder' => 'Selectionner un Type de vaccin',
                 'attr' => [
                     'class' => 'form-control form-select',
                 ],

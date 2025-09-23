@@ -290,12 +290,14 @@
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Clinique</h6>
         {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-            <a class="collapse-item" href="#" >liste Consultation</a> 
+            <a class="collapse-item" href="{{ path('app_consultation')}}" >Consultation</a> 
+            <a class="collapse-item" href="#" >fiche suivi </a>
+            <a class="collapse-item" href="{{ path('app_consultation_list')}}" >liste Consultation</a> 
             <a class="collapse-item" href="#" >liste des suivi</a>
         {% else %}
-            <a class="collapse-item" href="#" >Consultation</a> 
+            <a class="collapse-item" href="{{ path('app_consultation')}}" >Consultation</a> 
             <a class="collapse-item" href="#" >fiche suivi </a>
-            <a class="collapse-item" href="#" >liste Consultation</a> 
+            <a class="collapse-item" href="{{ path('app_consultation_list')}}" >liste Consultation</a> 
             <a class="collapse-item" href="#" >liste des suivi</a>
         {% endif %}
     </div>
