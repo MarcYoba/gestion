@@ -45,4 +45,20 @@ class FactureARepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function FindByProduitPlusVendu() : array {
+
+        return $this->createQueryBuilder('f')
+            ->select('p.id as produitId, p.nom as produitNom, COUNT(f.id) as produitCount, p.quantite as produitQt')
+            ->join('f.produit', 'p') // Jointure avec l'entité Produit
+            ->where('MONTH(f.createAt) = :month')
+            ->andWhere('YEAR(f.createAt) = :year')
+            ->setParameter('month', (int)date('m'))
+            ->setParameter('year', (int)date('Y'))
+            ->groupBy('p.id, p.nom') // Grouper par les champs sélectionnés
+            ->orderBy('produitCount', 'DESC')
+            ->setMaxResults(20)
+            ->getQuery()
+            ->getResult();
+    }
 }

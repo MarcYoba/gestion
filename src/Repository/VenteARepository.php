@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\VenteA;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Response;
 use Twig\Node\Expression\Binary\SubBinary;
 
 /**
@@ -152,5 +153,26 @@ class VenteARepository extends ServiceEntityRepository
             ->getResult()
         
         ;
-    }    
+    }
+    
+    public function findRapportMensuel($mois,$annee) : array
+    {
+        // S'assurer que $mois est un entier
+        $mois = (int)$mois;
+        $annee = (int)$annee;
+
+        // Créer les dates de début et fin du mois
+        $startDate = new \DateTime("$annee-$mois-01");
+        $endDate = (clone $startDate)->modify('last day of this month');
+
+        return $this->createQueryBuilder('v')
+            ->select('SUM(v.prix) AS TotalVente, SUM(v.quantite) AS quantite, 
+                    SUM(v.cash) as cash, SUM(v.reduction) as reduction,
+                    SUM(v.banque) AS banque, SUM(v.credit) AS credit, SUM(v.momo) AS momo')
+            ->where('v.createAt BETWEEN :start AND :end')
+            ->setParameter('start', $startDate->format('Y-m-d 00:00:00'))
+            ->setParameter('end', $endDate->format('Y-m-d 23:59:59'))
+            ->getQuery()
+            ->getResult(); 
+    }
 }

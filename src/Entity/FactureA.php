@@ -14,6 +14,7 @@ class FactureA
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'factureAs')]
+    #[ORM\JoinColumn(name: 'produit_id', referencedColumnName: 'id')]
     private ?ProduitA $produit = null;
 
     #[ORM\Column]
