@@ -1,0 +1,227 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello VaccinController!{% endblock %}
+
+{% block body %}
+<?php 
+require_once("../connexion.php"); 
+require_once("../bdmutilple/getclient.php");
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Gestion de stock</title>
+
+    <!-- Custom fonts for this template -->
+    
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+       {% include "navbarA.html.twig" %}
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                {% include "topbar.html.twig" %}
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Vaccin</h1>
+                    <p class="mb-4">
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-success">Liste des Vaccins</h6>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <h6 class="m-0 font-weight-bold text-primary">Tables Vaccin</h6>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="{{ path('app_home_dashboardA', {'id': tempagence.id}) }}" class="btn btn-primary">
+                                        <i class="fa fa-home"></i>Home
+                                    </a> 
+                                </div>
+                                <div class="col-sm-2">
+                                     
+                                    <a href="{{path('app_vaccin')}}" class="btn btn-success">
+                                        <i class="fa fa-plus"></i> Ajouter
+                                    </a>
+                                                
+                                </div>
+                                <div class="col-md-3" style="float:right;">
+                                <label for="annee">Année recherche :</label>
+                                    <select class="form-control" id="annee" name="annee" onchange="reload()">
+                                        <option >Recherche a</option>
+                                        {% for currentYear in 2024..2040 %}
+                                            <option value="{{ currentYear }}"> {{ currentYear }} </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <form  action="../pdf/getvaccin.php" method="post" class="user row" >
+                                        <div class="row">
+                                            <div class="col-md-3" >
+                                                <input type="date" class="form-control form-control-user"
+                                                name="datedette" id="datedette" placeholder="quantité">
+                                            </div>
+                                            <div class="col-md-3" >
+                                                <input type="date" class="form-control form-control-user"
+                                                name="datedett2" id="datedett2" placeholder="quantité">
+                                            </div>
+                                            <div class="col-md-2" >
+                                                <input type="submit" class="btn btn-warning btn-user"  value="Afficher" >  
+                                            </div>
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                Type vaccin :<select class="form-control form-select" id="typevaccin" name="typevaccin" placeholder="Race de sujet" required>
+                                                    <Option value="Complet">Vaccin Complet</Option>
+                                                    <Option value="antirabique">Vaccin antirabique</Option>
+                                                    <Option value="parvovirose">Vaccin parvovirose</Option>
+                                                    <Option value="eurican">Vaccin eurican LR</Option>
+                                                    <Option value="L">Vaccin L</Option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-page-length='25' data-order='[[0, "desc"]]'>
+                                    <thead>
+                                       
+                                        <tr>
+                                            <th>id</th>
+                                            <th>Nom Sujet</th>
+                                            <th>Age</th>
+                                            <th>Race</th>
+                                            <th>Client</th>
+                                            <th>telephone</th>
+                                            <th>montant</th>
+                                            <th>Avance</th>
+                                            <th>Type vacin</th>
+                                            <th>Lieu</th>
+                                            <th>date Vacin</th>
+                                            <th>date Rappel</th>
+                                            <th>NB Rappel</th>
+                                            <th>Operation</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>id</th>
+                                            <th>Nom Sujet</th>
+                                            <th>Age</th>
+                                            <th>Race</th>
+                                            <th>Client</th>
+                                            <th>telephone</th>
+                                            <th>montant</th>
+                                            <th>Avance</th>
+                                            <th>Type vacin</th>
+                                            <th>Lieu</th>
+                                            <th>date Vacin</th>
+                                            <th>date Rappel</th>
+                                            <th>NB Rappel</th>
+                                            <th>Operation</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for vaccin in vaccins %}
+                                            <tr>
+                                                <td>{{vaccin.id}}</td>
+                                                <td>{{vaccin.sujet}}</td>
+                                                <td>{{vaccin.age}}</td>
+                                                <td>{{vaccin.typeSujet}}</td>
+                                                <td>{{vaccin.client.nom}}</td>
+                                                <td>{{vaccin.client.telephone}}</td>
+                                                <td>{{vaccin.montant}}</td>
+                                                <td>{{vaccin.montantNet}}</td>
+                                                <td>{{vaccin.typeVaccin}}</td>
+                                                <td>{{vaccin.lieux}}</td>
+                                                <td>{{vaccin.dateVaccin | date('Y-m-d')}}</td>
+                                                <td>{{vaccin.dateRapel | date("Y-m-d")}}</td>
+                                                <td>{{vaccin.rappel}}</td>
+                                                <td>
+                                                
+                                                <a href='{{ path('app_vaccin_edit', {'id': vaccin.id}) }}' class='btn btn-primary'><i class='fas fa-pencil-alt'></i></a>
+                                                <a href="{{path('app_vaccin_delete',{'id': vaccin.id}) }}" class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer ce Vaccin ?\");'><i class='fas fa-trash-alt'></i></a>
+                                                <a href="{{path('app_vaccin_rappel',{'id': vaccin.id})}}" class='btn btn-warning'><i class='fas  fa-bell'></i>rappel</a>
+                                                
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Production &copy; {{ "now" | date("Y-m-d")}}</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <!-- Bootstrap core JavaScript-->
+
+    <!-- Page level plugins -->
+    
+    <script>
+        function reload() {
+            var annee = document.getElementById("annee").value;
+            window.location.href = "liste.php?date=" + annee;
+        }
+    </script>
+
+</body>
+
+</html>
+
+
+{% endblock %}

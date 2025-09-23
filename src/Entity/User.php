@@ -128,6 +128,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PassifA::class)]
     private Collection $passifAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Vaccin::class)]
+    private Collection $vaccins;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Consultation::class)]
+    private Collection $consultations;
+
     
 
     public function __construct() {
@@ -158,6 +164,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->actifAs = new ArrayCollection();
         $this->passifs = new ArrayCollection();
         $this->passifAs = new ArrayCollection();
+        $this->vaccins = new ArrayCollection();
+        $this->consultations = new ArrayCollection();
         
     }
 
@@ -1051,6 +1059,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($passifA->getUser() === $this) {
                 $passifA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vaccin>
+     */
+    public function getVaccins(): Collection
+    {
+        return $this->vaccins;
+    }
+
+    public function addVaccin(Vaccin $vaccin): static
+    {
+        if (!$this->vaccins->contains($vaccin)) {
+            $this->vaccins->add($vaccin);
+            $vaccin->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVaccin(Vaccin $vaccin): static
+    {
+        if ($this->vaccins->removeElement($vaccin)) {
+            // set the owning side to null (unless already changed)
+            if ($vaccin->getUser() === $this) {
+                $vaccin->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Consultation>
+     */
+    public function getConsultations(): Collection
+    {
+        return $this->consultations;
+    }
+
+    public function addConsultation(Consultation $consultation): static
+    {
+        if (!$this->consultations->contains($consultation)) {
+            $this->consultations->add($consultation);
+            $consultation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConsultation(Consultation $consultation): static
+    {
+        if ($this->consultations->removeElement($consultation)) {
+            // set the owning side to null (unless already changed)
+            if ($consultation->getUser() === $this) {
+                $consultation->setUser(null);
             }
         }
 

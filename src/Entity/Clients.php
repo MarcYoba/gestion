@@ -52,6 +52,12 @@ class Clients
     #[ORM\Column(length: 20)]
     private ?string $telephone = null;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Vaccin::class)]
+    private Collection $vaccins;
+
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Consultation::class)]
+    private Collection $consultations;
+
     public function __construct()
     {
         $this->versements = new ArrayCollection();
@@ -62,6 +68,8 @@ class Clients
         $this->venteAs = new ArrayCollection();
         $this->factureAs = new ArrayCollection();
         $this->poussins = new ArrayCollection();
+        $this->vaccins = new ArrayCollection();
+        $this->consultations = new ArrayCollection();
     }
 
     
@@ -355,6 +363,66 @@ class Clients
     public function setTelephone(string $telephone): static
     {
         $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vaccin>
+     */
+    public function getVaccins(): Collection
+    {
+        return $this->vaccins;
+    }
+
+    public function addVaccin(Vaccin $vaccin): static
+    {
+        if (!$this->vaccins->contains($vaccin)) {
+            $this->vaccins->add($vaccin);
+            $vaccin->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVaccin(Vaccin $vaccin): static
+    {
+        if ($this->vaccins->removeElement($vaccin)) {
+            // set the owning side to null (unless already changed)
+            if ($vaccin->getClient() === $this) {
+                $vaccin->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Consultation>
+     */
+    public function getConsultations(): Collection
+    {
+        return $this->consultations;
+    }
+
+    public function addConsultation(Consultation $consultation): static
+    {
+        if (!$this->consultations->contains($consultation)) {
+            $this->consultations->add($consultation);
+            $consultation->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConsultation(Consultation $consultation): static
+    {
+        if ($this->consultations->removeElement($consultation)) {
+            // set the owning side to null (unless already changed)
+            if ($consultation->getClient() === $this) {
+                $consultation->setClient(null);
+            }
+        }
 
         return $this;
     }
