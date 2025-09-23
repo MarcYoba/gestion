@@ -337,8 +337,11 @@
                                     {% for produit in produits %}
                                         <h4 class="small font-weight-bold">{{produit.nom}}<span class="float-right">{{produit.quantite}}</span></h4>
                                         <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width:'.{{produit.quantite}}.'%"
-                                                aria-valuenow="3" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-bar bg-danger" role="progressbar" 
+                                                style="width: {{ produit.quantite }}%"
+                                                aria-valuenow="{{ produit.quantite }}" 
+                                                aria-valuemin="0" 
+                                                aria-valuemax="100">
                                             </div>
                                         </div>
                                                 
@@ -387,7 +390,17 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Top 20 des Produits les plus Venduent</h6>
                                 </div>
                                 <div class="card-body">
-                                    
+                                    {% for produit in produitplusvendu %}
+                                        <h4 class="small font-weight-bold">{{produit.produitNom}}<span class="float-right">{{produit.produitCount}}</span></h4>
+                                        <div class="progress mb-4">
+                                            <div class="progress-bar bg-danger" role="progressbar" 
+                                                style="width: {{ produit.produitQt }}%"
+                                                aria-valuenow="{{ produit.produitQt }}" 
+                                                aria-valuemin="0" 
+                                                aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
 

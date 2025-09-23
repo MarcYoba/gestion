@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\AchatA;
 use App\Entity\CaisseA;
 use App\Entity\VenteA;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -129,6 +130,66 @@ class RapportAController extends AbstractController
         'ventes' => $vente,
         'achats' => $achat,
         'caisses' => $caisse
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="document.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );        
+    }
+
+    #[Route('/rapport/a/moi', name:'app_rapport_a_moi')]
+    public function rapport_moi(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $date_debut = date("m");
+        $date_fin = date("m");
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $date_debut = $request->request->get('mois');
+           $date_fin = $request->request->get('date');
+           if (empty($date_debut)) {
+                if (!empty($date_fin)) {
+                    $date_fin = new DateTime($date_fin);
+                    $date_debut = $date_fin->format("m");
+                    $anne = $date_fin->format("Y");
+                }
+           }
+           //$date_debut = date("Y".$date_debut."d");
+           
+           if(empty($date_debut) && empty($date_fin))
+           {
+                
+                $this->addFlash("error", "Vous deviez selectiion aune date valide");
+                return $this->redirectToRoute("app_rapport_a");
+           }
+        }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        
+        
+        //$caisse = $em->getRepository(CaisseA::class)->findRapportCaisseToWeek($date_debut,$date_fin);
+        $vente = $em->getRepository(VenteA::class)->findRapportMensuel($date_debut,$anne);
+       // $achat = $em->getRepository(AchatA::class)->findByDate($date_debut);
+        
+        $html = $this->renderView('rapport_a/moi.html.twig', [
+        'date_debut' => $date_debut,
+        'date_fin' => $date_fin,
+        'ventes' => $vente,
+        //'achats' => $achat,
+        //'caisses' => $caisse
         ]);
 
         $dompdf->loadHtml($html);
