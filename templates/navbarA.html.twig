@@ -291,14 +291,14 @@
         <h6 class="collapse-header">Clinique</h6>
         {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
             <a class="collapse-item" href="{{ path('app_consultation')}}" >Consultation</a> 
-            <a class="collapse-item" href="#" >fiche suivi </a>
+            <a class="collapse-item" href="{{ path('app_suivi')}}" >fiche suivi </a>
             <a class="collapse-item" href="{{ path('app_consultation_list')}}" >liste Consultation</a> 
-            <a class="collapse-item" href="#" >liste des suivi</a>
+            <a class="collapse-item" href="{{path('app_suivi_list')}}" >liste des suivi</a>
         {% else %}
             <a class="collapse-item" href="{{ path('app_consultation')}}" >Consultation</a> 
-            <a class="collapse-item" href="#" >fiche suivi </a>
+            <a class="collapse-item" href="{{ path('app_suivi')}}" >fiche suivi </a>
             <a class="collapse-item" href="{{ path('app_consultation_list')}}" >liste Consultation</a> 
-            <a class="collapse-item" href="#" >liste des suivi</a>
+            <a class="collapse-item" href="{{path('app_suivi_list')}}" >liste des suivi</a>
         {% endif %}
     </div>
 </div>
@@ -315,10 +315,10 @@
         <h6 class="collapse-header">Vaccin</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{path('app_vaccin')}}" >Adminitrer un Vaccin</a>
-                <a class="collapse-item" href="#">Liste Vaccin</a>
+                <a class="collapse-item" href="{{path('app_vaccin_list')}}">Liste Vaccin</a>
             {% else %}
                 <a class="collapse-item" href="{{path('app_vaccin')}}" >Adminitrer un Vaccin</a>
-                <a class="collapse-item" href="#">Liste Vaccin</a>
+                <a class="collapse-item" href="{{path('app_vaccin_list')}}">Liste Vaccin</a>
             {% endif %}
     </div>
 </div>

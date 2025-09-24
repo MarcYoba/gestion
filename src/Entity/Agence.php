@@ -104,6 +104,9 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Consultation::class)]
     private Collection $consultations;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Suivi::class)]
+    private Collection $suivis;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -130,6 +133,7 @@ class Agence
         $this->passifAs = new ArrayCollection();
         $this->vaccins = new ArrayCollection();
         $this->consultations = new ArrayCollection();
+        $this->suivis = new ArrayCollection();
     }
 
    
@@ -913,6 +917,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($consultation->getAgence() === $this) {
                 $consultation->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Suivi>
+     */
+    public function getSuivis(): Collection
+    {
+        return $this->suivis;
+    }
+
+    public function addSuivi(Suivi $suivi): static
+    {
+        if (!$this->suivis->contains($suivi)) {
+            $this->suivis->add($suivi);
+            $suivi->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSuivi(Suivi $suivi): static
+    {
+        if ($this->suivis->removeElement($suivi)) {
+            // set the owning side to null (unless already changed)
+            if ($suivi->getAgence() === $this) {
+                $suivi->setAgence(null);
             }
         }
 
