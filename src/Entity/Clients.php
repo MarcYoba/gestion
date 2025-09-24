@@ -58,6 +58,9 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Consultation::class)]
     private Collection $consultations;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Suivi::class)]
+    private Collection $suivis;
+
     public function __construct()
     {
         $this->versements = new ArrayCollection();
@@ -70,6 +73,7 @@ class Clients
         $this->poussins = new ArrayCollection();
         $this->vaccins = new ArrayCollection();
         $this->consultations = new ArrayCollection();
+        $this->suivis = new ArrayCollection();
     }
 
     
@@ -421,6 +425,36 @@ class Clients
             // set the owning side to null (unless already changed)
             if ($consultation->getClient() === $this) {
                 $consultation->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Suivi>
+     */
+    public function getSuivis(): Collection
+    {
+        return $this->suivis;
+    }
+
+    public function addSuivi(Suivi $suivi): static
+    {
+        if (!$this->suivis->contains($suivi)) {
+            $this->suivis->add($suivi);
+            $suivi->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSuivi(Suivi $suivi): static
+    {
+        if ($this->suivis->removeElement($suivi)) {
+            // set the owning side to null (unless already changed)
+            if ($suivi->getClient() === $this) {
+                $suivi->setClient(null);
             }
         }
 
