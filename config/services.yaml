@@ -34,3 +34,9 @@ services:
             $timeout: 28800
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 10 }
+    App\EventListener\SalesProduitListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+    App\EventListener\SalesProduitAListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
