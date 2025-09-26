@@ -7,6 +7,8 @@ use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use App\Form\ProduitAType;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -221,5 +223,37 @@ class ProduitAController extends AbstractController
     $donnees = $worksheet->toArray();
     
     return $donnees;
+    }
+
+    #[Route('/produit/a/sans/date/peremption', name:'app_produit_sans_date_peramtion')]
+    public function produit_sans_date(EntityManagerInterface $em) : Response 
+    {
+         
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+       
+        
+        $html = $this->renderView('produit_a/peramption.html.twig', [
+        
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="document.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );        
+    
     }
 }
