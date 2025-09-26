@@ -21,6 +21,9 @@ Encore
         'jquery.easing',
         'chart.js'
     ])
+
+    // Fichier spécifique pour DataTables
+    .addEntry('datatables', './assets/datatables.js')
     
     // SB Admin 2 spécifique
     .addStyleEntry('sb-admin-2', [

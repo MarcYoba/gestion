@@ -19,6 +19,12 @@ import './styles/app.css';
 import $ from 'jquery';
 window.jQuery = $;
 window.$ = $;
+global.$ = global.jQuery = $;
+
+import 'datatables.net';
+import 'datatables.net-bs4';
+
+import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
 
 // 2. Extensions jQuery
 import 'jquery.easing/jquery.easing.min.js';
@@ -76,3 +82,10 @@ function initSBAdminComponents() {
     $('[data-toggle="popover"]').popover();
   }
 } 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const dataTable = document.getElementById('dataTable');
+    if (dataTable) {
+        $(dataTable).DataTable();
+    }
+});
