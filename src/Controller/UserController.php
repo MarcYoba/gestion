@@ -143,4 +143,9 @@ class UserController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('user_list');
     }
+    #[Route('/erreur', name: 'app_error')]
+    public function error(): Response
+    {
+        return $this->render('error/error.html.twig');
+    }
 }

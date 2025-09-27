@@ -1,0 +1,11 @@
+{% block title %}Erreur{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="alert alert-danger text-center">
+        <h1>Une erreur est survenue</h1>
+        <p>Désolé, un problème technique est survenu. Notre équipe a été notifiée.</p>
+        <a href="{{ path('app_logout') }}" class="btn btn-primary">Retour à l'accueil</a>
+    </div>
+</div>
+{% endblock %}
