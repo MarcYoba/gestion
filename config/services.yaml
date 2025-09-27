@@ -40,3 +40,6 @@ services:
     App\EventListener\SalesProduitAListener:
         tags:
             - { name: kernel.event_listener, event: kernel.request }
+    App\EventSubscriber\ExceptionSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
