@@ -43,7 +43,10 @@ class EmployerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-           $emplyer->setNom($emplyer->getUser()->getUsername());
+            $role[] = $form->get('poste')->getData();
+            $emplyer->setNom($emplyer->getUser()->getUsername());
+            $user = $emplyer->getUser();
+            $user->setRoles($role);
             $entityManager->persist($emplyer);
             $entityManager->flush();
 
@@ -96,6 +99,9 @@ class EmployerController extends AbstractController
         $form = $this->createForm(EmployerType::class, $employer);
         $form->handleRequest($request);
 
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+        $id = $tempagence->getAgence()->getId();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
@@ -105,6 +111,31 @@ class EmployerController extends AbstractController
         return $this->render('employer/edit.html.twig', [
             'form' => $form->createView(),
             'employer' => $employer,
+            'id' => $id,
+        ]);
+    }
+
+    /**
+     * @Route(path = "/employer/a/edit/{id}", name = "employer_edit_a")
+     */
+    public function edit_a(Request $request, EntityManagerInterface $entityManager, Employer $employer): Response
+    {
+        $form = $this->createForm(EmployerType::class, $employer);
+        $form->handleRequest($request);
+
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+        $id = $tempagence->getAgence()->getId();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('employer_list_a');
+        }
+
+        return $this->render('employer/edit_a.html.twig', [
+            'form' => $form->createView(),
+            'employer' => $employer,
+            'id' => $id,
         ]);
     }
 
