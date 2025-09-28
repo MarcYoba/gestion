@@ -6,6 +6,7 @@ use App\Entity\VenteA;
 use App\Entity\Clients;
 use App\Form\VenteAType;
 use App\Entity\FactureA;
+use App\Entity\Lots;
 use App\Entity\ProduitA;
 use App\Entity\QuantiteproduitA;
 use App\Entity\TempAgence;
@@ -115,7 +116,15 @@ class VenteAController extends AbstractController
                         }
 
                         $produit->setQuantite($reste);
-
+                        if ($reste <= 0) {
+                            $produit->setExpiration(1);
+                            $lots = $em->getRepository(Lots::class)->findOneBy(['produit' => $produit]);
+                            if ($lots) {
+                                // $em->remove($lots);
+                                // $em->flush();
+                            }
+                            
+                        }
                         $quantiterestant->setUser($user);
                         $quantiterestant->setVente($vente);
                         $quantiterestant->setProduit($produit);

@@ -51,15 +51,15 @@
             <div class="modal-body">
                 <div class="form-group row">
                     <div class="col-sm-4">
-                        nombre de produit sans date de peremtion : 0
+                        nombre de produit sans date de peremtion : {{ (expiration | length) + (lots | length)}}
                         
                     </div>
                     <div class="col-sm-4">
-                        Doublon de produit : 
+                        Doublon de produit : {{ doublons | length }}
                         
                     </div>
                     <div class="col-sm-4">
-                        Produit perimer ou Proche de la peremtion lots 1(intervale 6 mois)  : 
+                        Produit perimer ou Proche de la peremtion lots 1(intervale 6 mois)  : {{ (perantions | length) +  (lotsperemtion | length)}}
                         
                     </div>
                     <div class="col-sm-4">
@@ -73,7 +73,7 @@
             <div class="modal-footer">
             <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button> -->
                 <a href="{{path('app_produit_sans_date_peramtion')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>produit sans date</a>
-                <a href="#" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Peremtion ou Proche</a>
+                <a href="{{path('app_produit_perimer')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Peremtion ou Proche</a>
                 <a href="#" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Poussin non livree</a>
                 <a href="#" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Liste Commande client</a>
             </div>
