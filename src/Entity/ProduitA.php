@@ -65,6 +65,12 @@ class ProduitA
     #[ORM\OneToMany(mappedBy: 'produitA', targetEntity: HistoriqueA::class)]
     private Collection $historiqueAs;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $expiration = null;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Lots::class)]
+    private Collection $lots;
+
     public function __construct()
     {
         $this->achatAs = new ArrayCollection();
@@ -72,6 +78,7 @@ class ProduitA
         $this->factureAs = new ArrayCollection();
         $this->quantiteproduitAs = new ArrayCollection();
         $this->historiqueAs = new ArrayCollection();
+        $this->lots = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -355,6 +362,48 @@ class ProduitA
             // set the owning side to null (unless already changed)
             if ($historiqueA->getProduitA() === $this) {
                 $historiqueA->setProduitA(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getExpiration(): ?string
+    {
+        return $this->expiration;
+    }
+
+    public function setExpiration(?string $expiration): static
+    {
+        $this->expiration = $expiration;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Lots>
+     */
+    public function getLots(): Collection
+    {
+        return $this->lots;
+    }
+
+    public function addLot(Lots $lot): static
+    {
+        if (!$this->lots->contains($lot)) {
+            $this->lots->add($lot);
+            $lot->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLot(Lots $lot): static
+    {
+        if ($this->lots->removeElement($lot)) {
+            // set the owning side to null (unless already changed)
+            if ($lot->getProduit() === $this) {
+                $lot->setProduit(null);
             }
         }
 

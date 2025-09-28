@@ -26,9 +26,10 @@
 </head>
 <body>
 
-<br><br><br> <table style="width:100%">
+<br><br><br> 
+    <table style="width:100%">
         <thead>
-         <tr><th colspan="5" align="center">Produit sans date peremtion </th></tr>
+         <tr><th colspan="4" align="center">Produit sans date peremtion lot 01 </th></tr>
         </thead>
         <tbody>
         <tr>
@@ -36,16 +37,38 @@
             <th scope="col">Quantite</th>
             <th scope="col">Type</th>
             <th scope="col">lot 01 </th>
-            <th scope="col">lot 02 </th>
-            
         </tr>
+        {% for produit in produits %}
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{produit.nom}}</td>
+                <td>{{produit.quantite}}</td>
+                <td>{{produit.cathegorie}}</td>
+                <td>{{produit.expiration}}</td>
             </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br><br> 
+    <table style="width:100%">
+        <thead>
+         <tr><th colspan="4" align="center">Produit sans date peremtion lots 2 </th></tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Quantite</th>
+            <th scope="col">Type</th>
+            <th scope="col">lot 02 </th>
+        </tr>
+        {% for lot in lots %}
+            <tr>
+                <td>{{lot.produit.nom}}</td>
+                <td>{{lot.produit.quantite}}</td>
+                <td>{{lot.produit.cathegorie}}</td>
+                <td>{{lot.produit.expiration}}</td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 
@@ -54,17 +77,16 @@
          <tr><th colspan="2" align="center">Doublon de produit </th></tr>
         </thead>
         <tbody>
-            <tr>
-        
-            </tr>
-            <tr>
+        <tr>
             <th scope="col">Nom</th>
             <th scope="col">nombre</th>
         </tr>
-        <tr>
-            <td></td>
-            <td></td>    
-        </tr>
+        {% for doublon in doublons %}
+            <tr>
+                <td>{{doublon.nom}}</td>
+                <td>{{doublon.quantite}}</td>    
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 

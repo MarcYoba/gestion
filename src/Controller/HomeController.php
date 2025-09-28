@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Agence;
 use App\Entity\FactureA;
+use App\Entity\Lots;
 use App\Entity\Produit;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
@@ -121,11 +122,21 @@ class HomeController extends AbstractController
         $produi = $entityManager->getRepository(ProduitA::class)->findAll();
         $agence = $entityManager->getRepository(Agence::class)->findAll();
         $produitplusvendu = $entityManager->getRepository(FactureA::class)->FindByProduitPlusVendu();
-        
+        $doublon = $entityManager->getRepository(ProduitA::class)->findByDoublon();
+        $expiration = $entityManager->getRepository(ProduitA::class)->findBy(['expiration' => '0']);
+        $lots = $entityManager->getRepository(Lots::class)->findBy(['expiration' => '0']);
+        $peramption = $entityManager->getRepository(ProduitA::class)->findByDateExpiration(6);
+        $lotsperemtion = $entityManager->getRepository(Lots::class)->findByDateExpirationLots(6);
+
         return $this->render('home/dashboardA.html.twig', [
             'agence' => $agence,
             'produits' => $produi,
             'produitplusvendu' => $produitplusvendu,
+            'doublons' => $doublon,
+            'expiration' => $expiration,
+            'lots' => $lots,
+            'perantions' => $peramption,
+            'lotsperemtion' => $lotsperemtion,
         ]);
     }
 }

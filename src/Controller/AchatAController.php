@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\AchatA;
 use App\Form\AchatAType;
 use App\Entity\FournisseurA;
+use App\Entity\Lots;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,6 +27,7 @@ class AchatAController extends AbstractController
             try {
                 foreach ($data as $key) {
                     $achatA = new AchatA();
+                    $lots = new Lots();
                     $date = empty($key['datevalue']) ? new \DateTimeImmutable() : new \DateTimeImmutable($key['datevalue']);
                     $achatA->setCreatedAt($date);
     
@@ -45,8 +47,18 @@ class AchatAController extends AbstractController
                     $achatA->setProduit($produitA);
     
                     $ajout += $key["quantite"];
+                    
+
+                    if ($produitA->getExpiration() <> "1") {
+                        $lots->setProduit($produitA);
+                        $lots->setExpiration($key['datepera']);
+                        $lots->setCreatetAt(new \DateTime());
+                        $lots->setAgance($tempagence->getAgence());
+                        $em->persist($lots);
+                        $em->flush();
+                    }
                     $produitA->setQuantite($ajout);
-    
+                    $produitA->setExpiration($key['datepera']);
                     $em->persist($achatA);
                 }
                 $em->flush();

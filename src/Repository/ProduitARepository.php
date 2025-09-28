@@ -45,4 +45,34 @@ class ProduitARepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    
+    public function findByDateExpiration($moisAlerte) :array
+    {
+
+            $dateNow = new \DateTime();
+            $dateAlerte = (new \DateTime())->modify("+$moisAlerte months");
+    
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.lots', 'l')
+            ->addSelect('l')
+            ->where('p.expiration <= :dateAlerte')
+            ->andWhere('p.expiration <> :defaut')
+            ->setParameter('dateAlerte', $dateAlerte)
+            ->setParameter('defaut',1)
+            ->orderBy('p.expiration', 'ASC')
+            ->getQuery()
+            ->getResult();
+            ;
+    }
+    public function findByDoublon(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.nom,p.quantite, COUNT(p.id) as count')
+            ->groupBy('p.nom')
+            ->having('COUNT(p.id) > 1')
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
 }

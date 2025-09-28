@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Employer;
+use App\Entity\Lots;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use App\Form\ProduitAType;
@@ -233,10 +234,52 @@ class ProduitAController extends AbstractController
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
-       
+        
+        $produit = $em->getRepository(ProduitA::class)->findBy(['expiration' => '0']);
+        $lots = $em->getRepository(Lots::class)->findBy(['expiration' => '0']);
+        $doublon = $em->getRepository(ProduitA::class)->findByDoublon();
         
         $html = $this->renderView('produit_a/peramption.html.twig', [
-        
+            'produits' => $produit,
+            'lots'=> $lots,
+            'doublons'=> $doublon,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="document.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );        
+    
+    }
+
+    #[Route('/produit/a/perimer', name:'app_produit_perimer')]
+    public function produit_perimer(EntityManagerInterface $em) : Response 
+    {
+         
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+       
+        $doublon = $em->getRepository(ProduitA::class)->findByDoublon();
+        $peramption = $em->getRepository(ProduitA::class)->findByDateExpiration(6);
+        $lots = $em->getRepository(Lots::class)->findByDateExpirationLots(6);
+
+        $html = $this->renderView('produit_a/peramption.html.twig', [
+            'doublons'=> $doublon,
+            'produits' => $peramption,
+            'lots' => $lots,
         ]);
 
         $dompdf->loadHtml($html);
