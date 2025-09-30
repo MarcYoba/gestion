@@ -49,7 +49,6 @@ class ActifAType extends AbstractType
             ])
             ->add('created', DateType::class,[
                 'label'=> 'date',
-                'input' => 'datetime_immutable',
                 'widget'=>'single_text',
                 'attr' => [ "class" => "form-control form-control-user",
                     'placeholder'=> "date"
@@ -67,6 +66,7 @@ class ActifAType extends AbstractType
                      " ACTIF immobilise"=>"IMMOBILISE",
                      " ACTIF circulant"=>"CIRCULANT",
                      "TRESORERIE-ACTIF"=> "tresorerie",
+                     "Autre"=> "autre",
                 ],
             ])
         ;
