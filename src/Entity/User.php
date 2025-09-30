@@ -137,6 +137,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Suivi::class)]
     private Collection $suivis;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: DepenseActif::class)]
+    private Collection $depenseActifs;
+
     
 
     public function __construct() {
@@ -170,6 +173,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->vaccins = new ArrayCollection();
         $this->consultations = new ArrayCollection();
         $this->suivis = new ArrayCollection();
+        $this->depenseActifs = new ArrayCollection();
         
     }
 
@@ -1153,6 +1157,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($suivi->getUser() === $this) {
                 $suivi->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DepenseActif>
+     */
+    public function getDepenseActifs(): Collection
+    {
+        return $this->depenseActifs;
+    }
+
+    public function addDepenseActif(DepenseActif $depenseActif): static
+    {
+        if (!$this->depenseActifs->contains($depenseActif)) {
+            $this->depenseActifs->add($depenseActif);
+            $depenseActif->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepenseActif(DepenseActif $depenseActif): static
+    {
+        if ($this->depenseActifs->removeElement($depenseActif)) {
+            // set the owning side to null (unless already changed)
+            if ($depenseActif->getUser() === $this) {
+                $depenseActif->setUser(null);
             }
         }
 

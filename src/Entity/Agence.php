@@ -110,6 +110,9 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agance', targetEntity: Lots::class)]
     private Collection $lots;
 
+    #[ORM\OneToMany(mappedBy: 'agecne', targetEntity: DepenseActif::class)]
+    private Collection $depenseActifs;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -138,6 +141,7 @@ class Agence
         $this->consultations = new ArrayCollection();
         $this->suivis = new ArrayCollection();
         $this->lots = new ArrayCollection();
+        $this->depenseActifs = new ArrayCollection();
     }
 
    
@@ -981,6 +985,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($lot->getAgance() === $this) {
                 $lot->setAgance(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DepenseActif>
+     */
+    public function getDepenseActifs(): Collection
+    {
+        return $this->depenseActifs;
+    }
+
+    public function addDepenseActif(DepenseActif $depenseActif): static
+    {
+        if (!$this->depenseActifs->contains($depenseActif)) {
+            $this->depenseActifs->add($depenseActif);
+            $depenseActif->setAgecne($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepenseActif(DepenseActif $depenseActif): static
+    {
+        if ($this->depenseActifs->removeElement($depenseActif)) {
+            // set the owning side to null (unless already changed)
+            if ($depenseActif->getAgecne() === $this) {
+                $depenseActif->setAgecne(null);
             }
         }
 

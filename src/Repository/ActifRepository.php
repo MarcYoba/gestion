@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Actif;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use PhpParser\Node\Stmt\Return_;
 
 /**
  * @extends ServiceEntityRepository<Actif>
@@ -45,4 +46,25 @@ class ActifRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findByRefDate($ref, $date) : ?Actif 
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.REF = :refference')
+            ->andWhere('YEAR(a.created) = :date')
+            ->setParameter('refference',$ref)
+            ->setParameter('date',$date)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findByYear($anne) : array 
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('YEAR(a.created) = :date')
+            ->setParameter('date',$anne)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
