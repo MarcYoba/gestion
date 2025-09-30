@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ActifARepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -43,6 +45,14 @@ class ActifA
 
     #[ORM\Column(length: 255)]
     private ?string $REF = null;
+
+    #[ORM\OneToMany(mappedBy: 'actif', targetEntity: DepenseActifA::class)]
+    private Collection $depenseActifAs;
+
+    public function __construct()
+    {
+        $this->depenseActifAs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -165,6 +175,36 @@ class ActifA
     public function setREF(string $REF): static
     {
         $this->REF = $REF;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DepenseActifA>
+     */
+    public function getDepenseActifAs(): Collection
+    {
+        return $this->depenseActifAs;
+    }
+
+    public function addDepenseActifA(DepenseActifA $depenseActifA): static
+    {
+        if (!$this->depenseActifAs->contains($depenseActifA)) {
+            $this->depenseActifAs->add($depenseActifA);
+            $depenseActifA->setActif($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepenseActifA(DepenseActifA $depenseActifA): static
+    {
+        if ($this->depenseActifAs->removeElement($depenseActifA)) {
+            // set the owning side to null (unless already changed)
+            if ($depenseActifA->getActif() === $this) {
+                $depenseActifA->setActif(null);
+            }
+        }
 
         return $this;
     }

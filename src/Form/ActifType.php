@@ -66,6 +66,7 @@ class ActifType extends AbstractType
                     " ACTIF immobilise"=>"IMMOBILISE",
                     " ACTIF circulant"=>"CIRCULANT",
                     "TRESORERIE-ACTIF"=> "tresorerie",
+                    "Autre"=> "autre",
                 ],
             ])
         ;

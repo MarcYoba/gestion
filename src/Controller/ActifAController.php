@@ -75,7 +75,10 @@ class ActifAController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            $entityManager->persist($Actif);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_actif_a_list', ["date" => date("Y")]);
+
         }
 
         return $this->render('actif/edit.html.twig', [
@@ -83,10 +86,11 @@ class ActifAController extends AbstractController
         ]);
     }
 
-    #[Route('/actif/a/edit/{id}', name: 'app_actif_a_delete')]
+    #[Route('/actif/a/delete/{id}', name: 'app_actif_a_delete')]
     public function delete(EntityManagerInterface $entityManager, int $id) : Response {
-       $Actif = $entityManager->getRepository(ActifA::class)->find(["id" => $id]);
+       $Actif = $entityManager->getRepository(ActifA::class)->find($id);
        $entityManager->remove($Actif);
-        return $this->redirectToRoute('app_actif_list', ["date" => date("Y")]);
+       $entityManager->flush();
+        return $this->redirectToRoute('app_actif_a_list', ["date" => date("Y")]);
     }
 }

@@ -105,27 +105,27 @@
                                     <tbody>
                                         {% for actif in Actifs %}
                                             <tr>
-                                                <td style="color: blue;">{{ actif.REF }}</td>    
+                                                {% if actif.REF == 'AD' or actif.REF == 'AI' or  actif.REF == 'AZ' or actif.REF == 'BK' or actif.REF == 'BT' 
+                                            or actif.REF == 'Bz' %}
+                                                <td style="color: blue;">{{ actif.REF }}</td>   
                                                 <td style="color: blue;">{{ actif.libelle }}</td>
                                                 <td style="color: blue;">{{ actif.brut }}</td>
                                                 <td style="color: blue;">{{ actif.amortissement }}</td>
                                                 <td style="color: blue;">{{ actif.net}}</td> 
+                                            {% else %}
+                                                <td style="">{{ actif.REF }}</td>   
+                                                <td style="">{{ actif.libelle }}</td>
+                                                <td style="">{{ actif.brut }}</td>
+                                                <td style="">{{ actif.amortissement }}</td>
+                                                <td style="">{{ actif.net}}</td> 
+                                            {% endif %}
                                                 <td>
-                                                    <a href="{{ path('app_actif_a_edite',{'id': actif.id})}}" class='btn btn-primary' id='modification'><i class='fas fa-pencil-alt '></i></a>
+                                                    <a href="{{ path('app_actif_a_edite',{'id': actif.id})}}" class='btn btn-primary' ><i class='fas fa-pencil-alt '></i></a>
                                                     <a href="{{ path('app_actif_a_delete',{'id': actif.id})}}" class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de supprimer cette ligne ?\");'><i class='fas fa-trash-alt'></i></a>
                                                 </td>  
                                                 <td></td>       
                                             </tr>
                                         {% endfor %} 
-                                        <tr>
-                                            <td style="color: blue;">Total GENERALE</td>    
-                                                <td style="color: blue;"></td>
-                                                <td style="color: blue;"></td>
-                                                <td style="color: blue;"></td>
-                                                <td style="color: blue;"></td> 
-                                                <td></td> 
-                                                <td></td>        
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
