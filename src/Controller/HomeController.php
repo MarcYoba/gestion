@@ -139,6 +139,16 @@ class HomeController extends AbstractController
         $peramption = $entityManager->getRepository(ProduitA::class)->findByDateExpiration(6);
         $lotsperemtion = $entityManager->getRepository(Lots::class)->findByDateExpirationLots(6);
 
+        if (empty($expiration)) {
+            $expiration = [];
+        }  # code...
+        if ($doublon) {
+            $doublon = [];
+        }
+        if ($peramption) {
+            $peramption =[];
+        }
+
         return $this->render('home/dashboardA.html.twig', [
             'agence' => $agence,
             'produits' => $produi,
