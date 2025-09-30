@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Agence;
+use App\Entity\Employer;
 use App\Entity\User;
 use App\Entity\Vente;
 use App\Form\AgenceType;
@@ -44,6 +45,14 @@ class AgenceController extends AbstractController
             ]);
         }
         $agence = $entityManager->getRepository(Agence::class)->findAll();
+        if ($this->isGranted("ROLE_ADMIN_ADMIN") || $this->isGranted("ROLE_CLIENTS")) {
+            $agence = $entityManager->getRepository(Agence::class)->findAll();
+        }else{
+            $user = $this->getUser();
+            $employer = $entityManager->getRepository(Employer::class)->findOneBy(['user' => $user]);
+            $agence = $entityManager->getRepository(Agence::class)->findBy(['id'=>$employer->getAgence()->getId()]);
+        }
+        
         return $this->render('home/index.html.twig', [
             'agence' => $agence,
         ]);
