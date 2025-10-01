@@ -65,11 +65,12 @@ class PassifAController extends AbstractController
     #[Route('passif/a/edit/{id}', name:'app_passif_a_edit')]
     public function Edit(Request $request,EntityManagerInterface $entityManager, int $id) : Response 
     {
+        
+
+        $passif = $entityManager->getRepository(PassifA::class)->findOneBy(["id" => $id]);
         $user = $this->getUser();
         $agence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $agence->getAgence()->getId();
-
-        $passif = $entityManager->getRepository(PassifA::class)->findOneBy(["id" => $id]);
 
         $form = $this->createForm(PassifAType::class,$passif);
         $form->handleRequest($request);
