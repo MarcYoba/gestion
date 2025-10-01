@@ -66,14 +66,15 @@ class PassifController extends AbstractController
     #[Route('passif/edit/{id}', name:'app_passif_edit')]
     public function Edit(Request $request,EntityManagerInterface $entityManager, int $id) : Response 
     {
-        $user = $this->getUser();
-        $agence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
-        $id = $agence->getAgence()->getId();
+        
 
-        $passif = $entityManager->getRepository(Passif::class)->findOneBy(["agence" => $id]);
+        $passif = $entityManager->getRepository(Passif::class)->findOneBy(["id" => $id]);
 
         $form = $this->createForm(PassifType::class,$passif);
         $form->handleRequest($request);
+        $user = $this->getUser();
+        $agence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $agence->getAgence()->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
