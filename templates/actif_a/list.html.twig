@@ -64,11 +64,9 @@
                                 <div class="col-md-4">
                                     <button class="btn btn-primary btn-user" onclick="UpdateActif_a()">Mise à jour de l'actif</button>
                                 </div>
-                                <form action="registerbilan.php" method="post">
-                                    <div class="col-md-3">
-                                        <button type="submit" class="btn btn-danger btn-user" name="supprimer" id="supprimer">Supprimer </button> 
-                                    </div>
-                                </form>
+                                <div class="col-md-3">
+                                    <a type="submit" href="#" class="btn btn-warning btn-user">lList Depense </a> 
+                                </div>
                                 
                             </div>
                         </div>
@@ -106,23 +104,24 @@
                                         {% for actif in Actifs %}
                                             <tr>
                                                 {% if actif.REF == 'AD' or actif.REF == 'AI' or  actif.REF == 'AZ' or actif.REF == 'BK' or actif.REF == 'BT' 
-                                            or actif.REF == 'Bz' %}
+                                            or actif.REF == 'BZ' or actif.REF == 'AQ' %}
                                                 <td style="color: blue;">{{ actif.REF }}</td>   
                                                 <td style="color: blue;">{{ actif.libelle }}</td>
                                                 <td style="color: blue;">{{ actif.brut }}</td>
                                                 <td style="color: blue;">{{ actif.amortissement }}</td>
                                                 <td style="color: blue;">{{ actif.net}}</td> 
+                                                <td></td>
                                             {% else %}
                                                 <td style="">{{ actif.REF }}</td>   
                                                 <td style="">{{ actif.libelle }}</td>
                                                 <td style="">{{ actif.brut }}</td>
                                                 <td style="">{{ actif.amortissement }}</td>
                                                 <td style="">{{ actif.net}}</td> 
-                                            {% endif %}
                                                 <td>
                                                     <a href="{{ path('app_actif_a_edite',{'id': actif.id})}}" class='btn btn-primary' ><i class='fas fa-pencil-alt '></i></a>
                                                     <a href="{{ path('app_actif_a_delete',{'id': actif.id})}}" class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de supprimer cette ligne ?\");'><i class='fas fa-trash-alt'></i></a>
-                                                </td>  
+                                                </td> 
+                                            {% endif %}
                                                 <td></td>       
                                             </tr>
                                         {% endfor %} 

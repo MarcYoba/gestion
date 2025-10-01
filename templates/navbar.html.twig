@@ -380,9 +380,13 @@
             <div id="actif" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header"> Bilan Comptable :</h6>
+                {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                     <a class="collapse-item" href="{{ path('app_actif')}}">Actif Bilan</a>
                     <a class="collapse-item" href="{{ path('app_depense_actif_liste')}}">Edit Actif</a>
                     <a class="collapse-item" href="{{ path('app_actif_list',{'date': 'now' | date('Y')})}}">liste Actif</a>
+                {% else %}
+                    
+                {% endif %}
                 </div>
             </div>
         </li>
@@ -395,8 +399,13 @@
             <div id="passif" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header"> Bilan Comptable:</h6>
+                {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                     <a class="collapse-item" href="{{ path('app_passif')}}">Passif Bilan</a>
                     <a class="collapse-item" href="{{ path('app_passif_list',{'date': 'now' | date('Y')})}}">liste Passif</a>
+                    <a class="collapse-item" href="{{path('app_depense_passif_list')}}">Edite<a/>
+                {% else %}
+                    
+                {% endif %}
                 </div>
             </div>
         </li>

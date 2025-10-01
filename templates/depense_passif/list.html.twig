@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello passifPassifController!{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Gestion de stock</title>
+
+    <!-- Custom fonts for this template -->
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {% include "navbar.html.twig" %}
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                {% include "topbar.html.twig" %}
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Dépense Passif</h1>
+                    <p class="mb-4">
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="form-group row">
+                                <div class="col-sm-2">
+                                    <h6 class="m-0 font-weight-bold text-primary">Liste des dépenses</h6>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="../../home.php" class="btn btn-primary">
+                                        <i class="fa fa-home"></i>
+                                        Home</a> 
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="{{ path('app_depense_passif')}}" class="btn btn-success"> 
+                                        <i class="fa fa-plus"></i> 
+                                    Ajouter</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="{{path('app_passif_list', {'date': 2025})}}" class="btn btn-success"> 
+                                        <i class="fa fa-list"></i> 
+                                    list </a>
+                                </div>
+                                <div class="col-sm-4">
+                                <br>
+                                <label for="annee">Année récherché</label>
+                                    <select class="form-control" id="annee" name="annee" onchange="reload()">
+                                        <?php
+                                        $currentYear = 2024;
+                                        echo "<option >Recherche a</option>";
+                                        for ($year = $currentYear; $year <= $currentYear + 10; $year++) {
+                                            echo "<option value=\"$year\">$year</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <form method="POST" action="../pdf/getpassif.php">
+                                <div class="form-group row">
+                                    <div class="col-md-2" >
+                                        <input type="date" class="form-control form-control-user"
+                                                name="datedebut" id="datedebut" placeholder="premiere date">
+                                    </div>
+                                    <div class="col-md-2" >
+                                        <input type="date" class="form-control form-control-user"
+                                                name="datefin" id="datefin" placeholder="second date">
+                                    </div>
+                                    <div class="col-md-3" >
+                                        <input type="submit" class="btn btn-warning btn-user"  value="Afficher" >  
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-page-length='25' data-order='[[0, "desc"]]'>
+                                    <thead>
+                                       
+                                        <tr>
+                                            <th>id</th>
+                                            <th>Description</th>
+                                            <th>Montant</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>id</th>
+                                            <th>Description</th>
+                                            <th>Montant</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for passif in passifs %}
+                                            <tr>
+                                                <td>{{passif.id}}</td>
+                                                <td>{{passif.libelle}}</td>
+                                                <td>{{passif.montant}}</td>
+                                                <td>{{passif.createtAt | date("Y-m-d")}}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Production &copy; {{ 'now' | date("Y-m-d")}}</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <script>
+        function reload() {
+            var annee = document.getElementById("annee").value;
+            window.location.href = "listepassif.php?date=" + annee;
+        }
+    </script>
+
+</body>
+
+</html>
+{% endblock %}

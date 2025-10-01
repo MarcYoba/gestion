@@ -434,6 +434,7 @@ Administrateur
                 {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                     <a class="collapse-item" href="{{path('app_passif_a')}}">Passif Bilan</a>
                     <a class="collapse-item" href="{{path('app_passif_a_list', {'date': 'now'| date("Y")})}}">liste Passif</a>
+                    <a class="collapse-item" href="{{path('app_depense_passif_a_list')}}">Edite<a/>
                 {% else %}
                     
                 {% endif %}
