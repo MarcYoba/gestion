@@ -69,7 +69,7 @@ class PassifAController extends AbstractController
         $agence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $agence->getAgence()->getId();
 
-        $passif = $entityManager->getRepository(PassifA::class)->findOneBy(["agence" => $id]);
+        $passif = $entityManager->getRepository(PassifA::class)->findOneBy(["id" => $id]);
 
         $form = $this->createForm(PassifAType::class,$passif);
         $form->handleRequest($request);
