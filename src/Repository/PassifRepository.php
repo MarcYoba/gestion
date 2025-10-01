@@ -45,4 +45,25 @@ class PassifRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findByRefDate($ref, $date) : ?Passif
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.REF = :refference')
+            ->andWhere('YEAR(a.created) = :date')
+            ->setParameter('refference',$ref)
+            ->setParameter('date',$date)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findByYear($anne) : array 
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('YEAR(a.created) = :date')
+            ->setParameter('date',$anne)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

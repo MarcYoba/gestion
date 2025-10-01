@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PassifRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,6 +39,14 @@ class Passif
 
     #[ORM\Column(length: 255)]
     private ?string $cathegorie = null;
+
+    #[ORM\OneToMany(mappedBy: 'passif', targetEntity: DepensePassif::class)]
+    private Collection $depensePassifs;
+
+    public function __construct()
+    {
+        $this->depensePassifs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -135,6 +145,36 @@ class Passif
     public function setCathegorie(string $cathegorie): static
     {
         $this->cathegorie = $cathegorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DepensePassif>
+     */
+    public function getDepensePassifs(): Collection
+    {
+        return $this->depensePassifs;
+    }
+
+    public function addDepensePassif(DepensePassif $depensePassif): static
+    {
+        if (!$this->depensePassifs->contains($depensePassif)) {
+            $this->depensePassifs->add($depensePassif);
+            $depensePassif->setPassif($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepensePassif(DepensePassif $depensePassif): static
+    {
+        if ($this->depensePassifs->removeElement($depensePassif)) {
+            // set the owning side to null (unless already changed)
+            if ($depensePassif->getPassif() === $this) {
+                $depensePassif->setPassif(null);
+            }
+        }
 
         return $this;
     }

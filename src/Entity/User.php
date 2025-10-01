@@ -143,6 +143,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DepenseActifA::class)]
     private Collection $depenseActifAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: DepensePassif::class)]
+    private Collection $depensePassifs;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: DepensePassifA::class)]
+    private Collection $depensePassifAs;
+
     
 
     public function __construct() {
@@ -178,6 +184,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->suivis = new ArrayCollection();
         $this->depenseActifs = new ArrayCollection();
         $this->depenseActifAs = new ArrayCollection();
+        $this->depensePassifs = new ArrayCollection();
+        $this->depensePassifAs = new ArrayCollection();
         
     }
 
@@ -1221,6 +1229,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($depenseActifA->getUser() === $this) {
                 $depenseActifA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DepensePassif>
+     */
+    public function getDepensePassifs(): Collection
+    {
+        return $this->depensePassifs;
+    }
+
+    public function addDepensePassif(DepensePassif $depensePassif): static
+    {
+        if (!$this->depensePassifs->contains($depensePassif)) {
+            $this->depensePassifs->add($depensePassif);
+            $depensePassif->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepensePassif(DepensePassif $depensePassif): static
+    {
+        if ($this->depensePassifs->removeElement($depensePassif)) {
+            // set the owning side to null (unless already changed)
+            if ($depensePassif->getUser() === $this) {
+                $depensePassif->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DepensePassifA>
+     */
+    public function getDepensePassifAs(): Collection
+    {
+        return $this->depensePassifAs;
+    }
+
+    public function addDepensePassifA(DepensePassifA $depensePassifA): static
+    {
+        if (!$this->depensePassifAs->contains($depensePassifA)) {
+            $this->depensePassifAs->add($depensePassifA);
+            $depensePassifA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepensePassifA(DepensePassifA $depensePassifA): static
+    {
+        if ($this->depensePassifAs->removeElement($depensePassifA)) {
+            // set the owning side to null (unless already changed)
+            if ($depensePassifA->getUser() === $this) {
+                $depensePassifA->setUser(null);
             }
         }
 

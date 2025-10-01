@@ -116,6 +116,12 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'Agence', targetEntity: DepenseActifA::class)]
     private Collection $depenseActifAs;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: DepensePassif::class)]
+    private Collection $depensePassifs;
+
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: DepensePassifA::class)]
+    private Collection $depensePassifAs;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -146,6 +152,8 @@ class Agence
         $this->lots = new ArrayCollection();
         $this->depenseActifs = new ArrayCollection();
         $this->depenseActifAs = new ArrayCollection();
+        $this->depensePassifs = new ArrayCollection();
+        $this->depensePassifAs = new ArrayCollection();
     }
 
    
@@ -1049,6 +1057,66 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($depenseActifA->getAgence() === $this) {
                 $depenseActifA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DepensePassif>
+     */
+    public function getDepensePassifs(): Collection
+    {
+        return $this->depensePassifs;
+    }
+
+    public function addDepensePassif(DepensePassif $depensePassif): static
+    {
+        if (!$this->depensePassifs->contains($depensePassif)) {
+            $this->depensePassifs->add($depensePassif);
+            $depensePassif->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepensePassif(DepensePassif $depensePassif): static
+    {
+        if ($this->depensePassifs->removeElement($depensePassif)) {
+            // set the owning side to null (unless already changed)
+            if ($depensePassif->getAgence() === $this) {
+                $depensePassif->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DepensePassifA>
+     */
+    public function getDepensePassifAs(): Collection
+    {
+        return $this->depensePassifAs;
+    }
+
+    public function addDepensePassifA(DepensePassifA $depensePassifA): static
+    {
+        if (!$this->depensePassifAs->contains($depensePassifA)) {
+            $this->depensePassifAs->add($depensePassifA);
+            $depensePassifA->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepensePassifA(DepensePassifA $depensePassifA): static
+    {
+        if ($this->depensePassifAs->removeElement($depensePassifA)) {
+            // set the owning side to null (unless already changed)
+            if ($depensePassifA->getAgence() === $this) {
+                $depensePassifA->setAgence(null);
             }
         }
 
