@@ -84,17 +84,13 @@ class ActifRepository extends ServiceEntityRepository
     public function findByCreanceAssimiles($anne,$cathegire) : array 
     {
         return $this->createQueryBuilder('a')
-            ->select('SUM(a.brut),SUM(a.amortissement),SUM(a.net)')
-            ->Where('YEAR(a.created) = :date')
-            ->andWhere('a.cathegorie = :cathego')
-            ->andWhere('a.REF = :ref1')
-            ->andWhere('a.REF = :ref2')
-            ->andWhere('a.REF = :ref3')
-            ->setParameter('date',$anne)
-            ->setParameter('cathego',$cathegire)
-            ->setParameter('ref1','BH')
-            ->setParameter('ref2','BI')
-            ->setParameter('ref3','BJ')
+            ->select('SUM(a.brut), SUM(a.amortissement) , SUM(a.net) ')
+            ->where('YEAR(a.created) = :date')
+            ->andWhere('a.cathegorie = :categorie')
+            ->andWhere('a.REF IN (:refs)') // Utilisation de IN au lieu de multiples AND
+            ->setParameter('date', $anne)
+            ->setParameter('categorie', $cathegire) // Correction du nom de variable
+            ->setParameter('refs', ['BH', 'BI', 'BJ']) // Passage d'un tableau BG BB BA
             ->getQuery()
             ->getResult()
         ;
@@ -103,17 +99,13 @@ class ActifRepository extends ServiceEntityRepository
     public function findBySommeCirculan($anne,$cathegire) : array 
     {
         return $this->createQueryBuilder('a')
-            ->select('SUM(a.brut),SUM(a.amortissement),SUM(a.net)')
-            ->Where('YEAR(a.created) = :date')
-            ->andWhere('a.cathegorie = :cathego')
-            ->andWhere('a.REF = :ref1')
-            ->andWhere('a.REF = :ref2')
-            ->andWhere('a.REF = :ref3')
-            ->setParameter('date',$anne)
-            ->setParameter('cathego',$cathegire)
-            ->setParameter('ref1','BG')
-            ->setParameter('ref2','BB')
-            ->setParameter('ref3','BA')
+            ->select('SUM(a.brut), SUM(a.amortissement) , SUM(a.net) ')
+            ->where('YEAR(a.created) = :date')
+            ->andWhere('a.cathegorie = :categorie')
+            ->andWhere('a.REF IN (:refs)') // Utilisation de IN au lieu de multiples AND
+            ->setParameter('date', $anne)
+            ->setParameter('categorie', $cathegire) // Correction du nom de variable
+            ->setParameter('refs', ['BG', 'BB', 'BA']) // Passage d'un tableau 
             ->getQuery()
             ->getResult()
         ;
