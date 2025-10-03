@@ -61,8 +61,154 @@ class ActifAController extends AbstractController
         if($request->isXmlHttpRequest() || $request->getContentType()==='json') {
             $json = $request->getContent();
             $donnees = json_decode($json, true);
+            $az = [
+                    'brut' => 0,
+                    'amort' => 0,
+                    'net' => 0,
+                ];
+
             if (isset($donnees)) {
-                return $this->json(['error' => 'Mise a jour du bilan','donne'=>$donnees], 200);
+                $ad = $entityManager->getRepository(ActifA::class)->findBySomme($donnees,"Incorporelles");
+                if (is_array($ad)) {
+                    $actif = $entityManager->getRepository(ActifA::class)->findByRefDate("AD", $donnees);
+                    if (!empty($actif)) {
+                        foreach ($ad as $key => $value) {
+                            $actif->setBrut($value[1]);
+                            $actif->setAmortissement($value[2]);
+                            $actif->setNet($value[3]);
+                            $az['brut'] = $az['brut'] + $value[1];
+                            $az['amort'] = $az['amort'] + $value[2];
+                            $az['net'] = $az['net'] + $value[3];
+                        }
+                        $entityManager->persist($actif);
+                        $entityManager->flush();
+                    }
+                }
+
+                $ai = $entityManager->getRepository(ActifA::class)->findBySomme($donnees,"corporelles");
+                if (is_array($ai)) {
+                    $actif = $entityManager->getRepository(ActifA::class)->findByRefDate("AI", $donnees);
+                    if (!empty($actif)) {
+                        foreach ($ai as $key => $value) {
+                            $actif->setBrut($value[1]);
+                            $actif->setAmortissement($value[2]);
+                            $actif->setNet($value[3]);
+
+                            $az['brut'] = $az['brut'] + $value[1];
+                            $az['amort'] = $az['amort'] + $value[2];
+                            $az['net'] = $az['net'] + $value[3];
+                        }
+                        $entityManager->persist($actif);
+                        $entityManager->flush();
+                    }
+                }
+
+                $aq = $entityManager->getRepository(ActifA::class)->findBySomme($donnees,"financières");
+                if (is_array($aq)) {
+                    $actif = $entityManager->getRepository(ActifA::class)->findByRefDate("AQ", $donnees);
+                    if (!empty($actif)) {
+                        foreach ($aq as $key => $value) {
+                            $actif->setBrut($value[1]);
+                            $actif->setAmortissement($value[2]);
+                            $actif->setNet($value[3]);
+
+                            $az['brut'] = $az['brut'] + $value[1];
+                            $az['amort'] = $az['amort'] + $value[2];
+                            $az['net'] = $az['net'] + $value[3];
+                        }
+                        $entityManager->persist($actif);
+                        $entityManager->flush();
+                    }
+                }
+
+                $actif = $entityManager->getRepository(ActifA::class)->findByRefDate("AZ", $donnees);
+                if ($actif) {
+                    $actif->setBrut($az['brut']);
+                    $actif->setAmortissement($az['amort']);
+                    $actif->setNet($az['net']);
+                }
+
+                $bg = $entityManager->getRepository(ActifA::class)->findByCreanceAssimiles($donnees,"CIRCULANT");
+                if (is_array($bg)) {
+                    $actif = $entityManager->getRepository(ActifA::class)->findByRefDate("BG", $donnees);
+                    if (($actif)) {
+                        foreach ($bg as $key => $value) {
+                            $actif->setBrut($value[1]);
+                            $actif->setAmortissement($value[2]);
+                            $actif->setNet($value[3]);
+
+                            $az['brut'] = $az['brut'] + $value[1];
+                            $az['amort'] = $az['amort'] + $value[2];
+                            $az['net'] = $az['net'] + $value[3];
+                        }
+                        $entityManager->persist($actif);
+                        $entityManager->flush();
+                    }
+                }
+
+                $bk = $entityManager->getRepository(ActifA::class)->findBySommeCirculan($donnees,"CIRCULANT");
+                if (is_array($bk)) {
+                    $actif = $entityManager->getRepository(ActifA::class)->findByRefDate("BK", $donnees);
+                    if (($actif)) {
+                        foreach ($bk as $key => $value) {
+                            $actif->setBrut($value[1]);
+                            $actif->setAmortissement($value[2]);
+                            $actif->setNet($value[3]);
+
+                            $az['brut'] = $az['brut'] + $value[1];
+                            $az['amort'] = $az['amort'] + $value[2];
+                            $az['net'] = $az['net'] + $value[3];
+                        }
+                        $entityManager->persist($actif);
+                        $entityManager->flush();
+                    }
+                }
+
+                $bt = $entityManager->getRepository(ActifA::class)->findBySomme($donnees,"tresorerie");
+                if (is_array($bt)) {
+                    $actif = $entityManager->getRepository(ActifA::class)->findByRefDate("BT", $donnees);
+                    if (!empty($actif)) {
+                        foreach ($bt as $key => $value) {
+                            $actif->setBrut($value[1]);
+                            $actif->setAmortissement($value[2]);
+                            $actif->setNet($value[3]);
+
+                            $az['brut'] = $az['brut'] + $value[1];
+                            $az['amort'] = $az['amort'] + $value[2];
+                            $az['net'] = $az['net'] + $value[3];
+                        }
+                        $entityManager->persist($actif);
+                        $entityManager->flush();
+                    }
+                }
+
+                $bu = $entityManager->getRepository(ActifA::class)->findBySomme($donnees,"tresorerie");
+                if (is_array($bu)) {
+                    $actif = $entityManager->getRepository(ActifA::class)->findByRefDate("BU", $donnees);
+                    if (!empty($actif)) {
+                        foreach ($bu as $key => $value) {
+                            $actif->setBrut($value[1]);
+                            $actif->setAmortissement($value[2]);
+                            $actif->setNet($value[3]);
+
+                            $az['brut'] = $az['brut'] + $value[1];
+                            $az['amort'] = $az['amort'] + $value[2];
+                            $az['net'] = $az['net'] + $value[3];
+                        }
+                        $entityManager->persist($actif);
+                        $entityManager->flush();
+                    }
+                }
+
+                $actif = $entityManager->getRepository(ActifA::class)->findByRefDate("BZ", $donnees);
+                if ($actif) {
+                    $actif->setBrut($az['brut']);
+                    $actif->setAmortissement($az['amort']);
+                    $actif->setNet($az['net']);
+                    $entityManager->persist($actif);
+                    $entityManager->flush();
+                }
+                return $this->json(['success' => 'Mise a jour du bilan','donne'=>$donnees], 200);
             }
         }
         return $this->json(['error' => 'Erreur de bilan'], 404);
