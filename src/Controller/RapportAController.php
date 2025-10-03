@@ -28,7 +28,7 @@ class RapportAController extends AbstractController
         $vente = $em->getRepository(VenteA::class)->findRapportToDay( $date);
         $achat = $em->getRepository(AchatA::class)->findByDate($date);
         
-        //dd($vente);
+        dd($vente);
         $html = $this->renderView('rapport_a/jour_courante.html.twig', [
         'ventes' => $vente,
         'achats' => $achat,
