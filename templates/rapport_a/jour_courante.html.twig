@@ -53,7 +53,7 @@
                     <th scope="col">Type paiement</th>
                     <th scope="col">date vente</th>
                 </tr>
-                 {# {% for facture in vente.factureAs %}
+                 {% for facture in vente.factureAs %}
                     <tr>
                         <td> {{ facture.produit.nom}} </td>
                         <td> {{ facture.quantite}} </td>
@@ -62,7 +62,7 @@
                         <td> {{ vente.type}} </td>
                         <td> {{ facture.createAt | date("Y-m-d")}} </td>
                     </tr>
-                {% endfor %}  #}
+                {% endfor %} 
                 {# <tr>
                     <td>Total</td>
                     <td>{{ vente.quantite}}</td>
