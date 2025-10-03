@@ -41,7 +41,7 @@
         {%   set sommeCredit = 0 %}
         {%   set sommeReduction = 0 %}
          
-            {% for vente in ventes %}
+            {# {% for vente in ventes %}
                 <tr>
                     <td colspan="6" align="center"> Formule   Vente N= {{ vente.id}} / Client : {{ vente.client.nom}} /Tel:{{ vente.client.telephone}}/ utilisateur:{{ vente.user.username}}/ heure: {{ vente.heure}}</td>
                 </tr>
@@ -92,7 +92,7 @@
                 {% set sommeCredit = sommeCredit + vente.credit %}
                 {% set sommeOm = sommeOm + vente.momo %}
                 {% set sommeReduction = sommeReduction + vente.reduction %}
-            {% endfor %}
+            {% endfor %} #}
             
         </tbody>
     </table> 
