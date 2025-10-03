@@ -67,4 +67,47 @@ class ActifARepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findBySomme($anne,$cathegire): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('SUM(a.brut),SUM(a.amortissement),SUM(a.net)')
+            ->Where('YEAR(a.created) = :date')
+            ->andWhere('a.cathegorie = :cathego')
+            ->setParameter('date',$anne)
+            ->setParameter('cathego',$cathegire)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByCreanceAssimiles($anne,$cathegire) : array 
+    {
+        return $this->createQueryBuilder('a')
+            ->select('SUM(a.brut), SUM(a.amortissement) , SUM(a.net) ')
+            ->where('YEAR(a.created) = :date')
+            ->andWhere('a.cathegorie = :categorie')
+            ->andWhere('a.REF IN (:refs)') // Utilisation de IN au lieu de multiples AND
+            ->setParameter('date', $anne)
+            ->setParameter('categorie', $cathegire) // Correction du nom de variable
+            ->setParameter('refs', ['BH', 'BI', 'BJ']) // Passage d'un tableau BG BB BA
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findBySommeCirculan($anne,$cathegire) : array 
+    {
+        return $this->createQueryBuilder('a')
+            ->select('SUM(a.brut), SUM(a.amortissement) , SUM(a.net) ')
+            ->where('YEAR(a.created) = :date')
+            ->andWhere('a.cathegorie = :categorie')
+            ->andWhere('a.REF IN (:refs)') // Utilisation de IN au lieu de multiples AND
+            ->setParameter('date', $anne)
+            ->setParameter('categorie', $cathegire) // Correction du nom de variable
+            ->setParameter('refs', ['BG', 'BB', 'BA']) // Passage d'un tableau 
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
