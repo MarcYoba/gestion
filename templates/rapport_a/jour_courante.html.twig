@@ -43,7 +43,7 @@
          
             {% for vente in ventes %}
                 <tr>
-                    {# <td colspan="6" align="center"> Formule   Vente N= {{ vente.id}} / Client : {{ vente.client.nom}} /Tel:{{ vente.client.telephone}}/ utilisateur:{{ vente.user.username}}/ heure: {{ vente.heure}}</td> #}
+                    <td colspan="6" align="center"> Formule   Vente N= {{ vente.id}} / Client : {{ vente.client.nom}} /Tel:{{ vente.client.telephone}}/ utilisateur:{{ vente.user.username}}/ heure: {{ vente.heure}}</td>
                 </tr>
                 <tr>
                     <th scope="col">Nom produit</th>
@@ -53,7 +53,7 @@
                     <th scope="col">Type paiement</th>
                     <th scope="col">date vente</th>
                 </tr>
-                 {% for facture in vente.factureAs %}
+                 {# {% for facture in vente.factureAs %}
                     <tr>
                         <td> {{ facture.produit.nom}} </td>
                         <td> {{ facture.quantite}} </td>
@@ -62,8 +62,8 @@
                         <td> {{ vente.type}} </td>
                         <td> {{ facture.createAt | date("Y-m-d")}} </td>
                     </tr>
-                {% endfor %} 
-                <tr>
+                {% endfor %}  #}
+                {# <tr>
                     <td>Total</td>
                     <td>{{ vente.quantite}}</td>
                     <td>{{ vente.prix / vente.quantite}}</td>
@@ -91,7 +91,7 @@
                 {% set sommeCash = sommeCash + vente.cash %}
                 {% set sommeCredit = sommeCredit + vente.credit %}
                 {% set sommeOm = sommeOm + vente.momo %}
-                {% set sommeReduction = sommeReduction + vente.reduction %}
+                {% set sommeReduction = sommeReduction + vente.reduction %} #}
             {% endfor %}
             
         </tbody>
