@@ -12,7 +12,11 @@ function UpdateActif(){
     })
     .then(response => response.json())
     .then(data => { 
-        console.log(data);     
+        console.log(data);
+        if (data.success) {
+            document.getElementById('message').innerText = "<h3 class='text-success'>Votre Actif est à jour</h3>" 
+        }
+            
     })
     .catch(error => {
         console.error(error);
