@@ -67,4 +67,55 @@ class ActifRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findBySomme($anne,$cathegire): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('SUM(a.brut),SUM(a.amortissement),SUM(a.net)')
+            ->Where('YEAR(a.created) = :date')
+            ->andWhere('a.cathegorie = :cathego')
+            ->setParameter('date',$anne)
+            ->setParameter('cathego',$cathegire)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByCreanceAssimiles($anne,$cathegire) : array 
+    {
+        return $this->createQueryBuilder('a')
+            ->select('SUM(a.brut),SUM(a.amortissement),SUM(a.net)')
+            ->Where('YEAR(a.created) = :date')
+            ->andWhere('a.cathegorie = :cathego')
+            ->andWhere('a.REF = :ref1')
+            ->andWhere('a.REF = :ref2')
+            ->andWhere('a.REF = :ref3')
+            ->setParameter('date',$anne)
+            ->setParameter('cathego',$cathegire)
+            ->setParameter('ref1','BH')
+            ->setParameter('ref2','BI')
+            ->setParameter('ref3','BJ')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findBySommeCirculan($anne,$cathegire) : array 
+    {
+        return $this->createQueryBuilder('a')
+            ->select('SUM(a.brut),SUM(a.amortissement),SUM(a.net)')
+            ->Where('YEAR(a.created) = :date')
+            ->andWhere('a.cathegorie = :cathego')
+            ->andWhere('a.REF = :ref1')
+            ->andWhere('a.REF = :ref2')
+            ->andWhere('a.REF = :ref3')
+            ->setParameter('date',$anne)
+            ->setParameter('cathego',$cathegire)
+            ->setParameter('ref1','BG')
+            ->setParameter('ref2','BB')
+            ->setParameter('ref3','BA')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
