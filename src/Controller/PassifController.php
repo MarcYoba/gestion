@@ -98,4 +98,108 @@ class PassifController extends AbstractController
         
       return $this->redirectToRoute("app_passif_list",['date'=>date('Y')]);   
     }
+
+    #[Route('/passif/update', name: 'app_passif_update')]
+    public function update(EntityManagerInterface $em, Request $request) : Response 
+    {
+        if($request->isXmlHttpRequest() || $request->getContentType()==='json') {
+            $json = $request->getContent();
+            $donnees = json_decode($json, true);
+            $az = [
+                    'mont' => 0,
+                ];
+            if (isset($donnees)) {
+
+                $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"Capital");
+                if (is_array($cp)) {
+                    $passif = $em->getRepository(Passif::class)->findByRefDate("CP",$donnees);
+                    if($passif)
+                    {
+                        foreach ($cp as $key => $value) {
+                            $passif->setMontant($value[1]);
+                            $az['mont'] = $az['mont'] + $value[1]; 
+                        }
+                    }
+                    $em->persist($passif);
+                    $em->flush();
+                }
+
+                $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"DETTES");
+                if (is_array($cp)) {
+                    $passif = $em->getRepository(Passif::class)->findByRefDate("DD",$donnees);
+                    if($passif)
+                    {
+                        foreach ($cp as $key => $value) {
+                            $passif->setMontant($value[1]);
+                            $az['mont'] = $az['mont'] + $value[1];
+                        }
+                    }
+                    $em->persist($passif);
+                    $em->flush();
+                }
+
+                $passif = $em->getRepository(Passif::class)->findByRefDate("DF",$donnees);
+                    if($passif)
+                    {
+                            $passif->setMontant($az['mont']);
+                        
+                        $em->persist($passif);
+                        $em->flush();
+                    }
+                $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"circulant");
+                if (is_array($cp)) {
+                    $passif = $em->getRepository(Passif::class)->findByRefDate("DP",$donnees);
+                    if($passif)
+                    {
+                        foreach ($cp as $key => $value) {
+                            $passif->setMontant($az[1]);
+                            $az['mont'] = $az['mont'] + $value[1];
+                        }
+                    }
+                    $em->persist($passif);
+                    $em->flush();
+                }
+
+                $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"circulant");
+                if (is_array($cp)) {
+                    $passif = $em->getRepository(Passif::class)->findByRefDate("DP",$donnees);
+                    if($passif)
+                    {
+                        foreach ($cp as $key => $value) {
+                            $passif->setMontant($value[1]);
+                            $az['mont'] = $az['mont'] + $value[1];
+                        }
+                    }
+                    $em->persist($passif);
+                    $em->flush();
+                }
+
+                $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"TRESORERIE");
+                if (is_array($cp)) {
+                    $passif = $em->getRepository(Passif::class)->findByRefDate("DT",$donnees);
+                    if($passif)
+                    {
+                        foreach ($cp as $key => $value) {
+                            $passif->setMontant($value[1]);
+                        }
+                    }
+                    $em->persist($passif);
+                    $em->flush();
+                }
+
+                
+                    $passif = $em->getRepository(Passif::class)->findByRefDate("DZ",$donnees);
+                    if($passif)
+                    {
+                        foreach ($cp as $key => $value) {
+                            $passif->setMontant($az['mont']);
+                        }
+                    }
+                    $em->persist($passif);
+                    $em->flush();
+                return $this->json(['success' => 'Mise a jour du bilan','donne'=>$cp], 200);
+            }
+        }
+        return $this->json(['error' => 'Erreur de bilan'], 404);
+    }
 }
