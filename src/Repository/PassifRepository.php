@@ -47,9 +47,9 @@ class PassifRepository extends ServiceEntityRepository
 //    }
     public function findByRefDate($ref, $date) : ?Passif
     {
-        return $this->createQueryBuilder('a')
-            ->where('a.REF = :refference')
-            ->andWhere('YEAR(a.created) = :date')
+        return $this->createQueryBuilder('p')
+            ->where('p.REF = :refference')
+            ->andWhere('YEAR(p.created) = :date')
             ->setParameter('refference',$ref)
             ->setParameter('date',$date)
             ->getQuery()
@@ -59,11 +59,25 @@ class PassifRepository extends ServiceEntityRepository
 
     public function findByYear($anne) : array 
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('YEAR(a.created) = :date')
+        return $this->createQueryBuilder('p')
+            ->andWhere('YEAR(p.created) = :date')
             ->setParameter('date',$anne)
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findBySomme($anne,$categorie) : array 
+    {
+        return $this->createQueryBuilder('p')
+            ->select('SUM(p.montant)')
+            ->where('p.cathegorie = :refere')
+            ->andWhere('YEAR(p.created) = :date')
+            ->setParameter('refere',$categorie)
+            ->setParameter('date',$anne)
+            ->getQuery()
+            ->getResult()
+        ;
+
     }
 }

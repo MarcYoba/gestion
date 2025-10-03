@@ -149,7 +149,7 @@
         </thead>
             <tbody>
                 {% set sommesaisse = 0 %}
-                {% for caisse in caisses %}
+                {# {% for caisse in caisses %}
                 <tr>
                     <td>{{caisse.operation}}</td>
                     <td> {{ caisse.montant}}</td>
@@ -157,7 +157,7 @@
                     <td>{{ caisse.motif}}</td>
                 </tr>
                     {% set sommesaisse = sommesaisse + caisse.nomtant %}
-                {% endfor %}
+                {% endfor %} #}
                 <tr>
                     <td>Total </td>
                     <td>{{sommesaisse}}</td>
@@ -215,7 +215,7 @@
             {% set sommeachat = 0 %}
             {% set achatquantite = 0 %}
             {% set achatPrix = 0 %}
-            {% for achat in achats %}
+            {# {% for achat in achats %}
                 <tr>
                     <td> {{achat.produit.nom}}</td>
                     <td> {{achat.quantite }} </td>
@@ -228,7 +228,7 @@
                     {% set achatquantite = achatquantite + achat.quantite %}
                     {% set achatPrix = achatPrix + achat.prix %}
                 </tr>
-            {% endfor %}
+            {% endfor %} #}
             <tr>
                 <td>Total</td>
                 <td>{{ achatquantite }}</td>
