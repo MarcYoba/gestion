@@ -154,7 +154,7 @@ class PassifController extends AbstractController
                     if($passif)
                     {
                         foreach ($cp as $key => $value) {
-                            $passif->setMontant($az[1]);
+                            $passif->setMontant($value[1]);
                             $az['mont'] = $az['mont'] + $value[1];
                         }
 
@@ -192,8 +192,6 @@ class PassifController extends AbstractController
                     }
                     
                 }
-
-                
                     $passif = $em->getRepository(Passif::class)->findByRefDate("DZ",$donnees);
                     if($passif)
                     {
