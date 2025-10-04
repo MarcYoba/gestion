@@ -164,21 +164,6 @@ class PassifController extends AbstractController
                     
                 }
 
-                // $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"circulant");
-                // if (is_array($cp)) {
-                //     $passif = $em->getRepository(Passif::class)->findByRefDate("DP",$donnees);
-                //     if($passif)
-                //     {
-                //         foreach ($cp as $key => $value) {
-                //             $passif->setMontant($value[1]);
-                //             $az['mont'] = $az['mont'] + $value[1];
-                //         }
-                //         $em->persist($passif);
-                //         $em->flush();
-                //     }
-                    
-                // }
-
                 $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"TRESORERIE");
                 if (is_array($cp)) {
                     $passif = $em->getRepository(Passif::class)->findByRefDate("DT",$donnees);
@@ -186,6 +171,21 @@ class PassifController extends AbstractController
                     {
                         foreach ($cp as $key => $value) {
                             $passif->setMontant($value[1]);
+                        }
+                        $em->persist($passif);
+                        $em->flush();
+                    }
+                    
+                }
+
+                $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"Ecart");
+                if (is_array($cp)) {
+                    $passif = $em->getRepository(Passif::class)->findByRefDate("DV",$donnees);
+                    if($passif)
+                    {
+                        foreach ($cp as $key => $value) {
+                            $passif->setMontant($value[1]);
+                            $az['mont'] = $az['mont'] + $value[1];
                         }
                         $em->persist($passif);
                         $em->flush();

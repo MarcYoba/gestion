@@ -66,4 +66,18 @@ class PassifARepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findBySomme($anne,$categorie) : array 
+    {
+        return $this->createQueryBuilder('p')
+            ->select('SUM(p.montant)')
+            ->where('p.cathegorie = :refere')
+            ->andWhere('YEAR(p.createdAt) = :date')
+            ->setParameter('refere',$categorie)
+            ->setParameter('date',$anne)
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
 }

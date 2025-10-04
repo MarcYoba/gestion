@@ -63,7 +63,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="btn btn-primary btn-user" onclick="updatePssif()">Mise à jour de le Passif</button>
+                                    <button class="btn btn-primary btn-user" onclick="updatePssifA()">Mise à jour de le Passif</button>
                                 </div>
                                 <div class="col-md-2">
                                     <a class="btn btn-primary btn-user" href="{{ path('app_depense_passif_a_list')}}">Liste Depense</a>
@@ -80,7 +80,7 @@
                                     <thead>
                                        
                                         <tr>
-                                                <th rowspan="2" style="text-align: center;" id="date">REF</th>
+                                                <th rowspan="2" style="text-align: center;" >REF</th>
                                                 <th rowspan="2" style="text-align: center;">Passif</th>
                                                 <th colspan="2" style="text-align: center;" id="date">{{ date }}</th>';
                                                 <th style="text-align: center;" id="seconddate">{{date - 1}}</th>
@@ -136,7 +136,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Production &copy; {{ "now" | date("Y-m-d")}}}</span>
+                        <span>Production &copy; {{ "now" | date("Y-m-d")}}</span>
                     </div>
                 </div>
             </footer>
@@ -152,7 +152,7 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
+    <script src="{{ asset('js/bilan/passif.js')}}"> </script>
     <!-- Bootstrap core JavaScript-->
 
 </body>
