@@ -76,6 +76,14 @@
                                 <div class="col-sm-2">
                                     <a href="{{ path('app_passif') }}" class="btn btn-success"><i class="fa fa-plus"></i>Ajouter</a>              
                                 </div> 
+                                <div class="col-md-2">
+                                    <form class="user" action="{{ path('passif_download') }}" method="post">
+                                        <button class="btn btn-primary btn-user">
+                                            <i class="fas fa-download"></i> Telecharger
+                                        </button>
+                                        <input class=" btn-user"  type="text" value="{{ date}}" name="date">
+                                    </form>
+                                </div>
                             </div>
                         </div>
                         <span id="message"><h3 class="text-success">Veuillez mettre votre Passif à jour</h3></span>

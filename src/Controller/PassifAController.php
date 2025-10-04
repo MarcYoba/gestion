@@ -10,7 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-
+use Dompdf\Dompdf;
+use Dompdf\Options;
 class PassifAController extends AbstractController
 {
     #[Route('/passif/a/creat', name: 'app_passif_a')]
@@ -205,5 +206,47 @@ class PassifAController extends AbstractController
             }
         }
         return $this->json(['error' => 'Erreur de bilan'], 404);
+    }
+
+    #[Route('/passif/a/download', name: 'passif_a_download')]
+    public function download(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $date = date("Y-m-d");
+        if ($request->isMethod('POST')) {
+           $date = $request->request->get('date');
+           if(empty($date))
+           {
+                $this->addFlash("error", "Vous deviez selectiion aune date valide");
+                return $this->redirectToRoute("app_actif_list");
+           }
+        }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        $passif = $em->getRepository(PassifA::class)->findByYear($date);
+        
+        
+        //dd($vente);
+        $html = $this->renderView('passif_a/dwonload.html.twig', [
+        'passifs' => $passif,
+        'date' => $date,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="document.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
     }
 }

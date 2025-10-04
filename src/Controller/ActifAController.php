@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class ActifAController extends AbstractController
 {
@@ -238,5 +240,47 @@ class ActifAController extends AbstractController
        $entityManager->remove($Actif);
        $entityManager->flush();
         return $this->redirectToRoute('app_actif_a_list', ["date" => date("Y")]);
+    }
+
+    #[Route('/actif/a/download', name: 'actif_a_download')]
+    public function download(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $date = date("Y-m-d");
+        if ($request->isMethod('POST')) {
+           $date = $request->request->get('date');
+           if(empty($date))
+           {
+                $this->addFlash("error", "Vous deviez selectiion aune date valide");
+                return $this->redirectToRoute("app_actif_list");
+           }
+        }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        $actif = $em->getRepository(ActifA::class)->findByYear($date);
+        
+        
+        //dd($vente);
+        $html = $this->renderView('actif_a/dwonload.html.twig', [
+        'actifs' => $actif,
+        'date' => $date,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="document.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
     }
 }

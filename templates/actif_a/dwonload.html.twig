@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rapport du jour{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* CSS personnalisé pour le PDF */
+        body { font-family: Arial, sans-serif; }
+        .header { color: #333; }
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
+    </style>
+</head>
+<body>
+<div class="table-responsive">
+    <table class="table table-bordered" id="tableactif" width="100%" cellspacing="0" data-page-length='50' >
+        <thead>
+            <tr>
+                <th rowspan="2" style="text-align: center;">REF</th>
+                <th rowspan="2" style="text-align: center;">Actif</th>
+                <th colspan="3" style="text-align: center;" id="date">{{ date}}</th>
+                <th style="text-align: center;">EXERCICE N-1</th>
+            </tr>
+            <tr>
+                <th>BRUT</th>
+                <th>AMORT/PROV</th>
+                <th>NET</th>
+                <th>NET</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for actif in actifs %}
+                <tr>
+                {% if actif.REF == 'AD' or actif.REF == 'AI' or  actif.REF == 'AZ' or actif.REF == 'BK' or actif.REF == 'BT' 
+                or actif.REF == 'BZ' or actif.REF == 'AQ' %}
+                    <td style="color: blue;">{{ actif.REF }}</td>   
+                    <td style="color: blue;">{{ actif.libelle }}</td>
+                    <td style="color: blue;">{{ actif.brut }}</td>
+                    <td style="color: blue;">{{ actif.amortissement }}</td>
+                    <td style="color: blue;">{{ actif.net}}</td> 
+                {% else %}
+                    <td style="">{{ actif.REF }}</td>   
+                    <td style="">{{ actif.libelle }}</td>
+                    <td style="">{{ actif.brut }}</td>
+                    <td style="">{{ actif.amortissement }}</td>
+                    <td style="">{{ actif.net}}</td> 
+                {% endif %} 
+                    <td></td>        
+                </tr>
+            {% endfor %} 
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
+{% endblock %}
