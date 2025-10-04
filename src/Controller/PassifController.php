@@ -119,9 +119,10 @@ class PassifController extends AbstractController
                             $passif->setMontant($value[1]);
                             $az['mont'] = $az['mont'] + $value[1]; 
                         }
+                        $em->persist($passif);
+                        $em->flush();
                     }
-                    $em->persist($passif);
-                    $em->flush();
+                    
                 }
 
                 $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"DETTES");
@@ -133,9 +134,10 @@ class PassifController extends AbstractController
                             $passif->setMontant($value[1]);
                             $az['mont'] = $az['mont'] + $value[1];
                         }
+                        $em->persist($passif);
+                        $em->flush();
                     }
-                    $em->persist($passif);
-                    $em->flush();
+                    
                 }
 
                 $passif = $em->getRepository(Passif::class)->findByRefDate("DF",$donnees);
@@ -155,24 +157,27 @@ class PassifController extends AbstractController
                             $passif->setMontant($az[1]);
                             $az['mont'] = $az['mont'] + $value[1];
                         }
+
+                        $em->persist($passif);
+                        $em->flush();
                     }
-                    $em->persist($passif);
-                    $em->flush();
+                    
                 }
 
-                $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"circulant");
-                if (is_array($cp)) {
-                    $passif = $em->getRepository(Passif::class)->findByRefDate("DP",$donnees);
-                    if($passif)
-                    {
-                        foreach ($cp as $key => $value) {
-                            $passif->setMontant($value[1]);
-                            $az['mont'] = $az['mont'] + $value[1];
-                        }
-                    }
-                    $em->persist($passif);
-                    $em->flush();
-                }
+                // $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"circulant");
+                // if (is_array($cp)) {
+                //     $passif = $em->getRepository(Passif::class)->findByRefDate("DP",$donnees);
+                //     if($passif)
+                //     {
+                //         foreach ($cp as $key => $value) {
+                //             $passif->setMontant($value[1]);
+                //             $az['mont'] = $az['mont'] + $value[1];
+                //         }
+                //         $em->persist($passif);
+                //         $em->flush();
+                //     }
+                    
+                // }
 
                 $cp = $em->getRepository(Passif::class)->findBySomme($donnees,"TRESORERIE");
                 if (is_array($cp)) {
@@ -182,9 +187,10 @@ class PassifController extends AbstractController
                         foreach ($cp as $key => $value) {
                             $passif->setMontant($value[1]);
                         }
+                        $em->persist($passif);
+                        $em->flush();
                     }
-                    $em->persist($passif);
-                    $em->flush();
+                    
                 }
 
                 
@@ -194,10 +200,11 @@ class PassifController extends AbstractController
                         foreach ($cp as $key => $value) {
                             $passif->setMontant($az['mont']);
                         }
+                        $em->persist($passif);
+                        $em->flush();
                     }
-                    $em->persist($passif);
-                    $em->flush();
-                return $this->json(['success' => 'Mise a jour du bilan','donne'=>$cp], 200);
+                    
+                return $this->json(['success' => 'Mise a jour du bilan','donne'=>$donnees], 200);
             }
         }
         return $this->json(['error' => 'Erreur de bilan'], 404);
