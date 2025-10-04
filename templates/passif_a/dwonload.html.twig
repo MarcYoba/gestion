@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rapport du jour{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* CSS personnalisé pour le PDF */
+        body { font-family: Arial, sans-serif; }
+        .header { color: #333; }
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
+    </style>
+</head>
+<body>
+<div class="table-responsive">
+    <table class="table table-bordered" id="tablepassif" width="100%" cellspacing="0" data-page-length='50' >
+        <thead>
+            
+            <tr>
+                <th rowspan="2" style="text-align: center;">Passif</th>
+                    <th rowspan="2" style="text-align: center;">REF</th>
+                    <th colspan="1" style="text-align: center;" id="date">{{ date }}</th>';
+                    <th style="text-align: center;" id="seconddate">{{date - 1}}</th>
+            </tr>
+            <tr>
+                <th>NET</th>
+                <th>NET N-1</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for passif in passifs %}
+            <tr>
+                {% if passif.REF == 'CP' or passif.REF == 'DD' or  passif.REF == 'DF' or passif.REF == 'DP' or passif.REF == 'DT' or passif.REF == 'DZ' %}
+                    <td style="color: blue;">{{passif.REF}}</td>
+                    <td style="color: blue;">{{passif.libelle}}</td>
+                    <td style="color: blue;">{{passif.montant}}</td>
+                {% else %}
+                <td>{{passif.REF}}</td>
+                <td>{{passif.libelle}}</td>
+                <td>{{passif.montant}}</td>
+                {% endif %}
+                <td>0</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+{% endblock %}
