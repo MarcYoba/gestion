@@ -61,4 +61,21 @@ class FactureARepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findBySommeProduit($date,$produit,$agence) : int
+    {
+        $result= $this->createQueryBuilder('f')
+            ->select('COALESCE(SUM(f.quantite), 0)')
+            ->where('f.produit = :produits')
+            ->andWhere('YEAR(f.createAt) = :date')
+            ->andWhere('f.agence = :agences')
+            ->setParameter('produits',$produit)
+            ->setParameter('date', $date)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    
+        return $result > 0 ? (int)$result : 0;
+    }
 }

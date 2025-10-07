@@ -45,4 +45,21 @@ class HistoriqueRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findByDate($date,$produit,$agence) : int
+    {
+        $result= $this->createQueryBuilder('h')
+            ->select('COALESCE(SUM(h.quantite), 0)')
+            ->where('h.produit = :produits')
+            ->andWhere('h.createdAt = :date')
+            ->andWhere('h.agance = :agences')
+            ->setParameter('produits',$produit)
+            ->setParameter('date', $date)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    
+        return $result > 0 ? (int)$result : 0;
+    }
 }
