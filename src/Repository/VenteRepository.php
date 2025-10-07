@@ -64,5 +64,93 @@ class VenteRepository extends ServiceEntityRepository
     //         ->getQuery()
     //         ->getSingleScalarResult();
     // }
+
+    public function findByMontantTrimestre($trimestre,$annee,$agence) : int 
+    {
+        $debutTrimestre = null;
+        $finTrimestre = null;
+        
+        switch($trimestre) {
+            case 1:
+                $debutTrimestre = new \DateTimeImmutable("$annee-01-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-03-31 23:59:59");
+                break;
+            case 2:
+                $debutTrimestre = new \DateTimeImmutable("$annee-04-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-06-30 23:59:59");
+                break;
+            case 3:
+                $debutTrimestre = new \DateTimeImmutable("$annee-07-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-09-30 23:59:59");
+                break;
+            case 4:
+                $debutTrimestre = new \DateTimeImmutable("$annee-10-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-12-31 23:59:59");
+                break;
+            default:
+                throw new \InvalidArgumentException("Trimestre invalide : doit être entre 1 et 4");
+        }
+
+        $result = $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0)')
+            ->where('v.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('v.agence = :agences')
+            ->setParameter('debut',$debutTrimestre)
+            ->setParameter('fin',$finTrimestre)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return $result > 0 ? (int)$result : 0; 
+    }
     
+    public function findByMontantSemestre($trimestre,$annee,$agence) : int 
+    {
+        $debutTrimestre = null;
+        $finTrimestre = null;
+        
+        switch($trimestre) {
+            case 1:
+                $debutTrimestre = new \DateTimeImmutable("$annee-01-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-06-30 23:59:59");
+                break;
+            case 2:
+                $debutTrimestre = new \DateTimeImmutable("$annee-07-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-12-31 23:59:59");
+                break;
+            default:
+                throw new \InvalidArgumentException("Trimestre invalide : doit être entre 1 et 3");
+        }
+
+        $result = $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0)')
+            ->where('v.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('v.agence = :agences')
+            ->setParameter('debut',$debutTrimestre)
+            ->setParameter('fin',$finTrimestre)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return $result > 0 ? (int)$result : 0; 
+    }
+
+    public function findByMontantMonth($moi,$annee,$agence) : int 
+    {
+        $result = $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0)')
+            ->where('MONTH(v.createdAt) = :moi')
+            ->andWhere('v.agence = :agences')
+            ->andWhere('YEAR(v.createdAt) = :anne')
+            ->setParameter('moi',$moi)
+            ->setParameter('agences',$agence)
+            ->setParameter('anne',$annee)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return $result > 0 ? (int)$result : 0; 
+    }
 }
