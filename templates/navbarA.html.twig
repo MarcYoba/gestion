@@ -335,10 +335,11 @@
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Service </h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="#">Liste </a>
+                <a class="collapse-item" href="{{path('app_prospection_a')}}" >Descente sur terrain</a>
+                <a class="collapse-item" href="{{path('app_propection_a_list')}}">Liste </a>
             {% else %}
-                <a class="collapse-item" href="#" >Descente sur terrain</a>
-                <a class="collapse-item" href="#">Liste </a>
+                <a class="collapse-item" href="{{path('app_prospection_a')}}" >Descente sur terrain</a>
+                <a class="collapse-item" href="{{path('app_propection_a_list')}}">Liste </a>
             {% endif %}
     </div>
 </div>

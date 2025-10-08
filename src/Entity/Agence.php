@@ -122,6 +122,12 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: DepensePassifA::class)]
     private Collection $depensePassifAs;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Prospection::class)]
+    private Collection $prospections;
+
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: ProspectionA::class)]
+    private Collection $prospectionAs;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -154,6 +160,8 @@ class Agence
         $this->depenseActifAs = new ArrayCollection();
         $this->depensePassifs = new ArrayCollection();
         $this->depensePassifAs = new ArrayCollection();
+        $this->prospections = new ArrayCollection();
+        $this->prospectionAs = new ArrayCollection();
     }
 
    
@@ -1117,6 +1125,66 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($depensePassifA->getAgence() === $this) {
                 $depensePassifA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Prospection>
+     */
+    public function getProspections(): Collection
+    {
+        return $this->prospections;
+    }
+
+    public function addProspection(Prospection $prospection): static
+    {
+        if (!$this->prospections->contains($prospection)) {
+            $this->prospections->add($prospection);
+            $prospection->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspection(Prospection $prospection): static
+    {
+        if ($this->prospections->removeElement($prospection)) {
+            // set the owning side to null (unless already changed)
+            if ($prospection->getAgence() === $this) {
+                $prospection->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProspectionA>
+     */
+    public function getProspectionAs(): Collection
+    {
+        return $this->prospectionAs;
+    }
+
+    public function addProspectionA(ProspectionA $prospectionA): static
+    {
+        if (!$this->prospectionAs->contains($prospectionA)) {
+            $this->prospectionAs->add($prospectionA);
+            $prospectionA->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspectionA(ProspectionA $prospectionA): static
+    {
+        if ($this->prospectionAs->removeElement($prospectionA)) {
+            // set the owning side to null (unless already changed)
+            if ($prospectionA->getAgence() === $this) {
+                $prospectionA->setAgence(null);
             }
         }
 

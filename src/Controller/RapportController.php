@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\TempAgence;
 use App\Entity\Vente;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
@@ -24,10 +25,13 @@ class RapportController extends AbstractController
     /**
      * @Route(path="/rapport/a", name="app_rapport_a")
      */
-    public function rapportA(): Response
+    public function rapportA(EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $agence = $tempagence->getAgence()->getId();
         return $this->render('rapport/rapportA.html.twig',[
-          'controller_name' => 'RapportController',  
+          'id' => $agence,  
         ]);
     }
     /**
