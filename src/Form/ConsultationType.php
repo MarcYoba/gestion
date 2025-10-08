@@ -25,7 +25,7 @@ class ConsultationType extends AbstractType
                     'placeholder' => 'Inserer le nom du sujet',
                 ]
             ])
-            ->add('age',NumberType::class,[
+            ->add('age',TextType::class,[
                 'attr' => [
                     'class' => 'form-control form-control-user',
                     'placeholder' => 'Inserer l\'age',
