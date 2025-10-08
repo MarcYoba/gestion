@@ -264,6 +264,20 @@
         </div>
     </div>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#prospection"
+            aria-expanded="true" aria-controls="prospection">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Prospection</span>
+        </a>
+        <div id="prospection" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Dette :</h6>
+                    <a class="collapse-item" href="{{ path('app_prospection')}}">Porspection</a>
+            </div>
+        </div>
+    </li>
     <!-- Divider -->
     <hr class="sidebar-divider">
 
@@ -274,19 +288,18 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-        aria-expanded="true" aria-controls="collapseTwo">
-        <i class="fas fa-fw fa-cog"></i>
-        <span>Composant vente</span>
-    </a>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Dette :</h6>
-                <a class="collapse-item" href="php/dette/dette.php">Liste dette</a>
-            <!--<a class="collapse-item" href="cards.html">Dette client</a>-->
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Composant vente</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Dette :</h6>
+                    <a class="collapse-item" href="php/dette/dette.php">Liste dette</a>
+                <!--<a class="collapse-item" href="cards.html">Dette client</a>-->
+            </div>
         </div>
-    </div>
-
     </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->

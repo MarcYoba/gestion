@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProspectionController!{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+    <style>
+        .drop{
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container" >
+        
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-12">
+                        <div class="p-5">
+                        <div class="card-header py-3">
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <h6 class="m-0 font-weight-bold text-primary">Création du Prospection</h6>
+                                </div>
+                                <div class="col-sm-2">
+                                    <i class="fa fa-home"></i>
+                                        <a href="{{ path('app_home_dashboard', {'id': id}) }}" class="btn btn-primary">Home</a> 
+                                </div>
+                                <div class="col-sm-2">
+                                    <i class="fa fa-list"></i> 
+                                    <a href="{{path('app_propection_list')}}" class="btn btn-success"> Liste</a>              
+                                </div>
+                                 
+                            </div>
+                        </div>
+                            {{ form_start(form)}}
+                                <div class="form-group">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label for="dateprospection">Nom </label>
+                                        {{ form_widget(form.nom)}}
+                                    </div>
+                                    <br>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label for="telephone">Téléphone de la personne</label>
+                                        {{ form_widget(form.telephone)}}
+                                    </div>
+                                    <br>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label for="localisation">Localisation de la personne</label>
+                                        {{ form_widget(form.localisation)}}
+                                    </div>
+                                    <br>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label for="speculation">Spéculation</label>
+                                        {{ form_widget(form.speculation)}}
+                                    </div>
+                                    <br>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label for="nbsujet">Nombre de sujets</label>
+                                        {{ form_widget(form.sujet)}}
+                                    </div>
+                                    <br>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label for="souche">Souche / espèce</label>
+                                        {{ form_widget(form.souche)}}
+                                    </div>
+                                    <br>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label for="ravitaillement">Source de ravitaillement</label>
+                                        {{form_widget(form.ravitallement)}}
+                                    </div>
+                                    <br>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label for="commentaire">Commentaire</label>
+                                        {{form_widget(form.commentaire)}}
+                                    </div>
+                                    <br>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label for="dateprospection">Date de prospection</label>
+                                        {{form_widget(form.createtAt)}}
+                                    </div>
+                                    <br>
+                                    
+                                </div>
+                                
+                                <div class="col-sm-2 mb-3 mb-sm-0">
+                                    <button type="submit" name="submit" id="submit"  class="btn btn-primary " onclick="getLocation()">
+                                        Enregistrement
+                                    </button>
+                                </div>  
+                            {{form_end(form)}}
+                            <hr>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+
+</body>
+
+</html>
+{% endblock %}
