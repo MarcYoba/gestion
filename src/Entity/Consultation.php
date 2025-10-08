@@ -17,8 +17,8 @@ class Consultation
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column]
-    private ?int $age = null;
+    #[ORM\Column(length: 255)]
+    private ?string  $age = null;
 
     #[ORM\Column(length: 255)]
     private ?string $sexe = null;
@@ -112,12 +112,12 @@ class Consultation
         return $this;
     }
 
-    public function getAge(): ?int
+    public function getAge(): ?string 
     {
         return $this->age;
     }
 
-    public function setAge(int $age): static
+    public function setAge(string  $age): static
     {
         $this->age = $age;
 
