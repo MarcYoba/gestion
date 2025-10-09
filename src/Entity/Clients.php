@@ -61,6 +61,9 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Suivi::class)]
     private Collection $suivis;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Autopsie::class)]
+    private Collection $autopsies;
+
     public function __construct()
     {
         $this->versements = new ArrayCollection();
@@ -74,6 +77,7 @@ class Clients
         $this->vaccins = new ArrayCollection();
         $this->consultations = new ArrayCollection();
         $this->suivis = new ArrayCollection();
+        $this->autopsies = new ArrayCollection();
     }
 
     
@@ -455,6 +459,36 @@ class Clients
             // set the owning side to null (unless already changed)
             if ($suivi->getClient() === $this) {
                 $suivi->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Autopsie>
+     */
+    public function getAutopsies(): Collection
+    {
+        return $this->autopsies;
+    }
+
+    public function addAutopsy(Autopsie $autopsy): static
+    {
+        if (!$this->autopsies->contains($autopsy)) {
+            $this->autopsies->add($autopsy);
+            $autopsy->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAutopsy(Autopsie $autopsy): static
+    {
+        if ($this->autopsies->removeElement($autopsy)) {
+            // set the owning side to null (unless already changed)
+            if ($autopsy->getClient() === $this) {
+                $autopsy->setClient(null);
             }
         }
 

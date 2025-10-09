@@ -326,14 +326,34 @@
 </li>
 
 <li class="nav-item">
+<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Autopsie"
+    aria-expanded="true" aria-controls="vaccin">
+    <i class="fas fa-fw fa-folder"></i>
+    <span>Autopsie </span>
+</a>
+<div id="Autopsie" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Autopsie </h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{path('app_autopsie')}}" >Autopsie</a>
+                <a class="collapse-item" href="{{path('app_autopsie_liste')}}">Liste</a>
+            {% else %}
+                <a class="collapse-item" href="{{path('app_autopsie')}}" >Autopsie</a>
+                <a class="collapse-item" href="{{path('app_autopsie_liste')}}">Liste</a>
+            {% endif %}
+    </div>
+</div>
+</li>
+
+<li class="nav-item">
 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#service"
     aria-expanded="true" aria-controls="service">
     <i class="fas fa-fw fa-folder"></i>
-    <span>Service </span>
+    <span>Prospection </span>
 </a>
 <div id="service" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Service </h6>
+        <h6 class="collapse-header">Prospection </h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{path('app_prospection_a')}}" >Descente sur terrain</a>
                 <a class="collapse-item" href="{{path('app_propection_a_list')}}">Liste </a>

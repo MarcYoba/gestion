@@ -1,0 +1,244 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Autopsie{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+    
+    <style>
+        .ligne-verticale {
+        width: 2px;
+        height: 100px;
+        border: none; /* Supprime la bordure par défaut */
+        border-left: 2px solid black;
+        transform: rotate(90deg); /* Rotation de 90 degrés pour créer une ligne verticale */
+        }
+    </Style>
+    
+
+</head>
+
+<body class="bg-gradient-success">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-12">
+                                
+                            
+                            <div class="form-group row card-header py-3">
+                                <div class="col-sm-6">
+                                    <h6 class="m-0 font-weight-bold text-primary">Fiche de Consultation</h6>     
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="{{ path('app_home_dashboardA', {'id': id}) }}" class="btn btn-primary">
+                                    <i class="fa fa-home"></i>Home</a> 
+                                </div>
+                                <div class="col-sm-2"> 
+                                    <a href="{{ path('app_autopsie_liste')}}" class="btn btn-success">
+                                    <i class="fa fa-list"></i>
+                                     Liste</a>             
+                                </div>
+                                                <!--<div class="btn btn-warning"><i class="fa fa-arrow-left"></i> Retour</div>  -->  
+                            </div> 
+                            <div class="p-5">
+                        
+                            {{ form_start(form) }}
+                                <hr>
+                                <div class="form-group row">
+                                    <div class="col-sm-5 mb-3 mb-sm-0">
+                                        Nom du propritaire 
+                                        <input type="search" id="clientrecher" onkeyup="recherchduclient()"  class="form-control" placeholder="recherche client">
+                                        {{ form_widget(form.client) }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <h3 class="text-center">SINGALEMENT ET IDENTIFICATION PPROPRIETAIRE</h3>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <h5>Signalement de l'oiseau</h5> 
+                                        Famille:
+                                        {{ form_widget(form.famille) }}
+                                        Espece
+                                        {{ form_widget(form.espece) }}
+                                        Race/Souche
+                                        {{ form_widget(form.race) }}
+                                        Age
+                                        {{ form_widget(form.age) }}
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <h5>Identification de l'oiseau</h5>
+                                        Origine(couvoir / Autres)
+                                        {{ form_widget(form.origine) }}
+                                        Lot/Effectif
+                                        {{ form_widget(form.effectif) }} 
+                                    </div>
+                                </div>
+                                <hr>
+                                <h3 class="text-center">ANAMNESE ET COMMERATIFS</h3>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <h5>Anamnese</h5>
+                                        Morbidite: 
+                                        {{ form_widget(form.morbidite) }}
+                                        Mortalite: 
+                                        {{ form_widget(form.mortalite) }} 
+                                        Signe Clinique: 
+                                        {{ form_widget(form.clinique) }} 
+                                        Traitement symptomatique instaure: 
+                                        {{ form_widget(form.traitement) }} 
+                                    </div> 
+                                    <div class="col-sm-6 mb-3 mb-sm-0">   
+                                        <h5>Commeroratifs</h5>
+                                        Antecedent pathologiques: 
+                                        {{ form_widget(form.pathologiques) }}
+                                        Antecedent Therapeutique: 
+                                        {{ form_widget(form.antecedent) }}
+                                        Vaccinations: 
+                                        {{ form_widget(form.vaccinations) }}
+                                    </div>
+                                    
+                                </div>
+                                <hr>
+                                <h3 class="text-center">OBSERVATION AVANT AUTOPSIE</h3>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        Etat general/Etat d'embonpoint
+                                        {{ form_widget(form.embonpoint) }}
+                                        Animal sacrifie/Animale mort
+                                        {{ form_widget(form.mort) }}
+                                        Date de la mort
+                                        {{ form_widget(form.datemort) }}
+                                        Lieu d'Autopsie
+                                        {{ form_widget(form.Lieu) }}
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        Mode de Conservation
+                                        {{ form_widget(form.conservation) }}
+                                        Durre de Conservation
+                                        {{ form_widget(form.durreconservation) }}
+                                        Date d'Autopsie
+                                        {{ form_widget(form.dateautopsie) }}
+                                        Mdedecin legiste
+                                        {{ form_widget(form.medecin) }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <hr>
+                                <h3 class="text-center">EXAMEN NECROPSIQUE</h3>
+                                <div class="form-group ">
+                                    <h5> Examen Necropsique Externe</h5>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        Appendices cephaliques (Crete-Barbillon-Pendelogue)
+                                        {{ form_widget(form.appendices) }}
+                                        Muqueuses (Oeil-Narines-cloaque)
+                                        {{ form_widget(form.muqueuses) }}
+                                        Peau et phaneres
+                                        {{ form_widget(form.peau) }}
+                                        Menbres (Ailes-Pattes)
+                                        {{ form_widget(form.membre) }}
+                                        Anomalies/Malformation
+                                        {{ form_widget(form.anomalies) }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row ">
+                                    <h5> Examen Necropsique Interne</h5>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        Tissu conjonctif sous-cutane
+                                        {{ form_widget(form.tissu) }}
+                                        Tube digestif et glandes annexes (Foie-Vesicule biliaire-Pancreas)
+                                        {{ form_widget(form.tube) }}
+                                        Appareil respiratoire
+                                        {{ form_widget(form.respiratoire) }}
+                                        Appareil circulatoire
+                                        {{ form_widget(form.circulatoire) }}
+                                        Appareil genital
+                                        {{ form_widget(form.genital) }}
+                                        Appareil urinaire
+                                        {{ form_widget(form.urinaire) }}
+                                        Appareil locomoteur
+                                        {{ form_widget(form.locomoteur) }}
+                                        Systeme nerveux(central et peripherique)
+                                        {{ form_widget(form.nerveux) }}
+                                        Glandes endocrines (Thyroid, Parathyroide et surrenales)
+                                        {{ form_widget(form.endocrines) }}
+                                        {{ form_widget(form.glandes) }}
+                                        Systeme Hemato-Lymphoide (Rate-Thymus-Bourse de Fabricuis-Moelle osseuse)
+                                        {{ form_widget(form.hemato) }}
+                                    </div>
+                                    
+                                </div>
+                                <hr>
+                                <h3 class="text-center">DIAGNOSTIC</h3>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        Diagnostic de suspicion
+                                        {{ form_widget(form.diagnostic) }}
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        Diagnostic de certitude
+                                        {{ form_widget(form.certitude) }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <button type="submit" name="submit" id="submit" class="btn btn-success btn-user btn-block">
+                                    Enregister
+                                </button>
+                            {{form_end(form)}}
+                            <hr>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script>
+        function recherchduclient() {
+            // Récupérer l'input et la liste déroulante
+            var input, filter, ul, li, a, i;
+            input = document.getElementById("clientrecher");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("autopsie_client");
+            li = ul.getElementsByTagName("option");
+            console.log(li.length);
+            // Boucler sur toutes les options
+            for (i = 0; i < li.length; i++) {
+                a = li[i];
+                
+                if (a.textContent.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+                } else {
+                li[i].style.display = "none";
+                }
+            }
+            
+        }
+    </script>
+    <script src="{{ asset('js/client/client.js') }}"></script>
+</body>
+
+</html>
+{% endblock %}
+
