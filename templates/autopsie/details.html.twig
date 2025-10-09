@@ -1,0 +1,276 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Autopsie{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+    
+    <style>
+        .ligne-verticale {
+        width: 2px;
+        height: 100px;
+        border: none; /* Supprime la bordure par défaut */
+        border-left: 2px solid black;
+        transform: rotate(90deg); /* Rotation de 90 degrés pour créer une ligne verticale */
+        }
+    </Style>
+    
+
+</head>
+
+<body class="bg-gradient-success">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-12">
+                                
+                            
+                            <div class="form-group row card-header py-3">
+                                <div class="col-sm-6">
+                                    <h6 class="m-0 font-weight-bold text-primary">Fiche de Consultation</h6>     
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="{{ path('app_home_dashboardA', {'id': id}) }}" class="btn btn-primary">
+                                    <i class="fa fa-home"></i>Home</a> 
+                                </div>
+                                <div class="col-sm-2"> 
+                                    <a href="{{ path('app_autopsie_liste')}}" class="btn btn-success">
+                                    <i class="fa fa-list"></i>
+                                     Liste</a>             
+                                </div>
+                                <div class="col-sm-2"> 
+                                    <a href="{{ path('app_autopsie_telecharger',{'id':autopsies.id})}}" class="btn btn-primary">
+                                    <i class="fa fa-download"></i>
+                                     Telecharger</a>             
+                                </div>
+                                                <!--<div class="btn btn-warning"><i class="fa fa-arrow-left"></i> Retour</div>  -->  
+                            </div> 
+                            <div class="p-5">
+                                <table border="2" align="center">
+                                    <tr>
+                                        <td> <h3 class="text-center">COMPTE RENDU D'AUTOPSIE</h3></td>
+                                    </tr>
+                                </table>
+                                
+                                <br>
+                                <hr>
+                                <h3 class="text-center">PROVENANCE/IDENTIFICATION PROPRIETAIRE</h3>
+                                <div class="form-group row">
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                    <table border="2" align="center">
+                                        <tr>
+                                            <td>
+                                                Nom du propritaire :
+                                            </td>
+                                            <td>
+                                                {{ autopsies.client.nom }} 
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Telephone:
+                                            </td>
+                                            <td>
+                                                {{ autopsies.client.telephone }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                <hr>
+                                <h3 class="text-center">SINGALEMENT ET IDENTIFICATION PROPRIETAIRE</h3>
+                                <div class="form-group row">    
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <h5>Signalement de l'oiseau</h5> 
+                                        Famille:
+                                        {{ autopsies.famille }}
+                                        <br>
+                                        Espece:
+                                        {{ autopsies.espece }}
+                                        <br>
+                                        Race/Souche:
+                                        {{ autopsies.race }}
+                                        <br>
+                                        Age:
+                                        {{ autopsies.age }}
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <h5>Identification de l'oiseau</h5>
+                                        Origine(couvoir / Autres) :
+                                        {{ autopsies.origine }}
+                                        <br>
+                                        Lot/Effectif :
+                                        {{ autopsies.effectif }} 
+                                    </div>
+                                </div>
+                                <hr>
+                                <h3 class="text-center">ANAMNESE ET COMMERATIFS</h3>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <h5>Anamnese</h5>
+                                        Morbidite: 
+                                        {{ autopsies.morbidite }}
+                                        <br>
+                                        Mortalite: 
+                                        {{ autopsies.mortalite }} 
+                                        <br>
+                                        Signe Clinique: 
+                                        {{ autopsies.clinique }} 
+                                        <br>
+                                        Traitement symptomatique instaure: 
+                                        {{ autopsies.traitement }} 
+                                    </div> 
+                                    <div class="col-sm-6 mb-3 mb-sm-0">   
+                                        <h5>Commeroratifs</h5>
+                                        Antecedent pathologiques: 
+                                        {{ autopsies.pathologiques }}
+                                        <br>
+                                        Antecedent Therapeutique: 
+                                        {{ autopsies.antecedent }}
+                                        <br>
+                                        Vaccinations: 
+                                        {{ autopsies.vaccinations }}
+                                    </div>
+                                    
+                                </div>
+                                <hr>
+                                <h3 class="text-center">OBSERVATION AVANT AUTOPSIE</h3>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        Etat general/Etat d'embonpoint : 
+                                        {{ autopsies.embonpoint }}
+                                        <br>
+                                        Animal sacrifie/Animale mort : 
+                                        {{ autopsies.mort }}
+                                        <br>
+                                        Date de la mort : 
+                                        {{ autopsies.datemort | date("Y-m-d") }}
+                                        <br>
+                                        Lieu d'Autopsie : 
+                                        {{ autopsies.Lieu }}
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        Mode de Conservation : 
+                                        {{ autopsies.conservation }}
+                                        <br>
+                                        Durre de Conservation : 
+                                        {{ autopsies.durreconservation }}
+                                        <br>
+                                        Date d'Autopsie : 
+                                        {{ autopsies.dateautopsie | date("Y-m-d") }}
+                                        <br>
+                                        Mdedecin legiste : 
+                                        {{ autopsies.medecin }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <hr>
+                                <h3 class="text-center">EXAMEN NECROPSIQUE</h3>
+                                <div class="form-group ">
+                                    <h5> Examen Necropsique Externe</h5>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        Appendices cephaliques (Crete-Barbillon-Pendelogue) : 
+                                        {{ autopsies.appendices }}
+                                        <br>
+                                        Muqueuses (Oeil-Narines-cloaque) : 
+                                        {{ autopsies.muqueuses }}
+                                        <br>
+                                        Peau et phaneres : 
+                                        {{ autopsies.peau }}
+                                        <br>
+                                        Menbres (Ailes-Pattes) : 
+                                        {{ autopsies.membre }}
+                                        <br>
+                                        Anomalies/Malformation : 
+                                        {{ autopsies.anomalies }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row ">
+                                    <h5> Examen Necropsique Interne</h5>
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        Tissu conjonctif sous-cutane : 
+                                        {{ autopsies.tissu }}
+                                        <br>
+                                        Tube digestif et glandes annexes (Foie-Vesicule biliaire-Pancreas) : 
+                                        {{ autopsies.tube }}
+                                        <br>
+                                        Appareil respiratoire : 
+                                        {{ autopsies.respiratoire }}
+                                        <br>
+                                        Appareil circulatoire : 
+                                        {{ autopsies.circulatoire }}
+                                        <br>
+                                        Appareil genital : 
+                                        {{ autopsies.genital }}
+                                        <br>
+                                        Appareil urinaire : 
+                                        {{ autopsies.urinaire }}
+                                        <br>
+                                        Appareil locomoteur : 
+                                        {{ autopsies.locomoteur }}
+                                        <br>
+                                        Systeme nerveux(central et peripherique) : 
+                                        {{ autopsies.nerveux }}
+                                        <br>
+                                        Glandes endocrines (Thyroid, Parathyroide et surrenales) : 
+                                        {{ autopsies.endocrines }}
+                                        {{ autopsies.glandes }}
+                                        <br>
+                                        Systeme Hemato-Lymphoide (Rate-Thymus-Bourse de Fabricuis-Moelle osseuse) : 
+                                        {{ autopsies.hemato }}
+                                    </div>
+                                    
+                                </div>
+                                <hr>
+                                <h3 class="text-center">DIAGNOSTIC</h3>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        Diagnostic de suspicion  : 
+                                        {{ autopsies.diagnostic }}
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        Diagnostic de certitude : 
+                                        {{ autopsies.certitude }}
+                                    </div>
+                                </div>
+                                <hr>
+                                
+                            
+                            <hr>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+</body>
+
+</html>
+{% endblock %}
+

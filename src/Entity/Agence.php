@@ -128,6 +128,9 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: ProspectionA::class)]
     private Collection $prospectionAs;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Autopsie::class)]
+    private Collection $autopsies;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -162,6 +165,7 @@ class Agence
         $this->depensePassifAs = new ArrayCollection();
         $this->prospections = new ArrayCollection();
         $this->prospectionAs = new ArrayCollection();
+        $this->autopsies = new ArrayCollection();
     }
 
    
@@ -1185,6 +1189,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($prospectionA->getAgence() === $this) {
                 $prospectionA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Autopsie>
+     */
+    public function getAutopsies(): Collection
+    {
+        return $this->autopsies;
+    }
+
+    public function addAutopsy(Autopsie $autopsy): static
+    {
+        if (!$this->autopsies->contains($autopsy)) {
+            $this->autopsies->add($autopsy);
+            $autopsy->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAutopsy(Autopsie $autopsy): static
+    {
+        if ($this->autopsies->removeElement($autopsy)) {
+            // set the owning side to null (unless already changed)
+            if ($autopsy->getAgence() === $this) {
+                $autopsy->setAgence(null);
             }
         }
 
