@@ -46,13 +46,18 @@ class CaisseARepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function findRapportCaisseToWeek($date_debut, $date_fin) : array 
+    public function findRapportCaisseToWeek($mois, $annee) : array 
     {
-        
+        $mois = (int)$mois;
+        $annee = (int)$annee;
+        $startDate = new \DateTime("$annee-$mois-01");
+        $endDate = (clone $startDate)->modify('last day of this month');
+
         return $this->createQueryBuilder('c')
+            ->select('COALESCE(SUM(c.montant),0) AS somme, CONCAT(\',\', c.motif) AS Motif, CONCAT(\',\', c.operation) AS element ') 
             ->where('c.createAt BETWEEN :startDate AND :endDate')
-            ->setParameter('startDate', $date_debut)
-            ->setParameter('endDate', $date_fin)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
             ->getQuery()
             ->getResult()
         

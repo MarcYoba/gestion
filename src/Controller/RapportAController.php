@@ -152,12 +152,13 @@ class RapportAController extends AbstractController
     #[Route('/rapport/a/moi', name:'app_rapport_a_moi')]
     public function rapport_moi(EntityManagerInterface $em, Request $request) : Response 
     {
-        $date_debut = date("m");
-        $date_fin = date("m");
+        $date_debut = 0;
+        $date_fin = 0;
         $anne = date("Y");
         if ($request->isMethod('POST')) {
            $date_debut = $request->request->get('mois');
            $date_fin = $request->request->get('date');
+
            if (empty($date_debut)) {
                 if (!empty($date_fin)) {
                     $date_fin = new DateTime($date_fin);
@@ -180,16 +181,16 @@ class RapportAController extends AbstractController
         $dompdf = new Dompdf($options);
         
         
-        //$caisse = $em->getRepository(CaisseA::class)->findRapportCaisseToWeek($date_debut,$date_fin);
+        $caisse = $em->getRepository(CaisseA::class)->findRapportCaisseToWeek($date_debut,$anne);
         $vente = $em->getRepository(VenteA::class)->findRapportMensuel($date_debut,$anne);
-       // $achat = $em->getRepository(AchatA::class)->findByDate($date_debut);
-        
+        $achat = $em->getRepository(AchatA::class)->findByDate($date_debut,$anne);
+
         $html = $this->renderView('rapport_a/moi.html.twig', [
         'date_debut' => $date_debut,
         'date_fin' => $date_fin,
         'ventes' => $vente,
-        //'achats' => $achat,
-        //'caisses' => $caisse
+        'achats' => $achat,
+        'caisses' => $caisse
         ]);
 
         $dompdf->loadHtml($html);

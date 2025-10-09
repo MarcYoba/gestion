@@ -26,7 +26,7 @@
 </head>
 <body>
 <h1 style="text-align: center;">Rapport Mensuelle</h1>
-<h2 style="text-align: center;">Mois: '.$mois.'</h2>
+<h2 style="text-align: center;">Mois: {{date_debut}}</h2>
 <img src="php/pdf/image.jpg" alt="Logo" />
 <p style="text-align: center;">Date: '.$date.'</p>
 
@@ -78,8 +78,6 @@
         <td scope="col" colspan="8" align="center">Rapport Mensuel Achat</td>
         
         </tr>
-        
-        
             <tr>
             <th scope="col">Date Achat</th>
             <th scope="col">Liste prix</th>
@@ -91,16 +89,19 @@
             <th scope="col">Produit </th>
             
         </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+        {% for achat in achats %}
+            <tr>
+                <td>-</td>
+                <td>{{achat.Prixtelist}}</td>
+                <td>{{achat.Prix}}</td>
+                <td>{{achat.quantitelist}}</td>
+                <td>{{achat.Quantite}}</td>
+                <td>{{achat.montanttelist}}</td>
+                <td>{{achat.Montant}}</td>
+                <td></td>
+            </tr>  
+        {% endfor %}
+        
         </tbody>
     </table>
 
@@ -115,19 +116,20 @@
         <td scope="col" colspan="4" align="center">Rapport Mensuel Caisse</td>
         
         </tr>
-        
-        
             <tr>
-            <th scope="col">Date </th>
-            <th scope="col">Operation </th>
-            <th scope="col">Liste opration</th>
-            <th scope="col">M.Total</th>
-        </tr>
+                <th scope="col">Date </th>
+                <th scope="col">Operation </th>
+                <th scope="col">Liste opration</th>
+                <th scope="col">M.Total</th>
+            </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            {% for caisse in caisses %}
+                <td>-</td>
+                <td>{{caisse.element}}</td>
+                <td>{{caisse.Motif}}</td>
+                <td>{{ caisse.somme}}</td>
+            {% endfor %}
+            
         </tr>
         </tbody>
     </table>
