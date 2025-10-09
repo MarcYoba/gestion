@@ -19,10 +19,11 @@ class CaisseAController extends AbstractController
         $caisseA = new CaisseA();
         $form = $this->createForm(CaisseAType::class,$caisseA);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
-            $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
             $agence = $tempagence->getAgence();
+        if ($form->isSubmitted() && $form->isValid()) {
+            
             $caisseA->setAgence($agence);
             $caisseA->setUser($user);
 
@@ -32,6 +33,7 @@ class CaisseAController extends AbstractController
         }
         return $this->render('caisse_a/index.html.twig', [
             'form' => $form->createView(),
+            'id' => $agence->getId(),
         ]);
     }
 
@@ -44,6 +46,7 @@ class CaisseAController extends AbstractController
         $caisseA = $entityManager->getRepository(CaisseA::class)->findAll(["agence" => $id]);
        return $this->render('caisse_a/list.html.twig', [
             'caisseAs' => $caisseA,
+            'id' => $id,
         ]); 
     }
 

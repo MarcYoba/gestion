@@ -209,7 +209,8 @@
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Caisse:</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{ path('app_caisse_a') }}">liste caisse</a>
+                <a class="collapse-item" href="{{ path('app_caisse_a') }}"> caisse</a>
+                <a class="collapse-item" href="{{ path('app_caisse_a_list') }}">liste caisse</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_caisse_a') }}">Caisse</a>
                 <a class="collapse-item" href="{{ path('app_caisse_a_list') }}">liste caisse</a>

@@ -45,11 +45,14 @@ class AchatARepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-    public function findByDate($date) : array
+    public function findByDate($mois,$annee) : array
     {
-        $startDate = (clone $date)->setTime(0,0,0);
-        $endDate = (clone $date)->setTime(23,59,59);
+        $mois = (int)$mois;
+        $annee = (int)$annee;
+        $startDate = new \DateTime("$annee-$mois-01");
+        $endDate = (clone $startDate)->modify('last day of this month');
         return $this->createQueryBuilder('a')
+            ->select('COALESCE(SUM(a.quantite), 0) AS Quantite, CONCAT(\',\', a.quantite) AS quantitelist, COALESCE(SUM(a.prix), 0) AS Prix, CONCAT(\',\', a.prix) AS Prixtelist,COALESCE(SUM(a.montant), 0) AS Montant,CONCAT(\',\', a.montant) AS montanttelist')
             ->where('a.createdAt BETWEEN :startDate AND :endDate')
             ->setParameter('startDate',$startDate)
             ->setParameter('endDate',$endDate)
