@@ -45,4 +45,14 @@ class PoussinRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findByDay($date) : array 
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.datecommande = :val')
+            ->setParameter('val',$date)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

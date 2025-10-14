@@ -45,4 +45,13 @@ class ConsultationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findByDay($date) : array 
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.createtAd = :val')
+            ->setParameter('val',$date)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

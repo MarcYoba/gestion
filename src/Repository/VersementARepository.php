@@ -45,4 +45,14 @@ class VersementARepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findByDay($date): array
+    {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.createdAt = :val')
+            ->setParameter('val', $date)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

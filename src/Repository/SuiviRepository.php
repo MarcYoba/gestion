@@ -45,4 +45,13 @@ class SuiviRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findByDay($date) : array 
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.createtAd = :val')
+            ->setParameter('val',$date)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
