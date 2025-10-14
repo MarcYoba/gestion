@@ -45,4 +45,27 @@ class DepenseARepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findByMoi($value,$annee): array
+    {
+        return $this->createQueryBuilder('d')
+            ->select('COALESCE(SUM(d.montant),0) AS Montant, CONCAT(\',\',d.type) AS Type, CONCAT(\',\',d.description) AS Description')
+            ->Where('MONTH(d.createdAt) = :val')
+            ->andWhere('YEAR(d.createdAt) = :anne')
+            ->setParameter('val', $value)
+            ->setParameter('anne', $annee)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByDay($date) : array 
+    {
+        return $this->createQueryBuilder('d')
+            ->where('d.createdAt = :val')
+            ->setParameter('val',$date)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

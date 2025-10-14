@@ -34,6 +34,7 @@ class VersementAType extends AbstractType
             ])
             ->add('createdAt', DateType::class,[
                 'input' => 'datetime_immutable',
+                'widget' => 'single_text',
                 'attr' => [
                     'class' => 'form-control form-control-user',
                     'placeholder' => 'Date'],

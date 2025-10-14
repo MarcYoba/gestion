@@ -324,7 +324,6 @@
             <h6 class="collapse-header">Employer</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('employer_list') }}">Liste </a>
-                <a class="collapse-item" href="{{ path('app_employer') }}">Employer</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_employer') }}">Employer</a>
                 <a class="collapse-item" href="{{ path('employer_list') }}">Liste </a>

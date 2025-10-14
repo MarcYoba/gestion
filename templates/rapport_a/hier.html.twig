@@ -31,7 +31,7 @@
 <table style="width:100%">
     <thead>
         <tr>
-            <th colspan="6" align="center"> rapport Vente du : {{ "now" | date("Y-m-d")}} </th>
+            <th colspan="6" align="center"> rapport Vente du : {{ calandrier }} </th>
         </tr>
     </thead>
         <tbody>
@@ -104,7 +104,7 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="10" align="center"> Resultat vente du : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="10" align="center"> Resultat vente du : {{ calandrier }} </th>
             </tr>
             <tr>
                 <th colspan="10" align="center"> Recapitulatif Vente </th>
@@ -139,10 +139,10 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="4" align="center"> Tableau Caise : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="4" align="center"> Tableau Caise : {{ calandrier }} </th>
             </tr>
             <tr>
-                <th colspan="4" align="center"> Recapitulatif Operation caise : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="4" align="center"> Recapitulatif Operation caise : {{calandrier}} </th>
             </tr>
                 <tr>
                     <th scope="col">operation</th>
@@ -175,7 +175,7 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="5" align="center"> Quantite Pour chaque produit : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="5" align="center"> Quantite Pour chaque produit : {{ calandrier }} </th>
             </tr>
             <tr>
                 <th colspan="5" align="center"> Recapitulatif Quantite Vendue </th>
@@ -201,7 +201,7 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="6" align="center"> Tableau Achat  : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="6" align="center"> Tableau Achat  : {{ calandrier }} </th>
             </tr>
             <tr>
                 <th colspan="6" align="center">  Recapitulatif Achat </th>
@@ -248,38 +248,10 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="4" align="center"> Tableau des depenses : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="4" align="center">  Tableau des depenses: {{ calandrier }} </th>
             </tr>
             <tr>
-                <th colspan="4" align="center"> Recapitulatif des depenses : {{ "now" | date("Y-m-d")}} </th>
-            </tr>
-            <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Type </th>
-                <th scope="col">M.Total </th>
-                <th scope="col">Liste opration</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                {% for depense in depenses %}
-                    <td>{{ depense.createdAt | date("Y-m-d") }}</td>
-                    <td>{{ depense.type }}</td>
-                    <td>{{ depense.montant }}</td>
-                    <td>{{ depense.description}}</td>
-                {% endfor %}
-            </tr>
-        </tbody>
-    </table>
-
-    <br><br><br>
-    <table style="width:100%">
-        <thead>
-            <tr>
-                <th colspan="4" align="center"> Tableau Des versements : {{ "now" | date("Y-m-d")}} </th>
-            </tr>
-            <tr>
-                <th colspan="4" align="center">  Recapitulatif Des versements: {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="4" align="center"> Recapitulatif des depenses : {{ calandrier}} </th>
             </tr>
             <tr>
                 <th scope="col">Date</th>
@@ -304,10 +276,38 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="8" align="center"> Tableau des poussins : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="4" align="center"> Tableau de versement :  {{ calandrier }} </th>
             </tr>
             <tr>
-                <th colspan="8" align="center">  Recapitulatif des poussins: {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="4" align="center"> Recapitulatif des versement : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Client</th>
+                <th scope="col">Montnat</th>
+                <th scope="col">motif</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for versement in versements %}
+            <tr>
+                <td>{{ versement.createdAt | date("Y-m-d") }} </td>
+                <td>{{ versement.client.nom}} </td>
+                <td>{{ versement.montant + versement.om + versement.banque }}</td>
+                <td>{{ versement.description }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="8" align="center"> Tableau des poussins : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th colspan="8" align="center"> Recapitulatif des poussins : {{ calandrier}} </th>
             </tr>
             <tr>
                 <th scope="col">Date</th>
@@ -340,10 +340,10 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="7" align="center"> Tableau des consultations : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="7" align="center"> Tableau des consultations : {{ calandrier}} </th>
             </tr>
             <tr>
-                <th colspan="7" align="center"> Recapitulatif des consultations : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="7" align="center"> Recapitulatif des consultations : {{calandrier}} </th>
             </tr>
             <tr>
                 <th scope="col">Nom</th>
@@ -374,10 +374,10 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="7" align="center"> Tableau des suivi : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="7" align="center"> Tableau de Suivis : {{ calandrier}} </th>
             </tr>
             <tr>
-                <th colspan="7" align="center"> Recapitulatif des suivis : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="7" align="center"> Recapitulatif des suivis : {{calandrier}} </th>
             </tr>
             <tr>
                 <th scope="col">Nom</th>
@@ -406,10 +406,10 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="7" align="center"> Tableau des Vaccins : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="7" align="center"> Tableau des Vaccins : {{ calandrier}} </th>
             </tr>
             <tr>
-                <th colspan="7" align="center"> Recapitulatif des vaccins : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="7" align="center"> Recapitulatif des Vaccins : {{ calandrier}} </th>
             </tr>
             <tr>
                 <th scope="col">Nom</th>
@@ -438,10 +438,10 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="4" align="center"> Tableau terrains  : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="4" align="center"> Tableau Terrains : {{ calandrier}} </th>
             </tr>
             <tr>
-                <th colspan="4" align="center"> Recapitulatif terrains : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="4" align="center"> Recapitulatif Terrains : {{ calandrier}} </th>
             </tr>
             <tr>
                 <th scope="col">localisation</th>

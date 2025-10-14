@@ -142,10 +142,7 @@
         <tbody>
         <tr> 
         <td scope="col" colspan="4" align="center">Rapport Mensuel Depense</td>
-        
         </tr>
-        
-        
             <tr>
             <th scope="col">Date </th>
             <th scope="col">Operation </th>
@@ -153,10 +150,14 @@
             <th scope="col">Liste opration</th>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+        {% for depense in depenses %}
+            
+            <td>-</td>
+            <td>{{depense.Type}}</td>
+            <td>{{depense.Montant}}</td>
+            <td>{{depense.Description}}</td>
+            
+        {% endfor %}
         </tr>
         </tbody>
     </table>

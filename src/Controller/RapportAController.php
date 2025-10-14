@@ -4,7 +4,14 @@ namespace App\Controller;
 
 use App\Entity\AchatA;
 use App\Entity\CaisseA;
+use App\Entity\Consultation;
+use App\Entity\DepenseA;
+use App\Entity\Poussin;
+use App\Entity\ProspectionA;
+use App\Entity\Suivi;
+use App\Entity\Vaccin;
 use App\Entity\VenteA;
+use App\Entity\VersementA;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\HttpFoundation\Request;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class RapportAController extends AbstractController
 {
@@ -26,13 +35,27 @@ class RapportAController extends AbstractController
         $date = new \DateTimeImmutable($date);
         $caisse = $em->getRepository(CaisseA::class)->findBy(["createAt" => $date]);
         $vente = $em->getRepository(VenteA::class)->findRapportToDay( $date);
-        $achat = $em->getRepository(AchatA::class)->findByDate($date);
+        $achat = $em->getRepository(AchatA::class)->findByDay($date);
+        $depense = $em->getRepository(DepenseA::class)->findByDay($date);
+        $versement = $em->getRepository(VersementA::class)->findByDay($date);
+        $poussin = $em->getRepository(Poussin::class)->findByDay($date->format("Y-m-d"));
+        $consultation = $em->getRepository(Consultation::class)->findByDay($date);
+        $suivi = $em->getRepository(Suivi::class)->findByDay($date);
+        $vaccin = $em->getRepository(Vaccin::class)->findBy(['dateVaccin'=>$date]);
+        $terrain = $em->getRepository(ProspectionA::class)->findBy(['createtAt'=>$date]);
+
         
-        //dd($vente);
         $html = $this->renderView('rapport_a/jour_courante.html.twig', [
         'ventes' => $vente,
         'achats' => $achat,
-        'caisses' => $caisse
+        'caisses' => $caisse,
+        'depenses' => $depense,
+        'versements' => $versement,
+        'poussins' => $poussin,
+        'consultations' => $consultation,
+        'suivis' => $suivi,
+        'vaccins' => $vaccin,
+        'terrains' => $terrain,
         ]);
 
         $dompdf->loadHtml($html);
@@ -71,14 +94,28 @@ class RapportAController extends AbstractController
         
         $date = new \DateTimeImmutable($date);
         $caisse = $em->getRepository(CaisseA::class)->findBy(["createAt" => $date]);
-        $vente = $em->getRepository(VenteA::class)->findRapportToDay( $date);
-        $achat = $em->getRepository(AchatA::class)->findByDate($date);
+        $vente = $em->getRepository(VenteA::class)->findRapportToDay($date);
+        $achat = $em->getRepository(AchatA::class)->findByDay($date);
+        $depense = $em->getRepository(DepenseA::class)->findByDay($date);
+        $versement = $em->getRepository(VersementA::class)->findByDay($date);
+        $poussin = $em->getRepository(Poussin::class)->findByDay($date->format("Y-m-d"));
+        $consultation = $em->getRepository(Consultation::class)->findByDay($date);
+        $suivi = $em->getRepository(Suivi::class)->findByDay($date);
+        $vaccin = $em->getRepository(Vaccin::class)->findBy(['dateVaccin'=>$date]);
+        $terrain = $em->getRepository(ProspectionA::class)->findBy(['createtAt'=>$date]);
         
-        //dd($vente);
-        $html = $this->renderView('rapport_a/jour_courante.html.twig', [
+        $html = $this->renderView('rapport_a/hier.html.twig', [
         'ventes' => $vente,
         'achats' => $achat,
-        'caisses' => $caisse
+        'caisses' => $caisse,
+        'calandrier' => $date->format("Y-m-d"),
+        'depenses' => $depense,
+        'versements' => $versement,
+        'poussins' => $poussin,
+        'consultations' => $consultation,
+        'suivis' => $suivi,
+        'vaccins' => $vaccin,
+        'terrains' => $terrain,
         ]);
 
         $dompdf->loadHtml($html);
@@ -184,13 +221,15 @@ class RapportAController extends AbstractController
         $caisse = $em->getRepository(CaisseA::class)->findRapportCaisseToWeek($date_debut,$anne);
         $vente = $em->getRepository(VenteA::class)->findRapportMensuel($date_debut,$anne);
         $achat = $em->getRepository(AchatA::class)->findByDate($date_debut,$anne);
-
+        $depense = $em->getRepository(DepenseA::class)->findByMoi($date_debut,$anne);
+        
         $html = $this->renderView('rapport_a/moi.html.twig', [
         'date_debut' => $date_debut,
         'date_fin' => $date_fin,
         'ventes' => $vente,
         'achats' => $achat,
-        'caisses' => $caisse
+        'caisses' => $caisse,
+        'depenses' => $depense,
         ]);
 
         $dompdf->loadHtml($html);
