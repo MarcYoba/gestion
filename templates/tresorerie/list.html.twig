@@ -1,0 +1,296 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tresorerie {% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Facture</title>
+    <style>
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
+</style>
+</head>
+<body>
+<br><br><br> <table style="width:100%">
+        <thead>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="col" colspan="6">Cahier de charge</th>
+        </tr>
+        
+        <tr>
+            <th scope="col">REF</th>
+            <th scope="col">Libelle</th>
+            <th scope="col"></th>
+            <th scope="col">Note</th>
+            <th scope="col">'.$annee.'</th>
+            <th scope="col">Exercice -1 </th>
+        </tr>
+        <tr>
+            <td style="color: blue;">ZA</td>
+            <th scope="col" style="color: blue;">(Tresorerie actif N-1 - Tresorerie N-1)</th>
+            <th scope="col" style="color: blue;">A</th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">0</th>
+        </tr>
+        <tr>
+            <td></td>
+            <th scope="col">Flux de trresorerie provenant des activites operationnelles </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FA</td>
+            <th scope="col">Capacite d Autofinancement (CAFG)</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FB</td>
+            <th scope="col" >-Actif circulant HOA</th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+        </tr>
+        <tr>
+            <td>FC</td>
+            <th scope="col">-Variation des stoks</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">'.$quantiteenstock.'</th>
+            <th scope="col"></th>
+        </tr>
+        
+        <tr>
+            <td>FD</td>
+            <th scope="col">-Variation des creances</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">'.$variationCreance.'</th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FE</td>
+            <th scope="col">+Variation du passif circulant</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td></td>
+            <th scope="col" >Variation de BF lie aux activites operationnelles (FB+FC+FD+FE): ......</th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+        </tr>
+        <tr>
+            <td style="color: blue;">ZB</td>
+            <th scope="col" style="color: blue;">Flux de tresorerie provenant des activites operationnelles (somme FA a FE)</th>
+            <th scope="col" style="color: blue;">B</th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+        </tr>
+        <tr>
+            <td></td>
+            <th scope="col">Flux de tresorerie Provenant des activites d\'investissements </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FF</td>
+            <th scope="col">-Decaissements lies aux acquisitions d\'immobilisations incorporelles </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FG</td>
+            <th scope="col">-Decaissements lies aux acquisitions d\'immobilisations corporelles</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FH</td>
+            <th scope="col">-Decaissements lies aux acquisitions d\'immobilisations financieres</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FI</td>
+            <th scope="col">+ Encaissement lies aux cessions d\'imnmobilisations incorporelles et corporelles</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FJ</td>
+            <th scope="col">+ Encaissement lies aux cessions d\'imnmobilisations financieres</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td style="color: blue;">ZC</td>
+            <th scope="col" style="color: blue;">Flux de tresorerie provenant des activites d\'investissement (somme FF a FJ)</th>
+            <th scope="col" style="color: blue;">C</th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+        </tr>
+        <tr>
+            <td></td>
+            <th scope="col">Flux de tresorerie provenant du financement par les capitaux propres</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FK</td>
+            <th scope="col">+Augmentations de capital par apports nouveaux</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FL</td>
+            <th scope="col">+Subventions d\investissement recues</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FM</td>
+            <th scope="col">- Prelevement sur le capital </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td>FN</td>
+            <th scope="col">-Dividendes verses </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td style="color: blue;">ZD</td>
+            <th scope="col" style="color: blue;">Flux de tresorerie provenant des capitaux propre (somme FK a FN) </th>
+            <th scope="col" style="color: blue;">D</th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+        </tr>
+        <tr>
+            <td></td>
+            <th scope="col" >Tresorerie provenant du financement par les capitaux etrangers</th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+        </tr>
+        <tr>
+            <td>FO</td>
+            <th scope="col">+ Emprunts </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        
+        <tr>
+            <td>FP</td>
+            <th scope="col" >+Autre dettes financieres</th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+            <th scope="col" ></th>
+        </tr>
+        <tr>
+            <td>FQ</td>
+            <th scope="col">- Remboursement des emprunts et autres dettes financieres</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td style="color: blue;">ZE</td>
+            <th scope="col" style="color: blue;">Flux de trsorerie provenant capitaux etrangers(somme FO a FQ) </th>
+            <th scope="col" style="color: blue;">E</th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+        </tr>
+        <tr>
+            <td style="color: blue;">ZF</td>
+            <th scope="col" style="color: blue;">Flux de trsorerie provenant des activites de financement (D + E)  </th>
+            <th scope="col" style="color: blue;">F</th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+        </tr>
+        <tr>
+            <td>ZG</td>
+            <th scope="col">VARIATION DE LA TRESORERIE NETTE DE LA PERIODE (B + C + F) </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <td style="color: blue;">ZH</td>
+            <th scope="col" style="color: blue;">
+                Tresorerie nette au 31 Decembre (G + A)
+                Controle : Tresorerie actif N - Tresorerie passif N =
+            </th>
+            <th scope="col" style="color: blue;">H</th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+            <th scope="col" style="color: blue;"></th>
+        </tr>
+        
+        
+        </tbody>
+    </table>
+
+</body>
+</html>
+{% endblock %}

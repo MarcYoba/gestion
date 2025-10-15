@@ -131,6 +131,12 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Autopsie::class)]
     private Collection $autopsies;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Tresorerie::class)]
+    private Collection $tresoreries;
+
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: TresorerieA::class)]
+    private Collection $tresorerieAs;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -166,6 +172,8 @@ class Agence
         $this->prospections = new ArrayCollection();
         $this->prospectionAs = new ArrayCollection();
         $this->autopsies = new ArrayCollection();
+        $this->tresoreries = new ArrayCollection();
+        $this->tresorerieAs = new ArrayCollection();
     }
 
    
@@ -1219,6 +1227,66 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($autopsy->getAgence() === $this) {
                 $autopsy->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tresorerie>
+     */
+    public function getTresoreries(): Collection
+    {
+        return $this->tresoreries;
+    }
+
+    public function addTresorery(Tresorerie $tresorery): static
+    {
+        if (!$this->tresoreries->contains($tresorery)) {
+            $this->tresoreries->add($tresorery);
+            $tresorery->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTresorery(Tresorerie $tresorery): static
+    {
+        if ($this->tresoreries->removeElement($tresorery)) {
+            // set the owning side to null (unless already changed)
+            if ($tresorery->getAgence() === $this) {
+                $tresorery->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TresorerieA>
+     */
+    public function getTresorerieAs(): Collection
+    {
+        return $this->tresorerieAs;
+    }
+
+    public function addTresorerieA(TresorerieA $tresorerieA): static
+    {
+        if (!$this->tresorerieAs->contains($tresorerieA)) {
+            $this->tresorerieAs->add($tresorerieA);
+            $tresorerieA->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTresorerieA(TresorerieA $tresorerieA): static
+    {
+        if ($this->tresorerieAs->removeElement($tresorerieA)) {
+            // set the owning side to null (unless already changed)
+            if ($tresorerieA->getAgence() === $this) {
+                $tresorerieA->setAgence(null);
             }
         }
 

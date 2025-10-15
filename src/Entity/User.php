@@ -158,6 +158,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Autopsie::class)]
     private Collection $autopsies;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Tresorerie::class)]
+    private Collection $tresoreries;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TresorerieA::class)]
+    private Collection $tresorerieAs;
+
     
 
     public function __construct() {
@@ -198,6 +204,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->prospections = new ArrayCollection();
         $this->prospectionAs = new ArrayCollection();
         $this->autopsies = new ArrayCollection();
+        $this->tresoreries = new ArrayCollection();
+        $this->tresorerieAs = new ArrayCollection();
         
     }
 
@@ -1391,6 +1399,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($autopsy->getUser() === $this) {
                 $autopsy->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tresorerie>
+     */
+    public function getTresoreries(): Collection
+    {
+        return $this->tresoreries;
+    }
+
+    public function addTresorery(Tresorerie $tresorery): static
+    {
+        if (!$this->tresoreries->contains($tresorery)) {
+            $this->tresoreries->add($tresorery);
+            $tresorery->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTresorery(Tresorerie $tresorery): static
+    {
+        if ($this->tresoreries->removeElement($tresorery)) {
+            // set the owning side to null (unless already changed)
+            if ($tresorery->getUser() === $this) {
+                $tresorery->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TresorerieA>
+     */
+    public function getTresorerieAs(): Collection
+    {
+        return $this->tresorerieAs;
+    }
+
+    public function addTresorerieA(TresorerieA $tresorerieA): static
+    {
+        if (!$this->tresorerieAs->contains($tresorerieA)) {
+            $this->tresorerieAs->add($tresorerieA);
+            $tresorerieA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTresorerieA(TresorerieA $tresorerieA): static
+    {
+        if ($this->tresorerieAs->removeElement($tresorerieA)) {
+            // set the owning side to null (unless already changed)
+            if ($tresorerieA->getUser() === $this) {
+                $tresorerieA->setUser(null);
             }
         }
 
