@@ -1,12 +1,78 @@
+{% extends 'base.html.twig' %}
 {% block title %}Erreur{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="alert alert-danger text-center">
-        <h1>Une erreur est survenue</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Gestion de stock</title>
+    <style>
+        .error-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+  }
+
+  .error-content {
+    text-align: center;
+  }
+
+  .error-content h1 {
+    font-size: 6rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  .error-content p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .lottie-animation {
+    max-width: 400px;
+    margin-bottom: 2rem;
+  }
+    </style>
+
+</head>
+
+<body id="page-top">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+
+<div class="error-container">
+  <div class="lottie-animation"></div>
+  <div class="error-content">
+    <h1><a href="{{ path('app_logout') }}" class="btn btn-primary">Retour à l'accueil</a></h1>
+    <h2>Error!</h2>
+     <h1>Une erreur est survenue</h1>
         <p>Désolé, un problème technique est survenu. Notre équipe a été notifiée.</p>
         <p>Désolé, L'équipe de AB COMPTA travaille pour améliorer les services.</p>
-        <a href="{{ path('app_logout') }}" class="btn btn-primary">Retour à l'accueil</a>
-    </div>
+    <p>Oops! :(</p>
+    <a href="{{ path('app_logout') }}" class="btn btn-primary">Go Back!</a>
+  </div>
 </div>
+
+<script>
+    const animation = lottie.loadAnimation({
+      container: document.querySelector('.lottie-animation'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'https://lottie.host/d987597c-7676-4424-8817-7fca6dc1a33e/BVrFXsaeui.json'
+    });
+</script>
+</body>
+</html>
 {% endblock %}

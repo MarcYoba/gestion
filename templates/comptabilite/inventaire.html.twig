@@ -1,0 +1,292 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ComptabiliteController!{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {% include "navbar.html.twig" %}
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                {% include "topbar.html.twig" %}
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Invantaire</h1>
+                    
+                        <div class="row">
+                            
+                            <p class="col-md-3 btn btn-user btn-block">
+                               Entrez le numero du moi <input type="number" name="nombre" id="nombre" value="1"> 
+                            </p>
+                           
+                            <p class="col-md-2" >
+                                <button class="btn btn-info btn-user btn-block" onclick="invantaire()">Evolurion mois</button>
+                            </p>
+                        </div>
+                    
+
+                    <hr>
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <div class="col-xl-12 col-lg-10">
+
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Etude Evolutive des Ventes et Cleints de l'entreprise</h6>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-bar">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <div class="card shadow mb-1">
+                                                    <div class="card-header py-3">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Evolution Des Ventes</h6>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            Montant du mois N :
+                                                            <span id="montant1"> </span>
+                                                        </div>
+
+                                                        <div class="col-lg-5">
+                                                            Nombre client du mois N :
+                                                            <span id="client1"> </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6">
+                                                <div class="card shadow mb-1">
+                                                    <div class="card-header py-3">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Valeur du moi N+1</h6>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            Montant du mois N+1 :
+                                                            <span id="montant2"> </span>
+                                                        </div>
+
+                                                        <div class="col-lg-5">
+                                                            Nombre client du mois N+1 :
+                                                            <span id="client2"> </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <hr>
+
+                                            <div class="col-lg-12">
+                                                <div class="card shadow mb-1">
+                                                    <div class="card-header py-3">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Calcul Generale Mois</h6>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            Total en FCFA:
+                                                            <span id="Total"> </span>
+                                                        </div>
+
+                                                        <div class="col-lg-5">
+                                                            Total en % :
+                                                            <span id="Poucentage"> </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <hr>
+                                            <div class="col-lg-12">
+                                                <div class="card shadow mb-1">
+                                                    <div class="card-header py-3">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Evolution Generale Client</h6>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            Total en Client:
+                                                            <span id="Totalclient"> </span>
+                                                        </div>
+
+                                                        <div class="col-lg-5">
+                                                            Total en % :
+                                                            <span id="Poucentageclient"> </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <hr>
+                                    
+                                    <code>Evolution de l'entreprise</code>.
+                                </div>
+                            </div>
+                            <!-------------------------------------------------->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Etude Evolutive des Prospections</h6>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-bar">
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <div class="card shadow mb-1">
+                                                    <div class="card-header py-3">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Nombre de vente sur acien client</h6>
+                                                    </div>
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-lg-5">
+                                                            Nombre ancien :
+                                                            <span id="ancienclient1"> </span>
+                                                        </div>
+
+                                                        <div class="col-lg-5">
+                                                            Montant realiser sur ancien client :
+                                                            <span id="montantancien"> </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6">
+                                                <div class="card shadow mb-1">
+                                                    <div class="card-header py-3">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Nombres de ventes sur nouveaux clients</h6>
+                                                    </div>
+                                                    <div class="row">
+                                                    <div class="col-lg-5">
+                                                            Nombre nouveau client :
+                                                            <span id="nouclient"> </span>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            Montant sur nouveau client :
+                                                            <span id="monnoucli"> </span>
+                                                        </div>
+
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <hr>
+
+                                            <div class="col-lg-12">
+                                                <div class="card shadow mb-1">
+                                                    <div class="card-header py-3">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Pourcentage de Prospections en montant</h6>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            Total en FCFA:
+                                                            <span id="Totalprospet"> </span>
+                                                        </div>
+
+                                                        <div class="col-lg-5">
+                                                            Total en % :
+                                                            <span id="Poucentageprospect"> </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <hr>
+                                            <div class="col-lg-12">
+                                                <div class="card shadow mb-1">
+                                                    <div class="card-header py-3">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Pourcentage de Prospections en client</h6>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            Total en Client:
+                                                            <span id="Totalclient1"> </span>
+                                                        </div>
+
+                                                        <div class="col-lg-5">
+                                                            Total en % :
+                                                            <span id="Poucentageclient1"> </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <hr>
+                                    
+                                    <code>Evolution Prospection</code>.
+                                </div>
+                            </div>
+
+                        <!-- Donut Chart -->
+                    </div> 
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Production &copy; {{ "now" | date("Y-m-d")}}</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Page level plugins -->
+
+</body>
+
+</html>
+
+{% endblock %}

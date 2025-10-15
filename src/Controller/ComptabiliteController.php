@@ -53,4 +53,20 @@ class ComptabiliteController extends AbstractController
             'ventes' => $vente,
         ]);
     }
+
+    #[Route('/comptabilite/Evolution/mensuel', name: 'app_comptabilite_EM')]
+    public function Evolution_moi() : Response 
+    {
+        return $this->render('comptabilite/inventaire.html.twig',[
+
+        ]);
+    }
+
+    #[Route('/comptabilite/Evolution/Hebdomadaire', name: 'app_comptabilite_week')]
+    public function Evolution_week() : Response 
+    {
+        return $this->render('comptabilite/inventaire_week.html.twig',[
+
+        ]);
+    }
 }
