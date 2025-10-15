@@ -1,0 +1,96 @@
+{# templates/deepseek/test.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Test DeepSeek AI{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Test DeepSeek AI</h1>
+    
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title">Test de l'API DeepSeek</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <strong>Prompt:</strong>
+                <p class="text-muted">{{ prompt }}</p>
+            </div>
+            
+            <div class="mb-3">
+                <strong>Réponse:</strong>
+                <p>{{ response|raw }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title">Chat avec DeepSeek</h5>
+        </div>
+        <div class="card-body">
+            <div id="chat-container" style="height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                <div class="alert alert-info">Commencez la conversation...</div>
+            </div>
+            
+            <form id="chat-form">
+                <div class="input-group">
+                    <input type="text" id="message-input" class="form-control" placeholder="Tapez votre message..." required>
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('chat-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const messageInput = document.getElementById('message-input');
+    const message = messageInput.value.trim();
+    
+    if (!message) return;
+    
+    // Ajouter le message utilisateur
+    const userMessage = document.createElement('div');
+    userMessage.className = 'alert alert-primary';
+    userMessage.textContent = 'Vous: ' + message;
+    document.getElementById('chat-container').appendChild(userMessage);
+    
+    // Effacer l'input
+    messageInput.value = '';
+    
+    try {
+        const response = await fetch('{{ path('deepseek_chat') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: message,
+                history: [] // Vous pouvez implémenter l'historique si nécessaire
+            })
+        });
+        
+        const data = await response.json();
+        
+        // Ajouter la réponse de l'IA
+        const aiMessage = document.createElement('div');
+        aiMessage.className = 'alert alert-success';
+        aiMessage.innerHTML = '<strong>AI:</strong> ' + (data.success ? data.content : 'Erreur: ' + data.error);
+        document.getElementById('chat-container').appendChild(aiMessage);
+        
+        // Scroll vers le bas
+        document.getElementById('chat-container').scrollTop = document.getElementById('chat-container').scrollHeight;
+        
+    } catch (error) {
+        console.error('Error:', error);
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'alert alert-danger';
+        errorMessage.textContent = 'Erreur de connexion';
+        document.getElementById('chat-container').appendChild(errorMessage);
+    }
+});
+</script>
+{% endblock %}

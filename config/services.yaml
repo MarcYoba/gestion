@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     depenses_upload_directory: '%kernel.project_dir%/public/uploads/depenses'
+    deepseek_api_key: '%env(DEEPSEEK_API_KEY)%'
+    deepseek_base_url: '%env(DEEPSEEK_BASE_URL)%'
+    deepseek_model: '%env(DEEPSEEK_MODEL)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -43,3 +46,8 @@ services:
     App\EventSubscriber\ExceptionSubscriber:
         tags:
             - { name: kernel.event_subscriber }
+    App\Service\DeepSeekService:
+        arguments:
+            $httpClient: '@http_client'
+            $params: '@parameter_bag'
+            $logger: '@logger'
