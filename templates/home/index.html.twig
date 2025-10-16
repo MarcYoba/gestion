@@ -63,17 +63,7 @@
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="main-navigation">
-                    <ul class="nav navbar-nav navbar-right" style="color: #fff;">
-                        <li><a href="#about" class="page-scroll" style="color: #fff;">About Us</a></li>  
-                        <!--  <li><a href="#about" class="page-scroll" style="color: #fff;">Specials</a></li> -->   
-                        <li><a href="#provenderie" class="page-scroll" style="color: #fff;">Provenderie</a></li>      
-                        <li><a href="#pharmacie" class="page-scroll" style="color: #fff;">Pharmacie</a></li>   
-                        <li><a href="#Client" class="page-scroll" style="color: #fff;">Client</a></li>                
-                        <li><a href="#search" style="color: #fff;"><i class="fa fa-search"></i></a></li>
-                    </ul>
-
-                </div>
+                
                 <!-- /.navbar-collapse -->         
 
             </div>
@@ -121,12 +111,19 @@
                                             <h5 class="card-title text-center">Direction Générale</h5>
                                             <p class="card-text text-center">Bienvenue dans votre agence. Veuillez accéder à vos services.</p>
                                             <div class="d-flex justify-content-between">
-                                                <a href="{{ path('app_home_dashboard', {'id': 0}) }}" class="btn btn-primary">
+                                                {# {% if agences.nom == "LTN SARL" %}
+                                                    <a href="{{ path('app_home_dashboard', {'id': 0}) }}" class="btn btn-primary">
                                                     Provenderie
-                                                </a>
-                                                <a href="{{ path('app_home_dashboardA', {'id': 0}) }}" class="btn btn-primary">
-                                                    Cabinet
-                                                </a>
+                                                    </a>
+                                                {% else %} #}
+                                                    <a href="{{ path('app_home_dashboard', {'id': 0}) }}" class="btn btn-primary">
+                                                    Provenderie
+                                                    </a>
+                                                    <a href="{{ path('app_home_dashboardA', {'id': 0}) }}" class="btn btn-primary">
+                                                        Cabinet
+                                                    </a>
+                                                {# {% endif %} #}
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -138,12 +135,19 @@
                                                 <h5 class="card-title text-center">{{ agences.nom}}</h5>
                                                 <p class="card-text text-center">Bienvenue dans votre agence. Veuillez accéder à vos services.</p>
                                                 <div class="d-flex justify-content-between">
-                                                    <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                    {% if agences.nom == "LTN SARL" %}
+                                                        <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Provenderie
-                                                    </a>
-                                                    <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
-                                                        Cabinet
-                                                    </a>
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                        Provenderie
+                                                        </a>
+                                                        <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
+                                                            Cabinet
+                                                        </a>
+                                                    {% endif %}
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -178,12 +182,19 @@
                                                 <h5 class="card-title text-center">{{ agences.nom}}</h5>
                                                 <p class="card-text text-center">Bienvenue dans votre agence. Veuillez accéder à vos services.</p>
                                                 <div class="d-flex justify-content-between">
+                                                {% if agences.nom == "LTN SARL" %}
+                                                    <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                        Provenderie
+                                                    </a>
+                                                {% else %}
                                                     <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Provenderie
                                                     </a>
                                                     <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Cabinet
                                                     </a>
+                                                {% endif %}
+                                                
                                                 </div>
                                             </div>
                                         </div>
@@ -199,12 +210,19 @@
                                                 <h5 class="card-title text-center">{{ agences.nom}}</h5>
                                                 <p class="card-text text-center">Bienvenue dans votre agence. Veuillez accéder à vos services.</p>
                                                 <div class="d-flex justify-content-between">
+                                                {% if agences.nom == "LTN SARL" %}
+                                                    <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                        Provenderie
+                                                    </a>
+                                                {% else %}
                                                     <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Provenderie
                                                     </a>
                                                     <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Cabinet
                                                     </a>
+                                                {% endif %}
+                                                
                                                 </div>
                                             </div>
                                         </div>
@@ -218,12 +236,21 @@
                                                 <h5 class="card-title text-center">{{ agences.nom}}</h5>
                                                 <p class="card-text text-center">Bienvenue dans votre agence. Veuillez accéder à vos services.</p>
                                                 <div class="d-flex justify-content-between">
+                                                {% if agences.nom == "LTN SARL" %}
+                                                    <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                        Provenderie
+                                                    </a>
+                                                {% else %}
                                                     <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Provenderie
                                                     </a>
                                                     <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Cabinet
                                                     </a>
+                                                
+                                                {% endif %}
+                                                
+                                                    
                                                 </div>
                                             </div>
                                         </div>
