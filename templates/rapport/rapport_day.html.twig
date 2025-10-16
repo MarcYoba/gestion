@@ -6,18 +6,38 @@
         /* CSS personnalisé pour le PDF */
         body { font-family: Arial, sans-serif; }
         .header { color: #333; }
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
     </style>
 </head>
 <body>
-<table style="width:100%">
+<table style="width:100%" border="1">
     <thead>
         <tr>
-            <th colspan="6" align="center"> rapport Vente du : </th>
+            <th colspan="6" align="center"> rapport Vente du : {{date}}</th>
         </tr>
     </thead>
         <tbody>
+        {%  set sommeVente = 0 %}
+        {%   set sommeCash = 0 %}
+        {%   set sommeOm = 0 %}
+        {%   set sommeCredit = 0 %}
+        {%   set sommeReduction = 0 %}
+        {% for vente in ventes %}
             <tr>
-            <td colspan="6" align="center"> Formule   Vente N=  Client :  Tel:  utilisateur heure aliment</td>
+            <td colspan="6" align="center"> Formule   Vente N= {{vente.id}} Client : {{ vente.client.nom}}  Tel: {{ vente.client.telephone}} utilisateur {{vente.user.username }} heure {{ vente.heure}} aliment : {{vente.aliment}}</td>
             </tr>
                 <tr>
                 <th scope="col">Nom produit</th>
@@ -27,9 +47,51 @@
                 <th scope="col">Typepaiement</th>
                 <th scope="col">datevente</th>
             </tr>
-            <tr>
-                <td></td>
-            </tr>
+
+             {% for facture in vente.facture %}
+                    <tr>
+                        <td> {{ facture.produit.nom}} </td>
+                        <td> {{ facture.quantite}} </td>
+                        <td> {{ facture.prix}} </td>
+                        <td> {{ facture.prix * facture.quantite}} </td>
+                        <td> {{ vente.type}} </td>
+                        <td> {{ facture.createdAt | date("Y-m-d")}} </td>
+                    </tr>
+                {% endfor %} 
+                 <tr>
+                    <td>Total</td>
+                    <td>{{ vente.quantite}}</td>
+                    {% if vente.prix != 0 %}
+                        <td>{{ vente.prix / vente.quantite}}</td>
+                    {% else %}
+                        <td>0</td>
+                    {% endif %}
+                    <td>{{ vente.prix}} </td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Reduction</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>{{ vente.reduction}} </td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Net a payer</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>{{ vente.prix}} </td>
+                    <td>FCFA</td>
+                    <td>{{ vente.type}}</td>
+                </tr>
+                {% set sommeVente = sommeVente + vente.prix %}
+                {% set sommeCash = sommeCash + vente.montantcash %}
+                {% set sommeCredit = sommeCredit + vente.montantcredit %}
+                {% set sommeOm = sommeOm + vente.montantmomo %}
+                {% set sommeReduction = sommeReduction + vente.reduction %}
+        {% endfor %}
         </tbody>
     </table>        
 </body>

@@ -414,15 +414,32 @@ class VenteController extends AbstractController
     #[Route(path:"/vente/rapport/semaine/prix", name: "vente_rapport_semain_prix")]
     public function Vente_semain_prix(EntityManagerInterface $entityManager): Response
     {
-
-        return $this->json(['success'=> true,'message'=> 'success']);
+        $datesSemaine = [];
+        $today = new \DateTime();
+        $monday = clone $today;
+        $monday->modify('monday this week');
+        for ($i = 0; $i < 7; $i++) {
+            $date = clone $monday;
+            $date->modify("+$i days");
+            $datesSemaine[] = $entityManager->getRepository(Vente::class)->findVentesByWeekWithDaysPrix($date->format('Y-m-d'));
+        }
+        return $this->json(['message'=> $datesSemaine]);
     }
 
     #[Route(path:"/vente/rapport/semaine/quantite", name: "vente_rapport_semain_quantite")]
     public function Vente_semain_quantite(EntityManagerInterface $entityManager): Response
     {
-        
-        return $this->json(['success'=> true,'message'=> 'success']);
+         $datesSemaine = [];
+        $today = new \DateTime();
+        $monday = clone $today;
+        $monday->modify('monday this week');
+        for ($i = 0; $i < 7; $i++) {
+            $date = clone $monday;
+            $date->modify("+$i days");
+            $datesSemaine[] = $entityManager->getRepository(Vente::class)->findVentesByWeekWithDaysQuantite($date->format('Y-m-d'));
+        }
+
+        return $this->json(['message'=> $datesSemaine]);
     }
     
 }

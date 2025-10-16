@@ -25,7 +25,7 @@ class HomeController extends AbstractController
         $agence = $entityManager->getRepository(Agence::class)->findAll();
         $user = $this->getUser();
         if ($user) {
-            $user = $user->getId();
+            // $user = $user->getId();
             $user = $entityManager->getRepository(User::class)->find($user);
         }
         if ($this->isGranted("ROLE_ADMIN_ADMIN") || $this->isGranted("ROLE_CLIENTS")) {
@@ -86,7 +86,8 @@ class HomeController extends AbstractController
         }
 
         $produi = $entityManager->getRepository(Produit::class)->findAll();
-
+        $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+        $agence = $temoporayagence->getAgence();
         return $this->render('home/dashboard.html.twig', [
             'agence' => $agence,
             'prosuits' => $produi,
