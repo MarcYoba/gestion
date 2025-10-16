@@ -69,4 +69,28 @@ class ComptabiliteController extends AbstractController
 
         ]);
     }
+
+    #[Route('/comptabilite/Evolution/Marge/baneficier', name: 'app_comptabilite_Mage_beneficier')]
+    public function Marge_beneficiere() : Response 
+    {
+        return $this->render('comptabilite/marge_beneficier.html.twig',[
+
+        ]);
+    }
+
+    #[Route('/comptabilite/Evolution/Chiffre/affaire', name: 'app_comptabilite_Chiffre_affaire')]
+    public function Chiffre_affaire() : Response 
+    {
+        return $this->render('comptabilite/Chiffre_affaire.html.twig',[
+
+        ]);
+    }
+
+    #[Route('/comptabilite/Evolution/Produit/stocker', name: 'app_comptabilite_produit_stoker')]
+    public function produit_stoker() : Response 
+    {
+        return $this->render('comptabilite/produit_stoker.html.twig',[
+
+        ]);
+    }
 }

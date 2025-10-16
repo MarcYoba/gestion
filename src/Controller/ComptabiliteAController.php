@@ -54,4 +54,43 @@ class ComptabiliteAController extends AbstractController
             'ventes' => $vente,
         ]);
     }
+    #[Route('/comptabilite/a/Evolution/mensuel', name: 'app_comptabilite_a_EM')]
+    public function Evolution_moi() : Response 
+    {
+        return $this->render('comptabilite_a/inventaire.html.twig',[
+
+        ]);
+    }
+
+    #[Route('/comptabilite/a/Evolution/Hebdomadaire', name: 'app_comptabilite_a_week')]
+    public function Evolution_week() : Response 
+    {
+        return $this->render('comptabilite_a/inventaire_week.html.twig',[
+
+        ]);
+    }
+
+    #[Route('/comptabilite/a/Evolution/Marge/baneficier', name: 'app_comptabilite_a_Mage_beneficier')]
+    public function Marge_beneficiere() : Response 
+    {
+        return $this->render('comptabilite_a/marge_beneficier.html.twig',[
+
+        ]);
+    }
+
+    #[Route('/comptabilite/a/Evolution/Chiffre/affaire', name: 'app_comptabilite_a_Chiffre_affaire')]
+    public function Chiffre_affaire() : Response 
+    {
+        return $this->render('comptabilite_a/Chiffre_affaire.html.twig',[
+
+        ]);
+    }
+
+    #[Route('/comptabilite/a/Evolution/Produit/stocker', name: 'app_comptabilite_a_produit_stoker')]
+    public function produit_stoker() : Response 
+    {
+        return $this->render('comptabilite_a/produit_stoker.html.twig',[
+
+        ]);
+    }
 }
