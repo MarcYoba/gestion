@@ -39,23 +39,21 @@ $(function() {
       return response.json();
     })
     .then(data => { 
-        // for (let proriete in data) {
-        //   value = data[proriete];
-        //   index = 0;
-        //   for (let  key in value) { 
-        //     tab1[index] = value[key];
-        //       //console.log(tab);
-        //     index +=1;
-        //   }
-        // }
+        for (let proriete in data) {
+          value = data[proriete];
+          index = 0;
+          for (let  key in value) { 
+            tab1[index] = value[key];
+              //console.log(tab);
+            index +=1;
+          }
+        }
            creationGrapehe();
     })
     .catch(error => {
       console.error('There has been a problem with your fetch operation:', error);
     });
 });
-
-console.log("data");
 // Bar Chart Example
 
 function creationGrapehe() {

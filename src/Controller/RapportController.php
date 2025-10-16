@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\TempAgence;
 use App\Entity\Vente;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,10 +18,16 @@ class RapportController extends AbstractController
     /**
      * @Route(path="/rapport", name="app_rapport")
      */
-    public function rapport(): Response
+    public function rapport(EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_logout');
+        }
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $agence = $tempagence->getAgence()->getId();
         return $this->render('rapport/rapport.html.twig', [
-            'controller_name' => 'RapportController',
+            'id' => $agence,
         ]);
     }
     /**
@@ -37,15 +45,28 @@ class RapportController extends AbstractController
     /**
      * @Route(path="/rapport/day" , name="rapport_day")
      */
-    public function rapport_day(EntityManagerInterface $em): Response
+    public function rapport_day(EntityManagerInterface $em,Request $request): Response
     {
+
+        $date = date("Y-m-d");
+        if ($request->isMethod('POST')) {
+           $date = $request->request->get('date');
+           if(empty($date))
+           {
+                $this->addFlash("error", "Vous deviez selectiion aune date valide");
+                return $this->redirectToRoute("app_rapport_a");
+           }
+        }
+
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
-        $vente = $em->getRepository(Vente::class)->findAll();
+
+        $vente = $em->getRepository(Vente::class)->findByDay($date);
 
         $html = $this->renderView('rapport/rapport_day.html.twig', [
-        'data' => $vente
+        'ventes' => $vente,
+        'date' => $date,
         ]);
 
         $dompdf->loadHtml($html);

@@ -20,6 +20,10 @@ class ProduitController extends AbstractController
     {
         $produit = new Produit();
         $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute("app_logout");
+        }
         $form = $this->createForm(ProduitType::class,$produit);
         $form->handleRequest($request);
         
