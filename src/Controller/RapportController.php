@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Caisse;
+use App\Entity\Depenses;
 use App\Entity\TempAgence;
 use App\Entity\Vente;
+use App\Entity\Versement;
+use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
@@ -54,7 +58,7 @@ class RapportController extends AbstractController
            if(empty($date))
            {
                 $this->addFlash("error", "Vous deviez selectiion aune date valide");
-                return $this->redirectToRoute("app_rapport_a");
+                return $this->redirectToRoute("app_rapport");
            }
         }
 
@@ -63,10 +67,20 @@ class RapportController extends AbstractController
         $dompdf = new Dompdf($options);
 
         $vente = $em->getRepository(Vente::class)->findByDay($date);
+        $depense = $em->getRepository(Depenses::class)->findByDay($date);
 
+        $date  = new DateTime($date);
+        $caisse = $em->getRepository(Caisse::class)->findBy(['createAt' => $date]);
+        $versement = $em->getRepository(Versement::class)->findBy(['createdAd' => $date]);
+        
+
+        
         $html = $this->renderView('rapport/rapport_day.html.twig', [
         'ventes' => $vente,
-        'date' => $date,
+        'date' => $date->format("Y-m-d"),
+        'caisses' => $caisse,
+        'versements' => $versement,
+        'depenses' => $depense,
         ]);
 
         $dompdf->loadHtml($html);

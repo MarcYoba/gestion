@@ -23,13 +23,14 @@
     </style>
 </head>
 <body>
-<table style="width:100%" border="1">
+<table style="width:100%" >
     <thead>
         <tr>
             <th colspan="6" align="center"> rapport Vente du : {{date}}</th>
         </tr>
     </thead>
         <tbody>
+        {% set sommeBanque = 0 %}
         {%  set sommeVente = 0 %}
         {%   set sommeCash = 0 %}
         {%   set sommeOm = 0 %}
@@ -91,8 +92,168 @@
                 {% set sommeCredit = sommeCredit + vente.montantcredit %}
                 {% set sommeOm = sommeOm + vente.montantmomo %}
                 {% set sommeReduction = sommeReduction + vente.reduction %}
+                {% set sommeBanque = sommeBanque + vente.montantbanque %}
         {% endfor %}
         </tbody>
-    </table>        
+    </table> 
+
+    <br><br><br> <table style="width:100%">
+        <thead>
+         <tr><th colspan="10" align="center"> Resultat vente du : {{date}}</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td colspan="10" align="center"> Recapitulatif Vente </td>
+            </tr>
+                <tr>
+                <th scope="col">Total Vente</th>
+                <th scope="col">Total Cash</th>
+                <th scope="col">Total OM</th>
+                <th scope="col">Total Credit </th>
+                <th scope="col">Total Banque </th>
+                <th scope="col">Total reduction</th>
+                <th scope="col">Total Depense</th>
+                <th scope="col">Total Versement</th>
+                <th scope="col">Sortie caise</th>
+                <th scope="col">Net en Caise</th>
+                
+            </tr>
+                <tr>
+                    <td>{{sommeVente}}</td>
+                    <td>{{sommeCash}}</td>
+                    <td>{{sommeOm}}</td> 
+                    <td>{{sommeCredit}}</td>
+                    <td>{{sommeBanque}}</td>
+                    <td>{{sommeReduction}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="4"> Argent en main du 01-12-2024 au {{date}}</td>
+                    <td colspan="2"></td>
+                    <td colspan="3"> Total credit du 01-12-2024 au {{date}}</td>
+                    <td colspan="1"></td>
+                </tr>
+        
+        </tbody>
+    </table>
+
+    <br><br><br> 
+    <table style="width:100%">
+        <thead>
+             <tr><th colspan="4" align="center"> Tableau Caise : {{date}}</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td colspan="4" align="center"> Recapitulatif Operation caise </td>
+                </tr>
+                    <tr>
+                    <th scope="col">operation</th>
+                    <th scope="col">montant</th>
+                    <th scope="col">date</th>
+                    <th scope="col">motif</th>
+                </tr>
+                {% set sommecaisse = 0 %}
+                {% for caisse in caisses %}
+                <tr>
+                    <td>{{caisse.operation}}</td>
+                    <td>{{caisse.montant}}</td>
+                    <td>{{caisse.createAt | date("Y-m-d")}}</td>
+                    <td>{{caisse.motif}}</td>
+                </tr>
+                {% set sommecaisse = sommecaisse +  caisse.montant %}
+                {% endfor %}
+                
+                <tr>
+                <td>-----</td>
+                <td>{{ sommecaisse}}</td>
+                <td>{{date}}</td>
+                <td>-----</td>
+            </tr> 
+            
+            </tbody>
+        </table>
+
+        <br><br><br> 
+        <table style="width:100%">
+        <thead>
+            <tr><th colspan="5" align="center"> Quantite Pour chaque produit : {{date}}</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td colspan="5" align="center"> Recapitulatif Quantite Vendue </td>
+            </tr>
+                <tr>
+                <th scope="col">Mon du produit </th>
+                <th scope="col">Quantite debut</th>
+                <th scope="col">Quantite</th>
+                <th scope="col">Quantite fin</th>
+                <th scope="col">Date</th>
+            </tr>
+                <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <br><br><br> <table style="width:100%">
+        <thead>
+         <tr><th colspan="5" align="center"> Resultat Versement : {{date}}</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td colspan="5" align="center"> Recapitulatif Versement </td>
+            </tr>
+                <tr>
+                <th scope="col">Nom client</th>
+                <th scope="col">montant</th>
+                <th scope="col">OM</th>
+                <th scope="col">motif</th>
+                <th scope="col">dateversement</th>
+            </tr>
+            {% for versement in versements %}
+            <tr>
+                <td>{{versement.clients.nom}}</td>
+                <td>{{versement.montant}}</td>
+                <td>{{versement.Om}}</td>
+                <td>{{versement.description}}</td>
+                <td>{{versement.createdAd | date("Y-m-d")}}</td>
+            </tr> 
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br><br> 
+    <table style="width:100%">
+            <thead>
+            <tr><th colspan="3" align="center"> Tableau depense : {{date}}</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td colspan="3" align="center"> Recapitulatif Depense </td>
+                </tr>
+                    <tr>
+                    <th scope="col">description</th>
+                    <th scope="col">montant</th>
+                    <th scope="col">Date</th>
+                </tr>
+                {% for depense in depenses %}
+                <tr>
+                    <td>{{depense.description}}</td>
+                    <td>{{depense.montant}}</td>
+                    <td>{{depense.createdAt | date("Y-m-d")}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
 </body>
 </html>

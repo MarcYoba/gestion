@@ -45,4 +45,19 @@ class DepensesRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findByDay($date) : array 
+    {
+        $date = new \DateTimeImmutable($date);
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('d')
+            ->where('d.createdAt BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate',$startDate)
+            ->setParameter('endDate',$endDate)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
