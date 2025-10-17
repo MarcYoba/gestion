@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}download{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Vetsement </title>
+    <style>
+        body {
+            font-size: 09pt;
+        }
+        table, th, td {
+        
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 0cm;
+                        text-align: left;
+                    }
+                }
+        img {
+            width: 100px;
+            height: 100px;
+        }
+</style>
+</head>
+<body>
+
+<table style="border-collapse: separate; border-spacing: 0px;" >
+        <thead>
+        
+        <tr><th  align="center">CABINET VETERINAIRE DE SOA <br> {{ versements.createdAd | date('d/m/Y') }}" Client : {{versements.clients.nom}}"<br> Tel: {{versements.clients.telephone}}<br> Versement <br> N= {{versements.id}}
+        <br>  NRCCM:RC/YAE2022/B/2852
+        
+        <tr>
+            <th colspan="1"><img src="" alt="QR Code" />  </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        
+        </tr>
+            <tr>
+            <th colspan="1"> Versement </th>
+        </tr>
+            <tr>   
+            <td> Objet :{{versements.description}}<br> <br> Montant {{versements.montant + versements.Om + versements.banque}} FCFA</td>   
+            </tr>
+        
+        </tbody>
+    </table>
+
+<br>TELEPHONE : YDE-SOA FIN GOUDRON <br> 655271506-676359056
+</body>
+</html>
+
+{% endblock %}

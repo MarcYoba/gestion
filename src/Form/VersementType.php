@@ -34,6 +34,7 @@ class VersementType extends AbstractType
                     'placeholder' => 'Banque']
             ])
             ->add('createdAd', DateType::class,[
+                'widget' => 'single_text',
                 'attr' => [
                     'class' => 'form-control form-control-user',
                     'placeholder' => 'Date'],

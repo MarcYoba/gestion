@@ -7,6 +7,8 @@ use App\Form\VersementType;
 use App\Entity\Clients;
 use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,14 +50,14 @@ class VersementController extends AbstractController
             $clients = $entityManager->getRepository(Clients::class)->findAll();
             $versement = $entityManager->getRepository(Versement::class)->findAll(["id" => $id]);
         }else{
-            $clients = $entityManager->getRepository(Clients::class)->findBy(["agence"=> $id]);
+            $clients = $entityManager->getRepository(Clients::class)->findAll();
            $versement = $entityManager->getRepository(Versement::class)->findAll(["id" => $id]);
         }
         
         $clients = $entityManager->getRepository(Clients::class)->findAll();
         return $this->render('versement/list.html.twig', [
             'versement' => $versement,
-            'client' => $clients,
+            'clients' => $clients,
         ]);
     }
 
@@ -83,5 +85,35 @@ class VersementController extends AbstractController
         $entityManager->remove($versement);
         $entityManager->flush();
         return $this->redirectToRoute('versement_list');
+    }
+
+    #[Route('/versement/download/{id}', name: 'versement_dwonload')]
+    public function dwonload(EntityManagerInterface $entityManager,$id) : Response 
+    {
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+
+        $versement = $entityManager->getRepository(Versement::class)->find($id);
+
+        $html = $this->render('versement/download.html.twig', [
+           'versements' => $versement, 
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A7', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="document.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
     }
 }

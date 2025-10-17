@@ -36,6 +36,7 @@ class CaisseType extends AbstractType
                 'attr' => ['class' => 'form-control form-control-user']
             ])
             ->add('createAt',DateType::class,[
+                'widget' => 'single_text',
                 'attr' => [
                     'class' => 'form-control form-control-user',
                     'value' => (new \DateTime())->format('Y-m-d')

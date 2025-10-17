@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Agence;
 use App\Entity\Depenses;
+use App\Entity\TempAgence;
 use App\Form\DepensesType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,6 +24,12 @@ class DepensesController extends AbstractController
         $depenses = new Depenses();
         $form = $this->createForm(DepensesType::class,$depenses);
         $form->handleRequest($request);
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_logout');
+        }
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $idagence = $tempagence->getAgence(); 
 
         if ($form->isSubmitted() && $form->isValid()) {
             
@@ -44,29 +51,12 @@ class DepensesController extends AbstractController
                 $depenses->setImageSize(0);
             }
             
-            $user = $this->getUser();
             $depenses->setUser($user);
+            $depenses->setAgence($idagence);
             $entityManager->persist($depenses);
             $entityManager->flush();
 
-            
-            // Récupérer l'ID de l'agence depuis le formulaire
-            $agenceId = $form->get('agence')->getData();
-            $agence = $entityManager->getRepository(Agence::class)->find($agenceId);
-            if ($agenceId) {
-                // Si le champ 'agence' retourne un objet Agence, pas besoin de find()
-                if ($agenceId instanceof Agence) {
-                    $depenses->setAgence($agenceId);
-                } else {
-                    // Sinon, récupérer l'entité Agence depuis l'ID
-                    $agence = $entityManager->getRepository(Agence::class)->find($agenceId);
-                    if ($agence) {
-                        $depenses->setAgence($agence);
-                    }
-                }
-            }
-
-            return $this->redirectToRoute('depenses_list', ['id' => $agenceId->getId()]);
+            return $this->redirectToRoute('depenses_list', ['id' => $idagence->getId()]);
         }
         return $this->render('depenses/index.html.twig', [
             'form' => $form->createView(),

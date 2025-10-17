@@ -53,12 +53,12 @@ class DepensesType extends AbstractType
                 'required' => false,
                 
             ])
-            ->add('agence', EntityType::class, [
-                'class' => Agence::class,
-                'choice_label' => 'nom',
-                'label' => 'Agence',
-                'attr' => ['class' => 'form-control form-control-user'],
-            ])
+            // ->add('agence', EntityType::class, [
+            //     'class' => Agence::class,
+            //     'choice_label' => 'nom',
+            //     'label' => 'Agence',
+            //     'attr' => ['class' => 'form-control form-control-user'],
+            // ])
         ;
     }
 
