@@ -264,4 +264,21 @@ class VenteARepository extends ServiceEntityRepository
 
         return $result > 0 ? (int)$result : 0; 
     }
+
+    public function findVentesByWeek($date) : float 
+    {
+        $date = new \DateTimeImmutable($date);
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+        $query = $this->createQueryBuilder('v')
+            ->select('SUM(v.prix)')
+            ->where('v.createAt BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+        ;
+        $result = $query->getSingleScalarResult();
+
+        return (float) $result;
+    }
 }

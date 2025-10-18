@@ -38,16 +38,19 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Evolution Vente semain</h1>
                     
+                        <form class="user" methode="post" action="{{path('app_comptabilite_a_week')}}">
                         <div class="row">
-                            
-                            <p class="col-md-3 btn btn-user btn-block">
-                               Entrez le numero du moi <input type="number" name="nombre" id="nombre" value="1"> 
-                            </p>
+                            <div class="col-md-3 btn">
+                                <input type="date" class="form-control form-control-user" name="nombre" id="nombre"> 
+                            </div>
                            
-                            <p class="col-md-2" >
-                                <button class="btn btn-info btn-user btn-block" onclick="semaine()">Evolurion moi</button>
-                            </p>
+                            <div class="col-md-2" >
+                                <a href="{{path('app_comptabilite_a_week')}}">
+                                    <button class="btn btn-info btn-user btn-block">Evolurion moi</button>
+                                </a>
+                            </div>
                         </div>
+                    </form>
                     
 
                     <hr>
@@ -55,7 +58,7 @@
                     <div class="row">
 
                         <div class="col-xl-12 col-lg-10">                           
-                            <!-------------------------------------------------->
+                        
                            
                                 </div>
                                 <div class="card-body">
@@ -69,7 +72,7 @@
                                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-page-length='25' data-order='[[0, "desc"]]'>
                                                 <thead>
                                                     <tr>
-                                                        <th>/\</th>
+                                                        <th>Semaine</th>
                                                         <th>Lundi</th>
                                                         <th>Madi</th>
                                                         <th>Mercredi</th>
@@ -82,7 +85,7 @@
                                                 </thead>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>/\</th>
+                                                        <th>Semaine</th>
                                                         <th>Lundi</th>
                                                         <th>Madi</th>
                                                         <th>Mercredi</th>
@@ -94,23 +97,27 @@
                                                     </tr>
                                                 </tfoot>
                                                 <tbody>
-                                                    <tr>
+                                                    {% set semain = 0 %}
+                                                
+                                                    {% for vente in ventes %}
+                                                        {% set montant = 0 %}
+                                                        {% set semain = semain + 1 %}
                                                         <tr>
-                                                            <td></td>
-                                                            <td></td>     
-                                                            <td></td>
-                                                            <td rowspan="5" align="center"></td>
-
-                                                        </tr>
+                                                            <td>{{semain}}</td>
+                                                            {% for row in vente %}
+                                                                <td>{{row[0]}}</td>
+                                                                {% set montant = montant + row[0] %}
+                                                            {% endfor %}  
+                                                            <td>{{montant}}</td>  
+                                                        </tr> 
                                                         <tr>
-                                                            <td></td>   
-                                                            <td></td>
-                                                                    
+                                                            <td>{{semain}}</td>
+                                                            {% for row in vente %}
+                                                                <td>{{row[1]}}</td>
+                                                            {% endfor %}  
+                                                            <td>-</td>  
                                                         </tr>
-                                                        <tr>
-                                                            <td></td>
-                                                            <td colspan="7" align="center"></td>
-                                                        </tr>
+                                                    {% endfor %}
                                                 </tbody>
                                             </table>
                                     
@@ -122,18 +129,18 @@
                         <!-- Donut Chart -->
                     </div> 
                 <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
+                <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Production &copy; {{ "now" | date("Y-m-d")}}</span>
                     </div>
                 </div>
             </footer>
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            
             <!-- End of Footer -->
 
         </div>

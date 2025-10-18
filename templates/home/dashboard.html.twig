@@ -313,7 +313,20 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Stock de produit</h6>
                                 </div>
                                 <div class="card-body">
-                                      
+                                    {% for produit in prosuits %}
+                                        <h4 class="small font-weight-bold">{{produit.nom}}<span class="float-right">{{produit.quantite}}</span></h4>
+                                        <div class="progress mb-4">
+                                            <div class="progress-bar bg-danger" role="progressbar" 
+                                                style="width: {{ produit.quantite }}%"
+                                                aria-valuenow="{{ produit.quantite }}" 
+                                                aria-valuemin="0" 
+                                                aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                                
+                                                
+                                        <hr>
+                                    {% endfor %}
                                 </div>
                             </div>
 
@@ -382,7 +395,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; {{ "now" | date("Y-m-d") }}</span>
+                        <span>Production &copy; {{ "now" | date("Y-m-d") }}</span>
                     </div>
                 </div>
             </footer>
