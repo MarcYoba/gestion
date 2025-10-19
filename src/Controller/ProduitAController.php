@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Employer;
+use App\Entity\HistoriqueA;
 use App\Entity\Lots;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
@@ -93,6 +94,11 @@ class ProduitAController extends AbstractController
         if (!$produit) {
             $this->addFlash('error','Le produit que vous recherche n\'existe pas');
         }else{
+            $historiques = $produit->getHistoriqueAs(); // Supposant que vous avez une méthode getHistoriquesA() dans l'entité ProduitA
+            foreach ($historiques as $historique) {
+                $em->remove($historique);
+            }
+
             $em->remove($produit);
             $em->flush();
             $this->addFlash('success','Produit supprimer avec success');

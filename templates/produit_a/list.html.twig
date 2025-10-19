@@ -104,7 +104,7 @@
                                                     <td>
                                                         <a href="{{ path('produit_a_edit', {'id': produit.id}) }}" class='btn btn-primary'>
                                                             <i class='fas fa-pencil-alt'></i></a>
-                                                        <a href="{{ path('produit_a_delete', {'id': produit.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer cette vente ?");'>
+                                                        <a href="{{ path('produit_a_delete', {'id': produit.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer le produit si oui exporte en pdf ou excel (Historique du produit)");'>
                                                             <i class='fas fa-trash-alt'></i></a>
                                                     </td>
                                                 </tr>
@@ -123,7 +123,7 @@
                                                         <td>
                                                             <a href="{{ path('produit_a_edit', {'id': produit.id}) }}" class='btn btn-primary'>
                                                                 <i class='fas fa-pencil-alt'></i></a>
-                                                            <a href="{{ path('produit_a_delete', {'id': produit.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce produit ?");'>
+                                                            <a href="{{ path('produit_a_delete', {'id': produit.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer le produit si oui exporte en pdf ou excel (Historique du produit)");'>
                                                                 <i class='fas fa-trash-alt'></i></a>
                                                         </td>
                                                         {% else %}

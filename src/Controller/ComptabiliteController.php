@@ -57,10 +57,46 @@ class ComptabiliteController extends AbstractController
     }
 
     #[Route('/comptabilite/Evolution/mensuel', name: 'app_comptabilite_EM')]
-    public function Evolution_moi() : Response 
+    public function Evolution_moi(EntityManagerInterface $em,Request $request) : Response 
     {
-        return $this->render('comptabilite/inventaire.html.twig',[
+        $tab = [
+            "montantN" => 0,
+            "montantN1" => 0,
+            "ClientN" => 0,
+            "ClientN1" => 0,
+            "Nbuclient" => 0,
+            "Nbaclient" => 0,
+            "Moclient" => 0,
+            "MoAclient" => 0
+        ];
 
+        $date = $request->get("nombre");
+        $mois_num = date('n', strtotime($date));
+
+        $vente = $em->getRepository(Vente::class)->findVenteInventaire($mois_num);
+        $vente = $vente[0];
+        $tab["montantN"] = $vente[1];
+        $tab["ClientN"] = $vente[2];
+
+        $mois_num = $mois_num + 1;
+
+        $vente = $em->getRepository(Vente::class)->findVenteInventaire($mois_num);
+        $vente = $vente[0];
+        $tab["montantN1"] = $vente[1];
+        $tab["ClientN1"] = $vente[2];
+        
+        $client = $em->getRepository(Vente::class)->findByMontantByClientByMonth($date);
+        
+        dd($client);
+        return $this->render('comptabilite/inventaire.html.twig',[
+            'montantN' => $tab["montantN"],
+            'montantN1' => $tab["montantN1"],
+            'ClientN' => $tab["ClientN"],
+            'ClientN1' => $tab["ClientN1"],
+            'Nbuclient' => $tab["Nbuclient"],
+            'Nbaclient' => $tab["Nbaclient"],
+            'Moclient' => $tab["Moclient"],
+            'MoAclient' => $tab["MoAclient"],
         ]);
     }
 
@@ -168,45 +204,20 @@ class ComptabiliteController extends AbstractController
         // Clone la date du premier jour du mois pour la manipulation
         $date_courante = clone $premier_jour_du_mois;
 
-        // Trouve le premier lundi du mois (ou le lundi de la semaine en cours si le 1er est un lundi)
-        // 'first monday of' fonctionne bien, mais pour plus de précision en partant d'une date spécifique,
-        // on peut chercher le lundi précédent ou le jour même s'il est lundi.
-
-        // On commence par se positionner sur le premier lundi du mois ou *avant* si la semaine
-        // a commencé le mois précédent. En PHP, 'monday this week' (ou simplement 'monday')
-        // est le début de la semaine ISO (lundi).
-
-        // 1. Positionnement sur le premier lundi à inclure.
-        // On cherche le lundi le plus proche ou égal à la date de début du mois.
-
-        // Détermine le jour de la semaine du 1er du mois (1=Lundi, 7=Dimanche)
         $jour_semaine_1er = (int) $date_courante->format('N');
 
         // Si le 1er n'est pas un lundi (N != 1), on va au lundi suivant (ou le lundi de la semaine en cours si c'est déjà après)
         if ($jour_semaine_1er != 1) {
-            // Calcule combien de jours ajouter pour atteindre le premier lundi : 8 - jour_semaine_1er
-            // Ex: Si c'est Mardi (2), il faut 6 jours. 8-2 = 6.
-            // Ex: Si c'est Dimanche (7), il faut 1 jour. 8-7 = 1.
+            
             $jours_a_ajouter = (8 - $jour_semaine_1er) % 7;
             
-            // Si $jours_a_ajouter est 0, c'est déjà lundi, mais on a vérifié qu'il n'est pas 1.
-            // Si $jour_semaine_1er est 1 (lundi), la condition est false.
-            // Si le 1er est un jour > 1 (Mardi à Dimanche), on avance au Lundi suivant.
+            
             $date_courante->modify("+$jours_a_ajouter days");
         }
-
-        // $date_courante est maintenant sur le premier lundi du mois (ou au plus tard le 7e jour).
-        // Cependant, la norme ISO dit que la semaine commence le lundi.
-        // Si le 1er du mois est un jeudi, la semaine 1 commence le lundi précédent.
-        // L'approche la plus simple est d'utiliser le constructeur de `DateTime` avec des formats relatifs:
 
         $date_courante = new DateTime($annee_mois . '-01'); // Recommence au 1er jour du mois
         $date_courante->modify('last Monday'); // Va au dernier lundi avant ou le jour même si c'est lundi
 
-        // Si 'last Monday' donne une date du mois précédent, on avance d'une semaine.
-        // Ce cas se produit si le 1er est Lundi (le "dernier lundi" est le 1er), mais aussi
-        // si le 1er est Mardi, Mercredi, Jeudi, Vendredi, Samedi, Dimanche (le "dernier lundi" est dans le mois précédent).
-        // On doit toujours **inclure** la semaine où le 1er du mois tombe.
         if ($date_courante->format('Y-m') != $annee_mois) {
             // Si on est tombé sur le mois précédent, on avance d'une semaine
             $date_courante->modify('+7 days');

@@ -223,4 +223,38 @@ class VenteRepository extends ServiceEntityRepository
 
         return (float) $result;
     }
+
+    public function findVenteInventaire($date) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0),COUNT(v.client)')
+            ->where('MONTH(v.createdAt) = :val')
+            ->setParameter('val', $date)
+            //->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByMontantByClientByMonth($date) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->innerJoin('v.client', 'c')
+            
+            // Sélectionne la somme du prix (avec COALESCE pour garantir 0 si aucune vente) et l'objet client
+            ->select('COALESCE(SUM(v.prix), 0) AS totalVentes')
+            
+            // Filtre sur le mois de la date de création de la Vente
+            ->where('MONTH(v.createdAt) = :month_val')
+            
+            // Regroupe par client pour que SUM() fonctionne correctement
+            ->groupBy('c')
+            
+            // Définit le paramètre du mois
+            ->setParameter('month_val', $date)
+            
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
