@@ -44,17 +44,19 @@
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Invantaire</h1>
-                    
-                        <div class="row">
+                        <form class="user" methode="post" action="{{path('app_comptabilite_EM')}}">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <input type="date" name="nombre" id="nombre" class="form-control form-control-user"> 
+                                </div>
                             
-                            <p class="col-md-3 btn btn-user btn-block">
-                               Entrez le numero du moi <input type="number" name="nombre" id="nombre" value="1"> 
-                            </p>
-                           
-                            <p class="col-md-2" >
-                                <button class="btn btn-info btn-user btn-block" onclick="invantaire()">Evolurion mois</button>
-                            </p>
-                        </div>
+                                <div class="col-md-2" >
+                                    <a href="{{path('app_comptabilite_EM')}}">
+                                        <button class="btn btn-info btn-user btn-block" >Evolurion mois</button>
+                                    <a>
+                                </div>
+                            </div>
+                        </form>
                     
 
                     <hr>
@@ -79,12 +81,12 @@
                                                     <div class="row">
                                                         <div class="col-lg-5">
                                                             Montant du mois N :
-                                                            <span id="montant1"> </span>
+                                                            <span >{{montantN}}</span>
                                                         </div>
 
                                                         <div class="col-lg-5">
                                                             Nombre client du mois N :
-                                                            <span id="client1"> </span>
+                                                            <span >{{ClientN}}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -98,12 +100,12 @@
                                                     <div class="row">
                                                         <div class="col-lg-5">
                                                             Montant du mois N+1 :
-                                                            <span id="montant2"> </span>
+                                                            <span>{{montantN1}}</span>
                                                         </div>
 
                                                         <div class="col-lg-5">
                                                             Nombre client du mois N+1 :
-                                                            <span id="client2"> </span>
+                                                            <span >{{ClientN1}} </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -119,12 +121,14 @@
                                                     <div class="row">
                                                         <div class="col-lg-5">
                                                             Total en FCFA:
-                                                            <span id="Total"> </span>
+                                                            <span >{{ montantN1 - montantN | round(1, 'floor') }} </span>
                                                         </div>
 
                                                         <div class="col-lg-5">
                                                             Total en % :
-                                                            <span id="Poucentage"> </span>
+                                                            {% if montantN != 0 %}
+                                                                <span >{{((montantN1 - montantN )/ montantN)*100 }} </span>
+                                                            {% endif %}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -139,12 +143,12 @@
                                                     <div class="row">
                                                         <div class="col-lg-5">
                                                             Total en Client:
-                                                            <span id="Totalclient"> </span>
+                                                            <span >{{ ClientN1 - ClientN}}</span>
                                                         </div>
 
                                                         <div class="col-lg-5">
                                                             Total en % :
-                                                            <span id="Poucentageclient"> </span>
+                                                            <span>{{ ((ClientN1 - ClientN) / ClientN) * 100}} </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -157,7 +161,6 @@
                                     <code>Evolution de l'entreprise</code>.
                                 </div>
                             </div>
-                            <!-------------------------------------------------->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Etude Evolutive des Prospections</h6>
@@ -284,7 +287,6 @@
     </a>
 
     <!-- Page level plugins -->
-
 </body>
 
 </html>
