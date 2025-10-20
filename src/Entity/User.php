@@ -164,6 +164,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: TresorerieA::class)]
     private Collection $tresorerieAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Balance::class)]
+    private Collection $balances;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: BalanceA::class)]
+    private Collection $balanceAs;
+
     
 
     public function __construct() {
@@ -206,6 +212,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->autopsies = new ArrayCollection();
         $this->tresoreries = new ArrayCollection();
         $this->tresorerieAs = new ArrayCollection();
+        $this->balances = new ArrayCollection();
+        $this->balanceAs = new ArrayCollection();
         
     }
 
@@ -1459,6 +1467,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($tresorerieA->getUser() === $this) {
                 $tresorerieA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Balance>
+     */
+    public function getBalances(): Collection
+    {
+        return $this->balances;
+    }
+
+    public function addBalance(Balance $balance): static
+    {
+        if (!$this->balances->contains($balance)) {
+            $this->balances->add($balance);
+            $balance->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBalance(Balance $balance): static
+    {
+        if ($this->balances->removeElement($balance)) {
+            // set the owning side to null (unless already changed)
+            if ($balance->getUser() === $this) {
+                $balance->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BalanceA>
+     */
+    public function getBalanceAs(): Collection
+    {
+        return $this->balanceAs;
+    }
+
+    public function addBalanceA(BalanceA $balanceA): static
+    {
+        if (!$this->balanceAs->contains($balanceA)) {
+            $this->balanceAs->add($balanceA);
+            $balanceA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBalanceA(BalanceA $balanceA): static
+    {
+        if ($this->balanceAs->removeElement($balanceA)) {
+            // set the owning side to null (unless already changed)
+            if ($balanceA->getUser() === $this) {
+                $balanceA->setUser(null);
             }
         }
 
