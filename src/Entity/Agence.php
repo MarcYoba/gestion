@@ -137,6 +137,12 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: TresorerieA::class)]
     private Collection $tresorerieAs;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Balance::class)]
+    private Collection $balances;
+
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: BalanceA::class)]
+    private Collection $balanceAs;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -174,6 +180,8 @@ class Agence
         $this->autopsies = new ArrayCollection();
         $this->tresoreries = new ArrayCollection();
         $this->tresorerieAs = new ArrayCollection();
+        $this->balances = new ArrayCollection();
+        $this->balanceAs = new ArrayCollection();
     }
 
    
@@ -1287,6 +1295,66 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($tresorerieA->getAgence() === $this) {
                 $tresorerieA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Balance>
+     */
+    public function getBalances(): Collection
+    {
+        return $this->balances;
+    }
+
+    public function addBalance(Balance $balance): static
+    {
+        if (!$this->balances->contains($balance)) {
+            $this->balances->add($balance);
+            $balance->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBalance(Balance $balance): static
+    {
+        if ($this->balances->removeElement($balance)) {
+            // set the owning side to null (unless already changed)
+            if ($balance->getAgence() === $this) {
+                $balance->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BalanceA>
+     */
+    public function getBalanceAs(): Collection
+    {
+        return $this->balanceAs;
+    }
+
+    public function addBalanceA(BalanceA $balanceA): static
+    {
+        if (!$this->balanceAs->contains($balanceA)) {
+            $this->balanceAs->add($balanceA);
+            $balanceA->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBalanceA(BalanceA $balanceA): static
+    {
+        if ($this->balanceAs->removeElement($balanceA)) {
+            // set the owning side to null (unless already changed)
+            if ($balanceA->getAgence() === $this) {
+                $balanceA->setAgence(null);
             }
         }
 
