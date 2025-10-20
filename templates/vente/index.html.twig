@@ -85,8 +85,7 @@
                                         <div class="card-header py-3">
                                             
                                             <div class="row">
-                                                <p class="btn btn-info btn-user col-md-2" onclick="ajouterLigne('dataTable', 
-                                                5, 10)"><i class="fas fa-check"></i> Ajouter ligne</p>
+                                                
                                                 <p class="col-md-2" >Quantite Total  <br> <span id="quantitetotal">0</span></p>
                                                 <p class="col-md-2" >Montant Total  <br> <span id="prixtotal">0</span></p>
                                                 <p class="col-md-3" >
@@ -141,7 +140,7 @@
                                             </div>
                                             <div class="row">
                                                 <p class="col-md-2 btn btn-info">
-                                                    <input type="search" id="nom" onkeyup="myFunction()"  class="form-control form-control-user" placeholder="recherche"><br>
+                                                    <input type="search" id="nom" onkeyup="myFunction()"  class="form-control form-control-user" placeholder="Client"><br>
                                                     <input type="tel" id="telephone"   class="form-control form-control-user" placeholder="telephone"> <br>
                                                     <button class="btn btn-success btn-user" onclick="add_client()">enregistrer client</button>
                                                 </p>
@@ -155,7 +154,8 @@
                                                 </p>
                                                 
                                                 <p class="col-md-2" >
-                                                    <input type="search" id="rechercheP" onkeyup="myFunctionP()"  class="form-control form-control-user" placeholder="recherche"><br>
+                                                    <input type="search" id="rechercheP" onkeyup="myFunctionP()"  class="form-control form-control-user" placeholder="Produit">
+                                                    Quantite
                                                     <input type="number" class="form-control form-control-user"
                                                     name="quantite" id="quantite" placeholder="quantite" required value="0"><br>
                                                     <input type="number" class="form-control form-control-user"
@@ -171,8 +171,8 @@
                                                     </select>
                                                 </p>
                                                 <p class="col-md-2" >
-                                                   Esperce: <select class="form-control form-select" name="esperce" id="esperce" required>
-                                                        <option value="CHAIRE">CHAIRE</option>
+                                                   Espèce: <select class="form-control form-select" name="esperce" id="esperce" required>
+                                                        <option value="CHAIRE">CHAIR</option>
                                                         <option value="PONDEUSE">PONDEUSE</option>
                                                         <option value="PORC">PORC</option>
                                                         <option value="LAPIN">LAPIN</option>
@@ -185,23 +185,25 @@
                                                         <option value="CROISSANCE">CROISSANCE</option>
                                                         <option value="FINITION">FINITION</option>
                                                     </select>
-                                                    reduction produit:
+                                                    réduction produit:
                                                     <input type="number" class="form-control form-control-user"
                                                     name="rp" id="rp" placeholder="reduction produit" required value="0"><br>
                                                     <button class="btn btn-primary btn-user" onclick="caculeReduction()">Calculer</button>
                                                     
                                                 </p>
-                                                <p class="col-md-4" >
+                                                <p class="col-md-3" >
                                                     <select id="statusvente" name="statusvente" class="form-control form-select">
                                                         <option value="livree">livree</option>
                                                         <option value="non livree">non livree</option>
                                                     </select>
                                                 </p>
-                                                <p class="col-md-4" >
+                                                <p class="col-md-3" >
                                                     <span id="modifiervente"></span>
                                                     <span id="enregistremet"></span>
                                                 </p>
-                                                <p class="col-md-4" >
+                                                <p class="btn btn-info btn-user col-md-3" onclick="ajouterLigne('dataTable', 
+                                                5, 10)"><i class="fas fa-check"></i> Ajouter ligne</p>
+                                                <p class="col-md-3" >
                                                     <input type="number" id="quantiteStokage" name="quantiteStokage" class="form-control form-select" readonly>
                                                 </p>
                                                 
