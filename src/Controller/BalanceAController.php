@@ -194,26 +194,28 @@ class BalanceAController extends AbstractController
     #[Route('balance/a/update/balances', name: 'update_balances_a', methods: ['POST'])]
     public function updateBalances(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $balancesData = $request->request;
+        $user = $this->getUser();
+        $balancesData = $request->request->all('balances');
         
-        dd($balancesData);
-            // $balance = $entityManager->getRepository(Balance::class)->find($id);
+        foreach ($balancesData as $key => $value) {
+            $balance = $entityManager->getRepository(BalanceA::class)->find($key);
+            if ($balance) {
+                $balance->setClasse($value['Classe'] ?? 0);
+                $balance->setCompte($value['Compte'] ?? 0);
+                $balance->setIntitule($value['intitule'] ?? 0);
+                $balance->setSoldeInitialDebit((float) ($value['SoldeInitialDebit'] ?? 0));
+                $balance->setSoldeInitialCredit((float) ($value['SoldeInitialCredit'] ?? 0));
+                $balance->setMouvementDebit((float) ($value['MouvementDebit'] ?? 0));
+                $balance->setMouvementCredit((float) ($value['MouvementCredit'] ?? 0));
+                $balance->setSoldeFinalDebit((float) ($value['SoldeFinalDebit'] ?? 0));
+                $balance->setSoldFinalCredit((float) ($value['SoldFinalCredit'] ?? 0));
+                $balance->setSoldeGlobal((float) ($value['SoldeGlobal'] ?? 0));
+                $balance->setUser($user);
+            }
+        }
             
-        //     if ($balance) {
-        //         $balance->setClasse($data['Classe'] ?? '');
-        //         $balance->setCompte($data['Compte'] ?? '');
-        //         $balance->setIntitule($data['intitule'] ?? '');
-        //         $balance->setSoldeInitialDebit((float) ($data['SoldeInitialDebit'] ?? 0));
-        //         $balance->setSoldeInitialCredit((float) ($data['SoldeInitialCredit'] ?? 0));
-        //         $balance->setMouvementDebit((float) ($data['MouvementDebit'] ?? 0));
-        //         $balance->setMouvementCredit((float) ($data['MouvementCredit'] ?? 0));
-        //         $balance->setSoldeFinalDebit((float) ($data['SoldeFinalDebit'] ?? 0));
-        //         $balance->setSoldFinalCredit((float) ($data['SoldFinalCredit'] ?? 0));
-        //         $balance->setSoldeGlobal((float) ($data['SoldeGlobal'] ?? 0));
-        //     }
-        
-        
-        // $entityManager->flush();
+        $entityManager->persist($balance);
+        $entityManager->flush();
         
         $this->addFlash('success', 'Balances mises à jour avec succès');
         return $this->redirectToRoute('app_balance_list_a');
