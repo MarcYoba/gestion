@@ -46,7 +46,7 @@ class BalanceController extends AbstractController
                     $worksheet = $spreadsheet->getActiveSheet();
                     
                     // Traiter les données Excel ici
-                    $value = [];
+                    $data = [];
                     foreach ($worksheet->getRowIterator() as $row) {
                         $cellIterator = $row->getCellIterator();
                         $cellIterator->setIterateOnlyExistingCells(false);
@@ -55,14 +55,14 @@ class BalanceController extends AbstractController
                         foreach ($cellIterator as $cell) {
                             $rowData[] = $cell->getValue();
                         }
-                        $value[] = $rowData;
+                        $data[] = $rowData;
                     }
-                    array_shift($value);
-                    $total = count($value);
+                    array_shift($data);
+                    $total = count($data);
                     $i = 0;
                     $trouver = 0;
                     $this->addFlash('success', 'Importation démarrée');
-                    foreach ($value as $key => $value) {
+                    foreach ($data as $key => $value) {
                         $doublonExit = $entityManager->getRepository(Balance::class)->findOneBy(['Compte'=>$value[1]]);
                         if ($doublonExit) {
                             $trouver = $trouver +1;
