@@ -367,20 +367,33 @@
     </li>
 
     <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#etatresultat"
-                aria-expanded="true" aria-controls="etatresultat">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Etat des resultats</span>
-            </a>
-            <div id="etatresultat" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#etatresultat"
+            aria-expanded="true" aria-controls="etatresultat">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Etat des resultats</span>
+        </a>
+        <div id="etatresultat" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Etat des resultats:</h6>
                     <a class="collapse-item" href="{{ path('app_comptabilite_Mage_beneficier')}}">Marge Beneficiere</a> 
                     <a class="collapse-item" href="{{ path('app_comptabilite_Chiffre_affaire')}}">CHIFFRE AFFAIRES</a>
                     <a class="collapse-item" href="{{ path('app_comptabilite_produit_stoker')}}">Production et Stocks</a>  
-                </div>
             </div>
-        </li>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#bilan"
+            aria-expanded="true" aria-controls="bilan">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>bilan</span>
+        </a>
+        <div id="bilan" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Bilan:</h6>
+                      
+            </div>
+        </div>
+    </li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#actif"
                 aria-expanded="true" aria-controls="bilan">
@@ -394,6 +407,12 @@
                     <a class="collapse-item" href="{{ path('app_actif')}}">Actif Bilan</a>
                     <a class="collapse-item" href="{{ path('app_depense_actif_liste')}}">Edit Actif</a>
                     <a class="collapse-item" href="{{ path('app_actif_list',{'date': 'now' | date('Y')})}}">liste Actif</a>
+                    <a class="collapse-item" href="{{ path('app_immobilisation')}}">Immobilisation</a>
+                {% elseif "ROLE_DIRECTEUR" in app.user.roles %}
+                    <a class="collapse-item" href="{{ path('app_actif')}}">Actif Bilan</a>
+                    <a class="collapse-item" href="{{ path('app_depense_actif_liste')}}">Edit Actif</a>
+                    <a class="collapse-item" href="{{ path('app_actif_list',{'date': 'now' | date('Y')})}}">liste Actif</a>
+                    <a class="collapse-item" href="{{ path('app_immobilisation')}}">Immobilisation</a>
                 {% else %}
                     
                 {% endif %}

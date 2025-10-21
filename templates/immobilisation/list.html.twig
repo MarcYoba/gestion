@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Immobilisation{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template -->
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {% include "navbar.html.twig" %}
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                {% include "topbar.html.twig" %}
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Immobilisation</h1>
+                    <p class="mb-4">
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Structure de Immobilisation</h6>
+                            <br>
+                            <div class="form-group row">
+                                <div class="col-md-2">
+                                    <button class="btn btn-info btn-user btn-block">Immobilisation au </button>
+                                    <select class="form-control" id="annee" name="annee" onchange="AnneBilan()">
+                                        {% for currentYear in 2022..2040 %}
+                                            <option value="{{ currentYear }}"> {{ currentYear }} </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <a class="btn btn-primary btn-user"  href="{{ path('app_immobilisation') }}"><i class="fas fa-plus"></i> immobilisation</a>
+                                </div>
+                                <div class="col-md-2">
+                                    <form class="user" action="{{ path('app_immobilisation_download') }}" method="post">
+                                        <button class="btn btn-primary btn-user">
+                                            <i class="fas fa-download"></i> Telechager
+                                        </button>
+                                    </form>
+                                </div>
+        
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="tableactif" width="100%" cellspacing="0" data-page-length='50' >
+                                    <thead>
+                                        <tr>
+                                            <th>Classe</th>
+                                            <th>Compte</th>
+                                            <th>ibellé de l'immobilisation</th>
+                                            <th>Date d’acquisition</th>
+                                            <th>Prix d’acquisition</th>
+                                            <th>Cumul amortissement N-1</th>
+                                            <th>Dotation N</th>
+                                            <th>Cessions / Sorties</th>
+                                            <th>Amortissement cumulé N</th>
+                                            <th>Valeur nette comptable N</th>
+                                            <th>Operation</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Classe</th>
+                                            <th>Compte</th>
+                                            <th>ibellé de l'immobilisation</th>
+                                            <th>Date d’acquisition</th>
+                                            <th>Prix d’acquisition</th>
+                                            <th>Cumul amortissement N-1</th>
+                                            <th>Dotation N</th>
+                                            <th>Cessions / Sorties</th>
+                                            <th>Amortissement cumulé N</th>
+                                            <th>Valeur nette comptable N</th>
+                                            <th>Operation</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for immobilisation in immobilisations %}
+                                            <tr> 
+                                                <td style="">{{ immobilisation.Classe }}</td>
+                                                <td style="">{{ immobilisation.Compte}}</td>
+                                                <td style="">{{ immobilisation.libelle}}</td>
+                                                <td style="">{{ immobilisation.DateAcquisition | date("Y-m-d")}}</td> 
+                                                <td style="">{{ immobilisation.PrixAcquisition}}</td>
+                                                <td style="">{{ immobilisation.CumulN1}}</td>
+                                                <td style="">{{ immobilisation.DotationN}}</td>
+                                                <td style="">{{ immobilisation.CessionsSorties}}</td>
+                                                <td style="">{{ immobilisation.CumulN}}</td>
+                                                <td style="">{{ immobilisation.ValeurNetN}}</td>
+                                                <td>
+                                                    <a href="{{ path('app_immobilisation_edit',{'id': immobilisation.id})}}" class='btn btn-primary' id='modification'><i class='fas fa-pencil-alt '></i></a>
+                                                    <a href="{{ path('app_immobilisation_delete',{'id': immobilisation.id})}}" class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de supprimer cette ligne ?\");'><i class='fas fa-trash-alt'></i></a>
+                                                </td>        
+                                            </tr>
+                                        {% endfor %} 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Production &copy; {{ 'now' | date("Y")}} </span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+</body>
+</html>
+{% endblock %}
