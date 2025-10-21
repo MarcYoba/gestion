@@ -173,6 +173,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Immobilisation::class)]
     private Collection $immobilisations;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ImmobilisationA::class)]
+    private Collection $immobilisationAs;
+
     
 
     public function __construct() {
@@ -218,6 +221,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->balances = new ArrayCollection();
         $this->balanceAs = new ArrayCollection();
         $this->immobilisations = new ArrayCollection();
+        $this->immobilisationAs = new ArrayCollection();
         
     }
 
@@ -1561,6 +1565,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($immobilisation->getUser() === $this) {
                 $immobilisation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ImmobilisationA>
+     */
+    public function getImmobilisationAs(): Collection
+    {
+        return $this->immobilisationAs;
+    }
+
+    public function addImmobilisationA(ImmobilisationA $immobilisationA): static
+    {
+        if (!$this->immobilisationAs->contains($immobilisationA)) {
+            $this->immobilisationAs->add($immobilisationA);
+            $immobilisationA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImmobilisationA(ImmobilisationA $immobilisationA): static
+    {
+        if ($this->immobilisationAs->removeElement($immobilisationA)) {
+            // set the owning side to null (unless already changed)
+            if ($immobilisationA->getUser() === $this) {
+                $immobilisationA->setUser(null);
             }
         }
 
