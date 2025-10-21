@@ -462,6 +462,19 @@ Administrateur
         </div>
     </li>
     <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#bilan"
+            aria-expanded="true" aria-controls="bilan">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>bilan</span>
+        </a>
+        <div id="bilan" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Bilan:</h6>
+                      
+            </div>
+        </div>
+    </li>
+    <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#actif"
             aria-expanded="true" aria-controls="bilan">
             <i class="fas fa-fw fa-folder"></i>
@@ -474,7 +487,12 @@ Administrateur
                     <a class="collapse-item" href="{{ path('app_actif_a')}}">Ajouter un Actif</a>
                     <a class="collapse-item" href="{{ path('app_actif_a_list', {'date': 'now'| date("Y")})}}">liste Actif</a>
                     <a class="collapse-item" href="{{path('app_depense_actif_a_liste')}}">Edite</a>
-                    
+                    <a class="collapse-item" href="{{ path('app_immobilisation_a')}}">Immobilisation</a>
+                {% elseif "ROLE_DIRECTEUR" in app.user.roles %}
+                    <a class="collapse-item" href="{{ path('app_actif_a')}}">Ajouter un Actif</a>
+                    <a class="collapse-item" href="{{ path('app_actif_a_list', {'date': 'now'| date("Y")})}}">liste Actif</a>
+                    <a class="collapse-item" href="{{path('app_depense_actif_a_liste')}}">Edite</a>
+                    <a class="collapse-item" href="{{ path('app_immobilisation_a')}}">Immobilisation</a>
                 {% else %}
 
                 {% endif %}

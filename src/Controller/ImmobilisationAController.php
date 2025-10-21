@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Immobilisation;
+use App\Entity\ImmobilisationA;
 use App\Entity\TempAgence;
-use App\Form\ImmobilisationType;
+use App\Form\ImmobilisationAType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
@@ -16,9 +16,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ImmobilisationController extends AbstractController
+class ImmobilisationAController extends AbstractController
 {
-    #[Route('/immobilisation/creat', name: 'app_immobilisation')]
+    #[Route('/immobilisation/a/creat', name: 'app_immobilisation_a')]
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
         $user = $this->getUser();
@@ -28,8 +28,8 @@ class ImmobilisationController extends AbstractController
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
 
-        $immobilisation = new Immobilisation();
-        $form = $this->createForm(ImmobilisationType::class,$immobilisation);
+        $immobilisation = new ImmobilisationA();
+        $form = $this->createForm(ImmobilisationAType::class,$immobilisation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -69,11 +69,11 @@ class ImmobilisationController extends AbstractController
                     $defautDate = new DateTime("0000-00-00");
                     $this->addFlash('success', 'Importation démarrée');
                     foreach ($data as $key => $value) {
-                        $doublonExit = $entityManager->getRepository(Immobilisation::class)->findOneBy(['Compte'=>$value[1]]);
+                        $doublonExit = $entityManager->getRepository(ImmobilisationA::class)->findOneBy(['Compte'=>$value[1]]);
                         if ($doublonExit) {
                             $trouver = $trouver +1;
                         }else{
-                            $immobilisation = new Immobilisation();
+                            $immobilisation = new ImmobilisationA();
                             $immobilisation->setClasse($value[0]);
                             $immobilisation->setCompte($value[1]);
                             $immobilisation->setLibelle($value[2]);
@@ -103,48 +103,48 @@ class ImmobilisationController extends AbstractController
 
                     $this->addFlash('success', 'Importation terminée avec succès!  : '.$trouver);
 
-                        return $this->redirectToRoute('app_immobilisation_list');
+                        return $this->redirectToRoute('app_immobilisation_a_list');
                 } catch (Exception $e) {
                     $this->addFlash('error', 'Erreur lors de la lecture du fichier Excel: '.$e->getMessage());
                 }
             }
         }
-        return $this->render('immobilisation/index.html.twig', [
+        return $this->render('immobilisation_a/index.html.twig', [
             'form' => $form->createView(),
             'id' => $id,
         ]);
     }
 
-    #[Route('immobilsatiion/list', name: "app_immobilisation_list")]
+    #[Route('immobilsatiion/a/list', name: "app_immobilisation_a_list")]
     public function list(EntityManagerInterface $entityManager) : Response 
     {
         $user = $this->getUser();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
 
-        $immobilisation = $entityManager->getRepository(Immobilisation::class)->findBy(['agence'=>$id]);
+        $immobilisation = $entityManager->getRepository(ImmobilisationA::class)->findBy(['agence'=>$id]);
 
-        return $this->render('immobilisation/list.html.twig', [
+        return $this->render('immobilisation_a/list.html.twig', [
             'immobilisations' => $immobilisation,
             'id' => $id,
         ]);
     }
 
-    #[Route('immobilsatiion/edit/{id}', name: "app_immobilisation_edit")]
-    public function Edit(EntityManagerInterface $entityManager,Immobilisation $immobilisation) : Response 
+    #[Route('immobilsatiion/a/edit/{id}', name: "app_immobilisation_a_edit")]
+    public function Edit(EntityManagerInterface $entityManager,ImmobilisationA $immobilisation) : Response 
     {
         $user = $this->getUser();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
 
-        return $this->render('immobilisation/edit.html.twig', [
+        return $this->render('immobilisation_a/edit.html.twig', [
             'immobilisation' => $immobilisation,
             'id' => $id,
         ]);
     }
 
-    #[Route('immobilsatiion/delete/{id}', name: "app_immobilisation_delete")]
-    public function delete(EntityManagerInterface $entityManager,Immobilisation $immobilisation) : Response 
+    #[Route('immobilsatiion/a/delete/{id}', name: "app_immobilisation_a_delete")]
+    public function delete(EntityManagerInterface $entityManager,ImmobilisationA $immobilisation) : Response 
     {
         $user = $this->getUser();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
@@ -155,23 +155,23 @@ class ImmobilisationController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_immobilisation_list');
+        return $this->redirectToRoute('app_immobilisation_a_list');
     }
 
-    #[Route('immobilsatiion/download', name: "app_immobilisation_download")]
+    #[Route('immobilsatiion/a/download', name: "app_immobilisation_a_download")]
     public function download(EntityManagerInterface $entityManager) : Response 
     {
         $user  = $this->getUser();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
 
-        $immobilisation = $entityManager->getRepository(Immobilisation::class)->findBy(['agence'=>$id]);
+        $immobilisation = $entityManager->getRepository(ImmobilisationA::class)->findBy(['agence'=>$id]);
 
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
 
-        $html = $this->renderView('immobilisation/download.html.twig', [
+        $html = $this->renderView('immobilisation_a/download.html.twig', [
         'immobilisations' => $immobilisation,
         
         ]);
@@ -193,14 +193,14 @@ class ImmobilisationController extends AbstractController
         );
     }
 
-    #[Route('immobilisation/update/immobilisation', name: 'update_immobilisations', methods: ['POST'])]
+    #[Route('immobilisation/a/update/immobilisation', name: 'update_immobilisations_a', methods: ['POST'])]
     public function update(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
         $immobilisationsData = $request->request->all('immobilisations');
         
         foreach ($immobilisationsData as $key => $value) {
-            $immobilisation = $entityManager->getRepository(Immobilisation::class)->find($key);
+            $immobilisation = $entityManager->getRepository(ImmobilisationA::class)->find($key);
             if ($immobilisation) {
                 $immobilisation->setClasse($value['Classe'] ?? 0);
                 $immobilisation->setCompte($value['Compte'] ?? 0);
@@ -219,6 +219,6 @@ class ImmobilisationController extends AbstractController
         $entityManager->flush();
         
         $this->addFlash('success', 'immobilisations mises à jour avec succès');
-        return $this->redirectToRoute('app_immobilisation_list');
+        return $this->redirectToRoute('app_immobilisation_a_list');
     }
 }
