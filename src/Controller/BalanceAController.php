@@ -2,26 +2,26 @@
 
 namespace App\Controller;
 
-use App\Entity\Balance;
+use App\Entity\BalanceA;
 use App\Entity\TempAgence;
-use App\Form\BalanceType;
+use App\Form\BalanceAType;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Exception;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
-class BalanceController extends AbstractController
+class BalanceAController extends AbstractController
 {
-    #[Route('/balance/create', name: 'app_balance')]
+    #[Route('/balance/a/create', name: 'app_balance_a')]
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $balance = new Balance();
-        $form = $this->createForm(BalanceType::class,$balance);
+        $balance = new BalanceA();
+        $form = $this->createForm(BalanceAType::class,$balance);
         $form->handleRequest($request);
         $user  = $this->getUser();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
@@ -63,11 +63,11 @@ class BalanceController extends AbstractController
                     $trouver = 0;
                     $this->addFlash('success', 'Importation démarrée');
                     foreach ($data as $key => $value) {
-                        $doublonExit = $entityManager->getRepository(Balance::class)->findOneBy(['Compte'=>$value[1]]);
+                        $doublonExit = $entityManager->getRepository(BalanceA::class)->findOneBy(['Compte'=>$value[1]]);
                         if ($doublonExit) {
                             $trouver = $trouver +1;
                         }else{
-                            $balance = new Balance();
+                            $balance = new BalanceA();
                             $balance->setClasse($value[0]);
                             $balance->setCompte($value[1]);
                             $balance->setIntitule($value[2]);
@@ -97,53 +97,53 @@ class BalanceController extends AbstractController
 
                     $this->addFlash('success', 'Importation terminée avec succès!  : '.$trouver);
 
-                        return $this->redirectToRoute('app_balance');
+                        return $this->redirectToRoute('app_balance_a');
                 } catch (Exception $e) {
                     $this->addFlash('error', 'Erreur lors de la lecture du fichier Excel: '.$e->getMessage());
                 }
             }
         }
 
-        return $this->render('balance/index.html.twig', [
+        return $this->render('balance_a/index.html.twig', [
             'form' => $form->createView(),
             'id' => $id,
         ]);
     }
 
-    #[Route('/balance/list', name:'app_balance_list')]
+    #[Route('/balance/a/list', name:'app_balance_list_a')]
     public function lis(EntityManagerInterface $entityManager) : Response 
     {
         $user  = $this->getUser();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
 
-        $balance = $entityManager->getRepository(Balance::class)->findBy(['agence'=>$id]);
+        $balance = $entityManager->getRepository(BalanceA::class)->findBy(['agence'=>$id]);
 
-        return $this->render('balance/list.html.twig', [
+        return $this->render('balance_a/list.html.twig', [
             'id' => $id,
             'balances' => $balance,
         ]);
     }
 
-    #[Route('/balance/Edit/{id}', name:'app_balance_edit')]
-    public function Edit(EntityManagerInterface $entityManager,Balance $balance,Request $request) : Response 
+    #[Route('/balance/a/Edit/{id}', name:'app_balance_edit_a')]
+    public function Edit(EntityManagerInterface $entityManager,BalanceA $balance,Request $request) : Response 
     {
         $user  = $this->getUser();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
         if (!$balance) {
-            return $this->redirectToRoute('app_balance_list');
+            return $this->redirectToRoute('app_balance_list_a');
         }
 
-        return $this->render('balance/edit.html.twig', [
+        return $this->render('balance_a/edit.html.twig', [
             'id' => $id,
             'balance' => $balance,
         ]);
 
     }
 
-    #[Route('/balance/delete/{id}', name:'app_balance_delete')]
-    public function delete(EntityManagerInterface $entityManager,Balance $balance) : Response 
+    #[Route('/balance/a/delete/{id}', name:'app_balance_delete_a')]
+    public function delete(EntityManagerInterface $entityManager,BalanceA $balance) : Response 
     {
         $user  = $this->getUser();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
@@ -153,23 +153,23 @@ class BalanceController extends AbstractController
             $entityManager->remove($balance);
             $entityManager->flush();
         }
-        return $this->redirectToRoute('app_balance_list');
+        return $this->redirectToRoute('app_balance_list_a');
     }
 
-    #[Route('/balance/dwonload', name:'app_balance_dwonload')]
+    #[Route('/balance/a/dwonload', name:'app_balance_dwonload_a')]
     public function Dwonload(EntityManagerInterface $entityManager) : Response 
     {
         $user  = $this->getUser();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
 
-        $balance = $entityManager->getRepository(Balance::class)->findBy(['agence'=>$id]);
+        $balance = $entityManager->getRepository(BalanceA::class)->findBy(['agence'=>$id]);
 
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
 
-        $html = $this->renderView('balance/download.html.twig', [
+        $html = $this->renderView('balance_a/download.html.twig', [
         'balances' => $balance,
         
         ]);
@@ -191,7 +191,7 @@ class BalanceController extends AbstractController
         );
     }
 
-    #[Route('balance/update/balances', name: 'update_balances', methods: ['POST'])]
+    #[Route('balance/a/update/balances', name: 'update_balances_a', methods: ['POST'])]
     public function updateBalances(Request $request, EntityManagerInterface $entityManager): Response
     {
         $balancesData = $request->request;
@@ -216,6 +216,6 @@ class BalanceController extends AbstractController
         // $entityManager->flush();
         
         $this->addFlash('success', 'Balances mises à jour avec succès');
-        return $this->redirectToRoute('votre_route_liste');
+        return $this->redirectToRoute('app_balance_list_a');
     }
 }
