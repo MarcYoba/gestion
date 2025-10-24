@@ -1051,7 +1051,7 @@ class Agence
     {
         if (!$this->depenseActifs->contains($depenseActif)) {
             $this->depenseActifs->add($depenseActif);
-            $depenseActif->setAgecne($this);
+            $depenseActif->setAgence($this);
         }
 
         return $this;
@@ -1061,8 +1061,8 @@ class Agence
     {
         if ($this->depenseActifs->removeElement($depenseActif)) {
             // set the owning side to null (unless already changed)
-            if ($depenseActif->getAgecne() === $this) {
-                $depenseActif->setAgecne(null);
+            if ($depenseActif->getAgence() === $this) {
+                $depenseActif->setAgence(null);
             }
         }
 
