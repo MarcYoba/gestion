@@ -211,6 +211,8 @@ class BalanceAController extends AbstractController
                 $balance->setSoldFinalCredit((float) ($value['SoldFinalCredit'] ?? 0));
                 $balance->setSoldeGlobal((float) ($value['SoldeGlobal'] ?? 0));
                 $balance->setUser($user);
+            }else{
+                return $this->redirectToRoute('app_balance_list_a');
             }
         }
             

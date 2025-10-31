@@ -219,20 +219,22 @@
             {% set sommeachat = 0 %}
             {% set achatquantite = 0 %}
             {% set achatPrix = 0 %}
-            <tr>
+            
             {% for achat in achats %}
-                <td> {{achat.produit.nom}}</td>
-                <td> {{achat.quantite }} </td>
-                <td> {{achat.prix}} </td>
-                <td> {{achat.montant}}</td>
-                <td>{{achat.forunisseur.nom}}</td>
-                <td>{{achat.createdAt | date("Y-m-d")}}</td>
+                <tr>
+                    <td> {{achat.produit.nom}}</td>
+                    <td> {{achat.quantite }} </td>
+                    <td> {{achat.prix}} </td>
+                    <td> {{achat.montant}}</td>
+                    <td>{{achat.forunisseur.nom}}</td>
+                    <td>{{achat.createdAt | date("Y-m-d")}}</td>
 
-                    {% set sommeachat = sommeachat + achat.montant %}
-                    {% set achatquantite = achatquantite + achat.quantite %}
-                    {% set achatPrix = achatPrix + achat.prix %}   
+                        {% set sommeachat = sommeachat + achat.montant %}
+                        {% set achatquantite = achatquantite + achat.quantite %}
+                        {% set achatPrix = achatPrix + achat.prix %}   
+                </tr>
             {% endfor %}
-            </tr>
+            
             <tr>
                 <td>Total</td>
                 <td>{{ achatquantite }}</td>
