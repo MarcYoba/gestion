@@ -68,4 +68,18 @@ class DepenseARepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findBySommeDepense($date,$agence) : float 
+    {
+        $result = $this->createQueryBuilder('d')
+            ->select('COALESCE(SUM(d.montant),0) AS Montant')
+            ->Where('d.createdAt = :val')
+            // ->andWhere('d.agence = :agences')
+            ->setParameter('val', $date)
+            // ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+        return $result > 0 ? (float)$result : 0;
+    }
 }

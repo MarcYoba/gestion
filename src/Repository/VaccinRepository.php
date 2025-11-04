@@ -45,4 +45,16 @@ class VaccinRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findByMoi($moi,$anne) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->select('SUM(v.montantNet) AS MontantNet,SUM(v.montant) AS Montant,COUNT(v.id) AS total')
+            ->where('MONTH(v.createtAD) = :moi')
+            ->andWhere('YEAR(v.createtAD) = :anne')
+            ->setParameter('moi',$moi)
+            ->setParameter('anne',$anne)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

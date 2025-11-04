@@ -54,4 +54,17 @@ class ConsultationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByMoi($moi,$anne) : array 
+    {
+        return $this->createQueryBuilder('c')
+            ->select('SUM(c.nomtant) AS Montant,COUNT(c.id) AS total')
+            ->where('MONTH(c.createtAd) = :moi')
+            ->andWhere('YEAR(c.createtAd) = :anne')
+            ->setParameter('moi',$moi)
+            ->setParameter('anne',$anne)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

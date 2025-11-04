@@ -169,30 +169,29 @@
     </thead>
     <tbody>
     <tr> 
-    <td scope="col" colspan="4" align="center">Rapport Mensuel Versement</td>
+    <td scope="col" colspan="3" align="center">Rapport Mensuel Versement</td>
     
     </tr>
-    
-    
         <tr>
         <th scope="col">Date Versement </th>
         <th scope="col">liste Montant </th>
         <th scope="col">M.Total</th>
-        <th scope="col">Motif</th>
+        
     </tr>
+    {% for versement in versements %}
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>-</td>
+        <td>{{versement.Description}}</td>
+        <td>{{versement.Montant}}</td>
     </tr>
+    {% endfor %}
     </tbody>
 </table>
 
 
 <br><br><br> <table style="width:100%">
 <thead>
- <tr><th colspan="8" align="center"> Poussin : '.date("d-m-Y").'</th></tr>
+ <tr><th colspan="7" align="center"> Poussin : </th></tr>
 </thead>
 <tbody>
     <tr>
@@ -205,22 +204,19 @@
         <th scope="col">Q.Total</th>
         <th scope="col">M.Cash</th>
         <th scope="col">M.Om</th>
-        <th scope="col">M.Reste</th>
+        <th scope="col">M.credit</th>
     </tr>
-    $tabpoussin =$poussin->getPoussinMonth($mois,$date);
-    foreach ($tabpoussin as $linefatcture) {
+    {% for poussin in poussins %}
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{poussin.Prix}}</td>
+            <td>{{poussin.Montant}}</td>
+            <td>{{poussin.Montant}}</td>
+            <td>{{poussin.Quantite}}</td>
+            <td>{{poussin.Cash}}</td>
+            <td>{{poussin.Mobilepay}}</td>
+            <td>{{poussin.Credit}}</td>
         </tr>
-    }
-
-
+    {% endfor %}
 </tbody>
 </table>
 
@@ -234,16 +230,17 @@
                 <td colspan="3" align="center"> Suivie Clinique </td>
                 </tr>
                     <tr>
-                    <th scope="col">Total</th>
-                    <th scope="col">Total</th>
+                    <th scope="col">Quantite</th>
+                    <th scope="col">Description</th>
                     <th scope="col">M.Total</th>
-                    
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>  
+                {% for suivi in suivis %}
+                    <tr>
+                        <td>{{suivi.total}}</td>
+                        <td>{{suivi.Observation}}</td>
+                        <td>{{suivi.Montant}}</td>
+                    </tr> 
+                {% endfor %} 
             </tbody>
         </table>
 
@@ -260,24 +257,13 @@
                 <th scope="col">M.Total</th>
                 <th scope="col">Net Payer</th>
             </tr>
-            $tabconsultation =$vaccin->getVaccinationMonth($mois,$date);
-            foreach ($tabconsultation as $linefatcture) {
-                    <tr>
-                    foreach ($linefatcture as $key => $cell) {
-                        if(!empty( $cell)){
-                                    // if (strpos($cell,',')) {
-                                    //     $chaine = str_replace(',','<br>',$cell);
-                                    //     <td>' .$chaine.'</td>
-                                    // } else {
-                                        <td>' .$cell.'</td>
-                                    // }
-                        }else{
-                            <td></td>
-                        }
-
-                        }
-                    </tr>
-                } 
+            <tr>
+                {% for vaccin in vaccins %}
+                    <td>{{vaccin.total}}</td>
+                    <td>{{vaccin.Montant}}</td>
+                    <td>{{vaccin.MontantNet}}</td>
+                {% endfor %}
+            </tr>
         
         </tbody>
     </table>
@@ -310,18 +296,19 @@
                 <tr>
                 <td colspan="3" align="center"> Consultation  </td>
                 </tr>
-                    <tr>
+                
+                <tr>
                     <th scope="col">Total</th>
                     <th scope="col">M.Total</th>
                     <th scope="col">Q.Total</th>
                 </tr>
-                
+                {% for consultation in consultations %}
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{consultation.total}}</td>
+                    <td>{{consultation.Montant}}</td>
+                    <td>{{consultation.total}}</td>
                 </tr>
-            
+                {% endfor %}
             </tbody>
         </table>
 </body>

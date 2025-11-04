@@ -11,6 +11,8 @@ use App\Entity\ProduitA;
 use App\Entity\QuantiteproduitA;
 use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -444,5 +446,37 @@ class VenteAController extends AbstractController
         }
 
         return $this->json(['message'=> $datesSemaine]);
+    }
+
+    #[Route('/vente/a/trie', name: "vente_a_trie")]
+    public function Trie(EntityManagerInterface $em, Request $request) : Response  
+    {
+       if ($request->isMethod('POST')) {
+            
+       }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+
+        $html = $this->renderView('vente/tri.html.twig', [
+        
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="tri.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );   
     }
 }

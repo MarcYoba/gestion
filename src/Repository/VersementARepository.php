@@ -55,4 +55,31 @@ class VersementARepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findBySommeVersement($date,$agence) : float 
+    {
+        $result = $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.montant),0) AS Montant')
+            ->Where('v.createdAt = :val')
+            // ->andWhere('d.agence = :agences')
+            ->setParameter('val', $date)
+            // ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+        return $result > 0 ? (float)$result : 0;
+    }
+
+    public function findByMoi($value,$annee): array
+    {
+        return $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.montant + v.om +v.banque),0) AS Montant, CONCAT(\',\',v.description) AS Description')
+            ->Where('MONTH(v.createdAt) = :val')
+            ->andWhere('YEAR(v.createdAt) = :anne')
+            ->setParameter('val', $value)
+            ->setParameter('anne', $annee)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

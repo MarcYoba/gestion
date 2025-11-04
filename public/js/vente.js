@@ -770,7 +770,6 @@ function recherchduclient() {
   filter = input.value.toUpperCase();
   ul = document.getElementById("clientt");
   li = ul.getElementsByTagName("option");
-  console.log(li.length);
   // Boucler sur toutes les options
   for (i = 0; i < li.length; i++) {
     a = li[i];
