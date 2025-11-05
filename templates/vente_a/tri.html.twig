@@ -53,14 +53,14 @@
                     <th scope="col">Type paiement</th>
                     <th scope="col">date vente</th>
                 </tr>
-                 {% for facture in vente.facture %}
+                 {% for facture in vente.factureAs %}
                     <tr>
                         <td> {{ facture.produit.nom}} </td>
                         <td> {{ facture.quantite}} </td>
                         <td> {{ facture.prix}} </td>
                         <td> {{ facture.prix * facture.quantite}} </td>
                         <td> {{ vente.type}} </td>
-                        <td> {{ facture.createdAt | date("Y-m-d")}} </td>
+                        <td> {{ facture.createAt | date("Y-m-d")}} </td>
                     </tr>
                 {% endfor %} 
                  <tr>
@@ -92,9 +92,9 @@
                     <td>{{ vente.type}}</td>
                 </tr>
                 {% set sommeVente = sommeVente + vente.prix %}
-                {% set sommeCash = sommeCash + vente.montantcash %}
-                {% set sommeCredit = sommeCredit + vente.montantcredit %}
-                {% set sommeOm = sommeOm + vente.montantmomo %}
+                {% set sommeCash = sommeCash + vente.cash %}
+                {% set sommeCredit = sommeCredit + vente.credit %}
+                {% set sommeOm = sommeOm + vente.momo %}
                 {% set sommeReduction = sommeReduction + vente.reduction %}
             {% endfor %}
             
@@ -118,7 +118,7 @@
             </tr>
         </thead>
             <tbody>
-            {% for historiqueA in historiques %}
+            {% for historiqueA in historiqueAs %}
                 <tr>
                     <th scope="col">{{historiqueA[0]}}</th>
                     <th scope="col">{{historiqueA[1]}}</th>

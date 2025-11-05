@@ -191,6 +191,9 @@ class RapportAController extends AbstractController
                 return $this->redirectToRoute("app_rapport_a");
            }
         }
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
 
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
@@ -199,7 +202,7 @@ class RapportAController extends AbstractController
         $date_debut = new \DateTimeImmutable($date_debut);
         $date_fin = new \DateTimeImmutable($date_fin);
         $caisse = $em->getRepository(CaisseA::class)->findRapportCaisseToWeek($date_debut,$date_fin);
-        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek($date_debut,$date_fin);
+        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek($date_debut,$date_fin,$id);
         $achat = $em->getRepository(AchatA::class)->findByDate($date_debut);
         
         //dd($vente);

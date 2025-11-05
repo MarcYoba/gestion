@@ -53,7 +53,7 @@
                             <div class="row">
                                     <h6 class="m-0 font-weight-bold text-primary">Tables Vente</h6>
                             </div>
-                            <form  action="{{path('vente_a_trie')}}" method="post" class="user row" >
+                            <form  action="{{path('vente_trie')}}" method="post" class="user row" >
 
                                 <p class="col-md-6">
                                 <label class="form-check-label" id="nomProduit">Produit</label>
@@ -91,7 +91,7 @@
                                         <label class="form-check-label" id="quantite">Qauntite</label>
                                 </p>
                                 <p class="col-md-2">
-                                        <input class="form-check-input" type="checkbox" id="cash" name="cash" value="cash">
+                                        <input class="form-check-input" type="checkbox" id="cash" name="cash" value="cash" checked="checked">
                                         <label class="form-check-label" id="cash">cash</label>
                                 </p>
                                 <p class="col-md-2">
@@ -171,7 +171,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>vestion Production &copy; {{ "now"|date("Y-m-d") }}</span>
+                        <span>Production &copy; {{ "now"|date("Y-m-d") }}</span>
                     </div>
                 </div>
             </footer>
@@ -191,6 +191,7 @@
     <!-- Logout Modal-->
 
     <!-- Bootstrap core JavaScript-->
+    <script src="{{asset('js/produit/recherche.js')}}"></script>
    <script src="listeVente.js"></script>
     <script>
         function reload() {

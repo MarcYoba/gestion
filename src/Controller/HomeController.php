@@ -49,6 +49,9 @@ class HomeController extends AbstractController
     public function dashboard(EntityManagerInterface $entityManager,int $id): Response
     {
         $user = $this->getUser();
+        if ($user) {
+            $this->redirectToRoute('app_logout');
+        }
         
         if ($id == 0) {
             $agence = $entityManager->getRepository(Agence::class)->findAll();
@@ -98,7 +101,9 @@ class HomeController extends AbstractController
     public function dashboardA(EntityManagerInterface $entityManager,int $id): Response
     {
         $user = $this->getUser();
-
+        if (!$this->getUser()) {
+            $this->redirectToRoute('app_logout');
+        }
         if ($id == 0) {
             $agence = $entityManager->getRepository(Agence::class)->findAll();
             $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
