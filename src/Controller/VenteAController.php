@@ -6,11 +6,14 @@ use App\Entity\VenteA;
 use App\Entity\Clients;
 use App\Form\VenteAType;
 use App\Entity\FactureA;
+use App\Entity\HistoriqueA;
 use App\Entity\Lots;
 use App\Entity\ProduitA;
 use App\Entity\QuantiteproduitA;
 use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -444,5 +447,104 @@ class VenteAController extends AbstractController
         }
 
         return $this->json(['message'=> $datesSemaine]);
+    }
+
+    #[Route('/vente/a/trie', name: "vente_a_trie")]
+    public function Trie(EntityManagerInterface $em, Request $request) : Response  
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+        $date = new \DateTime(date("Y-m-d"));
+        $vente = [];
+       if ($request->isMethod('POST')) {
+            $produit = $request->request->All();
+            
+            if (!empty($produit['OM']) || !empty($produit['credit']) || !empty($produit['cash'])) {
+                
+                if (isset($produit['OM']) && isset($produit['credit']) && isset($produit['cash'])) {
+                    
+                    if(!empty($produit['date']) && !empty($produit['date2'])){
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id);
+                    }else{
+                        $vente = $em->getRepository(VenteA::class)->findRapportToDay($date);
+                    }
+                }else if (isset($produit['credit']) && isset($produit['OM'])) {   
+                    if(!empty($produit['date']) && !empty($produit['date2'])){
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekCreditOm(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id);
+                    }else{
+                        $vente = $em->getRepository(VenteA::class)->findRapportToDayCreditOm($date,$id);
+                    }
+                }else if (isset($produit['OM'])) {
+                
+                    if(!empty($produit['date']) && !empty($produit['date2'])){
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekOm(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id); 
+                    }else{
+                        $vente = $em->getRepository(VenteA::class)->findRapportToDayOm($date,$id);
+                    }
+                } else if (isset($produit['credit'])) {
+                    
+                    if(!empty($produit['date']) && !empty($produit['date2'])){
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekCredit(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id); 
+                    }else{
+                        $vente = $em->getRepository(VenteA::class)->findRapportToDayCredit($date,$id);
+                    }
+                } else if(isset($produit['cash'])) { 
+                    if(!empty($produit['date']) && !empty($produit['date2'])){
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekCash(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id); 
+                    }else{
+                        $vente = $em->getRepository(VenteA::class)->findRapportToDayCash($date,$id);
+                    }
+                } else {
+                    if(!empty($produit['date']) && !empty($produit['date2'])){
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id);
+                    }else{
+                        $vente = $em->getRepository(VenteA::class)->findRapportToDay($date);
+                    } 
+                }
+                
+            } else {
+                if(!empty($produit['date']) && !empty($produit['date2'])){
+                    $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek($produit['date'],$produit['date2'],$id);
+                }else{
+                    $vente = $em->getRepository(VenteA::class)->findRapportToDay($date);
+                }   
+            }
+
+       }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+
+        $produit = $em->getRepository(FactureA::class)->findByProduitVendu($date,$id);
+        $historiqueA = [];
+        foreach ($produit as $key => $value) {
+            $hist = $em->getRepository(HistoriqueA::class)->findByDate($date,$value->getProduit()->getId(),$id);
+            $fact = $em->getRepository(FactureA::class)->findBySommeProduit($date,$value->getProduit()->getId(),$id);
+            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite()]);
+        }
+
+        $html = $this->renderView('vente_a/tri.html.twig', [
+            'ventes' => $vente,
+            'date' => $date,
+            'historiqueAs' => $historiqueA,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="tri.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );   
     }
 }

@@ -7,6 +7,7 @@ use App\Entity\Produit;
 use App\Entity\TempAgence;
 use App\Form\ProduitType;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -119,5 +120,109 @@ class ProduitController extends AbstractController
         $entityManager->remove($produit);
         $entityManager->flush();
         return $this->redirectToRoute("produit_list");
+    }
+
+    #[Route('/produit/impot', name:'app_produit_import')]
+    public function FunctionName(Request $request, EntityManagerInterface $entityManager) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+        $processed = 0;
+        if ($request->isMethod('POST')) {
+           $file =  $request->files->get('ficher');
+
+           if ($file && $file->isValid()) {
+                   try {
+                    $extension = strtolower($file->getClientOriginalExtension());
+                    $extensionsAutorisees = ['xlsx', 'xls', 'csv'];
+
+                    if (!in_array($extension, $extensionsAutorisees)) {
+                        throw new \Exception('Seuls les fichiers Excel (XLSX, XLS) et CSV sont autorisés');
+                    }
+
+                    $spreadsheet = IOFactory::load($file->getPathname());
+                    $spreadsheet = IOFactory::load($file->getPathname());
+        
+                    $donnees = $this->lireFichierExcel($spreadsheet);
+                    $donnees = $donnees['Worksheet'];
+                    array_shift($donnees);
+                    $total = count($donnees);
+                    $i = 0;
+                    $trouver = 0;
+                    $this->addFlash('success', 'Importation démarrée');
+                    foreach ($donnees as $key => $value) {
+                        $produit = $entityManager->getRepository(Produit::class)->findBy(["nom" => $value[0]]);
+                        if($produit){
+                            $trouver +=1;
+                        }else{
+                            $produits = new Produit();
+                            $produits->setAgence($tempagence->getAgence());
+                            $produits->setUser($user);
+                            $produits->setNom($value[0]);
+                            $produits->setQuantite(0);
+                            $produits->setStockdebut(0);
+                            $produits->setPrixachat(0);
+                            $produits->setPrixvente($value[2]);
+                            $produits->setGain(0);
+                            $produits->setType($value[4]);
+                            $produits->setCathegorie($value[5]);
+                            $produits->setCreatedAt(new \DateTimeImmutable(date("Y-m-d")));
+
+                            $entityManager->persist($produits);
+                            $entityManager->flush();
+
+                        }
+
+                        $processed++;
+
+                        $progress = round(($i + 1) / $total * 100);
+        
+                        // Messages avec barre de progression ASCII
+                        if ($progress % 20 === 0) {
+                            $bar = str_repeat('█', $progress / 5) . str_repeat('░', 20 - ($progress / 5));
+                            $this->addFlash('success', "[$bar] $progress% - Ligne " . ($i + 1) . "/$total");
+                        }
+                        $i++;
+                    }
+                    
+                    $this->addFlash('success', 'Importation terminée avec succès! Produit trouver : '.$trouver);
+
+                    return $this->redirectToRoute('app_produit_import');
+                } catch (\Exception $e) {
+                    $this->addFlash("error", 'Erreur lors de la lecture du fichier: ' . $e->getMessage() );
+                }
+           } else {
+            $this->addFlash("error", "echec de chargement du fichier");
+           }
+           
+
+        }
+        return $this->render('produit/import.html.twig', [
+            
+        ]);
+    }
+
+    private function lireFichierExcel($spreadsheet): array
+    {
+        $donneesCompletes = [];
+        
+        // Parcourir toutes les feuilles
+        foreach ($spreadsheet->getSheetNames() as $sheetIndex => $sheetName) {
+            $worksheet = $spreadsheet->getSheet($sheetIndex);
+            $donneesCompletes[$sheetName] = $this->lireFeuilleExcel($worksheet);
+        }
+        
+        return $donneesCompletes;
+    }
+
+    private function lireFeuilleExcel($worksheet): array
+    {
+        $donnees = [];
+    
+    // Méthode plus simple avec toArray()
+    $donnees = $worksheet->toArray();
+    
+    return $donnees;
     }
 }

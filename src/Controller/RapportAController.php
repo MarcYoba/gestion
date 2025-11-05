@@ -6,9 +6,13 @@ use App\Entity\AchatA;
 use App\Entity\CaisseA;
 use App\Entity\Consultation;
 use App\Entity\DepenseA;
+use App\Entity\FactureA;
+use App\Entity\HistoriqueA;
 use App\Entity\Poussin;
+use App\Entity\ProduitA;
 use App\Entity\ProspectionA;
 use App\Entity\Suivi;
+use App\Entity\TempAgence;
 use App\Entity\Vaccin;
 use App\Entity\VenteA;
 use App\Entity\VersementA;
@@ -28,10 +32,15 @@ class RapportAController extends AbstractController
     #[Route('/rapport/a/jour', name: 'app_rapport_a_jour')]
     public function index(EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
         $date = date("Y-m-d");
+
+        $sommeCaisse = $em->getRepository(CaisseA::class)->findBySommeCaisse($date,$id);
         $date = new \DateTimeImmutable($date);
         $caisse = $em->getRepository(CaisseA::class)->findBy(["createAt" => $date]);
         $vente = $em->getRepository(VenteA::class)->findRapportToDay( $date);
@@ -43,7 +52,18 @@ class RapportAController extends AbstractController
         $suivi = $em->getRepository(Suivi::class)->findByDay($date);
         $vaccin = $em->getRepository(Vaccin::class)->findBy(['dateVaccin'=>$date]);
         $terrain = $em->getRepository(ProspectionA::class)->findBy(['createtAt'=>$date]);
+        $sommeDepense = $em->getRepository(DepenseA::class)->findBySommeDepense($date,$id);
+        $sommeVersement = $em->getRepository(VersementA::class)->findBySommeVersement($date,$id);
 
+        
+        
+        $produit = $em->getRepository(FactureA::class)->findByProduitVendu($date,$id);
+        $historiqueA = [];
+        foreach ($produit as $key => $value) {
+            $hist = $em->getRepository(HistoriqueA::class)->findByDate($date,$value->getProduit()->getId(),$id);
+            $fact = $em->getRepository(FactureA::class)->findBySommeProduit($date,$value->getProduit()->getId(),$id);
+            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite()]);
+        }
         
         $html = $this->renderView('rapport_a/jour_courante.html.twig', [
         'ventes' => $vente,
@@ -56,6 +76,10 @@ class RapportAController extends AbstractController
         'suivis' => $suivi,
         'vaccins' => $vaccin,
         'terrains' => $terrain,
+        'historiqueAs' => $historiqueA,
+        'sommedepense' => $sommeDepense,
+        'sommeVersement' => $sommeVersement,
+        'sommeCaisse' => $sommeCaisse,
         ]);
 
         $dompdf->loadHtml($html);
@@ -88,10 +112,14 @@ class RapportAController extends AbstractController
            }
         }
 
+        $user = $this->getUser();
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
         
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+        $sommeCaisse = $em->getRepository(CaisseA::class)->findBySommeCaisse($date,$id);
         $date = new \DateTimeImmutable($date);
         $caisse = $em->getRepository(CaisseA::class)->findBy(["createAt" => $date]);
         $vente = $em->getRepository(VenteA::class)->findRapportToDay($date);
@@ -103,6 +131,16 @@ class RapportAController extends AbstractController
         $suivi = $em->getRepository(Suivi::class)->findByDay($date);
         $vaccin = $em->getRepository(Vaccin::class)->findBy(['dateVaccin'=>$date]);
         $terrain = $em->getRepository(ProspectionA::class)->findBy(['createtAt'=>$date]);
+        $sommeDepense = $em->getRepository(DepenseA::class)->findBySommeDepense($date,$id);
+        $sommeVersement = $em->getRepository(VersementA::class)->findBySommeVersement($date,$id);
+        
+        $produit = $em->getRepository(FactureA::class)->findByProduitVendu($date,$id);
+        $historiqueA = [];
+        foreach ($produit as $key => $value) {
+            $hist = $em->getRepository(HistoriqueA::class)->findByDate($date,$value->getProduit()->getId(),$id);
+            $fact = $em->getRepository(FactureA::class)->findBySommeProduit($date,$value->getProduit()->getId(),$id);
+            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite()]);
+        }
         
         $html = $this->renderView('rapport_a/hier.html.twig', [
         'ventes' => $vente,
@@ -116,6 +154,10 @@ class RapportAController extends AbstractController
         'suivis' => $suivi,
         'vaccins' => $vaccin,
         'terrains' => $terrain,
+        'historiqueAs' => $historiqueA,
+        'sommedepense' => $sommeDepense,
+        'sommeVersement' => $sommeVersement,
+        'sommeCaisse' => $sommeCaisse,
         ]);
 
         $dompdf->loadHtml($html);
@@ -149,6 +191,9 @@ class RapportAController extends AbstractController
                 return $this->redirectToRoute("app_rapport_a");
            }
         }
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
 
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
@@ -157,7 +202,7 @@ class RapportAController extends AbstractController
         $date_debut = new \DateTimeImmutable($date_debut);
         $date_fin = new \DateTimeImmutable($date_fin);
         $caisse = $em->getRepository(CaisseA::class)->findRapportCaisseToWeek($date_debut,$date_fin);
-        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek($date_debut,$date_fin);
+        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek($date_debut,$date_fin,$id);
         $achat = $em->getRepository(AchatA::class)->findByDate($date_debut);
         
         //dd($vente);
@@ -222,6 +267,11 @@ class RapportAController extends AbstractController
         $vente = $em->getRepository(VenteA::class)->findRapportMensuel($date_debut,$anne);
         $achat = $em->getRepository(AchatA::class)->findByDate($date_debut,$anne);
         $depense = $em->getRepository(DepenseA::class)->findByMoi($date_debut,$anne);
+        $versement = $em->getRepository(VersementA::class)->findByMoi($date_debut,$anne);
+        $poussin = $em->getRepository(Poussin::class)->findByMoi($date_debut,$anne);
+        $suivi = $em->getRepository(Suivi::class)->findByMoi($date_debut,$anne);
+        $vaccin = $em->getRepository(Vaccin::class)->findByMoi($date_debut,$anne);
+        $consultation = $em->getRepository(Consultation::class)->findByMoi($date_debut,$anne);
         
         $html = $this->renderView('rapport_a/moi.html.twig', [
         'date_debut' => $date_debut,
@@ -230,6 +280,11 @@ class RapportAController extends AbstractController
         'achats' => $achat,
         'caisses' => $caisse,
         'depenses' => $depense,
+        'versements' => $versement,
+        'poussins' => $poussin,
+        'suivis' => $suivi,
+        'vaccins' => $vaccin, 
+        'consultations' => $consultation,
         ]);
 
         $dompdf->loadHtml($html);

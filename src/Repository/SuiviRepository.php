@@ -54,4 +54,17 @@ class SuiviRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByMoi($moi,$anne) : array 
+    {
+        return $this->createQueryBuilder('s')
+            ->select('CONCAT(\',\',s.observation) AS Observation,SUM(s.montant) AS Montant,COUNT(s.id) AS total')
+            ->where('MONTH(s.createtAd) = :moi')
+            ->andWhere('YEAR(s.createtAd) = :anne')
+            ->setParameter('moi',$moi)
+            ->setParameter('anne',$anne)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

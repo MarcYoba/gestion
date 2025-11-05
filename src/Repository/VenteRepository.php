@@ -207,6 +207,21 @@ class VenteRepository extends ServiceEntityRepository
         return (float) $result; // Retourne un float
     }
 
+    public function findRapportToDay($date) : array 
+    {
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createdAt  BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getResult()
+        
+        ;
+    }
+
     public function findVentesByWeek($date) : float 
     {
         $date = new \DateTimeImmutable($date);
@@ -255,6 +270,158 @@ class VenteRepository extends ServiceEntityRepository
             
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function findRapportToDayCreditOm($date,$agence) : array 
+    {
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createAt BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence = :agence')
+            ->andWhere('v.montantcredit > :credit')
+            ->orWhere('v.montantmomo > :momo')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agence', $agence)
+            ->setParameter('credit', 0)
+            ->setParameter('momo', 0)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findRapportToDayOm($date,$agence) : array 
+    {
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createdAt  BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence = :agence')
+            ->andWhere('v.montantmomo > :momo')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agence', $agence)
+            ->setParameter('momo', 0)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findRapportToDayCredit($date,$agence) : array 
+    {
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createdAt  BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence = :agence')
+            ->andWhere('v.montantcredit > :credit')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agence', $agence)
+            ->setParameter('credit', 0)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findRapportToDayCash($date,$agence) : array 
+    {
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createdAt  BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence = :agence')
+            ->andWhere('v.montantcash > :cash')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agence', $agence)
+            ->setParameter('cash', 0)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+        public function findRapportVenteToWeekCreditOm($date_debut, $date_fin,$agence) : array 
+    {
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence =:agences')
+            ->andWhere('v.montantcredit >:credits')
+            ->orWhere('v.momo >:momos')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->setParameter('credits',0)
+            ->setParameter('momos',0)
+            ->getQuery()
+            ->getResult()
+        
+        ;
+    }
+
+    public function findRapportVenteToWeekOm($date_debut, $date_fin,$agence) : array 
+    {
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence =:agences')
+            ->andWhere('v.montantmomo >:momos')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->setParameter('momos',0)
+            ->getQuery()
+            ->getResult()
+        
+        ;
+    }
+
+    public function findRapportVenteToWeekCredit($date_debut, $date_fin,$agence) : array 
+    {
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence =:agences')
+            ->andWhere('v.montantcredit >:credit')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->setParameter('credit',0)
+            ->getQuery()
+            ->getResult()
+        
+        ;
+    }
+
+    public function findRapportVenteToWeekCash($date_debut, $date_fin,$agence) : array 
+    {
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence =:agences')
+            ->andWhere('v.montantcash >:cash')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->setParameter('cash',0)
+            ->getQuery()
+            ->getResult()
+        
         ;
     }
 }

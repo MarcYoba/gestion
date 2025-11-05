@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Trie{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* CSS personnalisé pour le PDF */
+        body { font-family: Arial, sans-serif; }
+        .header { color: #333; }
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
+    </style>
+</head>
+<body>
+<table style="width:100%">
+    <thead>
+        <tr>
+            <th colspan="6" align="center"> trie de Vente du : {{ date | date("Y-m-d") }} </th>
+        </tr>
+    </thead>
+        <tbody>
+        {%  set sommeVente = 0 %}
+        {%   set sommeCash = 0 %}
+        {%   set sommeOm = 0 %}
+        {%   set sommeCredit = 0 %}
+        {%   set sommeReduction = 0 %}
+         
+            {% for vente in ventes %}
+                <tr>
+                    <td colspan="6" align="center"> Formule   Vente N= {{ vente.id}} / Client : {{ vente.client.nom}} /Tel:{{ vente.client.telephone}}/ utilisateur:{{ vente.user.username}}/ heure: {{ vente.heure}}</td>
+                </tr>
+                <tr>
+                    <th scope="col">Nom produit</th>
+                    <th scope="col">quantite</th>
+                    <th scope="col">prix</th>
+                    <th scope="col">montant </th>
+                    <th scope="col">Type paiement</th>
+                    <th scope="col">date vente</th>
+                </tr>
+                 {% for facture in vente.facture %}
+                    <tr>
+                        <td> {{ facture.produit.nom}} </td>
+                        <td> {{ facture.quantite}} </td>
+                        <td> {{ facture.prix}} </td>
+                        <td> {{ facture.prix * facture.quantite}} </td>
+                        <td> {{ vente.type}} </td>
+                        <td> {{ facture.createdAt | date("Y-m-d")}} </td>
+                    </tr>
+                {% endfor %} 
+                 <tr>
+                    <td>Total</td>
+                    <td>{{ vente.quantite}}</td>
+                    {% if vente.prix != 0 %}
+                        <td>{{ vente.prix / vente.quantite}}</td>
+                    {% else %}
+                        <td>0</td>
+                    {% endif %}
+                    <td>{{ vente.prix}} </td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Reduction</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>{{ vente.reduction}} </td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Net a payer</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>{{ vente.prix}} </td>
+                    <td>FCFA</td>
+                    <td>{{ vente.type}}</td>
+                </tr>
+                {% set sommeVente = sommeVente + vente.prix %}
+                {% set sommeCash = sommeCash + vente.montantcash %}
+                {% set sommeCredit = sommeCredit + vente.montantcredit %}
+                {% set sommeOm = sommeOm + vente.montantmomo %}
+                {% set sommeReduction = sommeReduction + vente.reduction %}
+            {% endfor %}
+            
+        </tbody>
+    </table>
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="5" align="center"> Quantite Pour chaque produit : {{ date | date("Y-m-d") }} </th>
+            </tr>
+            <tr>
+                <th colspan="5" align="center"> Recapitulatif Quantite Vendue </th>
+            </tr>
+            <tr>
+                <th scope="col">Mon du produit </th>
+                <th scope="col">Quantite debut</th>
+                <th scope="col">Quantite</th>
+                <th scope="col">Quantite fin</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+            <tbody>
+            {% for historiqueA in historiques %}
+                <tr>
+                    <th scope="col">{{historiqueA[0]}}</th>
+                    <th scope="col">{{historiqueA[1]}}</th>
+                    <th scope="col">{{historiqueA[2]}}</th>
+                    <th scope="col">{{historiqueA[3]}}</th>
+                    <th scope="col">{{ date | date("Y-m-d")}}</th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </thead>
+    </table>
+
+    </body>
+</html>
+{% endblock %}

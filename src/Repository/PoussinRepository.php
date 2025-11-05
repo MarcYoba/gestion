@@ -55,4 +55,17 @@ class PoussinRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByMoi($moi,$anne) : array 
+    {
+        return $this->createQueryBuilder('p')
+            ->select('CONCAT(\',\',p.prix) AS Prix,SUM(p.montant) AS Montant,SUM(p.mobilepay) AS Mobilepay, SUM(p.credit) AS Credit, SUM(p.cash) AS Cash,SUM(p.quantite) AS Quantite')
+            ->where('MONTH(p.datecommande) = :moi')
+            ->andWhere('YEAR(p.datecommande) = :anne')
+            ->setParameter('moi',$moi)
+            ->setParameter('anne',$anne)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

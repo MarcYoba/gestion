@@ -37,10 +37,16 @@ class FournisseurType extends AbstractType
                 'attr' => ['class' => 'form-control form-control-user']
             ])
             ->add('datefacture', DateType::class, [
+                'widget' => 'single_text',
                 'label' => 'Date de facture',
                 'attr' => ['class' => 'form-control form-control-user']
             ])
-            ->add('createdAt')
+            ->add('createdAt',DateType::class,[
+                'widget' => 'single_text',
+                'input' => 'datetime_immutable',
+                'label' => 'Date de facture',
+                'attr' => ['class' => 'form-control form-control-user']
+            ])
             ->add('button', SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => [

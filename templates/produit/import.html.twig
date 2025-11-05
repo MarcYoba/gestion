@@ -25,7 +25,7 @@
 
 </head>
 
-<body class="bg-gradient-success">
+<body class="bg-gradient-primary">
 
     <div class="container" >
         
@@ -34,7 +34,7 @@
                 <!-- Nested Row within Card Body -->
                 <div class=" form-group row">
                     <div class="col-lg-2 d-none d-lg-block bg-register-image">
-                        {% include "navbarA.html.twig" %}
+                        {% include "navbar.html.twig" %}
                     </div>
                     <div class="col-lg-10">
                         <div class="p-5">
@@ -62,14 +62,14 @@
                                     {% endfor %}
                                     <div class="col-sm-2 mb-3 mb-sm-0">
                                         {% for tempagence in app.user.tempAgences %}
-                                            <a href="{{ path('app_home_dashboardA', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
+                                            <a href="{{ path('app_home_dashboard', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
                                                 <i class="fas fa-home"></i>
                                                 home
                                             </a>  
                                         {% endfor %}
                                     </div>
                                     <div class="col-sm-2 mb-3 mb-sm-0">
-                                        <a href="{{ path('produit_a_list') }}" class="btn btn-success btn-user btn-block">
+                                        <a href="{{ path('produit_list') }}" class="btn btn-success btn-user btn-block">
                                             <i class="fas fa-list"></i>
                                             List
                                         </a>
@@ -77,14 +77,14 @@
                                 </div> 
                             </div>
                             <br><br>
-                            <form class="user" action="{{path('app_produit_a_import')}}" method="post" enctype="multipart/form-data">
+                            <form class="user" action="{{path('app_produit_import')}}" method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="file" class="form-control form-control-user" id="ficher"
                                             name="ficher" required>
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="submit" class="form-control form-control-user btn btn-success" placeholder="Telecharger" >
+                                        <input type="submit" class="form-control form-control-user btn btn-primary" placeholder="Telecharger" >
                                     </div>
                                 </div>
                             </form>
