@@ -328,7 +328,7 @@
             </tr>
         </thead>
         <tbody>
-            {# {% for poussin in poussins %}
+            {% for poussin in poussins %}
                 <tr>
                     <td>{{poussin.datecommande | date("Y-m-d")}}</td>
                     <td>{{poussin.prix}}</td>
@@ -339,7 +339,7 @@
                     <td>{{poussin.credit}}</td>
                     <td>{{poussin.reste}}</td>
                 </tr>
-            {% endfor %} #}
+            {% endfor %}
         </tbody>
     </table>
 
