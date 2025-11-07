@@ -142,7 +142,7 @@ class RapportAController extends AbstractController
             $lasthist = $em->getRepository(HistoriqueA::class)->findByLastDate(new \DateTime($date->format("Y-m-d")),$value->getProduit()->getId(),$id);
             array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$lasthist]);
         }
-        dd($caisse);
+        
         $html = $this->renderView('rapport_a/hier.html.twig', [
         'ventes' => $vente,
         'achats' => $achat,
