@@ -56,12 +56,13 @@ class HistoriqueARepository extends ServiceEntityRepository
             ->setParameter('produits',$produit)
             ->setParameter('date', $date)
             ->setParameter('agences',$agence)
-            ->orderBy('h.produitA','ASC')
+            ->orderBy('h.createtAd', 'ASC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     
-        return $result != NULL ? $result: 0 ;
+        return $result ? (int) $result['quantite'] : 0;
     }
 
     public function findByLastDate($date,$produit,$agence) : int
@@ -75,11 +76,12 @@ class HistoriqueARepository extends ServiceEntityRepository
             ->setParameter('produits',$produit)
             ->setParameter('date', $datesuivant)
             ->setParameter('agences',$agence)
-            ->orderBy('h.produitA','ASC')
+            ->orderBy('h.createtAd', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     
-        return $result != NULL ? $result: 0 ;
+        return $result ? (int) $result['quantite'] : 0;
     }
 }
