@@ -363,7 +363,7 @@
             </tr>
         </thead>
         <tbody>
-            {# {% for consultation in consultations %}
+            {% for consultation in consultations %}
                 <tr>
                     <td>{{consultation.nom}}</td>
                     <td>{{consultation.client.nom}}</td>
@@ -373,7 +373,7 @@
                     <td>{{consultation.nomtant }}</td>
                     <td>{{consultation.createtAd | date("Y-m-d") }}</td>
                 </tr>
-            {% endfor %} #}
+            {% endfor %}
         </tbody>
     </table>
 
@@ -397,7 +397,7 @@
             </tr>
         </thead>
         <tbody>
-            {# {% for suivi in suivis %}
+            {% for suivi in suivis %}
                 <td>{{suivi.nom}}</td>
                 <td>{{suivi.client.nom}}</td>
                 <td>{{suivi.jour | date("Y-m-d")}}</td>
@@ -405,7 +405,7 @@
                 <td>{{suivi.conduite}}</td> 
                 <td>{{suivi.montant}}</td> 
                 <td>{{suivi.createtAd | date("Y-m-d")}}</td> 
-            {% endfor %} #}
+            {% endfor %}
         </tbody>
     </table>
 
