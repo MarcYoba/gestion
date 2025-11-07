@@ -122,8 +122,8 @@
             </tr>
         </thead>
             <tbody>
-                 <td>{{ sommeVente }}</td>
-                <td> {{ sommeCash }}</td>
+                 {# <td>{{ sommeVente }}</td>
+                <td> {{ sommeCash }}</td> #}
                 {# <td> {{ sommeOm }}</td>
                 <td>{{ sommeCredit }}</td>
                 <td>{{ sommeReduction }}</td> #}
@@ -151,7 +151,7 @@
                 </tr>
         </thead>
             <tbody>
-                {% set sommesaisse = 0 %}
+                {# {% set sommesaisse = 0 %}
                 {% for caisse in caisses %}
                 <tr>
                     <td>{{caisse.operation}}</td>
@@ -160,7 +160,7 @@
                     <td>{{ caisse.motif}}</td>
                 </tr>
                     {% set sommesaisse = sommesaisse + caisse.nomtant %}
-                {% endfor %}
+                {% endfor %} #}
                 <tr>
                     <td>Total </td>
                     <td>{{sommesaisse}}</td>
