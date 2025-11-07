@@ -266,14 +266,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for depense in depenses %}
+            {# {% for depense in depenses %}
                 <tr>
                     <td>{{ depense.createdAt | date("Y-m-d") }}</td>
                     <td>{{ depense.type }}</td>
                     <td>{{ depense.montant }}</td>
                     <td>{{ depense.description}}</td>
                 </tr>
-            {% endfor %}
+            {% endfor %} #}
         </tbody>
     </table>
 
@@ -294,14 +294,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for versement in versements %}
+            {# {% for versement in versements %}
             <tr>
                 <td>{{ versement.createdAt | date("Y-m-d") }} </td>
                 <td>{{ versement.client.nom}} </td>
                 <td>{{ versement.montant + versement.om + versement.banque }}</td>
                 <td>{{ versement.description }} </td>
             </tr>
-            {% endfor %}
+            {% endfor %} #}
         </tbody>
     </table>
 
@@ -326,7 +326,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for poussin in poussins %}
+            {# {% for poussin in poussins %}
                 <tr>
                     <td>{{poussin.datecommande | date("Y-m-d")}}</td>
                     <td>{{poussin.prix}}</td>
@@ -337,7 +337,7 @@
                     <td>{{poussin.credit}}</td>
                     <td>{{poussin.reste}}</td>
                 </tr>
-            {% endfor %}
+            {% endfor %} #}
         </tbody>
     </table>
 
@@ -361,7 +361,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for consultation in consultations %}
+            {# {% for consultation in consultations %}
                 <tr>
                     <td>{{consultation.nom}}</td>
                     <td>{{consultation.client.nom}}</td>
@@ -371,7 +371,7 @@
                     <td>{{consultation.nomtant }}</td>
                     <td>{{consultation.createtAd | date("Y-m-d") }}</td>
                 </tr>
-            {% endfor %}
+            {% endfor %} #}
         </tbody>
     </table>
 
@@ -395,7 +395,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for suivi in suivis %}
+            {# {% for suivi in suivis %}
                 <td>{{suivi.nom}}</td>
                 <td>{{suivi.client.nom}}</td>
                 <td>{{suivi.jour | date("Y-m-d")}}</td>
@@ -403,7 +403,7 @@
                 <td>{{suivi.conduite}}</td> 
                 <td>{{suivi.montant}}</td> 
                 <td>{{suivi.createtAd | date("Y-m-d")}}</td> 
-            {% endfor %}
+            {% endfor %} #}
         </tbody>
     </table>
 
@@ -427,7 +427,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for vaccin in vaccins %}
+            {# {% for vaccin in vaccins %}
                 <td>{{vaccin.sujet}}</td>
                 <td>{{vaccin.client.nom}}</td>
                 <td>{{vaccin.typeVaccin}}</td>
@@ -435,7 +435,7 @@
                 <td>{{vaccin.dateVaccin | date("Y-m-d")}}</td>
                 <td>{{vaccin.montant}}</td>
                 <td>{{vaccin.resteMontant}}</td>
-            {% endfor %}
+            {% endfor %} #}
         </tbody>
     </table>
 
@@ -456,14 +456,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for terrain in terrains %}
+            {# {% for terrain in terrains %}
                 <tr>
                     <td>{{terrain.localisation}}</td>
                     <td>{{terrain.client.nom}}</td>
                     <td>{{terrain.client.telephone}}</td>
                     <td>{{terrain.createtAt | date("Y-m-d")}}</td>
                 </tr>
-            {% endfor %}
+            {% endfor %} #}
         </tbody>
     </table>
 </body>
