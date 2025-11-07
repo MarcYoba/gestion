@@ -156,10 +156,10 @@
                 {% set sommesaisse = 0 %}
                 {% for caisse in caisses %}
                 <tr>
-                    <td>{{caisse.operation}}</td>
+                    {# <td>{{caisse.operation}}</td>
                     <td> {{ caisse.montant}}</td>
                     <td>{{ caisse.createAt | date("Y-m-d")}}</td>
-                    <td>{{ caisse.motif}}</td>
+                    <td>{{ caisse.motif}}</td> #}
                 </tr>
                     {% set sommesaisse = sommesaisse + caisse.nomtant %}
                 {% endfor %}
