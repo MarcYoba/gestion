@@ -139,7 +139,7 @@ class RapportAController extends AbstractController
         foreach ($produit as $key => $value) {
             $hist = $em->getRepository(HistoriqueA::class)->findByDate($date,$value->getProduit()->getId(),$id);
             $fact = $em->getRepository(FactureA::class)->findByQuantiteProduitVendu($date,$value->getProduit()->getId(),$id);
-            $lasthist = $em->getRepository(HistoriqueA::class)->findByLastDate($date,$value->getProduit()->getId(),$id);
+            $lasthist = $em->getRepository(HistoriqueA::class)->findByLastDate(new \DateTime($date->format("Y-m-d")),$value->getProduit()->getId(),$id);
             array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$lasthist]);
         }
         
