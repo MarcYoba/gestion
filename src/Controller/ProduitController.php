@@ -29,6 +29,11 @@ class ProduitController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
+            $nom = $form->get('nom')->getData();
+            $produitExite = $entityManager->getRepository(Produit::class)->findBy(['nom' => $nom]);
+            if (!empty($produitExite)) {
+               return $this->redirectToRoute("produit_list"); 
+            }
             $produit->setPrixachat(0);
             $produit->setGain(0);
             $produit->setUser($security->getUser());
