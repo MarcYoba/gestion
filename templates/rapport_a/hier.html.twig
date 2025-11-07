@@ -268,14 +268,14 @@
             </tr>
         </thead>
         <tbody>
-            {# {% for depense in depenses %}
+            {% for depense in depenses %}
                 <tr>
                     <td>{{ depense.createdAt | date("Y-m-d") }}</td>
                     <td>{{ depense.type }}</td>
                     <td>{{ depense.montant }}</td>
                     <td>{{ depense.description}}</td>
                 </tr>
-            {% endfor %} #}
+            {% endfor %}
         </tbody>
     </table>
 
