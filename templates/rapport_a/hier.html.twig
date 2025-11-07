@@ -225,7 +225,7 @@
             {% set achatquantite = 0 %}
             {% set achatPrix = 0 %}
             
-            {# {% for achat in achats %}
+            {% for achat in achats %}
             <tr>
                 <td> {{achat.produit.nom}}</td>
                 <td> {{achat.quantite }} </td>
@@ -238,7 +238,7 @@
                     {% set achatquantite = achatquantite + achat.quantite %}
                     {% set achatPrix = achatPrix + achat.prix %} 
             </tr>  
-            {% endfor %} #}
+            {% endfor %}
             
             <tr>
                 <td>Total</td>
