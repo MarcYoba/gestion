@@ -67,7 +67,7 @@
                     <td>Total</td>
                     <td>{{ vente.quantite}}</td>
                     {% if vente.prix != 0 %}
-                        <td>{{ vente.prix / vente.quantite | round(2)}}</td>
+                        <td>{{ (vente.prix / vente.quantite) | round(2)}}</td>
                     {% else %}
                         <td>0</td>
                     {% endif %}
