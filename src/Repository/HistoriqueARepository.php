@@ -65,15 +65,14 @@ class HistoriqueARepository extends ServiceEntityRepository
 
     public function findByLastDate($date,$produit,$agence) : int
     {
-        $dateHier = (clone $date)->modify('+1 day');
-
+        $datesuivant = (clone $date)->modify('+1 day');
         $result= $this->createQueryBuilder('h')
             ->select('COALESCE(SUM(h.quantite), 0)')
             ->where('h.produitA = :produits')
             ->andWhere('h.createtAd = :date')
             ->andWhere('h.agence = :agences')
             ->setParameter('produits',$produit)
-            ->setParameter('date', $dateHier)
+            ->setParameter('date', $datesuivant)
             ->setParameter('agences',$agence)
             ->getQuery()
             ->getSingleScalarResult()
