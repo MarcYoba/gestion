@@ -65,13 +65,14 @@ class DailyProduitAHistoryManager
                 $history->setCreatetAd($dateHier);
                 $history->setHeurecameroun(date("H:i:s"));
                 $history->setHeureserver(date("H:i:s"));
-
+                
                 // 3. Sauvegarder
                 $this->em->persist($history);
+                $this->em->flush();
                 $historiquesCrees++;
             }
             
-            $this->em->flush();
+            
 
             // 4. Marquer comme généré
             $this->markAsGenerated();
