@@ -58,7 +58,7 @@
                         <td> {{ facture.produit.nom}} </td>
                         <td> {{ facture.quantite}} </td>
                         <td> {{ facture.prix}} </td>
-                        <td> {{ facture.prix * facture.quantite}} </td>
+                        <td> {{ (facture.prix * facture.quantite)}} </td>
                         <td> {{ vente.type}} </td>
                         <td> {{ facture.createAt | date("Y-m-d")}} </td>
                     </tr>
@@ -67,7 +67,7 @@
                     <td>Total</td>
                     <td>{{ vente.quantite}}</td>
                     {% if vente.prix != 0 %}
-                        <td>{{ vente.prix / vente.quantite}}</td>
+                        <td>{{ vente.prix / vente.quantite | round(2)}}</td>
                     {% else %}
                         <td>0</td>
                     {% endif %}
@@ -122,12 +122,12 @@
             </tr>
         </thead>
             <tbody>
-                {# <td>{{ sommeVente }}</td>
+                 <td>{{ sommeVente }}</td>
                 <td> {{ sommeCash }}</td>
                 <td> {{ sommeOm }}</td>
                 <td>{{ sommeCredit }}</td>
                 <td>{{ sommeReduction }}</td>
-                <td>{{ sommedepense}}</td>
+                {# <td>{{ sommedepense}}</td>
                 <td>{{ sommeVersement}}</td>
                 <td>{{sommeCaisse}}</td>
                 <td>{{sommeCash + sommeOm + sommeCaisse}}</td> #}
@@ -152,7 +152,7 @@
         </thead>
             <tbody>
                 {% set sommesaisse = 0 %}
-                {# {% for caisse in caisses %}
+                {% for caisse in caisses %}
                 <tr>
                     <td>{{caisse.operation}}</td>
                     <td> {{ caisse.montant}}</td>
@@ -160,7 +160,7 @@
                     <td>{{ caisse.motif}}</td>
                 </tr>
                     {% set sommesaisse = sommesaisse + caisse.nomtant %}
-                {% endfor %} #}
+                {% endfor %}
                 <tr>
                     <td>Total </td>
                     <td>{{sommesaisse}}</td>
@@ -188,7 +188,7 @@
             </tr>
         </thead>
             <tbody>
-            {# {% for historiqueA in historiqueAs %}
+            {% for historiqueA in historiqueAs %}
                 <tr>
                     <th scope="col">{{historiqueA[0]}}</th>
                     <th scope="col">{{historiqueA[1]}}</th>
@@ -196,7 +196,7 @@
                     <th scope="col">{{historiqueA[3]}}</th>
                     <th scope="col">{{ calandrier}}</th>
                 </tr>
-            {% endfor %} #}
+            {% endfor %}
             </tbody>
         </thead>
     </table>
