@@ -30,6 +30,11 @@ class ProduitAController extends AbstractController
         $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $nom = $form->get('nom')->getData();
+            $produitExite = $em->getRepository(ProduitA::class)->findBy(['nom' => $nom]);
+            if (!empty($produitExite)) {
+               return $this->redirectToRoute("produit_a_list"); 
+            }
             $produitA->setUser($this->getUser());
             $produitA->setGain(0);
             $produitA->setStockdebut($produitA->getQuantite());
@@ -40,7 +45,7 @@ class ProduitAController extends AbstractController
                $employer = $tempagence->getAgence();
             }else{
                 $this->addFlash('error', 'Agence introuvable pour cet utilisateur vous ne pouvez enregistrer de produit.');
-                return $this->redirectToRoute("produit_list");
+                return $this->redirectToRoute("produit_a_list");
             }
             $produitA->setAgence($employer);
             $em->persist($produitA);
