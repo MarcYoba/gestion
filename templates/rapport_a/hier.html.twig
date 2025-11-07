@@ -53,6 +53,7 @@
                     <th scope="col">Type paiement</th>
                     <th scope="col">date vente</th>
                 </tr>
+                {% set prixfacture = 0 %}
                  {% for facture in vente.factureAs %}
                     <tr>
                         <td> {{ facture.produit.nom}} </td>
@@ -62,12 +63,13 @@
                         <td> {{ vente.type}} </td>
                         <td> {{ facture.createAt | date("Y-m-d")}} </td>
                     </tr>
+                    {% set prixfacture = prixfacture + facture.prix %}
                 {% endfor %} 
                  <tr>
                     <td>Total</td>
                     <td>{{ vente.quantite}}</td>
                     {% if vente.prix != 0 %}
-                        <td>{{ (vente.prix / vente.quantite) | round(2)}}</td>
+                        <td>{{ prixfacture}}</td>
                     {% else %}
                         <td>0</td>
                     {% endif %}
