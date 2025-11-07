@@ -76,7 +76,7 @@ class HistoriqueARepository extends ServiceEntityRepository
             ->setParameter('produits',$produit)
             ->setParameter('date', $datesuivant)
             ->setParameter('agences',$agence)
-            ->orderBy('h.createtAd', 'DESC')
+            ->orderBy('h.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
