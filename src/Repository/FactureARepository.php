@@ -97,4 +97,24 @@ class FactureARepository extends ServiceEntityRepository
             ->getResult();
 
     }
+
+    public function findByQuantiteProduitVendu($date, $produit, $agence): int
+    {
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+
+        $result = $this->createQueryBuilder('f')
+            ->select('COALESCE(SUM(f.quantite), 0)')
+            ->where('f.produit = :produit')
+            ->andWhere('f.createAt BETWEEN :startDate AND :endDate')
+            ->andWhere('f.agence = :agence')
+            ->setParameter('produit', $produit)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agence', $agence)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $result;
+    }
 }
