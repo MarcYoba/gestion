@@ -188,7 +188,7 @@
             </tr>
         </thead>
             <tbody>
-            {% for historiqueA in historiqueAs %}
+            {# {% for historiqueA in historiqueAs %}
                 <tr>
                     <th scope="col">{{historiqueA[0]}}</th>
                     <th scope="col">{{historiqueA[1]}}</th>
@@ -196,7 +196,7 @@
                     <th scope="col">{{historiqueA[3]}}</th>
                     <th scope="col">{{ calandrier}}</th>
                 </tr>
-            {% endfor %}
+            {% endfor %} #}
             </tbody>
         </thead>
     </table>
@@ -223,7 +223,7 @@
             {% set achatquantite = 0 %}
             {% set achatPrix = 0 %}
             
-            {% for achat in achats %}
+            {# {% for achat in achats %}
             <tr>
                 <td> {{achat.produit.nom}}</td>
                 <td> {{achat.quantite }} </td>
@@ -236,7 +236,7 @@
                     {% set achatquantite = achatquantite + achat.quantite %}
                     {% set achatPrix = achatPrix + achat.prix %} 
             </tr>  
-            {% endfor %}
+            {% endfor %} #}
             
             <tr>
                 <td>Total</td>
