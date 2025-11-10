@@ -300,6 +300,7 @@ function recuperationdonneTable() {
         data.taille = tableau.rows.length;
         data.Banque = document.getElementById("Banque").value;
         data.statusvente = document.getElementById("statusvente").value;
+        data.esperce = document.getElementById("typeespece").value;
 
         donnees.push({...data});  //on peut aussi  declarer directement let data = {} dans la boucle pour redure le programme
         data.value++;

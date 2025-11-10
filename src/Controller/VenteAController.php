@@ -85,6 +85,7 @@ class VenteAController extends AbstractController
                     $vente->setCredit($lignevente['credit']);
                     $vente->setCash($lignevente['cash']);
                     $vente->setMomo($lignevente['momo']);
+                    $vente->setEsperce($lignevente['esperce']);
                     $vente->setReduction($lignevente['reduction']);
                     $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
                     $vente->setAgence($tempagence->getAgence());
