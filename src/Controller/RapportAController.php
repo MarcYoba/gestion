@@ -186,8 +186,7 @@ class RapportAController extends AbstractController
            $date_debut = $request->request->get('date_debut');
            $date_fin = $request->request->get('date_fin');
            if(empty($date_debut) && empty($date_fin))
-           {
-                
+           { 
                 $this->addFlash("error", "Vous deviez selectiion aune date valide");
                 return $this->redirectToRoute("app_rapport_a");
            }
@@ -199,11 +198,12 @@ class RapportAController extends AbstractController
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
-        
+
+        $caisse = $em->getRepository(CaisseA::class)->findByCaisseSemaine($date_debut,$date_fin,$id);
         $date_debut = new \DateTimeImmutable($date_debut);
         $date_fin = new \DateTimeImmutable($date_fin);
-        $caisse = $em->getRepository(CaisseA::class)->findRapportCaisseToWeek($date_debut,$date_fin);
         $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek($date_debut,$date_fin,$id);
+        
         $achat = $em->getRepository(AchatA::class)->findByDate($date_debut);
         
         //dd($vente);
