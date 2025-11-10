@@ -31,7 +31,7 @@
 <table style="width:100%">
     <thead>
         <tr>
-            <th colspan="6" align="center"> rapport Vente du : {{ date_debut | date("Y-m-d") }} ou {{ date_fin | date("Y-m-d")}} </th>
+            <th colspan="6" align="center"> rapport Vente du : {{ calandrier }} </th>
         </tr>
     </thead>
         <tbody>
@@ -53,20 +53,26 @@
                     <th scope="col">Type paiement</th>
                     <th scope="col">date vente</th>
                 </tr>
-                {% for facture in vente.factureAs %}
+                {% set prixfacture = 0 %}
+                 {% for facture in vente.factureAs %}
                     <tr>
                         <td> {{ facture.produit.nom}} </td>
                         <td> {{ facture.quantite}} </td>
                         <td> {{ facture.prix}} </td>
-                        <td> {{ facture.prix * facture.quantite}} </td>
+                        <td> {{ (facture.prix * facture.quantite)}} </td>
                         <td> {{ vente.type}} </td>
                         <td> {{ facture.createAt | date("Y-m-d")}} </td>
                     </tr>
-                {% endfor %}
-                <tr>
+                    {% set prixfacture = prixfacture + facture.prix %}
+                {% endfor %} 
+                 <tr>
                     <td>Total</td>
                     <td>{{ vente.quantite}}</td>
-                    <td>{{ vente.prix / vente.quantite}}</td>
+                    {% if vente.prix != 0 %}
+                        <td>{{ prixfacture}}</td>
+                    {% else %}
+                        <td>0</td>
+                    {% endif %}
                     <td>{{ vente.prix}} </td>
                     <td>-</td>
                     <td>-</td>
@@ -100,10 +106,10 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="10" align="center"> Resultat vente du : {{ date_debut | date("Y-m-d") }} ou {{ date_fin | date("Y-m-d")}} </th>
+                <th colspan="9" align="center"> Resultat vente du : {{ calandrier }} </th>
             </tr>
             <tr>
-                <th colspan="10" align="center"> Recapitulatif Vente </th>
+                <th colspan="9" align="center"> Recapitulatif Vente </th>
             </tr>
             <tr>
                 <th scope="col">Total Vente</th>
@@ -118,16 +124,15 @@
             </tr>
         </thead>
             <tbody>
-                <td>{{ sommeVente }}</td>
+                 <td>{{ sommeVente }}</td>
                 <td> {{ sommeCash }}</td>
                 <td> {{ sommeOm }}</td>
                 <td>{{ sommeCredit }}</td>
                 <td>{{ sommeReduction }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ sommedepense}}</td>
+                <td>{{ sommeVersement}}</td>
+                <td>{{sommeCaisse}}</td>
+                <td>{{sommeCash + sommeOm + sommeCaisse}}</td>
             </tbody>
         </thead>
     </table> 
@@ -135,10 +140,10 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="4" align="center"> Tableau Caise : {{ date_debut | date("Y-m-d") }} ou {{ date_fin | date("Y-m-d")}} </th>
+                <th colspan="4" align="center"> Tableau Caise : {{ calandrier }} </th>
             </tr>
             <tr>
-                <th colspan="4" align="center"> Recapitulatif Operation caise : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="4" align="center"> Recapitulatif Operation caise : {{calandrier}} </th>
             </tr>
                 <tr>
                     <th scope="col">operation</th>
@@ -150,13 +155,13 @@
             <tbody>
                 {% set sommesaisse = 0 %}
                 {% for caisse in caisses %}
-                <tr>
-                    <td>{{caisse.operation}}</td>
-                    <td> {{ caisse.montant}}</td>
-                    <td>{{ caisse.createAt | date("Y-m-d")}}</td>
-                    <td>{{ caisse.motif}}</td>
-                </tr>
-                    {% set sommesaisse = sommesaisse + caisse.nomtant %}
+                    <tr>
+                        <td>{{caisse.operation}}</td>
+                        <td> {{ caisse.montant}}</td>
+                        <td>{{ caisse.createAt | date("Y-m-d")}}</td>
+                        <td>{{ caisse.motif}}</td>
+                    </tr>
+                    {# {% set sommesaisse = sommesaisse + caisse.nomtant %} #}
                 {% endfor %}
                 <tr>
                     <td>Total </td>
@@ -171,7 +176,7 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="5" align="center"> Quantite Pour chaque produit : {{ date_debut | date("Y-m-d") }} ou {{ date_fin | date("Y-m-d")}} </th>
+                <th colspan="5" align="center"> Quantite Pour chaque produit : {{ calandrier }} </th>
             </tr>
             <tr>
                 <th colspan="5" align="center"> Recapitulatif Quantite Vendue </th>
@@ -179,17 +184,21 @@
             <tr>
                 <th scope="col">Mon du produit </th>
                 <th scope="col">Quantite debut</th>
-                <th scope="col">Quantite</th>
+                <th scope="col">Quantite Vendue</th>
                 <th scope="col">Quantite fin</th>
                 <th scope="col">Date</th>
             </tr>
         </thead>
             <tbody>
-                <th scope="col">0 </th>
-                <th scope="col">0</th>
-                <th scope="col">0</th>
-                <th scope="col">0</th>
-                <th scope="col">0</th>
+            {% for historiqueA in historiqueAs %}
+                <tr>
+                    <th scope="col">{{historiqueA[0]}}</th>
+                    <th scope="col">{{historiqueA[1]}}</th>
+                    <th scope="col">{{historiqueA[2]}}</th>
+                    <th scope="col">{{historiqueA[3]}}</th>
+                    <th scope="col">{{ calandrier}}</th>
+                </tr>
+            {% endfor %}
             </tbody>
         </thead>
     </table>
@@ -197,7 +206,7 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="6" align="center"> Tableau Achat  : {{ date_debut | date("Y-m-d") }} ou {{ date_fin | date("Y-m-d")}} </th>
+                <th colspan="6" align="center"> Tableau Achat  : {{ calandrier }} </th>
             </tr>
             <tr>
                 <th colspan="6" align="center">  Recapitulatif Achat </th>
@@ -215,20 +224,22 @@
             {% set sommeachat = 0 %}
             {% set achatquantite = 0 %}
             {% set achatPrix = 0 %}
+            
             {% for achat in achats %}
-                <tr>
-                    <td> {{achat.produit.nom}}</td>
-                    <td> {{achat.quantite }} </td>
-                    <td> {{achat.prix}} </td>
-                    <td> {{achat.montant}}</td>
-                    <td>{{achat.forunisseur.nom}}</td>
-                    <td>{{achat.createdAt | date("Y-m-d")}}</td>
+            <tr>
+                <td> {{achat.produit.nom}}</td>
+                <td> {{achat.quantite }} </td>
+                <td> {{achat.prix}} </td>
+                <td> {{achat.montant}}</td>
+                <td>{{achat.forunisseur.nom}}</td>
+                <td>{{achat.createdAt | date("Y-m-d")}}</td>
 
                     {% set sommeachat = sommeachat + achat.montant %}
                     {% set achatquantite = achatquantite + achat.quantite %}
-                    {% set achatPrix = achatPrix + achat.prix %}
-                </tr>
+                    {% set achatPrix = achatPrix + achat.prix %} 
+            </tr>  
             {% endfor %}
+            
             <tr>
                 <td>Total</td>
                 <td>{{ achatquantite }}</td>
@@ -244,24 +255,219 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="4" align="center">  : {{ date_debut | date("Y-m-d") }} ou {{ date_fin | date("Y-m-d")}} </th>
+                <th colspan="4" align="center">  Tableau des depenses: {{ calandrier }} </th>
             </tr>
             <tr>
-                <th colspan="4" align="center">  : {{ date_debut | date("Y-m-d") }} ou {{ date_fin | date("Y-m-d")}} </th>
+                <th colspan="4" align="center"> Recapitulatif des depenses : {{ calandrier}} </th>
             </tr>
             <tr>
-                    <th scope="col">operation</th>
-                    <th scope="col">montant</th>
-                    <th scope="col">date</th>
-                    <th scope="col">motif</th>
+                <th scope="col">Date</th>
+                <th scope="col">Type </th>
+                <th scope="col">M.Total </th>
+                <th scope="col">Liste opration</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for depense in depenses %}
+                <tr>
+                    <td>{{ depense.createdAt | date("Y-m-d") }}</td>
+                    <td>{{ depense.type }}</td>
+                    <td>{{ depense.montant }}</td>
+                    <td>{{ depense.description}}</td>
                 </tr>
-        </thead>
-            <tbody>
-            
-            </tbody>
-        </thead>
+            {% endfor %}
+        </tbody>
     </table>
 
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="4" align="center"> Tableau de versement :  {{ calandrier }} </th>
+            </tr>
+            <tr>
+                <th colspan="4" align="center"> Recapitulatif des versement : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Client</th>
+                <th scope="col">Montnat</th>
+                <th scope="col">motif</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for versement in versements %}
+            <tr>
+                <td>{{ versement.createdAt | date("Y-m-d") }} </td>
+                <td>{{ versement.client.nom}} </td>
+                <td>{{ versement.montant + versement.om + versement.banque }}</td>
+                <td>{{ versement.description }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="8" align="center"> Tableau des poussins : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th colspan="8" align="center"> Recapitulatif des poussins : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">prix Unit</th>
+                <th scope="col">M.Total</th>
+                <th scope="col">Q.Total</th>
+                <th scope="col">M.Cash</th>
+                <th scope="col">M.Om</th>
+                <th scope="col">M.Credit</th>
+                <th scope="col">M.Reste</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for poussin in poussins %}
+                <tr>
+                    <td>{{poussin.datecommande | date("Y-m-d")}}</td>
+                    <td>{{poussin.prix}}</td>
+                    <td>{{poussin.montant}}</td>
+                    <td>{{poussin.quantite}}</td>
+                    <td>{{poussin.cash}}</td>
+                    <td>{{poussin.mobilepay}}</td>
+                    <td>{{poussin.credit}}</td>
+                    <td>{{poussin.reste}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="7" align="center"> Tableau des consultations : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th colspan="7" align="center"> Recapitulatif des consultations : {{calandrier}} </th>
+            </tr>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Client</th>
+                <th scope="col">Poid</th>
+                <th scope="col">Observation</th>
+                <th scope="col">Conduit</th>
+                <th scope="col">Montant</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for consultation in consultations %}
+                <tr>
+                    <td>{{consultation.nom}}</td>
+                    <td>{{consultation.client.nom}}</td>
+                    <td>{{consultation.poid}}</td>
+                    <td>{{consultation.dianostique }}</td>
+                    <td>{{consultation.indication }}</td>
+                    <td>{{consultation.nomtant }}</td>
+                    <td>{{consultation.createtAd | date("Y-m-d") }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="7" align="center"> Tableau de Suivis : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th colspan="7" align="center"> Recapitulatif des suivis : {{calandrier}} </th>
+            </tr>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Client</th>
+                <th scope="col">Jour</th>
+                <th scope="col">Observation</th>
+                <th scope="col">Conduit</th>
+                <th scope="col">Montant</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for suivi in suivis %}
+                <td>{{suivi.nom}}</td>
+                <td>{{suivi.client.nom}}</td>
+                <td>{{suivi.jour | date("Y-m-d")}}</td>
+                <td>{{suivi.observation}}</td> 
+                <td>{{suivi.conduite}}</td> 
+                <td>{{suivi.montant}}</td> 
+                <td>{{suivi.createtAd | date("Y-m-d")}}</td> 
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="7" align="center"> Tableau des Vaccins : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th colspan="7" align="center"> Recapitulatif des Vaccins : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Client</th>
+                <th scope="col">Type Vaccin</th>
+                <th scope="col">Date Vaccin</th>
+                <th scope="col">Date Second Vaccin</th>
+                <th scope="col">Montant</th>
+                <th scope="col">Avance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vaccin in vaccins %}
+                <td>{{vaccin.sujet}}</td>
+                <td>{{vaccin.client.nom}}</td>
+                <td>{{vaccin.typeVaccin}}</td>
+                <td>{{vaccin.createtAD | date("Y-m-d")}}</td>
+                <td>{{vaccin.dateVaccin | date("Y-m-d")}}</td>
+                <td>{{vaccin.montant}}</td>
+                <td>{{vaccin.resteMontant}}</td>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="4" align="center"> Tableau Terrains : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th colspan="4" align="center"> Recapitulatif Terrains : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th scope="col">localisation</th>
+                <th scope="col">Client</th>
+                <th scope="col">telephone</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for terrain in terrains %}
+                <tr>
+                    <td>{{terrain.localisation}}</td>
+                    <td>{{terrain.client.nom}}</td>
+                    <td>{{terrain.client.telephone}}</td>
+                    <td>{{terrain.createtAt | date("Y-m-d")}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
 {% endblock %}

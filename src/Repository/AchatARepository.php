@@ -55,6 +55,16 @@ class AchatARepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByDayweek($date) : array 
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.createdAt = :endDate')
+            ->setParameter('endDate',$date)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findByDate($mois,$annee) : array
     {
         $mois = (int)$mois;
