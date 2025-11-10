@@ -66,6 +66,12 @@ class VenteA
     #[ORM\OneToMany(mappedBy: 'vente', targetEntity: QuantiteproduitA::class)]
     private Collection $quantiteproduitAs;
 
+    #[ORM\Column(length: 255)]
+    private ?string $esperce = null;
+
+    #[ORM\Column]
+    private ?float $om = null;
+
     public function __construct()
     {
         $this->factureAs = new ArrayCollection();
@@ -313,6 +319,30 @@ class VenteA
                 $quantiteproduitA->setVente(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEsperce(): ?string
+    {
+        return $this->esperce;
+    }
+
+    public function setEsperce(string $esperce): static
+    {
+        $this->esperce = $esperce;
+
+        return $this;
+    }
+
+    public function getOm(): ?float
+    {
+        return $this->om;
+    }
+
+    public function setOm(float $om): static
+    {
+        $this->om = $om;
 
         return $this;
     }
