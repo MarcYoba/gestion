@@ -69,6 +69,9 @@ class VenteA
     #[ORM\Column(length: 255)]
     private ?string $esperce = null;
 
+    #[ORM\Column]
+    private ?float $om = null;
+
     public function __construct()
     {
         $this->factureAs = new ArrayCollection();
@@ -328,6 +331,18 @@ class VenteA
     public function setEsperce(string $esperce): static
     {
         $this->esperce = $esperce;
+
+        return $this;
+    }
+
+    public function getOm(): ?float
+    {
+        return $this->om;
+    }
+
+    public function setOm(float $om): static
+    {
+        $this->om = $om;
 
         return $this;
     }

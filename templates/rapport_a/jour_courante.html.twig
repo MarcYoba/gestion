@@ -38,6 +38,7 @@
         {%  set sommeVente = 0 %}
         {%   set sommeCash = 0 %}
         {%   set sommeOm = 0 %}
+        {%   set sommemomo = 0 %}
         {%   set sommeCredit = 0 %}
         {%   set sommeReduction = 0 %}
          
@@ -94,7 +95,8 @@
                 {% set sommeVente = sommeVente + vente.prix %}
                 {% set sommeCash = sommeCash + vente.cash %}
                 {% set sommeCredit = sommeCredit + vente.credit %}
-                {% set sommeOm = sommeOm + vente.momo %}
+                {% set sommemomo = sommemomo + vente.momo %}
+                {% set sommeOm = sommeOm + vente.om %}
                 {% set sommeReduction = sommeReduction + vente.reduction %}
             {% endfor %}
             
@@ -104,14 +106,15 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="9" align="center"> Resultat vente du : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="10" align="center"> Resultat vente du : {{ "now" | date("Y-m-d")}} </th>
             </tr>
             <tr>
-                <th colspan="9" align="center"> Recapitulatif Vente </th>
+                <th colspan="10" align="center"> Recapitulatif Vente </th>
             </tr>
             <tr>
                 <th scope="col">Total Vente</th>
                 <th scope="col">Total Cash</th>
+                <th scope="col">Total MOMO</th>
                 <th scope="col">Total OM</th>
                 <th scope="col">Total Credit </th>
                 <th scope="col">Total reduction</th>
@@ -124,13 +127,14 @@
             <tbody>
                 <td>{{ sommeVente }}</td>
                 <td> {{ sommeCash }}</td>
+                <td> {{ sommemomo }}</td>
                 <td> {{ sommeOm }}</td>
                 <td>{{ sommeCredit }}</td>
                 <td>{{ sommeReduction }}</td>
                 <td>{{ sommedepense}}</td>
                 <td>{{ sommeVersement}}</td>
                 <td>{{sommeCaisse}}</td>
-                <td>{{sommeCash + sommeOm + sommeCaisse}}</td>
+                <td>{{sommeCash + sommeOm + sommeCaisse + sommemomo}}</td>
             </tbody>
         </thead>
     </table> 

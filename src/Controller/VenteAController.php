@@ -46,6 +46,9 @@ class VenteAController extends AbstractController
                     if ($lignevente['momo'] > 0) {
                         $type = "momo";
                     }
+                    if ($lignevente['om'] > 0) {
+                        $type = "OM";
+                    }
                     if ($lignevente['credit'] > 0) {
                         if (empty($type)) {
                             $type = "credit";
@@ -85,6 +88,7 @@ class VenteAController extends AbstractController
                     $vente->setCredit($lignevente['credit']);
                     $vente->setCash($lignevente['cash']);
                     $vente->setMomo($lignevente['momo']);
+                    $vente->setOm($lignevente['om']);
                     $vente->setEsperce($lignevente['esperce']);
                     $vente->setReduction($lignevente['reduction']);
                     $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);

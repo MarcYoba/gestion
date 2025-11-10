@@ -301,6 +301,7 @@ function recuperationdonneTable() {
         data.Banque = document.getElementById("Banque").value;
         data.statusvente = document.getElementById("statusvente").value;
         data.esperce = document.getElementById("typeespece").value;
+        data.om = document.getElementById("om").value;
 
         donnees.push({...data});  //on peut aussi  declarer directement let data = {} dans la boucle pour redure le programme
         data.value++;
@@ -353,8 +354,9 @@ function enregistrementDonnees(){
     let momo = document.getElementById("momo").value;
     let Banque = document.getElementById("Banque").value;
     let teste = document.getElementById("teste").textContent;
+    let om = document.getElementById("om").value;
 
-    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit)+parseInt(Banque) ;
+    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit)+parseInt(Banque)+parseInt(om) ;
     if ((somme) == (document.getElementById("Total").value)) 
     {
     
@@ -362,7 +364,17 @@ function enregistrementDonnees(){
             if (document.getElementById("cash").value == 0) {
                 if (document.getElementById("credit").value == 0) {
                     if (document.getElementById("Banque").value==0) {
+                        if (document.getElementById("om").value==0) {
                         document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH ou Credit</p>';  
+                        } else {
+                            if (teste == 0) {
+                                document.getElementById("teste").innerText = 1;
+                            }else{
+                                window.location.href = 'list'
+                            }
+                            enregistrementBD();
+                        }
+                        //document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH ou Credit</p>';  
                     } else {
                         if (teste == 0) {
                             document.getElementById("teste").innerText = 1;
@@ -534,7 +546,9 @@ function saveedite(){
     let momo = document.getElementById("momo").value;
     let Banque = document.getElementById("Banque").value;
     let teste = document.getElementById("teste").textContent;
-    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit)+parseInt(Banque) ;
+    let om = document.getElementById("om").value
+    ;
+    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit)+parseInt(Banque)+parseInt(om) ;
     if ((somme) == (document.getElementById("Total").value)) 
     {
     
@@ -542,7 +556,17 @@ function saveedite(){
             if (document.getElementById("cash").value == 0) {
                 if (document.getElementById("credit").value == 0) {
                     if (document.getElementById("Banque").value ==0) {
-                        document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH ou Credit</p>';
+                        if (document.getElementById("om").value==0) {
+                            document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH ou Credit</p>';  
+                        } else {
+                            if (teste == 0) {
+                                document.getElementById("teste").innerText = 1;
+                            }else{
+                                window.location.href = 'list'
+                            }
+                            enregistrementBD();
+                        }
+                        //document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH ou Credit</p>';
 
                     
                         if (teste == 0) {
