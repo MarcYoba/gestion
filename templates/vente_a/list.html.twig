@@ -51,7 +51,14 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="row">
+                                <div class="col-sm-10"> 
                                     <h6 class="m-0 font-weight-bold text-primary">Tables Vente</h6>
+                                </div>
+                                <div class="col-sm-2"> 
+                                    <a href="{{path('vente_excel_a')}}" class="btn btn-warning">
+                                        <i class="fa fa-download"></i>
+                                        EXPORTER</a>
+                                </div>
                             </div>
                             <form  action="{{path('vente_a_trie')}}" method="post" class="user row" >
 

@@ -14,6 +14,8 @@ use App\Form\VenteType;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,6 +52,10 @@ class VenteController extends AbstractController
                     if($lignevente['momo'] > 0) 
                     {
                         $type = "momo";
+                    } 
+                    if($lignevente['om'] > 0) 
+                    {
+                        $type = "om";
                     } 
                     if($lignevente['credit'] > 0)
                     {
@@ -96,6 +102,7 @@ class VenteController extends AbstractController
                     $vente->setMontantcredit($lignevente['credit']);
                     $vente->setMontantmomo($lignevente['momo']);
                     $vente->setReduction($lignevente['reduction']);
+                    $vente->setOm($lignevente['om']);
 
                     $vente->setAgence($tempagence->getAgence());
                     $entityManager->persist($vente);
@@ -542,6 +549,74 @@ class VenteController extends AbstractController
                 'Content-Disposition' => 'inline; filename="tri.pdf"', // 'inline' pour affichage navigateur
             ]
         );   
+    }
+
+    #[Route('/vente/export/excel', name: 'vente_excel')]
+    public function expert_excel(EntityManagerInterface $em) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'id');
+        $sheet->setCellValue('B1', 'TYPE VENTE');
+        $sheet->setCellValue('C1', 'QUANTITE');
+        $sheet->setCellValue('D1', 'PRIX');
+        $sheet->setCellValue('E1', 'CLIENT');
+        $sheet->setCellValue('F1', 'USER');
+        $sheet->setCellValue('G1', 'DATE VENTE');
+        $sheet->setCellValue('H1', 'ESPERCE');
+        $sheet->setCellValue('I1', 'ALIMENT');
+        $sheet->setCellValue('G1', 'HEURE');
+        $sheet->setCellValue('K1', 'STATUS');
+        $sheet->setCellValue('L1', 'CREDIT');
+        $sheet->setCellValue('M1', 'CASH');
+        $sheet->setCellValue('N1', 'BANQUE');
+        $sheet->setCellValue('O1', 'MOMO');
+        $sheet->setCellValue('P1', 'REDUCTION');
+        $sheet->setCellValue('Q1', 'OM');
+      //  $sheet->setCellValue('R1', 'MOMO');
+
+            $i = 2;
+            $vente = $em->getRepository(Vente::class)->findBy(['agence'=>$id]);
+            foreach ($vente as $key => $value) {
+                $sheet->setCellValue('A'.$i, $value->getId());
+                $sheet->setCellValue('B'.$i, $value->getType());
+                $sheet->setCellValue('C'.$i, $value->getQuantite());
+                $sheet->setCellValue('D'.$i, $value->getPrix());
+                $sheet->setCellValue('E'.$i, $value->getClient()->getNom());
+                $sheet->setCellValue('F'.$i, $value->getUser()->getUsername());
+                $sheet->setCellValue('G'.$i, $value->getCreatedAt());
+                $sheet->setCellValue('H'.$i, $value->getEsperce());
+                $sheet->setCellValue('I'.$i, $value->getAliment());
+                $sheet->setCellValue('G'.$i, $value->getHeure());
+                $sheet->setCellValue('K'.$i, $value->getStatusvente());
+                $sheet->setCellValue('L'.$i, $value->getMontantcredit());
+                $sheet->setCellValue('M'.$i, $value->getMontantcash());
+                $sheet->setCellValue('N'.$i, $value->getMontantbanque());
+                $sheet->setCellValue('O'.$i, $value->getMontantmomo());
+                $sheet->setCellValue('P'.$i, $value->getReduction());
+                $sheet->setCellValue('Q'.$i, $value->getOm());
+               // $sheet->setCellValue('R'.$i, $value->getMontantmomo());
+                $i =$i+1;
+            }
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_vente.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;
+        
     }
     
 }

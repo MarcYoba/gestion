@@ -78,6 +78,9 @@ class Vente
     #[ORM\ManyToOne(inversedBy: 'ventes')]
     private ?Agence $agence = null;
 
+    #[ORM\Column]
+    private ?float $om = null;
+
     public function __construct()
     {
         $this->facture = new ArrayCollection();
@@ -357,6 +360,18 @@ class Vente
     public function setAgence(?Agence $agence): static
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    public function getOm(): ?float
+    {
+        return $this->om;
+    }
+
+    public function setOm(float $om): static
+    {
+        $this->om = $om;
 
         return $this;
     }
