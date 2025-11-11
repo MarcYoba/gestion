@@ -31,10 +31,12 @@ class ProduitAController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $nom = $form->get('nom')->getData();
+            $nom = mb_strtoupper($nom, 'UTF-8');
             $produitExite = $em->getRepository(ProduitA::class)->findBy(['nom' => $nom]);
             if (!empty($produitExite)) {
                return $this->redirectToRoute("produit_a_list"); 
             }
+            $produitA->setNom($nom);
             $produitA->setUser($this->getUser());
             $produitA->setGain(0);
             $produitA->setStockdebut($produitA->getQuantite());

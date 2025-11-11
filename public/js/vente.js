@@ -311,6 +311,7 @@ function recuperationdonneTable() {
         data.esperce = document.getElementById("esperce").value;
         data.aliment = document.getElementById("aliment").value;
         data.statusvente = document.getElementById("statusvente").value;
+        data.om = document.getElementById("OM").value;
 
         donnees.push({...data});  //on peut aussi  declarer directement let data = {} dans la boucle pour redure le programme
         data.value++;
@@ -363,7 +364,8 @@ function enregistrementDonnees(){
     let momo = document.getElementById("momo").value;
     let banque = document.getElementById("Banque").value;
     let teste = document.getElementById("teste").textContent;
-    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit) + parseInt(banque) ;
+    let om = document.getElementById("OM").value;
+    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit) + parseInt(banque) + parseInt(om);
     if ((somme) == (document.getElementById("Total").value)) 
     {
     
@@ -371,7 +373,17 @@ function enregistrementDonnees(){
             if (document.getElementById("cash").value == 0) {
                 if (document.getElementById("credit").value == 0) {
                     if (document.getElementById("Banque").value ==0) {
-                        document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH/Banque ou Credit</p>';
+                        if (document.getElementById("OM").value ==0) {
+                            document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH/Banque ou Credit</p>';
+                        } else {
+                            if (teste == 0) {
+                                document.getElementById("teste").innerText = 1;
+                            }else{
+                                window.location.href = 'list'
+                            }
+                            enregistrementBD();
+                        }
+                       // document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH/Banque ou Credit</p>';
                     } else {
                         if (teste == 0) {
                             document.getElementById("teste").innerText = 1;
@@ -543,7 +555,8 @@ function saveedite(){
     let momo = document.getElementById("momo").value;
     let banque = document.getElementById("Banque").value;
     let teste = document.getElementById("teste").textContent;
-    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit)+parseInt(banque) ;
+    let om = document.getElementById("OM").value;
+    somme = parseInt(momo) + parseInt(cahs)+parseInt(credit)+parseInt(banque) +parseInt(om) ;
     if ((somme) == (document.getElementById("Total").value)) 
     {
     
@@ -551,7 +564,19 @@ function saveedite(){
             if (document.getElementById("cash").value == 0) {
                 if (document.getElementById("credit").value == 0) {
                     if (document.getElementById("Banque").value==0) {
-                        document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH ou Credit</p>';
+                        if (document.getElementById("OM").value==0) {
+                            document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH ou Credit</p>';
+                            if (teste == 0) {
+                                document.getElementById("teste").innerText = 1;
+                            }else{
+                                alert("Voullez - Vous Vraiment modifier cette facture ?");
+                                document.getElementById("teste").innerText = 0;
+                                enregistrementEdite()
+                            }
+                        } else {
+                            enregistrementEdite()
+                        }
+                        //document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH ou Credit</p>';
                         if (teste == 0) {
                             document.getElementById("teste").innerText = 1;
                         }else{

@@ -86,29 +86,44 @@
                                             
                                             <div class="row">
                                                 
-                                                <p class="col-md-2" >Quantite Total  <br> <span id="quantitetotal">0</span></p>
-                                                <p class="col-md-2" >Montant Total  <br> <span id="prixtotal">0</span></p>
-                                                <p class="col-md-3" >
-                                                    date vente non enregistrer:
+                                                <div class="col-md-2" >Quantite Total  <br> <span id="quantitetotal">0</span></div>
+                                                <div class="col-md-2" >Montant Total  <br> <span id="prixtotal">0</span></div>
+                                                <div class="col-md-2" >
+                                                    date vente:
                                                     <input type="date" class="form-control form-control-user"
                                                     name="datevente" id="datevente" placeholder="quantite" required>
-                                                </p>
+                                                </div>
                                                 
-                                                <p class="col-md-2" >
+                                                <div class="col-md-2" >
                                                     <span id="TypePaie" class="drop" ></span>
                                                     <span id="teste" class="drop" >0</span>
                                                    Total reduction <input type="number" class="form-control form-control-user"
                                                 name="caculelreduction" id="caculelreduction" placeholder="reduction produit" readonly value="0">
-                                                </p>
+                                                </div>
+                                                <div class="col-md-2" >
+                                                    Reduction
+                                                    <input type="number" class="form-control form-control-user"
+                                                    name="reduction" id="reduction" value="0" required>
+                                                </div>
+                                                <div class="col-md-2" >
+                                                    Net payer
+                                                    <input type="txt" class="form-control form-control-user"
+                                                     name="Total" id="Total" placeholder="0 FCFA"  readonly>
+                                                </div>
                                             </div>
                                             <br>
                                             <span id= "message"></span>
                                             <div class="row">
                                                 
                                                 <p class="col-md-2" >
-                                                    MOM/OM
+                                                    MOMO
                                                     <input type="number" class="form-control form-control-user"
                                                     name="momo" id="momo" value="0" required>
+                                                </p>
+                                                <p class="col-md-2" >
+                                                    OM
+                                                    <input type="number" class="form-control form-control-user"
+                                                    name="OM" id="OM" value="0" required>
                                                 </p>
                                                 <p class="col-md-2" >
                                                     Cash
@@ -125,17 +140,6 @@
                                                     <input type="number" class="form-control form-control-user"
                                                     name="Banque" id="Banque" value="0" required>
                                                 </p>
-                                                <p class="col-md-2" >
-                                                    Reduction
-                                                    <input type="number" class="form-control form-control-user"
-                                                    name="reduction" id="reduction" value="0" required>
-                                                </p>
-                                                <p class="col-md-2" >
-                                                    Net payer
-                                                    <input type="txt" class="form-control form-control-user"
-                                                     name="Total" id="Total" placeholder="0 FCFA"  readonly>
-                                                </p>
-                                                
                                                 
                                             </div>
                                             <div class="row">
