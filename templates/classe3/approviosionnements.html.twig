@@ -1,0 +1,202 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Classe2Controller!{% endblock %}
+
+{% block body %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Bootstrap core CSS -->
+    
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {% include "navbar.html.twig" %}    
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                {% include "topbar.html.twig" %}
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <h6 class="m-0 font-weight-bold text-success">CAPITAL</h6>      
+                                </div>
+                                <div class="col-sm-2">
+                                    <i class="fa fa-home"></i>
+                                    <a href="../../home.php" class="btn btn-primary">Home</a> 
+                                </div>
+                                <div class="col-sm-2">
+                                    <i class="fa fa-plus"></i> 
+                                    <a href="vente.php" class="btn btn-success"> Ajouter</a>         
+                                </div>
+                                <div class="col-sm-2"> 
+                                    <a href="#" class="btn btn-warning">
+                                        <i class="fa fa-download"></i>
+                                        EXPORTER</a>
+                                </div>
+                            </div>
+                            
+                            <!-- Votre formulaire de filtres ici -->
+                            <form action="../pdf/getTypeVente.php" method="post" class="user row">
+                                
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6"> 
+                                    <a href="#CLASSE36" class="btn btn-warning">
+                                       CLASSE 32 - STOCKS D'AUTRES APPROVISIONNEMENTS
+                                    </a>
+                                </div>
+                                <div class="col-sm-6"> 
+                                    <a href="#CLASSE37" class="btn btn-warning">
+                                        CLASSE 37 - STOCKS EN COURS DE ROUTE
+                                    </a>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                    
+                <div class="container-fluid" id="CLASSE36">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="col-sm-6">
+                                <h6 class="m-0 font-weight-bold text-success">CLASSE 32 - STOCKS D'AUTRES APPROVISIONNEMENTS</h6>      
+                            </div>
+                            <!-- Votre formulaire de filtres ici -->
+                            <form action="#" method="post" class="user row">
+                                
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Libellé de l'écriture</th>
+                                            <th>Compte</th>
+                                            <th>Débit</th>
+                                            <th>Crédit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>JJ/MM/AAAA</td>
+                                            <td>Achat carburant stock</td>
+                                            <td>321. Combustibles et carburants</td>
+                                            <td>5 000 000</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>52. Banque</td>
+                                            <td></td>
+                                            <td>5 000 000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid" id="CLASSE37">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="col-sm-6">
+                                <h6 class="m-0 font-weight-bold text-success">CLASSE 37 - STOCKS EN COURS DE ROUTE</h6>      
+                            </div>
+                            <!-- Votre formulaire de filtres ici -->
+                            <form action="#" method="post" class="user row">
+                                
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Libellé de l'écriture</th>
+                                            <th>Compte</th>
+                                            <th>Débit</th>
+                                            <th>Crédit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>JJ/MM/AAAA</td>
+                                            <td>Facture marchandises en route</td>
+                                            <td>376. Marchandises en cours de route</td>
+                                            <td>1 200 000</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>401. Fournisseurs</td>
+                                            <td></td>
+                                            <td>1 200 000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>PRODUCTION &copy;  {{"now" | date('Y-m-d')}}</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+
+</body>
+</html>
+{% endblock %}
