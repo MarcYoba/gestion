@@ -97,9 +97,9 @@
                                         <tr>
                                             <th>id</th>
                                             <th>Nom</th>
-                                            
                                             <th>Quantite</th>
                                             <th>Montant</th>
+                                            <th>Type paiement</th>
                                             <th>Date</th>
                                             <th>Operation</th>
                                             <th>Bon</th>
@@ -109,9 +109,9 @@
                                         <tr>
                                             <th>id</th>
                                             <th>Nom</th>
-                                            
                                             <th>Quantite</th>
                                             <th>Montant</th>
+                                            <th>Type paiement</th>
                                             <th>Date</th>
                                             <th>Operation</th>
                                             <th>Bon</th>
@@ -125,6 +125,7 @@
                                                 <td>{{ row.quantite }}</td>
                                                 <td>{{ row.prix }}</td>
                                                 <td>{{ row.montant }}</td>
+                                                <td></td>
                                                 <td>{{ row.createdAt|date('Y-m-d') }}</td>  
                                                     <td>
                                                         <a href='#' class='btn btn-primary' id='modification'><i class='fas fa-pencil-alt '></i></a>
