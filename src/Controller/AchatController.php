@@ -50,6 +50,7 @@ class AchatController extends AbstractController
                     $achat->setPrix($key["prix"]);
                     $achat->setQuantite($key["quantite"]);
                     $achat->setMontant($key["total"]);
+                    $achat->setType($key["type"]);
                     $achat->setUser($this->getUser());
                     $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $this->getUser()]);
                     $achat->setAgence($tempagence->getAgence());
@@ -99,5 +100,76 @@ class AchatController extends AbstractController
             'produit' => $produit,
             'fournisseur' => $fournisseur,
         ]);
+    }
+
+    #[Route('/achat/edit/{id}', name: 'app_achat_edit')]
+    public function Edit(EntityManagerInterface $entityManager, Achat $achat) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" =>$user]);
+        $id = $tempagence->getAgence()->getId();        
+        if (!$achat) {
+            return $this->redirectToRoute('achat_list');
+        }
+        $produit = $entityManager->getRepository(Produit::class)->findAll();
+        $fournisseur = $entityManager->getRepository(Fournisseur::class)->findBy(["agence" => $id]);
+
+        return $this->render('achat/edit.html.twig', [
+            'achats' => $achat, 
+            'produit' => $produit,
+            'fournisseur' => $fournisseur,
+        ]);
+    }
+
+    #[Route('/achat/update',name:'achat_update', methods:'POST' )]
+    public function update(EntityManagerInterface $entityManager, Request $request) : Response 
+    {
+       $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" =>$user]);
+        $id = $tempagence->getAgence()->getId(); 
+        $achats = $request->request->all('achats');
+        foreach ($achats as $key => $value) {
+            $achat = $entityManager->getRepository(Achat::class)->find($key);
+            $produit = $entityManager->getRepository(Produit::class)->find($value['produit']); 
+
+            if (!empty($value['quantite_nouvelle']) && !empty($value['prix_nouvelle'])) {
+                $quantitestock =  $produit->getQuantite() - $value['quantite_precedent'];
+            
+                $produit->setQuantite($quantitestock + $value['quantite_nouvelle']);
+
+                $achat->setQuantite($value['quantite_nouvelle']);
+                $achat->setPrix($value['prix_nouvelle']);
+                $achat->setMontant($value['quantite_nouvelle'] * $value['prix_nouvelle']);
+
+                $entityManager->persist($produit);
+                $entityManager->flush();
+            }
+
+            $achat->settype($value['type']);
+            $achat->setUser($user);
+
+            $entityManager->persist($achat);
+            $entityManager->flush();
+            
+        }
+
+        return $this->redirectToRoute('achat_list');
+    }
+
+    #[Route('achat/delete/{id}', name:'achat_delete')]
+    public function delete(EntityManagerInterface $entityManager, Achat $achat) : Response 
+    {
+        if ($achat) {
+            $produit = $entityManager->getRepository(Produit::class)->find($achat->getProduit()->getId());
+            if($produit){
+                $quantite = $produit->getQuantite();
+                $produit->setQuantite($quantite- $achat->getQuantite());
+
+                $entityManager->persist($produit);
+                $entityManager->flush();
+            }
+            
+        }
+        return $this->redirectToRoute('achat_list');
     }
 }
