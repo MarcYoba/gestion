@@ -40,6 +40,7 @@ class AchatAController extends AbstractController
                     $achatA->setPrix($key["prix"]);
                     $achatA->setQuantite($key["quantite"]);
                     $achatA->setMontant($key["total"]);
+                    $achatA->setType($key['type']);
                     $achatA->setUser($this->getUser());
                     $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
                     $achatA->setAgence($tempagence->getAgence());
