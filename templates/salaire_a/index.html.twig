@@ -32,7 +32,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-success">
 
     <div class="container">
 
@@ -55,8 +55,8 @@
                                         {{form_widget(form.montant)}}
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="salaire_status">{{ form_label(form.createdAd) }}</label>
-                                        {{form_widget(form.createdAd)}}
+                                        <label for="salaire_status">{{ form_label(form.createtAt) }}</label>
+                                        {{form_widget(form.createtAt)}}
                                     </div>
                                     <div class="col-md-4">
                                         <label for="salaire_status">{{ form_label(form.status) }}</label>
@@ -102,3 +102,4 @@
 </body>
 </html>
 {% endblock %}
+

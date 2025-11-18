@@ -176,6 +176,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ImmobilisationA::class)]
     private Collection $immobilisationAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Salaire::class)]
+    private Collection $salaires;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SalaireA::class)]
+    private Collection $salaireAs;
+
     
 
     public function __construct() {
@@ -222,6 +228,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->balanceAs = new ArrayCollection();
         $this->immobilisations = new ArrayCollection();
         $this->immobilisationAs = new ArrayCollection();
+        $this->salaires = new ArrayCollection();
+        $this->salaireAs = new ArrayCollection();
         
     }
 
@@ -1595,6 +1603,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($immobilisationA->getUser() === $this) {
                 $immobilisationA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Salaire>
+     */
+    public function getSalaires(): Collection
+    {
+        return $this->salaires;
+    }
+
+    public function addSalaire(Salaire $salaire): static
+    {
+        if (!$this->salaires->contains($salaire)) {
+            $this->salaires->add($salaire);
+            $salaire->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalaire(Salaire $salaire): static
+    {
+        if ($this->salaires->removeElement($salaire)) {
+            // set the owning side to null (unless already changed)
+            if ($salaire->getUser() === $this) {
+                $salaire->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SalaireA>
+     */
+    public function getSalaireAs(): Collection
+    {
+        return $this->salaireAs;
+    }
+
+    public function addSalaireA(SalaireA $salaireA): static
+    {
+        if (!$this->salaireAs->contains($salaireA)) {
+            $this->salaireAs->add($salaireA);
+            $salaireA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalaireA(SalaireA $salaireA): static
+    {
+        if ($this->salaireAs->removeElement($salaireA)) {
+            // set the owning side to null (unless already changed)
+            if ($salaireA->getUser() === $this) {
+                $salaireA->setUser(null);
             }
         }
 

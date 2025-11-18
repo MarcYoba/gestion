@@ -2,11 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Agence;
-use App\Entity\Employer;
-use App\Entity\Salaire;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\SalaireA;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -15,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SalaireType extends AbstractType
+class SalaireAType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -27,7 +23,7 @@ class SalaireType extends AbstractType
                     'class' => 'form-control form-control-user'
                 ]
             ])
-            ->add('createdAd',DateType::class,[
+            ->add('createtAt',DateType::class,[
                 'attr' => ['class' => 'form-control form-control-user'],
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable'
@@ -83,7 +79,7 @@ class SalaireType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Salaire::class,
+            'data_class' => SalaireA::class,
         ]);
     }
 }
