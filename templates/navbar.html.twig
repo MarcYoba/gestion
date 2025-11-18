@@ -326,10 +326,31 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Employer</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_employer') }}">Employer</a>
                 <a class="collapse-item" href="{{ path('employer_list') }}">Liste </a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_employer') }}">Employer</a>
                 <a class="collapse-item" href="{{ path('employer_list') }}">Liste </a>
+            {% endif %}
+        </div>
+    </div>
+    </li>
+
+    <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Salaire"
+        aria-expanded="true" aria-controls="Salaire">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Salaire </span>
+    </a>
+    <div id="Salaire" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Salaire</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_salaire') }}">Salaire</a>
+                <a class="collapse-item" href="{{ path('app_salaire_list') }}">Liste </a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_salaire') }}">Salaire</a>
+                <a class="collapse-item" href="{{ path('app_salaire_list') }}">Liste </a>
             {% endif %}
         </div>
     </div>

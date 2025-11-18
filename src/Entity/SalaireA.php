@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\SalaireRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\SalaireARepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SalaireRepository::class)]
-class Salaire
+#[ORM\Entity(repositoryClass: SalaireARepository::class)]
+class SalaireA
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,12 +18,12 @@ class Salaire
     private ?float $montant = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $createdAd = null;
+    private ?\DateTimeInterface $createtAt = null;
 
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'salaires')]
+    #[ORM\ManyToOne(inversedBy: 'salaireAs')]
     private ?Employer $employer = null;
 
     #[ORM\Column]
@@ -37,10 +35,10 @@ class Salaire
     #[ORM\Column]
     private ?float $impots = null;
 
-    #[ORM\ManyToOne(inversedBy: 'salaires')]
+    #[ORM\ManyToOne(inversedBy: 'salaireAs')]
     private ?Agence $agence = null;
 
-    #[ORM\ManyToOne(inversedBy: 'salaires')]
+    #[ORM\ManyToOne(inversedBy: 'salaireAs')]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
@@ -63,14 +61,14 @@ class Salaire
         return $this;
     }
 
-    public function getCreatedAd(): ?\DateTimeInterface
+    public function getCreatetAt(): ?\DateTimeInterface
     {
-        return $this->createdAd;
+        return $this->createtAt;
     }
 
-    public function setCreatedAd(\DateTimeInterface $createdAd): static
+    public function setCreatetAt(\DateTimeInterface $createtAt): static
     {
-        $this->createdAd = $createdAd;
+        $this->createtAt = $createtAt;
 
         return $this;
     }
@@ -170,8 +168,4 @@ class Salaire
 
         return $this;
     }
-
-   
-
-   
 }
