@@ -110,6 +110,7 @@ function enregistrementDonnees(){
 const tableau = document.getElementById('dataTable');
 const datevar = document.getElementById('datefacture').value;
 const datepremtion = document.getElementById('peramtion').value;
+const type = document.getElementById('type').value;
 console.log(datevar);
 
 let donnees = [];
@@ -130,6 +131,7 @@ for (let index = 2; index < tableau.rows.length; index++) {
     data.total = cellule5.textContent;
     data.datevalue = datevar;
     data.datepera = datepremtion;
+    data.type = type;
     //console.log(data);
     donnees.push({...data});  //on peut aussi  declarer directement let data = {} dans la boucle pour redure le programme
     data.value++;
