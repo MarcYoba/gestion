@@ -70,14 +70,22 @@
                                             </div>
                                             <br>
                                             <div class="row">
-                                                <p class="btn btn-warning btn-user col-md-4" onclick="ajouterLigne('dataTable', 
+                                                <p class="btn btn-warning btn-user col-md-3" onclick="ajouterLigne('dataTable', 
                                                 5, 10)">ajouter ligne d'achat</p>
                                                 <p class="col-md-2" >quantite : <span id="quantitetotal">0</span></p>
                                                 <p class="col-md-2" >prix : <span id="prixtotal">0</span></p>
                                                 <p class="col-md-3" >
                                                     <input type="date" class="form-control form-control-user" id="datefacture"
-                                                name="datefacture" placeholder="date achat">
-                                            </p>
+                                                    name="datefacture" placeholder="date achat">
+                                                </p>
+                                                <p class="col-md-2" >
+                                                    <select class="form-control form-control-user" name="type" id="type" required>
+                                                        <option value="CASH">CASH</option> 
+                                                        <option value="CREDIT">CREDIT</option>
+                                                        <option value="ESPERCES">ESPERCES</option>
+                                                        <option value="BANQUE">BANQUE</option>
+                                                    </select>
+                                                </p>
                                             </div>
                                             <span id="verificatiobDonne"></span>
                                         </div>

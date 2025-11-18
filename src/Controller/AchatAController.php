@@ -95,4 +95,58 @@ class AchatAController extends AbstractController
             'achats' => $achatA,
         ]);
     }
+
+    #[Route('/achat/a/edit/{id}', name: 'app_achat_edit_a')]
+    public function Edit(EntityManagerInterface $entityManager, AchatA $achat) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" =>$user]);
+        $id = $tempagence->getAgence()->getId();        
+        if (!$achat) {
+            return $this->redirectToRoute('achat_a_list');
+        }
+        $produit = $entityManager->getRepository(ProduitA::class)->findAll();
+        $fournisseur = $entityManager->getRepository(FournisseurA::class)->findBy(["agence" => $id]);
+
+        return $this->render('achat_a/edit.html.twig', [
+            'achats' => $achat, 
+            'produit' => $produit,
+            'fournisseur' => $fournisseur,
+        ]);
+    }
+
+    #[Route('/achat/a/update',name:'achat_update_a', methods:'POST' )]
+    public function update(EntityManagerInterface $entityManager, Request $request) : Response 
+    {
+       $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" =>$user]);
+        $id = $tempagence->getAgence()->getId(); 
+        $achats = $request->request->all('achats');
+        foreach ($achats as $key => $value) {
+            $achat = $entityManager->getRepository(AchatA::class)->find($key);
+            $produit = $entityManager->getRepository(ProduitA::class)->find($value['produit']); 
+
+            if (!empty($value['quantite_nouvelle']) && !empty($value['prix_nouvelle'])) {
+                $quantitestock =  $produit->getQuantite() - $value['quantite_precedent'];
+            
+                $produit->setQuantite($quantitestock + $value['quantite_nouvelle']);
+
+                $achat->setQuantite($value['quantite_nouvelle']);
+                $achat->setPrix($value['prix_nouvelle']);
+                $achat->setMontant($value['quantite_nouvelle'] * $value['prix_nouvelle']);
+
+                $entityManager->persist($produit);
+                $entityManager->flush();
+            }
+
+            $achat->settype($value['type']);
+            $achat->setUser($user);
+
+            $entityManager->persist($achat);
+            $entityManager->flush();
+            
+        }
+
+        return $this->redirectToRoute('achat_a_list');
+    }
 }

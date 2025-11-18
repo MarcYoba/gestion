@@ -111,7 +111,8 @@ function ajouterLigne(dataTable,...donnees){
 function enregistrementDonnees(){
     const tableau = document.getElementById('dataTable');
     const datevar = document.getElementById('datefacture').value;
-    console.log(datevar);
+    const Type = document.getElementById('type').value;
+    
 
     let donnees = [];
     let data = {};
@@ -130,6 +131,7 @@ function enregistrementDonnees(){
             data.prix = cellule4.textContent;
             data.total = cellule5.textContent;
             data.datevalue = datevar;
+            data.type = Type;
 
             //console.log(data);
             donnees.push({...data});  //on peut aussi  declarer directement let data = {} dans la boucle pour redure le programme
