@@ -155,6 +155,9 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: SalaireA::class)]
     private Collection $salaireAs;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Sociales::class)]
+    private Collection $sociales;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -198,6 +201,7 @@ class Agence
         $this->immobilisationAs = new ArrayCollection();
         $this->salaires = new ArrayCollection();
         $this->salaireAs = new ArrayCollection();
+        $this->sociales = new ArrayCollection();
     }
 
    
@@ -1491,6 +1495,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($salaireA->getAgence() === $this) {
                 $salaireA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sociales>
+     */
+    public function getSociales(): Collection
+    {
+        return $this->sociales;
+    }
+
+    public function addSociale(Sociales $sociale): static
+    {
+        if (!$this->sociales->contains($sociale)) {
+            $this->sociales->add($sociale);
+            $sociale->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSociale(Sociales $sociale): static
+    {
+        if ($this->sociales->removeElement($sociale)) {
+            // set the owning side to null (unless already changed)
+            if ($sociale->getAgence() === $this) {
+                $sociale->setAgence(null);
             }
         }
 

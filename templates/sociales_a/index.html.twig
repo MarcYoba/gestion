@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sociales{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+    
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    
+    <style>
+        .drop{
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body class="bg-gradient-success">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-2 d-none d-lg-block bg-register-image">
+                    {% include "navbarA.html.twig" %}
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="p-5">
+
+                            <hr>
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4 text-green">Charge Sociales</h1>
+                            </div>
+                            {{ form_start(form)}}
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <label for="salaire_status">{{ form_label(form.nom) }}</label>
+                                        {{form_widget(form.nom)}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="salaire_status">{{ form_label(form.numeroCotisation) }}</label>
+                                        {{form_widget(form.numeroCotisation)}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="salaire_status">{{ form_label(form.profession) }}</label>
+                                        {{form_widget(form.profession)}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="salaire_status">{{ form_label(form.cni) }}</label>
+                                        {{form_widget(form.cni)}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="salaire_status">{{ form_label(form.du) }}</label>
+                                        {{form_widget(form.du)}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="salaire_status">{{ form_label(form.ville) }}</label>
+                                        {{form_widget(form.ville)}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="salaire_status">{{ form_label(form.parent) }}</label>
+                                        {{form_widget(form.parent)}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="salaire_status">{{ form_label(form.identite) }}</label>
+                                        {{form_widget(form.identite)}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="salaire_status">{{ form_label(form.delivree) }}</label>
+                                        {{form_widget(form.delivree)}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="salaire_status">{{ form_label(form.city) }}</label>
+                                        {{form_widget(form.city)}}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="salaire_status">{{ form_label(form.createtAt) }}</label>
+                                        {{form_widget(form.createtAt)}}
+                                    </div>
+                                
+                                </div>
+                            {{form_end(form)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+
+</body>
+</html>
+{% endblock %}

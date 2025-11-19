@@ -404,7 +404,27 @@
             {% endif %}
         </div>
     </div>
-    </li>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#sociales"
+        aria-expanded="true" aria-controls="sociales">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>charges sociales </span>
+    </a>
+    <div id="sociales" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">charges sociales</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_sociales_a') }}">Declaration sociales</a>
+                <a class="collapse-item" href="{{ path('app_sociales_list_a') }}">Liste </a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_sociales_a') }}">Declaration sociales</a>
+                <a class="collapse-item" href="{{ path('app_sociales_list_a') }}">Liste </a>
+            {% endif %}
+        </div>
+    </div>
+</li>
 
 <!-- Divider -->
 <hr class="sidebar-divider">

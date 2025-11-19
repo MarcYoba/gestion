@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello socialeController!{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+    
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    
+    <style>
+        .drop{
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-2 d-none d-lg-block bg-register-image">
+                        {% include "navbar.html.twig" %}
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="p-5">
+                            
+                            <hr>
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4 text-green">Edit Charge Sociales</h1>
+                            </div>
+                            <form class="user" action="{{path('app_sociales_update')}}" method="post" enctype="multipart/form-data">
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <label for="sociale_status">Nom complet</label>
+                                        <input type="text" class="form-control form-control-user" name="sociales[{{sociale.id}}][nom]" value="{{sociale.nom}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="sociale_status">Date de enregistrement</label>
+                                        <input type="date" class="form-control form-control-user" name="sociales[{{sociale.id}}][createtAt]" value="{{sociale.createtAt | date('Y-m-d')}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="sociale_status">Numero Cotisation</label>
+                                        <input type="text" class="form-control form-control-user" name="sociales[{{sociale.id}}][numeroCotisation]" value="{{sociale.numeroCotisation}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="sociale_status"> Profession </label>
+                                        <input type="text" class="form-control form-control-user" name="sociales[{{sociale.id}}][profession]" value="{{sociale.profession}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="sociale_status">Numero de carte d'identite</label>
+                                        <input type="text" class="form-control form-control-user" name="sociales[{{sociale.id}}][cni]" value="{{sociale.cni}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="sociale_status">Date de delivrance</label>
+                                        <input type="text" class="form-control form-control-user" name="sociales[{{sociale.id}}][du]" value="{{sociale.du}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="sociale_status">Lieux de delivrance</label>
+                                        <input type="text" class="form-control form-control-user" name="sociales[{{sociale.id}}][ville]" value="{{sociale.ville}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="sociale_status">Nom du parent</label>
+                                        <input type="text" class="form-control form-control-user" name="sociales[{{sociale.id}}][parent]" value="{{sociale.parent}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="sociale_status">Numero de carte d'identite</label>
+                                        <input type="text" class="form-control form-control-user" name="sociales[{{sociale.id}}][identite]" value="{{sociale.identite}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="sociale_status">Date de delivrance</label>
+                                        <input type="text" class="form-control form-control-user" name="sociales[{{sociale.id}}][delivree]" value="{{sociale.delivree}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="sociale_status">Lieux de delivrance</label>
+                                        <input type="text" class="form-control form-control-user" name="sociales[{{sociale.id}}][city]" value="{{sociale.city}}">
+                                    </div>
+                                    <br>
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                        Enregistrer
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+
+</body>
+</html>
+{% endblock %}
