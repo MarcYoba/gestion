@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}emprunt!{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+    
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    
+    <style>
+        .drop{
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-2 d-none d-lg-block bg-register-image">
+                        {% include "navbar.html.twig" %}
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="p-5">
+                            
+                            <hr>
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4 text-green">Edit Emprunt</h1>
+                            </div>
+                            <form class="user" action="{{path('app_emprunt_update')}}" method="post" enctype="multipart/form-data">
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <label for="emprunt_status">Type de pret</label>
+                                        <input type="text" class="form-control form-control-user" name="emprunts[{{emprunt.id}}][type]" value="{{emprunt.type}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="emprunt_status">Date de enregistrement</label>
+                                        <input type="date" class="form-control form-control-user" name="emprunts[{{emprunt.id}}][createtAt]" value="{{emprunt.createtAt | date('Y-m-d')}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="emprunt_status">montant</label>
+                                        <input type="number" class="form-control form-control-user" name="emprunts[{{emprunt.id}}][montant]" value="{{emprunt.montant}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="emprunt_status"> durre emprunt </label>
+                                        <input type="text" class="form-control form-control-user" name="emprunts[{{emprunt.id}}][durre]" value="{{emprunt.durre}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="emprunt_status">Taux Interet debiteur</label>
+                                        <input type="number" class="form-control form-control-user" name="emprunts[{{emprunt.id}}][tauxinteretdebiteur]" value="{{emprunt.tauxinteretdebiteur}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="emprunt_status">Taux annuel effectif global</label>
+                                        <input type="number" class="form-control form-control-user" name="emprunts[{{emprunt.id}}][tauxannueleffectifglobal]" value="{{emprunt.tauxannueleffectifglobal}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="emprunt_status">Cout total</label>
+                                        <input type="number" class="form-control form-control-user" name="emprunts[{{emprunt.id}}][couttotal]" value="{{emprunt.couttotal}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="emprunt_status">Garantie</label>
+                                        <input type="text" class="form-control form-control-user" name="emprunts[{{emprunt.id}}][garantie]" value="{{emprunt.garantie}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="emprunt_status">Identite preteur</label>
+                                        <input type="text" class="form-control form-control-user" name="emprunts[{{emprunt.id}}][identitepreteur]" value="{{emprunt.identitepreteur}}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="emprunt_status">Emprunteur</label>
+                                        <input type="text" class="form-control form-control-user" name="emprunts[{{emprunt.id}}][emprunteur]" value="{{emprunt.emprunteur}}">
+                                    </div>
+                                    
+                                    <br>
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                        Enregistrer
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+
+</body>
+</html>
+{% endblock %}
