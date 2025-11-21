@@ -426,6 +426,26 @@
     </div>
 </li>
 
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Emprunt"
+        aria-expanded="true" aria-controls="Emprunt">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Emprunt bancaire </span>
+    </a>
+    <div id="Emprunt" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Emprunt bancaire</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_emprunt_a') }}">Declaration Emrpunt</a>
+                <a class="collapse-item" href="{{ path('app_emprunt_list_a') }}">Liste </a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_emprunt_a') }}">Declaration Emrpunt</a>
+                <a class="collapse-item" href="{{ path('app_emprunt_list_a') }}">Liste </a>
+            {% endif %}
+        </div>
+    </div>
+    </li>
+
 <!-- Divider -->
 <hr class="sidebar-divider">
 
