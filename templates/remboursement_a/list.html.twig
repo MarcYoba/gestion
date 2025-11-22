@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Emprunt!{% endblock %}
+{% block title %}Remboursement!{% endblock %}
 
 {% block body %}
 <!DOCTYPE html>
@@ -43,7 +43,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Table des Emprunts</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Table des Remboursement</h1>
                     <p class="mb-4">
 
                     <!-- DataTales Example -->
@@ -51,7 +51,7 @@
                         <div class="card-header py-3">
                         <div class="form-group row">
                                 <div class="col-sm-6">
-                                    <h6 class="m-0 font-weight-bold text-primary">Tables des Emprunts</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Tables des Remboursement</h6>
                                 </div>
                                 <div class="col-sm-2">
                                     {% for tempagence in app.user.tempAgences %}
@@ -66,11 +66,11 @@
                                         <i class="fas fa-plus"></i> Ajouter
                                     </a>
                                 </div>
-                                {# <div class="col-sm-2">
-                                    <a href="{{path('app_sociales')}}" class="btn btn-primary btn-user btn-block">
-                                        <i class="fas fa-plus"></i> Personnel
+                                <div class="col-sm-2">
+                                    <a href="{{path('app_emprunt_list_a')}}" class="btn btn-primary btn-user btn-block">
+                                        <i class="fas fa-plus"></i> Emprunts
                                     </a>
-                                </div> #}
+                                </div>
                             </div>
                         </div>
                         <div class="card-body">
@@ -80,8 +80,8 @@
                                        
                                         <tr>
                                             <th>id</th>
-                                            <th>Preteur</th>
-                                            <th>emprunteur</th>
+                                            <th>Type</th>
+                                            <th>Contrat</th>
                                             <th>montant</th>
                                             <th>Date</th>
                                             <th>Operation</th>
@@ -90,25 +90,27 @@
                                     <tfoot>
                                         <tr>
                                             <th>id</th>
-                                            <th>Preteur</th>
-                                            <th>emprunteur</th>
+                                            <th>Type</th>
+                                            <th>Contrat</th>
                                             <th>montant</th>
                                             <th>Date</th>
                                             <th>Operation</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        {% for emprunt in emprunts %}
+                                        {% for emprunt in remboursements %}
+                                        <tr>
                                             <td>{{emprunt.id}}</td>
-                                            <td>{{emprunt.identitepreteur}}</td>
-                                            <td>{{emprunt.emprunteur}}</td>
+                                            <td>{{emprunt.type}}</td>
+                                            <td>{{emprunt.contrat}}</td>
                                             <td>{{emprunt.montant}}</td>
                                             <td>{{emprunt.createtAt | date('Y-m-d')}}</td>
                                             <td>
-                                                <a href="{{path('app_emprunt_edit_a',{'id' : emprunt.id})}}" class='btn btn-primary' onclick='salaire(". $row["id"] .")'><i class='fas fa-pencil-alt'></i></a>
-                                                <a href="{{path('app_emprunt_delete_a',{'id' : emprunt.id})}}" class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cette vente ?\");'><i class='fas fa-trash-alt'></i></a>
-                                                <a href="{{path('app_remboursement_a',{'id' : emprunt.id})}}" class='btn btn-danger'>remboursement</a>
+                                                <a href="{{path('app_remboursement_edit_a',{'id' : emprunt.id})}}" class='btn btn-primary' ><i class='fas fa-pencil-alt'></i></a>
+                                                <a href="{{path('app_remboursement_delete_a',{'id' : emprunt.id})}}" class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cette vente ?\");'><i class='fas fa-trash-alt'></i></a>
+                                                {# <a href="{{path('app_remboursement',{'id' : emprunt.id})}}" class='btn btn-primary'>remboursement</a> #}
                                             </td>
+                                        </tr>
                                         {% endfor %}
                                          
                                     </tbody>
