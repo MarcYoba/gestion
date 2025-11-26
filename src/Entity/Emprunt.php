@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EmpruntRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -49,6 +51,14 @@ class Emprunt
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $createtAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'emprunt', targetEntity: Remboursement::class)]
+    private Collection $remboursements;
+
+    public function __construct()
+    {
+        $this->remboursements = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -195,6 +205,36 @@ class Emprunt
     public function setCreatetAt(\DateTimeInterface $createtAt): static
     {
         $this->createtAt = $createtAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Remboursement>
+     */
+    public function getRemboursements(): Collection
+    {
+        return $this->remboursements;
+    }
+
+    public function addRemboursement(Remboursement $remboursement): static
+    {
+        if (!$this->remboursements->contains($remboursement)) {
+            $this->remboursements->add($remboursement);
+            $remboursement->setEmprunt($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRemboursement(Remboursement $remboursement): static
+    {
+        if ($this->remboursements->removeElement($remboursement)) {
+            // set the owning side to null (unless already changed)
+            if ($remboursement->getEmprunt() === $this) {
+                $remboursement->setEmprunt(null);
+            }
+        }
 
         return $this;
     }
