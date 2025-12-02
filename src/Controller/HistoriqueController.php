@@ -15,7 +15,8 @@ class HistoriqueController extends AbstractController
     #[Route('/historique', name: 'app_historique')]
     public function index(EntityManagerInterface $em): Response
     {
-        $tempAgence = $em->getRepository(TempAgence::class)->findOneBy(["user"=> $this->getUser()]) ;
+        $user = $this->getUser();
+        $tempAgence = $em->getRepository(TempAgence::class)->findOneBy(["user"=> $user]) ;
         $id = $tempAgence->getAgence()->getId();
         $client = new Clients();
         $historique = new Historique();
@@ -23,10 +24,9 @@ class HistoriqueController extends AbstractController
             $client = $em->getRepository(Clients::class)->findAll();
             $historique = $em->getRepository(Historique::class)->findAll();
         }else{
-            $client = $em->getRepository(Clients::class)->findBy(["agence"=> $id]);
+            $client = $em->getRepository(Clients::class)->findAll();
             $historique = $em->getRepository(Historique::class)->findBy(["agance"=> $id]);
         }
-
         return $this->render('historique/index.html.twig', [
             'client' => $client,
             'historiques'=> $historique

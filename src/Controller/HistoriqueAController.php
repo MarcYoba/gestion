@@ -17,7 +17,7 @@ class HistoriqueAController extends AbstractController
     {
         $tempAgence = $em->getRepository(TempAgence::class)->findOneBy(["user"=> $this->getUser()]) ;
         $id = $tempAgence->getAgence()->getId();
-        $client = $em->getRepository(Clients::class)->findAll(["agence"=> $id]);
+        $client = $em->getRepository(Clients::class)->findAll();
 
         $historique = $em->getRepository(HistoriqueA::class)->findAll(["agance"=> $id]);
 

@@ -54,22 +54,24 @@
                             <h6 class="m-0 font-weight-bold text-primary">Tables Achat</h6>
 
                             
-                            <form  action="../pdf/getvaleurachete.php" method="post" class="user row" >
+                            <form  action="{{ path('achat_download_a')}}" method="post" class="user row" >
                                 <div class="row">
                                     <p class="col-md-2" >
                                         <input type="date" class="form-control form-control-user"
-                                        name="datedette" id="datedette" placeholder="quantite">
+                                        name="date1" id="date1" placeholder="quantite">
                                     </p>
                                     <p class="col-md-2" >
                                         <input type="date" class="form-control form-control-user"
-                                        name="datedett2" id="datedett2" placeholder="quantite">
+                                        name="date2" id="date2" placeholder="quantite">
                                     </p>
                                     <p class="col-md-3" >
-                                    <input type="text" class="form-control form-control-user" id="produitname"
-                                        name="produitname" placeholder="Nom produit" onkeyup="recherproduit()" required> 
-                                    <select id="produit"  name="produit"   class="form-control form-select" size="4" multiple aria-label="multiple select">   <!--  -->
+                                    <input type="text" class="form-control form-control-user" id="produitrecher"
+                                        name="produitrecher" placeholder="Nom produit" onkeyup="recherchduproduit()"> 
+                                    <select id="nomProduite"  name="nomProduite"   class="form-control form-select" size="4" multiple aria-label="multiple select">   <!--  -->
                                         <option value="ALL" selected>ALL</option>             
-                                             
+                                        {% for produit in produits %}
+                                            <option value="{{ produit.id }}">{{ produit.nom }}</option>
+                                        {% endfor %}   
                                     </select>
                                     </p>
 
@@ -129,7 +131,7 @@
                                                 <td>{{ row.createdAt|date('Y-m-d') }}</td>  
                                                     <td>
                                                         <a href='{{path('app_achat_edit_a',{'id':row.id})}}' class='btn btn-primary' id='modification'><i class='fas fa-pencil-alt '></i></a>
-                                                        <a href='#' class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer cet row ? si vous suprimer cet row elle sera supprimer du stock");' id='suppresioner'><i class='fas fa-trash-alt'></i></a>
+                                                        <a href='{{path('app_achat_delete_a', {'id' :row.id})}}' class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer cet row ? si vous suprimer cet row elle sera supprimer du stock");' id='suppresioner'><i class='fas fa-trash-alt'></i></a>
                                                     
                                                         <a href='#' class='btn btn-primary' id='modification'><i class='far fa-file-image'></i></a>
                                                     </td>
@@ -188,23 +190,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    
-    <script src="row.js"></script>
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="{{asset('js/produit/recherche.js')}}"></script>
    
 
 </body>

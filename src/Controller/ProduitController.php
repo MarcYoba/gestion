@@ -7,6 +7,8 @@ use App\Entity\Produit;
 use App\Entity\TempAgence;
 use App\Form\ProduitType;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -231,5 +233,39 @@ class ProduitController extends AbstractController
     $donnees = $worksheet->toArray();
     
     return $donnees;
+    }
+
+    #[Route('/produit/download', name:('produit_download'))]
+    public function download(EntityManagerInterface $em) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        
+        $produit = $em->getRepository(Produit::class)->findBy(['agence' => $id]);
+        //dd($vente);
+        $html = $this->renderView('produit/dwonload.html.twig', [
+        'produits' => $produit,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="Inventaire.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
     }
 }

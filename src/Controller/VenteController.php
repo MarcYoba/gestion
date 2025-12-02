@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Balance;
 use App\Entity\Vente;
 use App\Entity\Facture;
 use app\Entity\Clients;
@@ -151,6 +152,15 @@ class VenteController extends AbstractController
                     
                     
                         $entityManager->flush();
+
+                        $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5111]);
+                    if ($balance) {
+                        $mouvement = $balance->getMouvementDebit();
+                        $mouvement = $mouvement + $lignevente['Total'];
+                        $balance->setMouvementDebit($mouvement);
+                        $entityManager->persist($balance);
+                        $entityManager->flush();
+                    }
                 } catch (\Exception $e) {
                     return $this->json([
                         'error' => $e->getMessage(),

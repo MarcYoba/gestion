@@ -9,6 +9,8 @@ use App\Entity\Lots;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,8 +94,10 @@ class AchatAController extends AbstractController
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
         $id = $tempagence->getAgence()->getId();
         $achatA = $em->getRepository(AchatA::class)->findAll(["agence" => $id]);
+        $produit = $em->getRepository(ProduitA::class)->findBy(['agence' => $id]);
         return $this->render('achat_a/list.html.twig', [
             'achats' => $achatA,
+            'produits' => $produit,
         ]);
     }
 
@@ -149,5 +153,79 @@ class AchatAController extends AbstractController
         }
 
         return $this->redirectToRoute('achat_a_list');
+    }
+
+    #[Route('achat/a/delete/{id}', name:'app_achat_delete_a')]
+    public function delete(EntityManagerInterface $entityManager, AchatA $achat) : Response 
+    {
+        if ($achat) {
+            $produit = $entityManager->getRepository(ProduitA::class)->find($achat->getProduit()->getId());
+            if($produit){
+                $quantite = $produit->getQuantite();
+                $produit->setQuantite($quantite- $achat->getQuantite());
+
+                $entityManager->persist($produit);
+                $entityManager->flush();
+            }
+            
+        }
+        return $this->redirectToRoute('achat_a_list');
+    }
+
+    #[Route('/achat/a/download', name:'achat_download_a', methods:['POST'])]
+    public function download(EntityManagerInterface $em,Request $request) : Response 
+    {
+        $achat= $request->request->all();
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(["user" =>$user]);
+        $id = $tempagence->getAgence()->getId();
+        
+        $produit = $achat['nomProduite'];
+        $first_date = $achat['date1'];
+        $date_end = $achat['date2'];
+        
+            if ((!empty($date_end)) && (!empty($first_date)) && ($produit == "ALL")) {
+                $achat =$em->getRepository(AchatA::class)->findByFirstAndLastDay($first_date,$date_end,$id);
+            }else if ((!empty($date_end)) && (!empty($first_date)) && ($produit != "ALL")) {
+                $achat = $em->getRepository(AchatA::class)->findByFirstAndLastDayProduit($first_date,$date_end,$produit,$id);
+            }else if (!empty($first_date) && $produit == "ALL" && empty($date_end)) {
+                $achat = $em->getRepository(AchatA::class)->findByDayAgence($first_date,$id);
+            }else if($produit == "ALL" && !empty($date_end)  && empty($first_date)){
+                $achat = $em->getRepository(AchatA::class)->findByDayAgence($date_end,$id);
+            }else if($produit == "ALL" && empty($first_date) && empty($date_end)){
+                $achat = $em->getRepository(AchatA::class)->findBy(['agence' => $id]);
+            }else if($produit != "ALL" && empty($first_date) && empty($date_end)){
+                $achat = $em->getRepository(AchatA::class)->findByProduit($produit,$id);
+            }else{
+                $achat = $em->getRepository(AchatA::class)->findBy(['agence' => $id]);
+            }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        
+        $produit = $em->getRepository(AchatA::class)->findBy(['agence' => $id]);
+        
+        $html = $this->renderView('achat_a/dwonload.html.twig', [
+        'achats' => $achat,
+        'first_date' => $first_date,
+        'date_end' => $date_end,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="Inventaire.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
     }
 }

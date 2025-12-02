@@ -187,4 +187,74 @@ class AchatARepository extends ServiceEntityRepository
         
         return $result > 0 ? (int)$result : 0;  
     }
+
+    public function findByFirstAndLastDay($first_date,$end_date,$agence) : array
+    {
+        $debut = new \DateTimeImmutable($first_date);
+        $fin = new \DateTimeImmutable($end_date);
+
+        return $this->createQueryBuilder('a')
+            ->where('a.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('a.agence = :agences')
+            ->setParameter('debut', $debut)
+            ->setParameter('fin', $fin)
+            ->setParameter('agences',$agence)
+            ->orderBy('a.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+       ;
+    }
+
+    public function findByFirstAndLastDayProduit($first_date,$end_date,$produit,$agence) : array
+    {
+        $debut = new \DateTimeImmutable($first_date);
+        $fin = new \DateTimeImmutable($end_date);
+
+        return $this->createQueryBuilder('a')
+            ->where('a.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('a.produit = :id')
+            ->andWhere('a.agence = :agences')
+            ->setParameter('debut', $debut)
+            ->setParameter('fin', $fin)
+            ->setParameter('id',$produit)
+            ->setParameter('agences',$agence)
+            ->orderBy('a.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+       ;
+    }
+
+    public function findByDayAgence($date,$agence) : array
+    {
+        $debut = new \DateTimeImmutable($date);
+       // $fin = new \DateTimeImmutable($end_date);
+
+        return $this->createQueryBuilder('a')
+            ->where('a.createdAt = :debut')
+            ->andWhere('a.agence = :agences')
+            ->setParameter('debut', $debut)
+            ->setParameter('agences',$agence)
+            ->orderBy('a.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+       ;
+    }
+
+    public function findByProduit($produit,$agence) : array
+    {
+        // $debut = new \DateTimeImmutable($date);
+       // $fin = new \DateTimeImmutable($end_date);
+
+        return $this->createQueryBuilder('a')
+            // ->where('a.createdAt = :debut')
+            ->andWhere('a.produit = :id')
+            ->andWhere('a.agence = :agences')
+            ->setParameter('id',$produit)
+            ->setParameter('agences',$agence)
+            ->orderBy('a.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+       ;
+    }
+
 }
