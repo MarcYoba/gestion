@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rapport du jour{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Raport stock</title>
+    <style>
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
+</style>
+</head>
+<body>
+
+<br><br><br> 
+<table style="width:100%">
+        <thead>
+        <tr><th colspan="6" align="center"> Rapport des Achats : {{ first_date}} " Au " {{date_end}} </th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="6" align="center"> Rapport des Achats  </td>
+            </tr>
+                <tr>
+                <th scope="col">Nom produit</th>
+                <th scope="col">Prix Acaht</th>
+                <th scope="col">quantite</th>
+                <th scope="col">montant</th>
+                <th scope="col">Fournisseur </th>
+                <th scope="col">date achat </th>
+              
+            </tr>
+            
+            {% set montant = 0 %}
+            {% set quantite = 0 %}
+            {% for achat in achats %}
+                <tr>
+                    <td>{{ achat.produit.nom }}</td>
+                    <td>{{  achat.prix }}</td>
+                    <td>{{ achat.quantite }} </td>
+                    <td>{{ achat.montant }}</td>
+                    <td>{{ achat.fournisseur.nom }}</td>
+                    <td>{{achat.createdAT | date('Y-m-d')}}</td>
+                    {% set montant = achat.montant +  montant %}
+                    {% set quantite = achat.quantite + quantite %}
+                </tr>
+            {% endfor %}
+            
+            <tr>
+                <td>Total</td>
+                <td>-</td>
+                <td>{{ quantite }}</td>
+                <td>{{montant}}</td>
+                <td>-</td>
+                <td>-</td>
+                    
+            </tr>
+
+    
+        </tbody>
+    </table>
+
+</body>
+</html>
+{% endblock %}

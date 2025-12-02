@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rapport du jour{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* CSS personnalisé pour le PDF */
+        body { font-family: Arial, sans-serif; }
+        .header { color: #333; }
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
+    </style>
+</head>
+<body>
+<div class="table-responsive">
+    <table class="table table-bordered" id="tableactif" width="100%" cellspacing="0" data-page-length='50' >
+        <thead>
+            <tr>
+                <th colspan="4" style="text-align: center;">Inventaire du {{ 'now' | date("Y-m-d")}}</th>
+            </tr>
+            <tr>
+                <th style="text-align: center;">Id</th>
+                <th style="text-align: center;">Produit</th>
+                <th  style="text-align: center;">Quantite</th>
+                <th  style="text-align: center;">Stock du {{'now' | date("Y-m-d")}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produit in produits %}
+                <tr>
+                    <td style="">{{ produit.id }}</td>   
+                    <td style="">{{ produit.nom }}</td>
+                    <td style="">{{ produit.quantite }}</td>
+                    <td></td>        
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
+{% endblock %}

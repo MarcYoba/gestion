@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Balance;
 use App\Entity\Emprunt;
 use App\Entity\TempAgence;
 use App\Form\EmpruntType;
@@ -25,11 +26,21 @@ class EmpruntController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $emprunt->setAgence($tempagence->getAgence());
             $emprunt->setUser($user);
 
             $em->persist($emprunt);
             $em->flush();
+
+            $balance = $em->getRepository(Balance::class)->findOneBy(['Compte' => 5121]);
+            if ($balance) {
+                $mouvement = $balance->getMouvementDebit();
+                $mouvement = $mouvement + $form->get('montant')->getData();
+                $balance->setMouvementDebit($mouvement);
+                $em->persist($balance);
+                $em->flush();
+            }
 
             return $this->redirectToRoute('app_emprunt_list');
         }

@@ -312,4 +312,38 @@ class ProduitAController extends AbstractController
         );        
     
     }
+
+    #[Route('/produit/a/download', name:('produit_download_a'))]
+    public function download(EntityManagerInterface $em) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        
+        $produit = $em->getRepository(ProduitA::class)->findBy(['agence' => $id]);
+        //dd($vente);
+        $html = $this->renderView('produit_a/dwonload.html.twig', [
+        'produits' => $produit,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="Inventaire.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
+    }
 }
