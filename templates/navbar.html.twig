@@ -396,6 +396,26 @@
     </div>
     </li>
 
+    <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#retrait"
+        aria-expanded="true" aria-controls="retrait">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Retrait banque->caisse </span>
+    </a>
+    <div id="retrait" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Retrait banque->caisse</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_retrait') }}">Retrait</a>
+                <a class="collapse-item" href="{{ path('app_retrait_list') }}">Liste </a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_retrait') }}">Retrait</a>
+                <a class="collapse-item" href="{{ path('app_retrait_list') }}">Liste </a>
+            {% endif %}
+        </div>
+    </div>
+    </li>
+
 
     <!-- Nav Item - Pages Collapse Menu -->
 

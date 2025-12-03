@@ -164,6 +164,9 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Remboursement::class)]
     private Collection $remboursements;
 
+    #[ORM\OneToMany(mappedBy: 'Agence', targetEntity: Retrait::class)]
+    private Collection $retraits;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -210,6 +213,7 @@ class Agence
         $this->sociales = new ArrayCollection();
         $this->emprunts = new ArrayCollection();
         $this->remboursements = new ArrayCollection();
+        $this->retraits = new ArrayCollection();
     }
 
    
@@ -1593,6 +1597,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($remboursement->getAgence() === $this) {
                 $remboursement->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Retrait>
+     */
+    public function getRetraits(): Collection
+    {
+        return $this->retraits;
+    }
+
+    public function addRetrait(Retrait $retrait): static
+    {
+        if (!$this->retraits->contains($retrait)) {
+            $this->retraits->add($retrait);
+            $retrait->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRetrait(Retrait $retrait): static
+    {
+        if ($this->retraits->removeElement($retrait)) {
+            // set the owning side to null (unless already changed)
+            if ($retrait->getAgence() === $this) {
+                $retrait->setAgence(null);
             }
         }
 
