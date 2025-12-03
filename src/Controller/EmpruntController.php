@@ -42,6 +42,15 @@ class EmpruntController extends AbstractController
                 $em->flush();
             }
 
+            $balance = $em->getRepository(Balance::class)->findOneBy(['Compte' => 1600]);
+            if ($balance) {
+                $mouvement = $balance->getMouvementCredit();
+                $mouvement = $mouvement + $form->get('montant')->getData();
+                $balance->setMouvementCredit($mouvement);
+                $em->persist($balance);
+                $em->flush();
+            }
+
             return $this->redirectToRoute('app_emprunt_list');
         }
         return $this->render('emprunt/index.html.twig', [

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Balance;
 use App\Entity\Emprunt;
 use App\Entity\Remboursement;
 use App\Entity\TempAgence;
@@ -28,6 +29,24 @@ class RemboursementController extends AbstractController
 
             $em->persist($remboursement);
             $em->flush();
+
+            $balance = $em->getRepository(Balance::class)->findOneBy(['Compte' => 1600]);
+            if ($balance) {
+                $mouvement = $balance->getMouvementDebit();
+                $mouvement = $mouvement + $form->get('montant')->getData();
+                $balance->setMouvementDebit($mouvement);
+                $em->persist($balance);
+                $em->flush();
+            }
+
+            $balance = $em->getRepository(Balance::class)->findOneBy(['Compte' => 5121]);
+            if ($balance) {
+                $mouvement = $balance->getMouvementCredit();
+                $mouvement = $mouvement + $form->get('montant')->getData();
+                $balance->setMouvementCredit($mouvement);
+                $em->persist($balance);
+                $em->flush();
+            }
 
             return $this->redirectToRoute('app_remboursement_list');
         }

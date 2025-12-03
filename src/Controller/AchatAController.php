@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\AchatA;
+use App\Entity\Balance;
+use App\Entity\BalanceA;
 use App\Form\AchatAType;
 use App\Entity\FournisseurA;
 use App\Entity\Lots;
@@ -22,7 +24,7 @@ class AchatAController extends AbstractController
     public function index(Request $request, EntityManagerInterface $em): Response
     {
         $achatA = new AchatA();
-        
+        $type =0;
         if ($request->isXmlHttpRequest() || $request->getContentType() === 'json') {
             $data = json_decode($request->getContent(), true);
             
@@ -38,7 +40,7 @@ class AchatAController extends AbstractController
                     $produitA = $em->getReference(ProduitA::class, $idproduit[0]->getId());
     
                     $ajout = $produitA->getQuantite();
-    
+                    $type = $key['type'];
                     $achatA->setPrix($key["prix"]);
                     $achatA->setQuantite($key["quantite"]);
                     $achatA->setMontant($key["total"]);
@@ -65,6 +67,38 @@ class AchatAController extends AbstractController
                     $em->persist($achatA);
                 }
                 $em->flush();
+
+                if ($type == "CASH") {
+                    $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6021]);
+                    if ($balance) {
+                        $montant = $balance->getMouvementDebit();
+                        $balance->setMouvementDebit($montant + $key["total"]);
+                    }
+                    $em->persist($balance);
+                    $em->flush();
+                    $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5111]);
+                    if ($balance) {
+                        $montant = $balance->getMouvementCredit();
+                        $balance->setMouvementCredit($montant + $key["total"]);
+                    }
+                    $em->persist($balance);
+                    $em->flush();
+                }elseif ($type == "BANQUE") {
+                    $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6021]);
+                    if ($balance) {
+                        $montant = $balance->getMouvementDebit();
+                        $balance->setMouvementDebit($montant + $key["total"]);
+                    }
+                    $em->persist($balance);
+                    $em->flush();
+                    $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5121]);
+                    if ($balance) {
+                        $montant = $balance->getMouvementCredit();
+                        $balance->setMouvementCredit($montant + $key["total"]);
+                    }
+                    $em->persist($balance);
+                    $em->flush();
+                }
                 $data = [
                     'success' => 200,
                     'message' => 'Achat enregistré avec succès',

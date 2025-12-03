@@ -191,6 +191,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Remboursement::class)]
     private Collection $remboursements;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Retrait::class)]
+    private Collection $retraits;
+
     
 
     public function __construct() {
@@ -242,6 +245,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->sociales = new ArrayCollection();
         $this->emprunts = new ArrayCollection();
         $this->remboursements = new ArrayCollection();
+        $this->retraits = new ArrayCollection();
         
     }
 
@@ -1765,6 +1769,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($remboursement->getUser() === $this) {
                 $remboursement->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Retrait>
+     */
+    public function getRetraits(): Collection
+    {
+        return $this->retraits;
+    }
+
+    public function addRetrait(Retrait $retrait): static
+    {
+        if (!$this->retraits->contains($retrait)) {
+            $this->retraits->add($retrait);
+            $retrait->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRetrait(Retrait $retrait): static
+    {
+        if ($this->retraits->removeElement($retrait)) {
+            // set the owning side to null (unless already changed)
+            if ($retrait->getUser() === $this) {
+                $retrait->setUser(null);
             }
         }
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Achat;
 use App\Entity\Agence;
+use App\Entity\Balance;
 use App\Entity\TempAgence;
 use App\Entity\Fournisseur;
 use App\Entity\Produit;
@@ -25,7 +26,7 @@ class AchatController extends AbstractController
         $achat = new Achat();
         $form = $this->createForm(AchatType::class, $achat);
         $form->handleRequest($request);
-        
+        $type = 0;
         if($request->isXmlHttpRequest() || $request->getContentType()==='json') {
             $data = json_decode($request->getContent(), true);
             
@@ -48,7 +49,8 @@ class AchatController extends AbstractController
                     $produit = $entityManager->getReference(Produit::class, $key['produit']);
 
                     $ajout = $produit->getQuantite();
-
+                    
+                    $type = $key["type"];
                     $achat->setPrix($key["prix"]);
                     $achat->setQuantite($key["quantite"]);
                     $achat->setMontant($key["total"]);
@@ -66,6 +68,38 @@ class AchatController extends AbstractController
                     
                 }
                 $entityManager->flush();
+
+                if ($type == "CASH") {
+                    $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6021]);
+                    if ($balance) {
+                        $montant = $balance->getMouvementDebit();
+                        $balance->setMouvementDebit($montant + $key["total"]);
+                    }
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                    $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5111]);
+                    if ($balance) {
+                        $montant = $balance->getMouvementCredit();
+                        $balance->setMouvementCredit($montant + $key["total"]);
+                    }
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                }elseif ($type == "BANQUE") {
+                    $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6021]);
+                    if ($balance) {
+                        $montant = $balance->getMouvementDebit();
+                        $balance->setMouvementDebit($montant + $key["total"]);
+                    }
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                    $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5121]);
+                    if ($balance) {
+                        $montant = $balance->getMouvementCredit();
+                        $balance->setMouvementCredit($montant + $key["total"]);
+                    }
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                }
                 return $this->json(['success' => true], 200);
             } catch (\Throwable $th) {
                 return $this->json(['errors' => $th], 500);
