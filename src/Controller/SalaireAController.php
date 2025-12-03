@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\BalanceA;
 use App\Entity\Employer;
 use App\Entity\SalaireA;
 use App\Entity\TempAgence;
@@ -36,6 +37,39 @@ class SalaireAController extends AbstractController
 
             $entityManager->persist($salaire);
             $entityManager->flush();
+
+
+            $balance = $entityManager->getRepository(BalanceA::class)->findOneBy(['Compte' => 4211]);
+                if ($balance) {
+                    $mouvement = $balance->getMouvementDebit();
+                    $mouvement = $mouvement + $form->get('montant')->getData();
+                    $balance->setMouvementDebit($mouvement);
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                }
+
+            if ($form->get('type')->getData() == "CASH") {
+                $balance = $entityManager->getRepository(BalanceA::class)->findOneBy(['Compte' => 5111]);
+                if ($balance) {
+                    $mouvement = $balance->getMouvementCredit();
+                    $mouvement = $mouvement + $form->get('montant')->getData();
+                    $balance->setMouvementCredit($mouvement);
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                }
+            }
+
+            if ($form->get('type')->getData() == "BANQUE") {
+
+                $balance = $entityManager->getRepository(BalanceA::class)->findOneBy(['Compte' => 5121]);
+                if ($balance) {
+                    $mouvement = $balance->getMouvementCredit();
+                    $mouvement = $mouvement + $form->get('montant')->getData();
+                    $balance->setMouvementCredit($mouvement);
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                }
+            }
 
             return $this->redirectToRoute('app_salaire_list_a');
         }
