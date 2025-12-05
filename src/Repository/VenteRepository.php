@@ -424,4 +424,21 @@ class VenteRepository extends ServiceEntityRepository
         
         ;
     }
+
+    public function findBy20FirstClient($agence) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->join('v.client', 'c')
+            ->select('SUM(v.prix) AS montant,COUNT(v.client) AS achat, c.nom AS nom')
+            ->where('YEAR(v.createdAt) =:anne')
+            ->andWhere('v.agence =:agences')
+            ->setParameter('anne', date('Y'))
+            ->setParameter('agences',$agence)
+            ->groupBy('v.client','c.nom')
+            ->orderBy('SUM(v.prix)','DESC')
+            ->setMaxResults(20)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

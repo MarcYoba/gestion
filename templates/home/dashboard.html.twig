@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="modal-footer">
-        <a href="php/client/commandeliste.php" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Liste Commande</a>
+        <a href="#" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Liste Commande</a>
            
         </div>
         </div>
@@ -338,7 +338,14 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Top 20 des Produits les plus Venduent mois</h6>
                                 </div>
                                 <div class="card-body">
-                                    
+                                    {% for produit in produitvendu %}
+                                        <h4 class="small font-weight-bold">{{produit.nom}}<span class="float-right">{{produit.somme}}</span></h4>
+                                        <div class="progress mb-4">
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width:{{produit.somme}}%"
+                                                aria-valuenow="3" aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
 
@@ -376,8 +383,20 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Liste des 20 premiers clients</h6>
                                 </div>
                                 <div class="card-body">
-                                
-                                    
+                                    {% for client in clients %}
+                                        <h4 class="small font-weight-bold me-5"><hr></h4>
+                                        <div class="row">
+                                            <div class="col-lg-3 mb-2">
+                                                {{ client.nom}}
+                                            </div>
+                                            <div class="col-lg-5 mb-3">
+                                                {{ client.montant}}
+                                            </div>
+                                            <div class="col-lg-4 mb-4">
+                                                NB Achat : {{ client.achat }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             

@@ -349,7 +349,20 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Liste des 20 premiers clients</h6>
                                 </div>
                                 <div class="card-body">
-                                
+                                    {% for client in clients %}
+                                        <h4 class="small font-weight-bold me-5"><hr></h4>
+                                        <div class="row">
+                                            <div class="col-lg-3 mb-2">
+                                                {{ client.nom}}
+                                            </div>
+                                            <div class="col-lg-5 mb-3">
+                                                {{ client.montant}}
+                                            </div>
+                                            <div class="col-lg-4 mb-4">
+                                                NB Achat : {{ client.achat }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
                                     
                                 </div>
                             </div>
@@ -402,7 +415,14 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Date  péremption des produits</h6>
                                 </div>
                                 <div class="card-body">
-                                    
+                                    {% for expiration in dateexpiration %}
+                                        <h4 class="small font-weight-bold">{{ expiration.nom }}<span class="float-right">(
+                                            {{ expiration.lot1 }})</span>
+                                            <span class="float-right"><---></span>
+                                            <span class="float-right">({{ expiration.lot2 }})</span>
+                                        </h4>
+                                        <hr>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -418,7 +438,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Produit &copy; {{ "now" | date('Y-m-d') }}</span>
+                        <span>Production &copy; {{ "now" | date('Y-m-d') }}</span>
                     </div>
                 </div>
             </footer>
@@ -436,24 +456,6 @@
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{{ path('app_logout') }}">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
