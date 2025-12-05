@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\BalanceA;
 use App\Entity\ImmobilisationA;
 use App\Entity\TempAgence;
 use App\Form\ImmobilisationAType;
@@ -198,7 +199,8 @@ class ImmobilisationAController extends AbstractController
     {
         $user = $this->getUser();
         $immobilisationsData = $request->request->all('immobilisations');
-        
+        $PrixAcquisition = 0;
+
         foreach ($immobilisationsData as $key => $value) {
             $immobilisation = $entityManager->getRepository(ImmobilisationA::class)->find($key);
             if ($immobilisation) {
@@ -206,17 +208,38 @@ class ImmobilisationAController extends AbstractController
                 $immobilisation->setCompte($value['Compte'] ?? 0);
                 $immobilisation->setLibelle($value['libelle'] ?? 0);
                 $immobilisation->setDateAcquisition( (new DateTime($value['DateAcquisition']) ?? "000-00-00"));
+                $immobilisation->setPrixAcquisition($value['PrixAcquisition'] ?? 0);
                 $immobilisation->setCumulN((float) ($value['CumulN'] ?? 0));
                 $immobilisation->setDotationN((float) ($value['DotationN'] ?? 0));
                 $immobilisation->setCessionsSorties((float) ($value['CessionsSorties'] ?? 0));
                 $immobilisation->setCumulN1((float) ($value['CumulN1'] ?? 0));
                 $immobilisation->setValeurNetN((float) ($value['ValeurNetN'] ?? 0));
                 $immobilisation->setUser($user);
+
+                $PrixAcquisition = $value['PrixAcquisition'];
             }
         }
             
         $entityManager->persist($immobilisation);
         $entityManager->flush();
+
+        $balance = $entityManager->getRepository(BalanceA::class)->findOneBy(['Compte' => 2151]);
+            if ($balance) {
+                $mouvement = $balance->getMouvementDebit();
+                $mouvement = $mouvement + $PrixAcquisition;
+                $balance->setMouvementDebit($mouvement);
+                $entityManager->persist($balance);
+                $entityManager->flush();
+            }
+
+            $balance = $entityManager->getRepository(BalanceA::class)->findOneBy(['Compte' => 5121]);
+            if ($balance) {
+                $mouvement = $balance->getMouvementCredit();
+                $mouvement = $mouvement + $PrixAcquisition;
+                $balance->setMouvementCredit($mouvement);
+                $entityManager->persist($balance);
+                $entityManager->flush();
+            }
         
         $this->addFlash('success', 'immobilisations mises à jour avec succès');
         return $this->redirectToRoute('app_immobilisation_a_list');

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Balance;
 use App\Entity\Versement;
 use App\Form\VersementType;
 use App\Entity\Clients;
@@ -29,6 +30,39 @@ class VersementController extends AbstractController
             $versement->setUser($user);
             $entityManager->persist($versement);
             $entityManager->flush();
+
+            if ($form->get('montant')->getData() > 0) {
+                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5111]);
+                if ($balance) {
+                    $mouvement = $balance->getMouvementDebit();
+                    $mouvement = $mouvement + $form->get('montant')->getData();
+                    $balance->setMouvementDebit($mouvement);
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                }
+
+            }
+
+            if ($form->get('banque')->getData() > 0) {
+                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5121]);
+                if ($balance) {
+                    $mouvement = $balance->getMouvementDebit();
+                    $mouvement = $mouvement + $form->get('banque')->getData();
+                    $balance->setMouvementDebit($mouvement);
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                }
+            }
+            
+            $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 4111]);
+                if ($balance) {
+                    $mouvement = $balance->getMouvementCredit();
+                    $mouvement = $mouvement + $form->get('montant')->getData() + $mouvement + $form->get('banque')->getData();
+                    $balance->setMouvementCredit($mouvement);
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                }
+            
             return $this->redirectToRoute('versement_list');
         }
         return $this->render('versement/index.html.twig', [

@@ -63,7 +63,7 @@ class VenteController extends AbstractController
                         if(empty($type)){
                             $type = "credit";
                         }else{
-                            $type += "credit";
+                            $type = $type.'/'."credit";
                         }
                     }
                     if($lignevente['cash'] > 0)
@@ -71,14 +71,14 @@ class VenteController extends AbstractController
                         if(empty($type)){
                             $type = "cash";
                         }else{
-                            $type += "cash";
+                            $type =  $type.'/'."cash";
                         }
                     }
                     if ($lignevente['Banque'] > 0) {  
                     if(empty($type)){
                         $type = "banque";
                     }else{
-                        $type += "banque";
+                        $type = $type.'/'."banque";
                     }
                     }
 
@@ -153,14 +153,66 @@ class VenteController extends AbstractController
                     
                         $entityManager->flush();
 
-                        $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5111]);
-                    if ($balance) {
-                        $mouvement = $balance->getMouvementDebit();
-                        $mouvement = $mouvement + $lignevente['Total'];
-                        $balance->setMouvementDebit($mouvement);
-                        $entityManager->persist($balance);
-                        $entityManager->flush();
+                    if ($lignevente['credit'] > 0) {
+                        $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 4111]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementDebit();
+                            $mouvement = $mouvement + $lignevente['credit'];
+                            $balance->setMouvementDebit($mouvement);
+                            $entityManager->persist($balance);
+                            $entityManager->flush();
+                        }
+
+                        // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7011]);
+                        // if ($balance) {
+                        //     $mouvement = $balance->getMouvementCredit();
+                        //     $mouvement = $mouvement + $lignevente['credit'];
+                        //     $balance->setMouvementCredit($mouvement);
+                        //     $entityManager->persist($balance);
+                        //     $entityManager->flush();
+                        // }
                     }
+
+                    if ($lignevente['cash'] > 0) {
+                        $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5111]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementDebit();
+                            $mouvement = $mouvement + $lignevente['cash'];
+                            $balance->setMouvementDebit($mouvement);
+                            $entityManager->persist($balance);
+                            $entityManager->flush();
+                        }
+
+                        // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7011]);
+                        // if ($balance) {
+                        //     $mouvement = $balance->getMouvementCredit();
+                        //     $mouvement = $mouvement + $lignevente['cash'];
+                        //     $balance->setMouvementCredit($mouvement);
+                        //     $entityManager->persist($balance);
+                        //     $entityManager->flush();
+                        // }
+                    }
+
+                    if ($lignevente['Banque'] > 0) {
+                        $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5121]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementDebit();
+                            $mouvement = $mouvement + $lignevente['Banque'];
+                            $balance->setMouvementDebit($mouvement);
+                            $entityManager->persist($balance);
+                            $entityManager->flush();
+                        }
+                    }
+
+                    $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7011]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementCredit();
+                            $mouvement = $mouvement + $lignevente['Banque'] + $lignevente['credit'] + $lignevente['cash'];
+                            $balance->setMouvementCredit($mouvement);
+                            $entityManager->persist($balance);
+                            $entityManager->flush();
+                        }
+                        
                 } catch (\Exception $e) {
                     return $this->json([
                         'error' => $e->getMessage(),

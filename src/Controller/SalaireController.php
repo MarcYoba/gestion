@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Balance;
 use App\Entity\Employer;
 use App\Entity\Salaire;
 use App\Entity\TempAgence;
@@ -37,6 +38,38 @@ class SalaireController extends AbstractController
             $entityManager->persist($salaire);
             $entityManager->flush();
 
+            $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 4211]);
+                if ($balance) {
+                    $mouvement = $balance->getMouvementDebit();
+                    $mouvement = $mouvement + $form->get('montant')->getData();
+                    $balance->setMouvementDebit($mouvement);
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                }
+
+            if ($form->get('type')->getData() == "CASH") {
+                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5111]);
+                if ($balance) {
+                    $mouvement = $balance->getMouvementCredit();
+                    $mouvement = $mouvement + $form->get('montant')->getData();
+                    $balance->setMouvementCredit($mouvement);
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                }
+            }
+
+            if ($form->get('type')->getData() == "BANQUE") {
+
+                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5121]);
+                if ($balance) {
+                    $mouvement = $balance->getMouvementCredit();
+                    $mouvement = $mouvement + $form->get('montant')->getData();
+                    $balance->setMouvementCredit($mouvement);
+                    $entityManager->persist($balance);
+                    $entityManager->flush();
+                }
+            }
+            
             return $this->redirectToRoute('app_salaire_list');
         }
         $employer = $entityManager->getRepository(Employer::class)->findBy(['agence'=>$id]);
