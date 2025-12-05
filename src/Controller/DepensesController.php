@@ -56,7 +56,7 @@ class DepensesController extends AbstractController
             $entityManager->persist($depenses);
             $entityManager->flush();
 
-            return $this->redirectToRoute('depenses_list', ['id' => $idagence->getId()]);
+            return $this->redirectToRoute('depenses_list');
         }
         return $this->render('depenses/index.html.twig', [
             'form' => $form->createView(),
