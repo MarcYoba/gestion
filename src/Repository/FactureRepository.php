@@ -69,7 +69,7 @@ class FactureRepository extends ServiceEntityRepository
         $startDate = (clone $date)->setTime(0, 0, 0);
         $endDate = (clone $date)->setTime(23, 59, 59);
 
-       return $this->createQueryBuilder('f')
+        return $this->createQueryBuilder('f')
             ->where('f.createdAt  BETWEEN :startDate AND :endDate')
             ->andWhere('f.agence = :agences')
             ->setParameter('startDate', $startDate)
@@ -78,7 +78,26 @@ class FactureRepository extends ServiceEntityRepository
             ->orderBy('f.produit','ASC')
             ->groupBy('f.produit')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
 
+    }
+
+    public function findByProduitplusVendu($agence) : array 
+    {
+
+        return $this->createQueryBuilder('f')
+            ->join('f.produit','p')
+            ->select('COUNT(f.produit) AS nbproduit, SUM(f.quantite) AS somme, p.nom AS nom')
+            ->where('YEAR(f.createdAt)  =:anne')
+            ->andWhere('f.agence = :agences')
+            ->setParameter('anne', date('Y'))
+            ->setParameter('agences',$agence)
+            ->orderBy('SUM(f.quantite)','DESC')
+            ->groupBy('f.produit')
+            ->setMaxResults(20)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

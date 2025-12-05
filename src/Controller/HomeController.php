@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Agence;
+use App\Entity\Clients;
 use App\Entity\Employer;
+use App\Entity\Facture;
 use App\Entity\FactureA;
 use App\Entity\Lots;
 use App\Entity\Produit;
@@ -11,6 +13,7 @@ use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use App\Entity\User;
 use App\Entity\Vente;
+use App\Entity\VenteA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -91,9 +94,14 @@ class HomeController extends AbstractController
         $produi = $entityManager->getRepository(Produit::class)->findAll();
         $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
         $agence = $temoporayagence->getAgence();
+        $client = $entityManager->getRepository(Vente::class)->findBy20FirstClient($agence);
+        $produitfacturer = $entityManager->getRepository(Facture::class)->findByProduitplusVendu($agence);
+
         return $this->render('home/dashboard.html.twig', [
             'agence' => $agence,
             'prosuits' => $produi,
+            'clients' => $client,
+            'produitvendu' => $produitfacturer
         ]);
     }
 
@@ -101,12 +109,14 @@ class HomeController extends AbstractController
     public function dashboardA(EntityManagerInterface $entityManager,int $id): Response
     {
         $user = $this->getUser();
+        $agence = 0;
         if (!$this->getUser()) {
             $this->redirectToRoute('app_logout');
         }
         if ($id == 0) {
             $agence = $entityManager->getRepository(Agence::class)->findAll();
             $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+            $agence = $temoporayagence->getAgence();
             if ($temoporayagence) {
                 $temoporayagence->setGenerale(1);
                 $entityManager->flush();
@@ -119,8 +129,10 @@ class HomeController extends AbstractController
                 $entityManager->persist($temoporayagence);
                 $entityManager->flush();
             } 
+            
         }else{
             $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+            $agence = $temoporayagence->getAgence();
             if ($temoporayagence) {
                 $idagence = $entityManager->getRepository(Agence::class)->find($id);
                 $temoporayagence->setGenerale(0);
@@ -135,8 +147,11 @@ class HomeController extends AbstractController
                 $entityManager->persist($temoporayagence);
                 $entityManager->flush();
             }
+            
         }
         $produi = $entityManager->getRepository(ProduitA::class)->findAll();
+        $client = $entityManager->getRepository(VenteA::class)->findBy20FirstClient($agence);
+        $dateexpiration = $entityManager->getRepository(ProduitA::class)->findByDatePeremption($agence);
         $agence = $entityManager->getRepository(Agence::class)->findAll();
         $produitplusvendu = $entityManager->getRepository(FactureA::class)->FindByProduitPlusVendu();
         $doublon = $entityManager->getRepository(ProduitA::class)->findByDoublon();
@@ -144,7 +159,7 @@ class HomeController extends AbstractController
         $lots = $entityManager->getRepository(Lots::class)->findBy(['expiration' => '0']);
         $peramption = $entityManager->getRepository(ProduitA::class)->findByDateExpiration(6);
         $lotsperemtion = $entityManager->getRepository(Lots::class)->findByDateExpirationLots(6);
-
+        
         if (empty($expiration)) {
             $expiration = [];
         }  # code...
@@ -154,7 +169,6 @@ class HomeController extends AbstractController
         if ($peramption) {
             $peramption =[];
         }
-
         return $this->render('home/dashboardA.html.twig', [
             'agence' => $agence,
             'produits' => $produi,
@@ -164,6 +178,8 @@ class HomeController extends AbstractController
             'lots' => $lots,
             'perantions' => $peramption,
             'lotsperemtion' => $lotsperemtion,
+            'clients' => $client,
+            'dateexpiration' => $dateexpiration,
         ]);
     }
 }

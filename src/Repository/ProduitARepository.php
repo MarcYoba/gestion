@@ -75,4 +75,19 @@ class ProduitARepository extends ServiceEntityRepository
         ;
 
     }
+
+    public function findByDatePeremption($agence) :array 
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.lots','l')
+            ->select('p.nom,p.expiration AS lot1, l.expiration As lot2')
+            ->where('p.quantite > 0')
+            ->andWhere('p.agence =:agences')
+            ->setParameter('agences',$agence)
+            ->groupBy('p.nom')
+            ->orderBy('p.nom','ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
