@@ -56,7 +56,7 @@
                         
                     </div>
                     <div class="col-sm-4">
-                        Command Poussin Nom livrer :
+                        Command Poussin Nom livrer : {{ (commandepoussins | length) }}
                     </div>
                     <div class="col-sm-4">
                         Commande Client :
@@ -67,7 +67,7 @@
             <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button> -->
                 <a href="{{path('app_produit_sans_date_peramtion')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>produit sans date</a>
                 <a href="{{path('app_produit_perimer')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Peremtion ou Proche</a>
-                <a href="#" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Poussin non livree</a>
+                <a href="{{path('app_poussin_download')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Poussin non livree</a>
                 <a href="#" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Liste Commande client</a>
             </div>
             </div>

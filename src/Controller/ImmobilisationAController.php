@@ -200,7 +200,7 @@ class ImmobilisationAController extends AbstractController
         $user = $this->getUser();
         $immobilisationsData = $request->request->all('immobilisations');
         $PrixAcquisition = 0;
-
+        $compte = 0;
         foreach ($immobilisationsData as $key => $value) {
             $immobilisation = $entityManager->getRepository(ImmobilisationA::class)->find($key);
             if ($immobilisation) {
@@ -217,13 +217,14 @@ class ImmobilisationAController extends AbstractController
                 $immobilisation->setUser($user);
 
                 $PrixAcquisition = $value['PrixAcquisition'];
+                $compte = $value['Compte'];
             }
         }
             
         $entityManager->persist($immobilisation);
         $entityManager->flush();
 
-        $balance = $entityManager->getRepository(BalanceA::class)->findOneBy(['Compte' => 2151]);
+        $balance = $entityManager->getRepository(BalanceA::class)->findOneBy(['Compte' => $compte]);
             if ($balance) {
                 $mouvement = $balance->getMouvementDebit();
                 $mouvement = $mouvement + $PrixAcquisition;

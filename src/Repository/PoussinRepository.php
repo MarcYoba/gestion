@@ -68,4 +68,16 @@ class PoussinRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByCommandePoussin($agence) : array 
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.status =:val')
+            ->andWhere('p.agence =:agences')
+            ->setParameter('val','EN COUR')
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
