@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Clients;
 use App\Entity\Poussin;
 use App\Form\PoussinType;
 use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
 use chillerlan\QRCode\{QRCode, QROptions};
+use DateTime;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,28 +60,17 @@ class PoussinController extends AbstractController
     }
 
     #[Route('/poussin/edit/{id}', name:'app_pousssin_edit')]
-    public function Edite(EntityManagerInterface $em, Request $request, int $id): Response
+    public function Edite(EntityManagerInterface $em, Poussin $poussin): Response
     {
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_logout');
         }
+        $client = $em->getRepository(Clients::class)->findAll();
 
-        $poussin = new Poussin();
-        $user = $this->getUser();
-        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
-        $id = $tempagence->getAgence()->getId();
-        $poussin = $em->getRepository(Poussin::class)->findAll(["agence" => $id]);
-        
-        $form = $this->createForm(PoussinType::class,$poussin);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($tempagence);
-            $em->flush();
-        }
         return $this->render("poussin/Edit.html.twig", [
-            "Poussin"=> $poussin,
-            "form"=> $form->createView(),
+            "poussins" => $poussin,
+            "clients" => $client,
         ]);
 
     }
@@ -178,19 +169,22 @@ class PoussinController extends AbstractController
             return $this->redirectToRoute('app_logout');
         }
 
-        $datte1 = $request->request->get('datedette');
-        $datte2 = $request->request->get('datedett2');
+        $first_date= $request->request->get('datedette');
+        $end_date = $request->request->get('datedett2');
         $type = $request->request->get('status');
 
-        dd($datte1."date".$datte2);
         $options = new Options();
         $options->set('isRemoteEnabled', true); 
         $dompdf = new Dompdf($options);
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $agence= $tempagence->getAgence();
 
+        if ($type == "ALL") {
+            $poussins = $em->getRepository(Poussin::class)->findAllCommandPoussin($agence,$first_date,$end_date);
+        }else {
+            $poussins = $em->getRepository(Poussin::class)->findByCommandePoussinTrie($agence,$first_date,$end_date,$type);
+        }      
         
-        $poussins = $em->getRepository(Poussin::class)->findByCommandePoussin($agence);
         $html = $this->renderView('poussin\download.html.twig', [
             'commandepoussins' => $poussins,
         ]);
@@ -210,5 +204,36 @@ class PoussinController extends AbstractController
                 'Content-Disposition' => 'inline; filename="Command_poussin"',
             ]
         );
+    }
+
+    #[Route('/poussin/update', name: 'app_poussin_update', methods:['POST'])]
+    public function update(EntityManagerInterface $em,Request $request) : Response 
+    {
+       $variable = $request->request->all('poussins');
+        $user = $this->getUser();
+        foreach ($variable as $key => $value) {
+            $poussin = $em->getRepository(Poussin::class)->find($key);
+            $client = $em->getRepository(Clients::class)->findOneBy(['nom'=>$value['client']]);
+            if ($poussin) {
+                $poussin->setClient($client);
+                $poussin->setQuantite($value['quantite'] ?? 0);
+                $poussin->setPrix($value['prix'] ?? 0);
+                $poussin->setMontant($value['montant'] ?? 0);
+                $poussin->setSouche($value['souche'] ?? 0);
+                $poussin->setMobilepay($value['mobilepay'] ?? 0);
+                $poussin->setCredit($value['credit'] ?? 0);
+                $poussin->setCash($value['cash'] ?? 0);
+                $poussin->setReste($value['reste'] ?? 0);
+                $poussin->setStatus($value['status'] ?? 0);
+                $poussin->setDatecommande(new DateTime($value['datecommande']) ?? 0);
+                $poussin->setDatelivaison(new DateTime($value['datelivaison']) ?? 0);
+                $poussin->setDaterapelle(new DateTime($value['daterapelle']) ?? 0);
+                // $poussin->setUser($user);
+
+                $em->persist($poussin);
+                $em->flush();
+            }
+        }
+        return $this->redirectToRoute('app_poussin_list');
     }
 }
