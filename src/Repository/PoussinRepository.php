@@ -68,4 +68,44 @@ class PoussinRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByCommandePoussin($agence) : array 
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.status =:val')
+            ->andWhere('p.agence =:agences')
+            ->setParameter('val','EN COUR')
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByCommandePoussinTrie($agence,$first_date,$end_date,$status) : array 
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.status =:val')
+            ->andWhere('p.datecommande BETWEEN :startDate AND :endDate')
+            ->andWhere('p.agence =:agences')
+            ->setParameter('val',$status)
+            ->setParameter('agences',$agence)
+            ->setParameter('startDate',$first_date)
+            ->setParameter('endDate',$end_date)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findAllCommandPoussin($agence,$first_date,$end_date) : array 
+    {
+        return $this->createQueryBuilder('p')
+            ->Where('p.datecommande BETWEEN :startDate AND :endDate')
+            ->andWhere('p.agence =:agences')
+            ->setParameter('agences',$agence)
+            ->setParameter('startDate',$first_date)
+            ->setParameter('endDate',$end_date)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

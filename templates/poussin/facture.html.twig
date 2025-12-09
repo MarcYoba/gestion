@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Facture de Poussin </title>
+    <style>
+        body {
+            font-size: 09pt;
+        }
+        table, th, td {
+        
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 0cm;
+                        text-align: left;
+                    }
+                }
+        img {
+            width: 100px;
+            height: 100px;
+        }
+</style>
+</head>
+<body>
+
+    <table style="border-collapse: separate; border-spacing: 0px;" >
+        <thead>
+        <tr><th  align="center"">AFRICA BELIEVE GROUP SARL <br> '{{poussins.datecommande | date('Y-m-d')}}" 
+        Client : {{poussins.client.nom}} <br> Tel: {{poussins.client.telephone}}<br> Commande Poussin <br> N= {{poussins.id}} 
+        <br> M0822175619296A
+        
+        <tr>
+            <th colspan="1"><img src="{{qrcode}}" alt="QR Code" />  </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th colspan="1"> Facture </th>
+        </tr>
+            <tr>   
+                <td> 
+                Nom : {{poussins.client.nom}}
+                <br> Telephone :  {{poussins.client.telephone}}
+                <br> Quantite : {{poussins.quantite}}
+                x<br> Prix Unite : {{poussins.prix}}
+                FCFA <br> Montant : {{poussins.montant}}
+                FCFA <br> Avance : {{poussins.mobilepay + poussins.cash}}
+                FCFA<br> reste : {{poussins.reste}}
+                FCFA <br> Souche : {{poussins.souche}}
+                <br> date Commande : {{poussins.datecommande | date('Y-m-d')}}
+                <br> date Livraison : {{poussins.datelivaison | date('Y-m-d')}}
+                <br> Status Commande : {{poussins.status}}
+                </td>  
+            </tr>
+        </tbody>
+    </table>
+    <br>TELEPHONE : YDE-SOA FIN GOUDRON <br> 655271506-676359056
+</body>
+</html>

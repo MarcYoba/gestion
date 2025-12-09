@@ -8,6 +8,7 @@ use App\Entity\Employer;
 use App\Entity\Facture;
 use App\Entity\FactureA;
 use App\Entity\Lots;
+use App\Entity\Poussin;
 use App\Entity\Produit;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
@@ -150,6 +151,7 @@ class HomeController extends AbstractController
             
         }
         $produi = $entityManager->getRepository(ProduitA::class)->findAll();
+        $commandepoussin = $entityManager->getRepository(Poussin::class)->findByCommandePoussin($agence);
         $client = $entityManager->getRepository(VenteA::class)->findBy20FirstClient($agence);
         $dateexpiration = $entityManager->getRepository(ProduitA::class)->findByDatePeremption($agence);
         $agence = $entityManager->getRepository(Agence::class)->findAll();
@@ -162,7 +164,7 @@ class HomeController extends AbstractController
         
         if (empty($expiration)) {
             $expiration = [];
-        }  # code...
+        }  
         if ($doublon) {
             $doublon = [];
         }
@@ -180,6 +182,7 @@ class HomeController extends AbstractController
             'lotsperemtion' => $lotsperemtion,
             'clients' => $client,
             'dateexpiration' => $dateexpiration,
+            'commandepoussins' => $commandepoussin,
         ]);
     }
 }
