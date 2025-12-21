@@ -64,6 +64,12 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Autopsie::class)]
     private Collection $autopsies;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reference = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $localisation = null;
+
     public function __construct()
     {
         $this->versements = new ArrayCollection();
@@ -491,6 +497,30 @@ class Clients
                 $autopsy->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getLocalisation(): ?string
+    {
+        return $this->localisation;
+    }
+
+    public function setLocalisation(?string $localisation): static
+    {
+        $this->localisation = $localisation;
 
         return $this;
     }

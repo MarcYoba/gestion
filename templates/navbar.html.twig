@@ -91,11 +91,13 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation des clients</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="#">Liste client</a>
+                <a class="collapse-item" href="{{ path('app_clients') }}" id="ajouterClient">ajouter un client</a>
+                <a class="collapse-item" href="{{ path('clients_list') }}">Liste client</a>
+                <a class="collapse-item" href="{{ path('app_client_import') }}">Importer</a>
             {% else %}
-                <a class="collapse-item" href="{{ path('app_register') }}" id="ajouterClient">ajouter un client</a>
-                <a class="collapse-item" href="#">Liste client</a>
-                <a class="collapse-item" href="#">Liste des client Inactif </a>
+                <a class="collapse-item" href="{{ path('app_clients') }}" id="ajouterClient">ajouter un client</a>
+                <a class="collapse-item" href="{{ path('clients_list') }}">Liste client</a>
+                <a class="collapse-item" href="{{ path('app_client_import') }}">Importer</a>
             {% endif %}
         </div>
     </div>
