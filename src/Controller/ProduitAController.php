@@ -164,10 +164,16 @@ class ProduitAController extends AbstractController
                     $i = 0;
                     $trouver = 0;
                     $this->addFlash('success', 'Importation démarrée');
+                    
                     foreach ($donnees as $key => $value) {
-                        $produit = $entityManager->getRepository(ProduitA::class)->findBy(["nom" => $value[0]]);
+                        $produit = $entityManager->getRepository(ProduitA::class)->findOneBy(["nom" => $value[0]]);
                         if($produit){
+                            //$produits = $entityManager->getRepository(ProduitA::class)->findOneBy(["nom" => $value[0]]);
                             $trouver +=1;
+                            $produit->setReference(empty($value[6]) ? 0 : $value[6]);
+
+                            $entityManager->persist($produit);
+                            $entityManager->flush();
                         }else{
                             $produits = new ProduitA();
                             $produits->setAgence($tempagence->getAgence());
@@ -181,6 +187,7 @@ class ProduitAController extends AbstractController
                             $produits->setType($value[4]);
                             $produits->setCathegorie($value[5]);
                             $produits->setCreatedAt(new \DateTimeImmutable(date("Y-m-d")));
+                            $produits->setReference(empty($value[6]) ? 0 : $value[6]);
 
                             $entityManager->persist($produits);
                             $entityManager->flush();
