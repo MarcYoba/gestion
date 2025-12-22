@@ -46,6 +46,19 @@
                                 <!--<div class="btn btn-warning"><i class="fa fa-arrow-left"></i> Retour</div>  -->  
                             </div>
                             <hr>
+                            {% for message in app.flashes('success') %}
+                                        <div class="alert alert-success">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                    <div class="col-sm-2 mb-3 mb-sm-0">
+                                        {% for tempagence in app.user.tempAgences %}
+                                            <a href="{{ path('app_home_dashboard', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
+                                                <i class="fas fa-home"></i>
+                                                    home
+                                            </a>  
+                                        {% endfor %}
+                                    </div> 
                             <form class="user" action="#" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <p>

@@ -71,6 +71,9 @@ class ProduitA
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Lots::class)]
     private Collection $lots;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reference = null;
+
     public function __construct()
     {
         $this->achatAs = new ArrayCollection();
@@ -406,6 +409,18 @@ class ProduitA
                 $lot->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
 
         return $this;
     }

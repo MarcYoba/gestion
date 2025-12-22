@@ -20,12 +20,20 @@ class ClientsType extends AbstractType
                 ]
                 
             ])
+            ->add('localisation',TextType::class,[
+                'label'=> 'localisation du client',
+                "attr" =>[
+                    'class' => 'form-control form-control-user'
+                ]
+                
+            ])
             ->add('telephone', TextType::class,[
                 'label'=> 'Telephone client',
                 "attr" =>[
                     'class' => 'form-control form-control-user'
                 ]
             ])
+
         ;
     }
 

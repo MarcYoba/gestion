@@ -60,10 +60,12 @@ class HomeController extends AbstractController
         if ($id == 0) {
             $agence = $entityManager->getRepository(Agence::class)->findAll();
             $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+            dd("je suis ici");
             if ($temoporayagence) {
                 $temoporayagence->setGenerale(1);
                 $entityManager->flush();
             }else{
+                
                 $idagence = $entityManager->getRepository(Agence::class)->find(1);
                 $temoporayagence = new TempAgence();
                 $temoporayagence->setUser($user);

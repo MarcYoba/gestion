@@ -54,13 +54,19 @@
                                 <h6 class="m-0 font-weight-bold text-primary">Tables des Clients</h6>     
                                 </div>
                                 <div class="col-sm-2">
-                                <i class="fa fa-home"></i>
-                                    <a href="{{ path('app_home_dashboardA', {'id': id}) }}" class="btn btn-primary">Home</a> 
+                                    <a href="{{ path('app_home_dashboardA', {'id': id}) }}" class="btn btn-primary">
+                                        <i class="fa fa-home"></i>
+                                        Home
+                                    </a> 
                                 </div>
-                                <div class="col-sm-2">
-                                    <i class="fa fa-plus"></i> 
-                                    <a href="client.php" class="btn btn-success"> Ajouter</a>
-                                                
+                                <div class="col-sm-2"> 
+                                    <a href="{{ path('app_clients')}}" class="btn btn-success">
+                                        <i class="fa fa-plus"></i>
+                                        Ajouter
+                                    </a>       
+                                </div>
+                                <div class="col-sm-2"> 
+                                    <a class="collapse-item" href="{{ path('app_client_a_import')}}">Importer une liste</a>      
                                 </div>
                                 <!--<div class="btn btn-warning"><i class="fa fa-arrow-left"></i> Retour</div>  -->  
                             </div>
@@ -71,7 +77,7 @@
                                     <thead>
                                        
                                         <tr>
-                                            <th>ID</th>
+                                            <th>id</th>
                                             <th>Nom</th>
                                             <th>Adresse</th>
                                             <th>Téléphone</th>
@@ -81,7 +87,7 @@
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>id</th>
                                             <th>Nom</th>
                                             <th>Adresse</th>
                                             <th>Téléphone</th>
@@ -97,12 +103,11 @@
                                                 <td>{{ client.user.localisation}}</td>
                                                 <td>{{client.telephone}}</td>
                                                 <td>{{client.createdAt | date("Y-m-d")}}</td>
-                                                
                                                 <td>
                                                 <button class='btn btn-primary' onclick='#'><i class='fas fa-pencil-alt'></i></button>
                                                 <a href='#' class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer le client?\");'><i class='fas fa-trash-alt'></i></a>
                                                 </td>
-                                            <tr>
+                                            </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
@@ -139,6 +144,5 @@
 
     <!-- Bootstrap core JavaScript-->
 </body>
-
 </html>
 {% endblock %}

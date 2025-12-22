@@ -194,6 +194,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Retrait::class)]
     private Collection $retraits;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reference = null;
+
     
 
     public function __construct() {
@@ -1801,6 +1804,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $retrait->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
 
         return $this;
     }

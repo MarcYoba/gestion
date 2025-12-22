@@ -57,9 +57,11 @@
         {% if  "ROLE_ADMIN_ADMIN" in app.user.roles %}
             <a class="collapse-item" href="{{ path('app_vente_a') }}" > Ajouter une vente</a>
             <a class="collapse-item" href="{{ path('vente_a_list') }}">Liste vente</a>
+            <a class="collapse-item" href="{{ path('vente_a_import') }}"> Import</a>
         {% else %}
             <a class="collapse-item" href="{{ path('app_vente_a') }}" > Ajouter une vente</a>
             <a class="collapse-item" href="{{ path('vente_a_list') }}">Liste vente</a>
+            <a class="collapse-item" href="{{ path('vente_a_import') }}"> Import</a>
         {% endif %}   
     </div>
 </div>
@@ -384,6 +386,26 @@
             {% endif %}
     </div>
 </div>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Agence"
+        aria-expanded="true" aria-controls="Agence">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Agence</span>
+    </a>
+    <div id="Agence" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Operation des agences</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_agence_new') }}" id="ajouterFourniseur">Ajouter une Agence</a>
+                <a class="collapse-item" href="{{ path('app_agence_list') }}" id="ajouterFourniseur">liste Agence</a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_agence_new') }}" id="ajouterFourniseur">Ajouter une Agence</a>
+                <a class="collapse-item" href="{{ path('app_agence_list') }}">liste Agence</a>
+            {% endif %}
+        </div>
+    </div>
 </li>
 
 <li class="nav-item">
