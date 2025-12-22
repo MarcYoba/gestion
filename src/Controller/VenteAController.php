@@ -12,9 +12,11 @@ use App\Entity\Lots;
 use App\Entity\ProduitA;
 use App\Entity\QuantiteproduitA;
 use App\Entity\TempAgence;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -682,5 +684,120 @@ class VenteAController extends AbstractController
         $writer->save('php://output');
         exit;
         
+    }
+
+    #[Route('/vente/import', name:'vente_a_import')]
+    public function import_vente(EntityManagerInterface $em, Request $request): Response
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $processed = 0;
+        if ($request->isMethod('POST')) {
+           $file =  $request->files->get('ficher');
+           if ($file && $file->isValid()) {
+                   try {
+                    $extension = strtolower($file->getClientOriginalExtension());
+                    $extensionsAutorisees = ['xlsx', 'xls', 'csv'];
+
+                    if (!in_array($extension, $extensionsAutorisees)) {
+                        throw new \Exception('Seuls les fichiers Excel (XLSX, XLS) et CSV sont autorisés');
+                    }
+
+                    $spreadsheet = IOFactory::load($file->getPathname());
+                    $spreadsheet = IOFactory::load($file->getPathname());
+        
+                    $donnees = $this->lireFichierExcel($spreadsheet);
+                    $donnees = $donnees['Worksheet'];
+                    array_shift($donnees);
+                    $total = count($donnees);
+                    $i = 0;
+                    $trouver = 0;
+                    
+                    $this->addFlash('success', 'Importation démarrée');
+                    foreach ($donnees as $key => $value) {
+                        $prevente = $em->getRepository(VenteA::class)->findBy(['reference' => $value[0]]);
+                        if ($prevente) {
+                          $trouver = $trouver + 1;
+                        }else {
+                            $vente = new VenteA();
+                            $utilisateur = $em->getRepository(User::class)->findOneBy(['reference' => $value[16]]);
+                            $client = $em->getRepository(Clients::class)->findOneBy(['reference' => $value[17]]);
+                            $agence = $tempagence->getAgence();
+
+                            $vente->setReference($value[0]);
+                            $vente->setType($value[1]);
+                            $vente->setQuantite($value[2]);
+                            $vente->setPrix($value[3]);
+                            $vente->setCreateAt(new \DateTimeImmutable($value[6]));
+                            $vente->setEsperce($value[13]);
+                            $vente->setCash($value[8]);
+                            $vente->setReduction($value[11]);
+                            $vente->setBanque($value[12]);
+                            $vente->setCredit($value[9]);
+                            $vente->setHeure($value[14]);
+                            $vente->setStatut($value[15]);
+                            $vente->setMomo($value[18]);
+                            $vente->setOm($value[10]);
+
+                            $vente->setUser($utilisateur);
+                            $vente->setClient($client);
+                            $vente->setAgence($agence);
+
+                            $em->persist($vente);
+                            $em->flush();
+
+                            $processed++;
+                            $progress = round(($i + 1) / $total * 100);
+                            // Messages avec barre de progression ASCII
+                            if ($progress % 20 === 0) {
+                                $bar = str_repeat('█', $progress / 5) . str_repeat('░', 20 - ($progress / 5));
+                                $this->addFlash('success', "[$bar] $progress% - Ligne " . ($i + 1) . "/$total");
+                            }
+                            $i++;
+                        }
+                        
+                    }
+                    
+                    $this->addFlash('success', 'Importation terminée avec succès! Vente trouver : '.$trouver);
+
+                    return $this->redirectToRoute('vente_a_import');
+                } catch (\Exception $e) {
+                    $this->addFlash("error", 'Erreur lors de la lecture du fichier: ' . $e->getMessage() );
+                }
+           } else {
+            $this->addFlash("error", "echec de chargement du fichier");
+           }
+           
+
+        }
+     
+        return $this->render("vente_a/import.html.twig",[
+            "id" => $id,
+        ]);
+    }
+
+    private function lireFichierExcel($spreadsheet): array
+    {
+        $donneesCompletes = [];
+        
+        // Parcourir toutes les feuilles
+        foreach ($spreadsheet->getSheetNames() as $sheetIndex => $sheetName) {
+            $worksheet = $spreadsheet->getSheet($sheetIndex);
+            $donneesCompletes[$sheetName] = $this->lireFeuilleExcel($worksheet);
+        }
+        
+        return $donneesCompletes;
+    }
+
+    private function lireFeuilleExcel($worksheet): array
+    {
+        $donnees = [];
+    
+    // Méthode plus simple avec toArray()
+    $donnees = $worksheet->toArray();
+    
+    return $donnees;
     }
 }

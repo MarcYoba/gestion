@@ -72,6 +72,9 @@ class VenteA
     #[ORM\Column]
     private ?float $om = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reference = null;
+
     public function __construct()
     {
         $this->factureAs = new ArrayCollection();
@@ -343,6 +346,18 @@ class VenteA
     public function setOm(float $om): static
     {
         $this->om = $om;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
 
         return $this;
     }
