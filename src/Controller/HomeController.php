@@ -102,7 +102,7 @@ class HomeController extends AbstractController
         $agence = $temoporayagence->getAgence();
         $client = $entityManager->getRepository(Vente::class)->findBy20FirstClient($agence);
         $produitfacturer = $entityManager->getRepository(Facture::class)->findByProduitplusVendu($agence);
-        $somversement = $entityManager->getRepository(Versement::class)->findBysommeversement();
+        //$somversement = $entityManager->getRepository(Versement::class)->findBysommeversement();
         $somCaisse = $entityManager->getRepository(Caisse::class)->findBySommeCaisseAgence($agence);
         $somdepense = $entityManager->getRepository(Depenses::class)->findBySommeDepenseAgence($agence);
         $produitfacturer = $entityManager->getRepository(Facture::class)->findByProduitplusVendu($agence);
@@ -113,7 +113,7 @@ class HomeController extends AbstractController
             'prosuits' => $produi,
             'clients' => $client,
             'produitvendu' => $produitfacturer,
-            'somversement' => $somversement,
+            //'somversement' => $somversement,
             'somCaisse' => $somCaisse,
             'somdepense' => $somdepense,
             'produitvendu' => $produitfacturer,
