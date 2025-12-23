@@ -191,12 +191,10 @@ function recherproduit() {
     filter = input.value.toUpperCase();
     ul = document.getElementById("nomProduit");
     li = ul.getElementsByTagName("option");
-    console.log(li.length);
     // Boucler sur toutes les options
     for (i = 0; i < li.length; i++) {
       a = li[i];
-      
-      if (a.value.toUpperCase().indexOf(filter) > -1) {
+      if (a.textContent.toUpperCase().indexOf(filter) > -1) {
         li[i].style.display = "";
       } else {
         li[i].style.display = "none";
@@ -212,11 +210,10 @@ function recherfourniseur() {
     filter = input.value.toUpperCase();
     ul = document.getElementById("fournisseur");
     li = ul.getElementsByTagName("option");
-    console.log(li.length);
+    
     // Boucler sur toutes les options
     for (i = 0; i < li.length; i++) {
-      a = li[i];
-      
+        a = li[i];
       if (a.textContent.toUpperCase().indexOf(filter) > -1) {
         li[i].style.display = "";
       } else {

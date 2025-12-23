@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Agence;
+use App\Entity\Caisse;
 use App\Entity\Clients;
+use App\Entity\Depenses;
 use App\Entity\Employer;
 use App\Entity\Facture;
 use App\Entity\FactureA;
@@ -15,6 +17,7 @@ use App\Entity\TempAgence;
 use App\Entity\User;
 use App\Entity\Vente;
 use App\Entity\VenteA;
+use App\Entity\Versement;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -99,12 +102,22 @@ class HomeController extends AbstractController
         $agence = $temoporayagence->getAgence();
         $client = $entityManager->getRepository(Vente::class)->findBy20FirstClient($agence);
         $produitfacturer = $entityManager->getRepository(Facture::class)->findByProduitplusVendu($agence);
+        $somversement = $entityManager->getRepository(Versement::class)->findBysommeversement();
+        $somCaisse = $entityManager->getRepository(Caisse::class)->findBySommeCaisseAgence($agence);
+        $somdepense = $entityManager->getRepository(Depenses::class)->findBySommeDepenseAgence($agence);
+        $produitfacturer = $entityManager->getRepository(Facture::class)->findByProduitplusVendu($agence);
+        $client = $entityManager->getRepository(Vente::class)->findBy20FirstClient($agence);
 
         return $this->render('home/dashboard.html.twig', [
             'agence' => $agence,
             'prosuits' => $produi,
             'clients' => $client,
-            'produitvendu' => $produitfacturer
+            'produitvendu' => $produitfacturer,
+            'somversement' => $somversement,
+            'somCaisse' => $somCaisse,
+            'somdepense' => $somdepense,
+            'produitvendu' => $produitfacturer,
+            'clients' => $client,
         ]);
     }
 

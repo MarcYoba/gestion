@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Facture;
+use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +35,9 @@ class FactureController extends AbstractController
     #[Route('/facture/print/{id}', name:'app_print_facture')]
     public function Print(EntityManagerInterface $entityManger, int $id, string $filename = 'facture.pdf')
     {
+        $tempagence = $entityManger->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+        $agence =  $tempagence->getAgence();
+
         $facture = $entityManger->getRepository(Facture::class)->findBy(['vente'=>$id]);
         $client = null;
         $vente = null;
@@ -49,7 +53,8 @@ class FactureController extends AbstractController
         $html = $this->renderView('facture/print.html.twig', [
         'vente' => $vente,
         'client' => $client,
-        'factures' => $facture
+        'factures' => $facture,
+        'agences' => $agence,
         ]);
 
         $dompdf->loadHtml($html);
