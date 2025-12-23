@@ -68,10 +68,17 @@ class RapportController extends AbstractController
 
         $vente = $em->getRepository(Vente::class)->findByDay($date);
         $depense = $em->getRepository(Depenses::class)->findByDay($date);
+        $sommeDepense = $em->getRepository(Depenses::class)->findBySommeDay($date);
+        $sommeversement = $em->getRepository(Versement::class)->findBysommeDay($date);
 
         $date  = new DateTime($date);
         $caisse = $em->getRepository(Caisse::class)->findBy(['createAt' => $date]);
         $versement = $em->getRepository(Versement::class)->findBy(['createdAd' => $date]);
+        $sommecaisse = $em->getRepository(Caisse::class)->findBySommeCaisseDay($date);
+        $totalversement = 0;
+        foreach ($sommeversement as $key => $value) {
+            $totalversement = $totalversement + $value[1] + $value[2] + $value[3];
+        }
         
 
         
@@ -81,6 +88,10 @@ class RapportController extends AbstractController
         'caisses' => $caisse,
         'versements' => $versement,
         'depenses' => $depense,
+        'sommeDepense' => $sommeDepense,
+        'sommeversement' => $sommeversement,
+        'totalversement' => $totalversement,
+        'sommecaisse' => $sommecaisse,
         ]);
 
         $dompdf->loadHtml($html);

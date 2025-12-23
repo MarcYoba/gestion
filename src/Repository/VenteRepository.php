@@ -347,7 +347,7 @@ class VenteRepository extends ServiceEntityRepository
         ;
     }
 
-        public function findRapportVenteToWeekCreditOm($date_debut, $date_fin,$agence) : array 
+    public function findRapportVenteToWeekCreditOm($date_debut, $date_fin,$agence) : array 
     {
         $startDate = (clone $date_debut)->setTime(0, 0, 0);
         $endDate = (clone $date_fin)->setTime(23, 59, 59);
@@ -439,6 +439,19 @@ class VenteRepository extends ServiceEntityRepository
             ->setMaxResults(20)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function findRapportVenteToCredit($agence) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->Where('v.agence =:agences')
+            ->andWhere('v.montantcredit >:credits')
+            ->setParameter('agences',$agence)
+            ->setParameter('credits',0)
+            ->getQuery()
+            ->getResult()
+        
         ;
     }
 }

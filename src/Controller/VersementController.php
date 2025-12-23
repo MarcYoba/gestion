@@ -128,10 +128,15 @@ class VersementController extends AbstractController
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
 
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
         $versement = $entityManager->getRepository(Versement::class)->find($id);
 
         $html = $this->render('versement/download.html.twig', [
-           'versements' => $versement, 
+           'versements' => $versement,
+           'agences' =>  $tempagence->getAgence(),
         ]);
 
         $dompdf->loadHtml($html);
