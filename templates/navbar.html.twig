@@ -55,11 +55,11 @@
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('app_vente') }}"> Ajouter une vente</a>
                 <a class="collapse-item" href="{{ path('vente_list') }}">Liste vente</a>
-                
+                <a class="collapse-item" href="{{ path('app_brouillon_list') }}">En Attente</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_vente') }}"> Ajouter une vente</a>
                 <a class="collapse-item" href="{{ path('vente_list') }}">Liste vente</a>
-                
+                <a class="collapse-item" href="{{ path('app_brouillon_list') }}">En Attente</a>
             {% endif %}
         </div>
     </div>
