@@ -662,7 +662,7 @@ function Client(element){
   }
 
 
-  const inputcash = document.getElementById("cash");
+const inputcash = document.getElementById("cash");
 const inputcredit = document.getElementById("credit");
 const inputom = document.getElementById("om");
 
@@ -806,4 +806,34 @@ function recherchduclient() {
     }
   }
   
+}
+function Brouillon(){
+
+    let donnees =[];
+    donnees = recuperationdonneTable();
+    document.getElementById("enregistrer").style.display="none";
+
+    fetch('/brouillon/create',{
+        method:'POST',
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(donnees)
+    })
+    .then(response => response.json())
+    .then(data => { 
+        if (data.status == true) {
+            document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-info">Brouillon enregistre avec success</p>';
+            window.location.href = '/brouillon/list';
+            console.log(data);
+        }else if(data.status == false){
+            document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-danger"> Verifier que les produits sont conforme Ou echec lors de recherche en BD </p>';
+        }else{
+            console.log(data);
+        }     
+    })
+    .catch(error => {
+        console.error(error);
+    });
+    
 }

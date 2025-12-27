@@ -70,6 +70,9 @@ class Clients
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $localisation = null;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Brouillon::class)]
+    private Collection $brouillons;
+
     public function __construct()
     {
         $this->versements = new ArrayCollection();
@@ -84,6 +87,7 @@ class Clients
         $this->consultations = new ArrayCollection();
         $this->suivis = new ArrayCollection();
         $this->autopsies = new ArrayCollection();
+        $this->brouillons = new ArrayCollection();
     }
 
     
@@ -521,6 +525,36 @@ class Clients
     public function setLocalisation(?string $localisation): static
     {
         $this->localisation = $localisation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Brouillon>
+     */
+    public function getBrouillons(): Collection
+    {
+        return $this->brouillons;
+    }
+
+    public function addBrouillon(Brouillon $brouillon): static
+    {
+        if (!$this->brouillons->contains($brouillon)) {
+            $this->brouillons->add($brouillon);
+            $brouillon->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBrouillon(Brouillon $brouillon): static
+    {
+        if ($this->brouillons->removeElement($brouillon)) {
+            // set the owning side to null (unless already changed)
+            if ($brouillon->getClient() === $this) {
+                $brouillon->setClient(null);
+            }
+        }
 
         return $this;
     }

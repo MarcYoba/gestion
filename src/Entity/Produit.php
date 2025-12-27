@@ -62,12 +62,16 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Historique::class)]
     private Collection $historiques;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Brouillon::class)]
+    private Collection $brouillons;
+
     public function __construct()
     {
         $this->achat = new ArrayCollection();
         $this->facture = new ArrayCollection();
         $this->quantiteproduits = new ArrayCollection();
         $this->historiques = new ArrayCollection();
+        $this->brouillons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -321,6 +325,36 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($historique->getProduit() === $this) {
                 $historique->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Brouillon>
+     */
+    public function getBrouillons(): Collection
+    {
+        return $this->brouillons;
+    }
+
+    public function addBrouillon(Brouillon $brouillon): static
+    {
+        if (!$this->brouillons->contains($brouillon)) {
+            $this->brouillons->add($brouillon);
+            $brouillon->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBrouillon(Brouillon $brouillon): static
+    {
+        if ($this->brouillons->removeElement($brouillon)) {
+            // set the owning side to null (unless already changed)
+            if ($brouillon->getProduit() === $this) {
+                $brouillon->setProduit(null);
             }
         }
 

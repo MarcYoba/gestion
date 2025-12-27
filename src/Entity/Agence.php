@@ -167,6 +167,9 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'Agence', targetEntity: Retrait::class)]
     private Collection $retraits;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Brouillon::class)]
+    private Collection $brouillons;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -214,6 +217,7 @@ class Agence
         $this->emprunts = new ArrayCollection();
         $this->remboursements = new ArrayCollection();
         $this->retraits = new ArrayCollection();
+        $this->brouillons = new ArrayCollection();
     }
 
    
@@ -1627,6 +1631,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($retrait->getAgence() === $this) {
                 $retrait->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Brouillon>
+     */
+    public function getBrouillons(): Collection
+    {
+        return $this->brouillons;
+    }
+
+    public function addBrouillon(Brouillon $brouillon): static
+    {
+        if (!$this->brouillons->contains($brouillon)) {
+            $this->brouillons->add($brouillon);
+            $brouillon->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBrouillon(Brouillon $brouillon): static
+    {
+        if ($this->brouillons->removeElement($brouillon)) {
+            // set the owning side to null (unless already changed)
+            if ($brouillon->getAgence() === $this) {
+                $brouillon->setAgence(null);
             }
         }
 
