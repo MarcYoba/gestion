@@ -230,17 +230,22 @@ class ClientsController extends AbstractController
         ]);
     }
 
-    #[Route('/clients/a/import', name:'app_client_a_import')] 
-    public function import_a(Request $request, EntityManagerInterface $entityManager,UserPasswordHasherInterface $userPasswordHasher): Response
+    #[Route('/clients/a/import', name:'app_client_a_import')]
+    public function import_a(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
     {
-        $user = $this->getUser();
-        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        // 1. AUGMENTER LE TEMPS D'EXÉCUTION (en secondes)
+        // 600 secondes = 10 minutes. Mettez 0 pour "illimité" (déconseillé en prod)
+        set_time_limit(800); 
+
+        $user_current = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user_current]);
         $id = $tempagence->getAgence()->getId();
         $processed = 0;
+
         if ($request->isMethod('POST')) {
-           $file =  $request->files->get('file_excel');
-           if ($file && $file->isValid()) {
-                   try {
+            $file = $request->files->get('file_excel');
+            if ($file && $file->isValid()) {
+                try {
                     $extension = strtolower($file->getClientOriginalExtension());
                     $extensionsAutorisees = ['xlsx', 'xls', 'csv'];
 
@@ -248,80 +253,81 @@ class ClientsController extends AbstractController
                         throw new \Exception('Seuls les fichiers Excel (XLSX, XLS) et CSV sont autorisés');
                     }
 
+                    // Charger le fichier (une seule fois suffit)
                     $spreadsheet = IOFactory::load($file->getPathname());
-                    $spreadsheet = IOFactory::load($file->getPathname());
-        
                     $donnees = $this->lireFichierExcel($spreadsheet);
                     $donnees = $donnees['Worksheet'];
-                    array_shift($donnees);
+                    array_shift($donnees); // Supprimer l'entête
+                    
                     $total = count($donnees);
-                    $i = 0;
                     $trouver = 0;
-                    
+                    $batchSize = 50; // On va enregistrer par paquets de 50 pour la performance
+
                     $this->addFlash('success', 'Importation démarrée');
-                    foreach ($donnees as $key => $value) {
+
+                    foreach ($donnees as $i => $value) {
+                        // Vérifier si le client existe déjà
+                        $clientExist = $entityManager->getRepository(Clients::class)->findOneBy(['nom' => $value[1]]);
                         
-                        $client = $entityManager->getRepository(Clients::class)->findBy(['nom' => $value[1]]);
-                        if ($client) {
-                          $trouver = $trouver + 1;
-                        }else {
-                            $user = new User();
-                            $defaulpass = "123456789";
-                            $heure = date("s");
-                            $nom = str_replace(" ","", $value[1]);
-                            $defaultEmail = $nom.$heure.'@gmail.com';
-                            $user->setPassword(
-                                $userPasswordHasher->hashPassword(
-                                    $user,
-                                    $defaulpass
-                                )
-                            );
-                            $user->setUsername(empty($value[1]) ? 0 : $value[1]);
-                            $user->setRoles(['ROLE_CLIENTS']);
-                            $user->setEmail($defaultEmail);
-                            $user->setCreatedAt(new \DateTimeImmutable($value[4]));
-                            $user->setTelephone(empty($value[3]) ? 0 : $value[3]);
-                            $user->setLocalisation(empty($value[2])? 0 : $value[2]);
-                            $user->setSpeculation('000');
-
-
-                            $user->getClients()->setNom(empty($value[1]) ? 0 : $value[1]);
-                            $user->getClients()->setTelephone(empty($value[3]) ? 0 : $value[3]);
-                            $user->getClients()->setReference($value[0]);
-                            $user->getClients()->setLocalisation(empty($value[2])? 0 : $value[2]);
-                            $user->getClients()->setCreatedAt(new \DateTimeImmutable($value[4]));
-
-                            $entityManager->persist($user);
-                            $entityManager->flush();
-
-                            $processed++;
-                            $progress = round(($i + 1) / $total * 100);
-                            // Messages avec barre de progression ASCII
-                            if ($progress % 20 === 0) {
-                                $bar = str_repeat('█', $progress / 5) . str_repeat('░', 20 - ($progress / 5));
-                                $this->addFlash('success', "[$bar] $progress% - Ligne " . ($i + 1) . "/$total");
-                            }
-                            $i++;
+                        if ($clientExist) {
+                            $trouver++;
+                            continue; // On passe au suivant s'il existe
                         }
-                        
+
+                        $user = new User();
+                        $defaulpass = "123456789";
+                        $heure = date("s");
+                        $nom = str_replace(" ", "", $value[1]);
+                        $defaultEmail = $nom . $heure . $i . '@gmail.com'; // Ajout de $i pour l'unicité
+
+                        $user->setPassword($userPasswordHasher->hashPassword($user, $defaulpass));
+                        $user->setUsername(empty($value[1]) ? "Sans Nom" : $value[1]);
+                        $user->setRoles(['ROLE_CLIENTS']);
+                        $user->setEmail($defaultEmail);
+                        $user->setCreatedAt(new \DateTimeImmutable($value[4] ?? 'now'));
+                        $user->setTelephone(empty($value[3]) ? 0 : $value[3]);
+                        $user->setLocalisation(empty($value[2]) ? "Inconnue" : $value[2]);
+                        $user->setSpeculation('000');
+
+                        // Assurez-vous que l'objet Client est lié à l'User dans votre entité
+                        $user->getClients()->setNom($user->getUsername());
+                        $user->getClients()->setTelephone($user->getTelephone());
+                        $user->getClients()->setReference($value[0]);
+                        $user->getClients()->setLocalisation($user->getLocalisation());
+                        $user->getClients()->setCreatedAt($user->getCreatedAt());
+
+                        $entityManager->persist($user);
+                        $processed++;
+
+                        // 2. OPTIMISATION : BATCH PROCESSING
+                        // On ne flush qu'une fois toutes les 50 lignes
+                        if (($processed % $batchSize) === 0) {
+                            $entityManager->flush();
+                            // Optionnel : $entityManager->clear(); // Libère la mémoire (attention aux objets liés)
+                        }
+
+                        // Barre de progression
+                        $progress = round(($i + 1) / $total * 100);
+                        if ($progress % 20 === 0) {
+                            $this->addFlash('success', "Progression : $progress% (" . ($i + 1) . "/$total)");
+                        }
                     }
+
+                    // 3. FLUSH FINAL pour les derniers éléments
+                    $entityManager->flush();
                     
-                    $this->addFlash('success', 'Importation terminée avec succès! Client trouver : '.$trouver);
-
+                    $this->addFlash('success', "Importation terminée ! $processed ajoutés, $trouver déjà existants.");
                     return $this->redirectToRoute('app_client_a_import');
-                } catch (\Exception $e) {
-                    $this->addFlash("error", 'Erreur lors de la lecture du fichier: ' . $e->getMessage() );
-                }
-           } else {
-            $this->addFlash("error", "echec de chargement du fichier");
-           }
-           
 
+                } catch (\Exception $e) {
+                    $this->addFlash("error", 'Erreur : ' . $e->getMessage());
+                }
+            } else {
+                $this->addFlash("error", "Échec du chargement du fichier.");
+            }
         }
 
-        return $this->render("clients/import.html.twig",[
-            "id" => $id,
-        ]);
+        return $this->render("clients/import.html.twig", ["id" => $id]);
     }
     
     private function lireFichierExcel($spreadsheet): array
