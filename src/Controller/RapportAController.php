@@ -182,9 +182,11 @@ class RapportAController extends AbstractController
     {
         $date_debut = date("Y-m-d");
         $date_fin = date("Y-m-d");
+        
         if ($request->isMethod('POST')) {
            $date_debut = $request->request->get('date_debut');
            $date_fin = $request->request->get('date_fin');
+           
            if(empty($date_debut) && empty($date_fin))
            { 
                 $this->addFlash("error", "Vous deviez selectiion aune date valide");
@@ -198,21 +200,36 @@ class RapportAController extends AbstractController
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
-
+        $calandrier = $date_debut.'-'.$date_fin;
         $caisse = $em->getRepository(CaisseA::class)->findByCaisseSemaine($date_debut,$date_fin,$id);
+        $achat = $em->getRepository(AchatA::class)->findByIntervaleDate($date_debut,$date_fin,$id);
+        $sommeVersement = $em->getRepository(VersementA::class)->findBySommeVersementSemaine($date_debut,$date_fin,$id);
+        $sommeDepense = $em->getRepository(DepenseA::class)->findBySommeDepenseSemain($date_debut,$date_fin,$id);
+        $sommeCaisse = $em->getRepository(CaisseA::class)->findBySommeCaisseSemaine($date_debut,$date_fin,$id);
+
         $date_debut = new \DateTimeImmutable($date_debut);
         $date_fin = new \DateTimeImmutable($date_fin);
+        $produit = $em->getRepository(FactureA::class)->findByProduitVenduSemaine($date_debut,$date_fin,$id);
+        $historiqueA = [];
+        foreach ($produit as $key => $value) {
+            $hist = $em->getRepository(HistoriqueA::class)->findByDate($date_debut,$value->getProduit()->getId(),$id);
+            $fact = $em->getRepository(FactureA::class)->findByQuantiteProduitVendu($date_debut,$value->getProduit()->getId(),$id);
+            $lasthist = $em->getRepository(HistoriqueA::class)->findByLastDate(new \DateTime($date_debut->format("Y-m-d")),$value->getProduit()->getId(),$id);
+            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$lasthist]);
+        }
         $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek($date_debut,$date_fin,$id);
-        
-        $achat = $em->getRepository(AchatA::class)->findByDate($date_debut);
         
         //dd($vente);
         $html = $this->renderView('rapport_a/semaine.html.twig', [
+        'calandrier' => $calandrier,
         'date_debut' => $date_debut,
         'date_fin' => $date_fin,
         'ventes' => $vente,
         'achats' => $achat,
-        'caisses' => $caisse
+        'caisses' => $caisse,
+        'sommedepense' => $sommeDepense,
+        'sommeVersement' => $sommeVersement,
+        'sommeCaisse' => $sommeCaisse,
         ]);
 
         $dompdf->loadHtml($html);

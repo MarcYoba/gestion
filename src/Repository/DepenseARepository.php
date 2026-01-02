@@ -82,4 +82,19 @@ class DepenseARepository extends ServiceEntityRepository
         ;
         return $result > 0 ? (float)$result : 0;
     }
+
+    public function findBySommeDepenseSemain($first_date,$end_date,$agence) : float 
+    {
+        $result = $this->createQueryBuilder('d')
+            ->select('COALESCE(SUM(d.montant),0) AS Montant')
+            ->Where('d.createdAt BETWEEN :debut AND :fin')
+            // ->andWhere('d.agence = :agences')
+            ->setParameter('debut', $first_date)
+            ->setParameter('fin', $end_date)
+            // ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+        return $result > 0 ? (float)$result : 0;
+    }
 }
