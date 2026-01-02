@@ -353,4 +353,75 @@ class ProduitAController extends AbstractController
             ]
         );
     }
+
+    #[Route('/produit/a/impot/quantite', name:'app_produit_a_import_quantite')]
+    public function Import_Quantite(Request $request, EntityManagerInterface $entityManager) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+        $processed = 0;
+        if ($request->isMethod('POST')) {
+           $file =  $request->files->get('ficher');
+
+           if ($file && $file->isValid()) {
+                   try {
+                    $extension = strtolower($file->getClientOriginalExtension());
+                    $extensionsAutorisees = ['xlsx', 'xls', 'csv'];
+
+                    if (!in_array($extension, $extensionsAutorisees)) {
+                        throw new \Exception('Seuls les fichiers Excel (XLSX, XLS) et CSV sont autorisés');
+                    }
+
+                    $spreadsheet = IOFactory::load($file->getPathname());
+                    $spreadsheet = IOFactory::load($file->getPathname());
+        
+                    $donnees = $this->lireFichierExcel($spreadsheet);
+                    $donnees = $donnees['Sheet1'];
+                    array_shift($donnees);
+                    $total = count($donnees);
+                    $i = 0;
+                    $trouver = 0;
+                    $this->addFlash('success', 'Importation démarrée');
+                    
+                    foreach ($donnees as $key => $value) {
+                        $produit = $entityManager->getRepository(ProduitA::class)->findOneBy(["nom" => $value[0]]);
+                        if($produit){ 
+                            $trouver +=1;
+
+                            $produit->setQuantite($value[1]);
+                            $produit->setStockdebut($value[1]);
+
+                            $entityManager->persist($produit);
+                            $entityManager->flush();
+                        }
+
+                        $processed++;
+
+                        $progress = round(($i + 1) / $total * 100);
+        
+                        // Messages avec barre de progression ASCII
+                        if ($progress % 20 === 0) {
+                            $bar = str_repeat('█', $progress / 5) . str_repeat('░', 20 - ($progress / 5));
+                            $this->addFlash('success', "[$bar] $progress% - Ligne " . ($i + 1) . "/$total");
+                        }
+                        $i++;
+                    }
+                    
+                    $this->addFlash('success', 'Importation terminée avec succès! Produit trouver : '.$trouver);
+
+                    return $this->redirectToRoute('app_produit_a_import_quantite');
+                } catch (\Exception $e) {
+                    $this->addFlash("error", 'Erreur lors de la lecture du fichier: ' . $e->getMessage() );
+                }
+           } else {
+            $this->addFlash("error", "echec de chargement du fichier");
+           }
+           
+
+        }
+        return $this->render('produit_a/import_quantite.html.twig', [
+            
+        ]);
+    }
 }
