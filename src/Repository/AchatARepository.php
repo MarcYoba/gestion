@@ -99,6 +99,23 @@ class AchatARepository extends ServiceEntityRepository
         return $result > 0 ? (int)$result : 0;
     }
 
+    public function findByIntervaleDate($first_date,$end_date,$agence) : array
+    {
+        $debut = new \DateTimeImmutable($first_date);
+        $fin = new \DateTimeImmutable($end_date);
+
+        return $this->createQueryBuilder('a')
+            ->where('a.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('a.agence = :agences')
+            ->setParameter('debut', $debut)
+            ->setParameter('fin', $fin)
+            ->setParameter('agences',$agence)
+            ->orderBy('a.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+       ;
+    }
+
     public function findByMontantMonth($anne,$moi,$agence) : int 
     {
        $result = $this->createQueryBuilder('a')
