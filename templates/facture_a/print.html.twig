@@ -95,8 +95,8 @@
     <div class="info-client">
         <strong>Vente N°:</strong> {{ vente.id }}<br>
         <strong>Date:</strong> {{ "now"|date("d/m/Y H:i") }}<br>
-        <strong>Client:</strong> {{ client.nom|upper }}<br>
-        <strong>Tel:</strong> {{ client.user.telephone }}
+        <strong>Client: {{ client.nom|upper }}<br></strong>
+        <strong>Tel: {{ client.user.telephone }}</strong>
     </div>
 
     <table>
@@ -113,11 +113,11 @@
             {% set totalGeneral = 0 %}
             {% for facture in factures %}
             <tr>
-                <td class="col-produit">{{ facture.produit.nom }}</td>
-                <td class="col-qty">{{ facture.quantite }}</td>
-                <td class="col-pu">{{ facture.prix|number_format(0, '', '') }}</td>
-                <td class="col-total">{{ facture.montant|number_format(0, '', '') }}</td>
-                <td class="col-paie">{{ facture.type|slice(0, 1) }}</td> {# On ne garde que l'initiale pour gagner de la place #}
+                <td class="col-produit"><strong>{{ facture.produit.nom }}</strong></td>
+                <td class="col-qty"><strong>{{ facture.quantite }}</strong></td>
+                <td class="col-pu"><strong>{{ facture.prix|number_format(0, '', '') }}</strong></td>
+                <td class="col-total"><strong>{{ facture.montant|number_format(0, '', '') }}</strong></td>
+                <td class="col-paie"><strong>{{ facture.type|slice(0, 1) }}</strong></td> {# On ne garde que l'initiale pour gagner de la place #}
             </tr>
             {% set totalGeneral = totalGeneral + facture.montant %}
             {% else %}
