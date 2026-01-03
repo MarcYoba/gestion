@@ -3,56 +3,140 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Facture</title>
+    <title>Ticket_{{ vente.id }}</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { color: #333; text-align: center; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .header { margin-bottom: 30px; }
-        .footer { margin-top: 50px; text-align: right; font-size: 12px; }
+        /* Configuration spécifique pour imprimante thermique 80mm */
+        @page {
+            size: 80mm 210mm;
+            margin: 2mm;
+        }
+
+        body { 
+            font-family: "Courier New", Courier, monospace; /* Police mono pour l'aspect ticket */
+            font-size: 8pt; 
+            width: 76mm; /* Largeur utile réelle */
+            margin: 0;
+            color: #000;
+        }
+
+        .center { text-align: center; }
+        .bold { font-weight: bold; }
+        
+        .header {
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 5px;
+        }
+
+        .header h1 { 
+            font-size: 10pt; 
+            margin: 5px 0; 
+            text-transform: uppercase;
+        }
+
+        .info-client {
+            margin-bottom: 10px;
+            font-size: 7pt;
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 5px;
+        }
+
+        th { 
+            border-bottom: 1px solid #000;
+            text-align: left;
+            font-size: 7pt;
+            padding: 2px 0;
+        }
+
+        td { 
+            padding: 3px 0; 
+            vertical-align: top;
+            font-size: 7pt;
+        }
+
+        /* Réglage des colonnes pour 80mm */
+        .col-produit { width: 35%; }
+        .col-qty { width: 10%; text-align: center; }
+        .col-pu { width: 20%; text-align: right; }
+        .col-total { width: 20%; text-align: right; }
+        .col-paie { width: 15%; text-align: center; }
+
+        .total-section {
+            margin-top: 10px;
+            border-top: 1px double #000;
+            padding-top: 5px;
+        }
+
+        .row-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9pt;
+        }
+
+        .footer { 
+            margin-top: 15px;
+            text-align: center;
+            font-size: 7pt;
+            border-top: 1px dashed #000;
+            padding-top: 5px;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>CABINET VETERINAIRE DE SOA <br> Client : {{client.nom}}
-            <br> Telephone : {{client.user.telephone}}
-            <br> Formule  Vente N= {{ vente.id}} 
-            <br>  NRCCM:RC/YAE2022/B/2852
-        </h1>
-        
+    <div class="header center">
+        <h1 class="bold">CABINET VETERINAIRE<br>DE SOA</h1>
+        <small>RC/YAE2022/B/2852</small>
+    </div>
+
+    <div class="info-client">
+        <strong>Vente N°:</strong> {{ vente.id }}<br>
+        <strong>Date:</strong> {{ "now"|date("d/m/Y H:i") }}<br>
+        <strong>Client:</strong> {{ client.nom|upper }}<br>
+        <strong>Tel:</strong> {{ client.user.telephone }}
     </div>
 
     <table>
         <thead>
             <tr>
-                <th>Produit</th>
-                <th>QT</th>
-                <th>P.U</th>
-                <th>M</th>
-                <th>Paie</th>
+                <th class="col-produit">Item</th>
+                <th class="col-qty">Qt</th>
+                <th class="col-pu">P.U</th>
+                <th class="col-total">Mt</th>
+                <th class="col-paie">P</th>
             </tr>
         </thead>
         <tbody>
+            {% set totalGeneral = 0 %}
             {% for facture in factures %}
             <tr>
-                <td>{{ facture.produit.nom }}</td>
-                <td>{{ facture.quantite }} </td>
-                <td>{{ facture.prix }}</td>
-                <td>{{ facture.montant }}</td>
-                <td>{{ facture.type }}</td>
+                <td class="col-produit">{{ facture.produit.nom }}</td>
+                <td class="col-qty">{{ facture.quantite }}</td>
+                <td class="col-pu">{{ facture.prix|number_format(0, '', '') }}</td>
+                <td class="col-total">{{ facture.montant|number_format(0, '', '') }}</td>
+                <td class="col-paie">{{ facture.type|slice(0, 1) }}</td> {# On ne garde que l'initiale pour gagner de la place #}
             </tr>
+            {% set totalGeneral = totalGeneral + facture.montant %}
             {% else %}
             <tr>
-                <td colspan="5" style="text-align: center;">Aucun produit trouvé</td>
+                <td colspan="5" class="center">Aucun produit</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
+    <div class="total-section">
+        <div style="text-align: right; font-size: 10pt;">
+            <strong>TOTAL : {{ totalGeneral|number_format(0, '.', ' ') }} FCFA</strong>
+        </div>
+    </div>
+
     <div class="footer">
-        Page 1/1
+        Merci de votre confiance !<br>
+        *** À bientôt ***
     </div>
 </body>
 </html>
