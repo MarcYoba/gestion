@@ -68,7 +68,7 @@
                     <td>Total</td>
                     <td>{{ vente.quantite}}</td>
                     {% if vente.prix != 0 %}
-                        <td>{{ vente.prix / vente.quantite}}</td>
+                        <td>{{ (vente.prix / vente.quantite)|number_format(0, '', '')}}</td>
                     {% else %}
                         <td>0</td>
                     {% endif %}
