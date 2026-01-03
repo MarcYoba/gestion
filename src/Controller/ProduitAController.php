@@ -389,8 +389,10 @@ class ProduitAController extends AbstractController
                         if($produit){ 
                             $trouver +=1;
 
-                            $produit->setQuantite($value[1]);
-                            $produit->setStockdebut($value[1]);
+                            $quantite = $produit->getQuantite();
+
+                            $produit->setQuantite($quantite-$value[1]);
+                            //$produit->setStockdebut($value[1]);
 
                             $entityManager->persist($produit);
                             $entityManager->flush();
