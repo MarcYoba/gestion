@@ -68,7 +68,7 @@
                     <td>Total</td>
                     <td>{{ vente.quantite}}</td>
                     {% if vente.prix != 0 %}
-                        <td>{{ (vente.prix / vente.quantite)|number_format(0, '', '')}}</td>
+                        <td>{{ (vente.prix)|number_format(0, '', '')}}</td>
                     {% else %}
                         <td>0</td>
                     {% endif %}
@@ -134,7 +134,7 @@
                 <td>{{ sommedepense}}</td>
                 <td>{{ sommeVersement}}</td>
                 <td>{{sommeCaisse}}</td>
-                <td>{{sommeCash + sommeOm + sommeCaisse + sommemomo}}</td>
+                <td>{{sommeCash + sommeCaisse }}</td>
             </tbody>
         </thead>
     </table> 
