@@ -27,7 +27,7 @@ class DailyProduitAHistoryManager
         $currentHour = (int) $now->format('H');
         
         // Vérifie si on est dans la plage horaire (23h-04h)
-        if (!($currentHour >= 23 || $currentHour < 4)) {
+        if (!($currentHour >= 23 || $currentHour < 7)) {
             return false;
         }
 
