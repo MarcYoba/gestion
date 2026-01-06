@@ -64,13 +64,16 @@ class FactureARepository extends ServiceEntityRepository
 
     public function findBySommeProduit($date,$produit,$agence) : int
     {
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
         $result= $this->createQueryBuilder('f')
             ->select('COALESCE(SUM(f.quantite), 0)')
             ->where('f.produit = :produits')
-            ->andWhere('YEAR(f.createAt) = :date')
+            ->andWhere('f.createAt  BETWEEN :startDate AND :endDate')
             ->andWhere('f.agence = :agences')
             ->setParameter('produits',$produit)
-            ->setParameter('date', $date)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
             ->setParameter('agences',$agence)
             ->getQuery()
             ->getSingleScalarResult()
