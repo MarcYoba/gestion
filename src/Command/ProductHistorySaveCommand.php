@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 
 #[AsCommand(
     name: 'product:history-save',
-    description: 'Sauvegarde l\'historique des produits tous les jours à 23h'
+    description: 'Sauvegarde l\'historique des produits tous les jours à 00h'
 )]
 class ProductHistorySaveCommand extends Command
 {
