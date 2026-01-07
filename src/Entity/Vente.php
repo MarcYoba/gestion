@@ -38,10 +38,6 @@ class Vente
     #[ORM\Column(length: 255)]
     private ?string $esperce = null;
 
-   
-
-
-
     #[ORM\Column(length: 50)]
     private ?string $aliment = null;
 
