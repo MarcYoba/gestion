@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello rowController!{% endblock %}
+
+{% block body %}
+<div class="galerie-images">
+    {% if achat.image is not empty %}
+        {% for img in achat.image %}
+            <img src="{{ asset('uploads/image/' ~ img) }}" alt="Image de l'achat" style="width: 200px; margin: 100px;">
+        {% endfor %}
+    {% else %}
+        <p>Aucune image disponible.</p>
+    {% endif %}
+</div>
+{% endblock %}

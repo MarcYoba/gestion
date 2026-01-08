@@ -43,6 +43,9 @@ class AchatA
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?array $image = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -152,6 +155,18 @@ class AchatA
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getImage(): ?array
+    {
+        return $this->image;
+    }
+
+    public function setImage(?array $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

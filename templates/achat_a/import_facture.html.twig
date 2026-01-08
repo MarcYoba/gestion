@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}facture{% endblock %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+
+    <!-- Custom styles for this template-->
+    <style>
+        .drop{
+            display: none;
+        }
+        #imageContainer {
+        width: 21cm; /* Largeur d'une feuille A4 */
+        height: 19.7cm; /* Hauteur d'une feuille A4 */
+        border: 1px solid black;
+        align-items: center;
+        overflow: hidden;
+        }
+
+        #imageContainer img {
+        width: 100%;
+        height: 90%;
+        object-fit: contain;
+        align-content: center;
+        }
+    </style>
+
+</head>
+
+<body class="bg-gradient-success">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-12">
+                        <div class="p-5">
+                            <div class="form-group row">
+                                    <div class="col-sm-10 ">
+                                    <h6 class="m-0 font-weight-bold text-primary">Enregistrer la facture ( Bon de comande livrer)</h6>
+                                    </div>
+                                    <div class="col-sm-2 ">
+                                    <a class="m-0 font-weight-bold text-warning" href="../achat/liste.php">Retour</a>
+                                    </div>
+                            </div>
+                            <form action="{{ path('achat_a_import_bond') }}" method="post" enctype="multipart/form-data">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                    Photo de la facture : <input type="file" class="form-control form-control-user" id="image"
+                                           name="image" placeholder="Ima de la facture" required>
+                                    </div>
+                                    <div class="col-sm-6">
+                                    date Achat :<input type="date" class="form-control form-control-user" id="date" 
+                                           name="date" placeholder="" required>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div id="imageContainer" class="text-center"></div>
+                                <hr>
+                                <span id="enregistrement">
+                                <button type="submit" name="submit" id="submit" class="btn btn-success btn-user btn-block">
+                                    Enregistrer
+                                </button>
+                                </span>
+                                
+                            </form>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        const imageUpload = document.getElementById('image');
+        const imageContainer = document.getElementById('imageContainer');
+
+        imageUpload.addEventListener('change', () => {
+        const file = imageUpload.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            const img = new Image();
+            img.src = e.target.result;
+            imageContainer.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>
+{% endblock %}
