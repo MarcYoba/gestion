@@ -17,6 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class AchatAController extends AbstractController
 {
@@ -199,6 +201,7 @@ class AchatAController extends AbstractController
                 $produit->setQuantite($quantite- $achat->getQuantite());
 
                 $entityManager->persist($produit);
+                $entityManager->remove($achat);
                 $entityManager->flush();
             }
             
@@ -261,5 +264,65 @@ class AchatAController extends AbstractController
                 'Content-Disposition' => 'inline; filename="Inventaire.pdf"', // 'inline' pour affichage navigateur
             ]
         );
+    }
+
+    #[Route('/achat/a/import/bond', name: 'achat_a_import_bond')]
+    public function Import_Bond(EntityManagerInterface $em, Request $request,SluggerInterface $slugger) : Response 
+    {
+        // Dans votre méthode de contrôleur
+        if ($request->isMethod('POST'))  {
+            /** @var UploadedFile $brochureFile */
+            $brochureFile = $request->files->get('image');
+            $date = $request->request->get('date');
+
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename); 
+                
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('image_upload_directory'),
+                        $newFilename
+                    );
+                    $date = new \DateTimeImmutable($date);
+                    $achatAs = $em->getRepository(AchatA::class)->findBy(['createdAt' => $date]);
+                    if($achatAs){
+                        foreach($achatAs as $achatA){
+
+                        $imagesActuelles = $achatA->getImage() ?? [];
+                        $imagesActuelles[] = $newFilename;
+                        $achatA->setImage($imagesActuelles);
+                        $em->persist($achatA);
+                        $em->flush();
+                        }
+
+                    }
+                    // On enregistre le nom en BDD
+                    
+                    $this->addFlash('success', 'Fichier téléchargé avec succès');
+
+                } catch (FileException $e) {
+                    $this->addFlash('success', 'Echec de téléchargé du fichier');
+                }
+                return $this->redirectToRoute('achat_a_list');
+            }
+        }
+
+        return $this->render('achat_a/import_facture.html.twig', [
+            'controller_name' => 'AchatAController',
+        ]);
+        
+    }
+
+
+
+    #[Route('/achat/a/view/{id}', name: 'achat_a_view')]
+    public function view(EntityManagerInterface $em, AchatA $achat): Response
+    {
+        return $this->render('achat_a/view.html.twig', [
+            'achat' => $achat,
+        ]);
     }
 }

@@ -6,6 +6,7 @@
 parameters:
     depenses_upload_directory: '%kernel.project_dir%/public/uploads/depenses'
     balance_upload_directory: '%kernel.project_dir%/public/uploads/balance'
+    image_upload_directory: '%kernel.project_dir%/public/uploads/image'
     deepseek_api_key: '%env(DEEPSEEK_API_KEY)%'
     deepseek_base_url: '%env(DEEPSEEK_BASE_URL)%'
     deepseek_model: '%env(DEEPSEEK_MODEL)%'

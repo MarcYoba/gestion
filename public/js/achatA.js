@@ -111,6 +111,7 @@ const tableau = document.getElementById('dataTable');
 const datevar = document.getElementById('datefacture').value;
 const datepremtion = document.getElementById('peramtion').value;
 const type = document.getElementById('type').value;
+document.getElementById('enregistrement').innerText='';
 console.log(datevar);
 
 let donnees = [];
