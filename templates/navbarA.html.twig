@@ -402,11 +402,11 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Operation des agences</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{ path('app_agence_new') }}" id="ajouterFourniseur">Ajouter une Agence</a>
-                <a class="collapse-item" href="{{ path('app_agence_list') }}" id="ajouterFourniseur">liste Agence</a>
+                <a class="collapse-item" href="{{ path('app_agence_new_a') }}" id="ajouterFourniseur">Ajouter une Agence</a>
+                <a class="collapse-item" href="{{ path('app_agence_list_a') }}" id="ajouterFourniseur">liste Agence</a>
             {% else %}
-                <a class="collapse-item" href="{{ path('app_agence_new') }}" id="ajouterFourniseur">Ajouter une Agence</a>
-                <a class="collapse-item" href="{{ path('app_agence_list') }}">liste Agence</a>
+                <a class="collapse-item" href="{{ path('app_agence_new_a') }}" id="ajouterFourniseur">Ajouter une Agence</a>
+                <a class="collapse-item" href="{{ path('app_agence_list_a') }}">liste Agence</a>
             {% endif %}
         </div>
     </div>

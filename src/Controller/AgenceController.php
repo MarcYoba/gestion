@@ -87,6 +87,26 @@ class AgenceController extends AbstractController
                 'form' => $form->createView(),
             ]);
     }
+    #[Route('/agence/a/create/new', name: 'app_agence_new_a')]
+    public function Create_A(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $agence = new Agence();
+        $form = $this->createForm(AgenceType::class, $agence);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $agence->setCreatedBY($agence->getUser()->getId());
+
+            $entityManager->persist($agence);
+            $entityManager->flush();
+
+            return$this->redirectToRoute("app_agence_list");
+        }
+
+        return $this->render('agence/index_a.html.twig', [
+                'form' => $form->createView(),
+            ]);
+    }
     /**
      * @Route(path="/agence/list", name="app_agence_list")
      */
@@ -94,6 +114,16 @@ class AgenceController extends AbstractController
     {
         $agences = $agenceRepository->findAll();
         return $this->render('agence/list.html.twig', [
+            'agences' => $agences,
+        ]);
+    }
+    /**
+     * @Route(path="/agence/a/list", name="app_agence_list_a")
+     */
+    public function list_a(AgenceRepository $agenceRepository): Response
+    {
+        $agences = $agenceRepository->findAll();
+        return $this->render('agence/list_a.html.twig', [
             'agences' => $agences,
         ]);
     }
@@ -106,6 +136,16 @@ class AgenceController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_agence_list');
+    }
+    /**
+     * @Route(path="/agence/a/delete/{id}", name="app_agence_delete_a")
+     */
+    public function delete_a(Agence $agence, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($agence);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_agence_list_a');
     }
     /**
      * @Route(path="/agence/edit/{id}", name="app_agence_edit")
@@ -129,5 +169,31 @@ class AgenceController extends AbstractController
             'form' => $form->createView(),
             'agence' => $agence,
         ]);
+    }
+    #[Route('/agence/a/edit/{id}', name: 'app_agence_edit_a')]
+    public function edit_a(Agence $agence): Response
+    { 
+        return $this->render('agence/edit_a.html.twig', [
+            'agences' => $agence,
+        ]);
+    }
+    #[Route('/agence/a/update', name: 'update_agence_a')]
+    public function update_a(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $agences = $request->request->all('agences');
+        
+        foreach ($agences as $key => $value) {
+            $agence = $entityManager->getRepository(Agence::class)->find($key);
+            $agence->setNom($value['nom']);
+            $agence->setAdress($value['adress']);
+            $agence->setActivite($value['activite']);
+            $agence->setContribuable($value['contribuable']);
+            $agence->setRccm($value['rccm']);
+            $agence->setTelephone($value['telephone']);
+            $agence->setPresentation($value['presentation']);
+            $entityManager->persist($agence);
+        }
+        $entityManager->flush();
+        return $this->redirectToRoute('app_agence_list_a');
     }
 }

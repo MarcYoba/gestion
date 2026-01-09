@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\FactureA;
+use App\Entity\TempAgence;
 use App\Entity\VenteA;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -35,6 +36,9 @@ class FactureAController extends AbstractController
     #[Route('/facture/a/print/{id}', name:'app_print_facture_a')]
     public function Print(EntityManagerInterface $entityManger, int $id, string $filename = 'facture.pdf')
     {
+        $tempagence = $entityManger->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+        $agence =  $tempagence->getAgence();
+
         $facture = $entityManger->getRepository(FactureA::class)->findBy(['vente'=>$id]);
         $client = null;
         $vente = null;
@@ -50,7 +54,8 @@ class FactureAController extends AbstractController
         $html = $this->renderView('facture_a/print.html.twig', [
         'vente' => $vente,
         'client' => $client,
-        'factures' => $facture
+        'factures' => $facture,
+        'agences' => $agence,
         ]);
 
         $dompdf->loadHtml($html);
