@@ -47,7 +47,7 @@ function myFunctionP() {
   // Boucler sur toutes les options
   for (i = 0; i < li.length; i++) {
     a = li[i];
-    if (a.value.toUpperCase().indexOf(filter) > -1) {
+    if (a.textContent.toUpperCase().indexOf(filter) > -1) {
       li[i].style.display = "";
     } else {
       li[i].style.display = "none";
