@@ -65,6 +65,9 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Brouillon::class)]
     private Collection $brouillons;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: BondCommande::class)]
+    private Collection $bondCommandes;
+
     public function __construct()
     {
         $this->achat = new ArrayCollection();
@@ -72,6 +75,7 @@ class Produit
         $this->quantiteproduits = new ArrayCollection();
         $this->historiques = new ArrayCollection();
         $this->brouillons = new ArrayCollection();
+        $this->bondCommandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -355,6 +359,36 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($brouillon->getProduit() === $this) {
                 $brouillon->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BondCommande>
+     */
+    public function getBondCommandes(): Collection
+    {
+        return $this->bondCommandes;
+    }
+
+    public function addBondCommande(BondCommande $bondCommande): static
+    {
+        if (!$this->bondCommandes->contains($bondCommande)) {
+            $this->bondCommandes->add($bondCommande);
+            $bondCommande->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBondCommande(BondCommande $bondCommande): static
+    {
+        if ($this->bondCommandes->removeElement($bondCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($bondCommande->getProduit() === $this) {
+                $bondCommande->setProduit(null);
             }
         }
 

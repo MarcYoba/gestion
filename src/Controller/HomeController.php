@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Agence;
+use App\Entity\BondCommandeA;
 use App\Entity\Caisse;
 use App\Entity\Clients;
 use App\Entity\Depenses;
@@ -31,6 +32,9 @@ class HomeController extends AbstractController
 
         $agence = $entityManager->getRepository(Agence::class)->findAll();
         $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         if ($user) {
             // $user = $user->getId();
             $user = $entityManager->getRepository(User::class)->find($user);
@@ -56,6 +60,9 @@ class HomeController extends AbstractController
     public function dashboard(EntityManagerInterface $entityManager,int $id): Response
     {
         $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         if ($user) {
             $this->redirectToRoute('app_logout');
         }
@@ -125,6 +132,9 @@ class HomeController extends AbstractController
     public function dashboardA(EntityManagerInterface $entityManager,int $id): Response
     {
         $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $agence = 0;
         if (!$this->getUser()) {
             $this->redirectToRoute('app_logout');
@@ -176,6 +186,7 @@ class HomeController extends AbstractController
         $lots = $entityManager->getRepository(Lots::class)->findBy(['expiration' => '0']);
         $peramption = $entityManager->getRepository(ProduitA::class)->findByDateExpiration(6);
         $lotsperemtion = $entityManager->getRepository(Lots::class)->findByDateExpirationLots(6);
+        $bondCommandeA = $entityManager->getRepository(BondCommandeA::class)->findBySommeBonCommande();
         
         if (empty($expiration)) {
             $expiration = [];
@@ -198,6 +209,7 @@ class HomeController extends AbstractController
             'clients' => $client,
             'dateexpiration' => $dateexpiration,
             'commandepoussins' => $commandepoussin,
+            'bondCommandeA' => $bondCommandeA,
         ]);
     }
 }
