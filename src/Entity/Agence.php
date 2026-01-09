@@ -170,6 +170,21 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Brouillon::class)]
     private Collection $brouillons;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $activite = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $contribuable = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $rccm = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $telephone = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $presentation = null;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -1663,6 +1678,66 @@ class Agence
                 $brouillon->setAgence(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getActivite(): ?string
+    {
+        return $this->activite;
+    }
+
+    public function setActivite(?string $activite): static
+    {
+        $this->activite = $activite;
+
+        return $this;
+    }
+
+    public function getContribuable(): ?string
+    {
+        return $this->contribuable;
+    }
+
+    public function setContribuable(?string $contribuable): static
+    {
+        $this->contribuable = $contribuable;
+
+        return $this;
+    }
+
+    public function getRccm(): ?string
+    {
+        return $this->rccm;
+    }
+
+    public function setRccm(?string $rccm): static
+    {
+        $this->rccm = $rccm;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): static
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getPresentation(): ?string
+    {
+        return $this->presentation;
+    }
+
+    public function setPresentation(?string $presentation): static
+    {
+        $this->presentation = $presentation;
 
         return $this;
     }

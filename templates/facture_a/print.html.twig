@@ -88,8 +88,15 @@
 </head>
 <body>
     <div class="header center">
-        <h1 class="bold">CABINET VETERINAIRE<br>DE SOA</h1>
-        <small>RC/YAE2022/B/2852</small>
+        <h1 class="bold">
+        <strong>{{agences.activite}}</strong> <strong>{{agences.nom}}</strong> <br>
+            <strong>{{ agences.adress }}</strong><br>
+            <strong> Telephone : {{ agences.telephone }}</strong><br>
+        </h1>
+        <small>
+            <strong>{{ agences.contribuable }}</strong><br>
+            <strong>{{ agences.rccm }}</strong><br>
+        </small>
     </div>
 
     <div class="info-client">

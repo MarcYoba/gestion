@@ -35,6 +35,10 @@ class FactureController extends AbstractController
     #[Route('/facture/print/{id}', name:'app_print_facture')]
     public function Print(EntityManagerInterface $entityManger, int $id, string $filename = 'facture.pdf')
     {
+        $user = $this->getUser();
+        if ($user === null) {
+            return $this->redirectToRoute('app_login');
+        }
         $tempagence = $entityManger->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
         $agence =  $tempagence->getAgence();
 

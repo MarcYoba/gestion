@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Creation Agence !{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="assets/img/ico/favicon.png">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Creation Agence</title>
+    <style>
+        .drop{
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body class="bg-gradient-success">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-2 d-none d-lg-block bg-register-image">
+                        {% include "navbarA.html.twig" %}
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="p-5">
+                            <div class="card-header py-3">
+                                <h1 class="m-0 font-weight-bold text-primary">Creation d' Agence </h1>
+                            </div><br>
+                            {{ form_errors(form) }}
+                            {{ form_start(form) }}
+                             
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_row(form.nom) }}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{ form_row(form.datecreation) }}
+                                    </div>
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_row(form.adress) }}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_label(form.user) }}
+                                        <select name="{{ field_name(form.user) }}" class="form-select">
+                                            {% for user in form.user.vars.choices %}
+                                                <option value="{{ user.value }}" {{ form.user.vars.data and user.value == form.user.vars.data.id ? 'selected' }}>
+                                                    {{ user.data.username }} {# Affiche le nom de l'utilisateur #}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        {{ form_errors(form.user) }}
+                                    </div>
+                                    {# <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_row(registrationForm.speculation) }}
+                                    </div>
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        {{ form_row(registrationForm.localisation) }}
+                                    </div> #}
+                                </div>
+                                
+                            
+                                <button type="submit" name="create" id="create" class="btn btn-primary btn-user btn-block">
+                                    Enregistrer
+                                </button>
+                                <hr>
+                            {{ form_end(form) }}    
+                            
+                            <hr>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+</body>
+
+</html>        
+    
+{% endblock %}
+
