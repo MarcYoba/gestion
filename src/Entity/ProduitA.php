@@ -74,6 +74,9 @@ class ProduitA
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $reference = null;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: BondCommandeA::class)]
+    private Collection $bondCommandeAs;
+
     public function __construct()
     {
         $this->achatAs = new ArrayCollection();
@@ -82,6 +85,7 @@ class ProduitA
         $this->quantiteproduitAs = new ArrayCollection();
         $this->historiqueAs = new ArrayCollection();
         $this->lots = new ArrayCollection();
+        $this->bondCommandeAs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -421,6 +425,36 @@ class ProduitA
     public function setReference(?string $reference): static
     {
         $this->reference = $reference;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BondCommandeA>
+     */
+    public function getBondCommandeAs(): Collection
+    {
+        return $this->bondCommandeAs;
+    }
+
+    public function addBondCommandeA(BondCommandeA $bondCommandeA): static
+    {
+        if (!$this->bondCommandeAs->contains($bondCommandeA)) {
+            $this->bondCommandeAs->add($bondCommandeA);
+            $bondCommandeA->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBondCommandeA(BondCommandeA $bondCommandeA): static
+    {
+        if ($this->bondCommandeAs->removeElement($bondCommandeA)) {
+            // set the owning side to null (unless already changed)
+            if ($bondCommandeA->getProduit() === $this) {
+                $bondCommandeA->setProduit(null);
+            }
+        }
 
         return $this;
     }

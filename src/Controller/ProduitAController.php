@@ -139,6 +139,9 @@ class ProduitAController extends AbstractController
     public function FunctionName(Request $request, EntityManagerInterface $entityManager) : Response 
     {
         $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
         $processed = 0;
@@ -249,8 +252,6 @@ class ProduitAController extends AbstractController
     #[Route('/produit/a/sans/date/peremption', name:'app_produit_sans_date_peramtion')]
     public function produit_sans_date(EntityManagerInterface $em) : Response 
     {
-         
-
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
@@ -287,7 +288,7 @@ class ProduitAController extends AbstractController
     public function produit_perimer(EntityManagerInterface $em) : Response 
     {
          
-
+        
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
@@ -324,6 +325,9 @@ class ProduitAController extends AbstractController
     public function download(EntityManagerInterface $em) : Response 
     {
         $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
 
@@ -357,7 +361,11 @@ class ProduitAController extends AbstractController
     #[Route('/produit/a/impot/quantite', name:'app_produit_a_import_quantite')]
     public function Import_Quantite(Request $request, EntityManagerInterface $entityManager) : Response 
     {
+        
         $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
         $processed = 0;
