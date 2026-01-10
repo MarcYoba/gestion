@@ -97,4 +97,17 @@ class DepenseARepository extends ServiceEntityRepository
         ;
         return $result > 0 ? (float)$result : 0;
     }
+
+    public function findByDepenseSemain($first_date,$end_date,$agence) : array
+    {
+        return $this->createQueryBuilder('d')
+            ->Where('d.createdAt BETWEEN :debut AND :fin')
+            // ->andWhere('d.agence = :agences')
+            ->setParameter('debut', $first_date)
+            ->setParameter('fin', $end_date)
+            // ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
