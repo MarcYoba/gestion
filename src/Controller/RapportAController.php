@@ -206,6 +206,9 @@ class RapportAController extends AbstractController
         $sommeVersement = $em->getRepository(VersementA::class)->findBySommeVersementSemaine($date_debut,$date_fin,$id);
         $sommeDepense = $em->getRepository(DepenseA::class)->findBySommeDepenseSemain($date_debut,$date_fin,$id);
         $sommeCaisse = $em->getRepository(CaisseA::class)->findBySommeCaisseSemaine($date_debut,$date_fin,$id);
+        $depenses = $em->getRepository(DepenseA::class)->findByDepenseSemain($date_debut,$date_fin,$id);
+        $versement = $em->getRepository(VersementA::class)->findByVersementSemaine($date_debut,$date_fin,$id);
+        $poussin = $em->getRepository(Poussin::class)->findAllCommandPoussin($id,$date_debut,$date_fin);
 
         $date_debut = new \DateTimeImmutable($date_debut);
         $date_fin = new \DateTimeImmutable($date_fin);
@@ -230,6 +233,10 @@ class RapportAController extends AbstractController
         'sommedepense' => $sommeDepense,
         'sommeVersement' => $sommeVersement,
         'sommeCaisse' => $sommeCaisse,
+        'historiqueAs' => $historiqueA,
+        'depenses' => $depenses,
+        'versements' => $versement,
+        'poussins' => $poussin,
         ]);
 
         $dompdf->loadHtml($html);
