@@ -57,7 +57,7 @@
                                     <div class="form-group row">
                                         
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="search" id="rechecliet" onkeyup="recherclinet()"  class="form-control" placeholder="recherche fournisseur">
+                                        <input type="search" id="rechecliet" onkeyup="recherduclientVersement()"  class="form-control" placeholder="recherche fournisseur">
                                         {{ form_label(form.client) }}
                                         {{ form_widget(form.client, {
                                             'attr': {
@@ -107,7 +107,7 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-
+    <script src="{{ asset('js/client/search_client.js') }}"></script>
 </body>
 
 </html>
