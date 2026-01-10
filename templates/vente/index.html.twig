@@ -170,7 +170,9 @@
                                                 <p class="col-md-3" >
                                                     <select id="nomProduit"  name="nomProduit"  class="form-control form-select" size="10"  multiple aria-label="multiple select " required onclick="recherchePrix()">
                                                         {% for row in produit %}
-                                                            <option value="{{ row.nom }}">{{ row.nom }}</option>
+                                                            {% if row.quantite > 0 %}
+                                                                <option value="{{ row.nom }}">{{ row.nom }}</option>
+                                                            {% endif %}
                                                         {% endfor %}
                                                                         
                                                     </select>
