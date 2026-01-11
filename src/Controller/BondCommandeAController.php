@@ -76,7 +76,7 @@ class BondCommandeAController extends AbstractController
         $processed = 0;
         if ($request->isMethod('POST')) {
            $file =  $request->files->get('ficher');
-
+            dd($file);
            if ($file && $file->isValid()) {
                    try {
                     $extension = strtolower($file->getClientOriginalExtension());
@@ -118,7 +118,7 @@ class BondCommandeAController extends AbstractController
                 } catch (\Exception $e) {
                     $this->addFlash("error", 'Erreur lors de la lecture du fichier: ' . $e->getMessage() );
                 }
-           } else {
+            } else {
             $this->addFlash("error", "echec de chargement du fichier");
            }
         }
