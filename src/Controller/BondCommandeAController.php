@@ -76,7 +76,6 @@ class BondCommandeAController extends AbstractController
         $processed = 0;
         if ($request->isMethod('POST')) {
            $file =  $request->files->get('ficher');
-            dd($file);
            if ($file && $file->isValid()) {
                    try {
                     $extension = strtolower($file->getClientOriginalExtension());
@@ -96,11 +95,17 @@ class BondCommandeAController extends AbstractController
                     $i = 0;
                     $trouver = 0;
                     $this->addFlash('success', 'Importation démarrée');
-                    dd($donnees);
+                    
                     foreach ($donnees as $key => $value) {
                         $produit = $em->getRepository(ProduitA::class)->findOneBy(["nom" => $value[0]]);
-                        if($produit){ 
-                            
+                        if ($produit){
+                            $bondCommande = $em->getRepository(BondCommandeA::class)->findOneBy(['produit' => $produit]);
+                            if ($bondCommande){
+                                $bondCommande->setLimite((int)$value[1]);
+                                $em->persist($bondCommande);
+                                $em->flush();
+                                $trouver++;
+                            }
                         }
                         $processed++;
                         $progress = round(($i + 1) / $total * 100);
