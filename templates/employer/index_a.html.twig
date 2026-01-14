@@ -49,6 +49,23 @@
                                 <div class="form-group row">
                                     <div class="col-sm-10">
                                         <h1 class="h4 text-gray-900 mb-4">Enregistrement Employer ( Ajouter un employer a une agence )</h1>
+                                        {% for message in app.flashes('success') %}
+                                            <div class="alert alert-success alert-dismissible fade show">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+
+                                        {% for message in app.flashes('warning') %}
+                                            <div class="alert alert-warning">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+
+                                        {% for message in app.flashes('error') %}
+                                            <div class="alert alert-danger">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                     <div class="col-sm-2">
                                         <a  href="{{ path('app_home_dashboardA', {'id': id}) }}" class="btn btn-primary btn-user btn-block"> Retour</a>
