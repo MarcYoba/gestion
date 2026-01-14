@@ -23,10 +23,18 @@ class EmployerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-           $emplyer->setNom($emplyer->getUser()->getUsername());
-            $entityManager->persist($emplyer);
-            $entityManager->flush();
-
+            $exitingUser = $entityManager->getRepository(Employer::class)->findOneBy(['user' => $emplyer->getUser()->getId()]);
+            if ($exitingUser) {
+                $this->addFlash('error', 'Le nom d\'utilisateur existe déjà. Veuillez en choisir un autre.');
+                return $this->redirectToRoute('app_employer');
+            }else {
+                $role[] = $form->get('poste')->getData();
+                $emplyer->setNom($emplyer->getUser()->getUsername());
+                $user = $emplyer->getUser();
+                $user->setRoles($role);
+                $entityManager->persist($emplyer);
+                $entityManager->flush();
+            }
            return $this->redirectToRoute("employer_list", ['id' => $emplyer->getId()]);
         }
         
@@ -43,12 +51,19 @@ class EmployerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $role[] = $form->get('poste')->getData();
-            $emplyer->setNom($emplyer->getUser()->getUsername());
-            $user = $emplyer->getUser();
-            $user->setRoles($role);
-            $entityManager->persist($emplyer);
-            $entityManager->flush();
+            
+            $exitingUser = $entityManager->getRepository(Employer::class)->findOneBy(['user' => $emplyer->getUser()->getId()]);
+            if ($exitingUser) {
+                $this->addFlash('error', 'Le nom d\'utilisateur existe déjà. Veuillez en choisir un autre.');
+                return $this->redirectToRoute('app_employer');
+            }else {
+                $role[] = $form->get('poste')->getData();
+                $emplyer->setNom($emplyer->getUser()->getUsername());
+                $user = $emplyer->getUser();
+                $user->setRoles($role);
+                $entityManager->persist($emplyer);
+                $entityManager->flush();
+            }
 
            return $this->redirectToRoute("employer_list_a", ['id' => $emplyer->getId()]);
         }

@@ -142,9 +142,11 @@ class HomeController extends AbstractController
         if ($id == 0) {
             $agence = $entityManager->getRepository(Agence::class)->findAll();
             $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
-            $agence = $temoporayagence->getAgence();
+            //$agence = $temoporayagence->getAgence();
             if ($temoporayagence) {
-                $temoporayagence->setGenerale(1);
+                $idagence = $entityManager->getRepository(Agence::class)->find($id);
+                $temoporayagence->setGenerale(0);
+                $temoporayagence->setAgence($idagence);
                 $entityManager->flush();
             }else{
                 $idagence = $entityManager->getRepository(Agence::class)->find(1);
@@ -158,7 +160,7 @@ class HomeController extends AbstractController
             
         }else{
             $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
-            $agence = $temoporayagence->getAgence();
+            //$agence = $temoporayagence->getAgence();
             if ($temoporayagence) {
                 $idagence = $entityManager->getRepository(Agence::class)->find($id);
                 $temoporayagence->setGenerale(0);
