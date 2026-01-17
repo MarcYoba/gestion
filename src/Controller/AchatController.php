@@ -7,6 +7,7 @@ use App\Entity\Agence;
 use App\Entity\Balance;
 use App\Entity\TempAgence;
 use App\Entity\Fournisseur;
+use App\Entity\Magasin;
 use App\Entity\Produit;
 use App\Form\AchatType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,8 +48,9 @@ class AchatController extends AbstractController
 
                     $fournisseur = $entityManager->getReference(Fournisseur::class, $key['fournisseur']);
                     $produit = $entityManager->getReference(Produit::class, $key['produit']);
-
-                    $ajout = $produit->getQuantite();
+                    $magasin = $entityManager->getRepository(Magasin::class)->findOneBy(['produit' => $produit->getId()]);
+                    
+                    
                     
                     $type = $key["type"];
                     $achat->setPrix($key["prix"]);
@@ -61,9 +63,22 @@ class AchatController extends AbstractController
                     $achat->setFournisseur($fournisseur);
                     $achat->setProduit($produit);
 
-                    $ajout = $ajout + $key["quantite"];
-
-                    $produit->setQuantite($ajout);
+                    if ($magasin) {
+                        $magasin->setQuantite($magasin->getQuantite() + $key["quantite"]);
+                        $operation = $magasin->getOperation();
+                        $operation[] = $date->format('Y-m-d')." "."Achat";
+                        $magasin->setOperation($operation);
+                        $entityManager->persist($magasin);
+                    } else {
+                        $newMagasin = new Magasin();
+                        $newMagasin->setProduit($produit);
+                        $newMagasin->setQuantite($key["quantite"]);
+                        $newMagasin->setAgence($tempagence->getAgence());
+                        $newMagasin->setCreatetAt(new \DateTime());
+                        $newMagasin->setUser($this->getUser());
+                        $newMagasin->setOperation([$date->format('Y-m-d')." "."Achat"]);
+                        $entityManager->persist($newMagasin);
+                    }
                     $entityManager->persist($achat);
                     
                 }

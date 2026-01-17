@@ -185,6 +185,12 @@ class Agence
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $presentation = null;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Magasin::class)]
+    private Collection $magasins;
+
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Transfert::class)]
+    private Collection $transferts;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -233,6 +239,8 @@ class Agence
         $this->remboursements = new ArrayCollection();
         $this->retraits = new ArrayCollection();
         $this->brouillons = new ArrayCollection();
+        $this->magasins = new ArrayCollection();
+        $this->transferts = new ArrayCollection();
     }
 
    
@@ -1738,6 +1746,66 @@ class Agence
     public function setPresentation(?string $presentation): static
     {
         $this->presentation = $presentation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Magasin>
+     */
+    public function getMagasins(): Collection
+    {
+        return $this->magasins;
+    }
+
+    public function addMagasin(Magasin $magasin): static
+    {
+        if (!$this->magasins->contains($magasin)) {
+            $this->magasins->add($magasin);
+            $magasin->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMagasin(Magasin $magasin): static
+    {
+        if ($this->magasins->removeElement($magasin)) {
+            // set the owning side to null (unless already changed)
+            if ($magasin->getAgence() === $this) {
+                $magasin->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transfert>
+     */
+    public function getTransferts(): Collection
+    {
+        return $this->transferts;
+    }
+
+    public function addTransfert(Transfert $transfert): static
+    {
+        if (!$this->transferts->contains($transfert)) {
+            $this->transferts->add($transfert);
+            $transfert->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransfert(Transfert $transfert): static
+    {
+        if ($this->transferts->removeElement($transfert)) {
+            // set the owning side to null (unless already changed)
+            if ($transfert->getAgence() === $this) {
+                $transfert->setAgence(null);
+            }
+        }
 
         return $this;
     }

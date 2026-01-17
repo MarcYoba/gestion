@@ -68,6 +68,12 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: BondCommande::class)]
     private Collection $bondCommandes;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Magasin::class)]
+    private Collection $magasins;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Transfert::class)]
+    private Collection $transferts;
+
     public function __construct()
     {
         $this->achat = new ArrayCollection();
@@ -76,6 +82,8 @@ class Produit
         $this->historiques = new ArrayCollection();
         $this->brouillons = new ArrayCollection();
         $this->bondCommandes = new ArrayCollection();
+        $this->magasins = new ArrayCollection();
+        $this->transferts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -389,6 +397,66 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($bondCommande->getProduit() === $this) {
                 $bondCommande->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Magasin>
+     */
+    public function getMagasins(): Collection
+    {
+        return $this->magasins;
+    }
+
+    public function addMagasin(Magasin $magasin): static
+    {
+        if (!$this->magasins->contains($magasin)) {
+            $this->magasins->add($magasin);
+            $magasin->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMagasin(Magasin $magasin): static
+    {
+        if ($this->magasins->removeElement($magasin)) {
+            // set the owning side to null (unless already changed)
+            if ($magasin->getProduit() === $this) {
+                $magasin->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transfert>
+     */
+    public function getTransferts(): Collection
+    {
+        return $this->transferts;
+    }
+
+    public function addTransfert(Transfert $transfert): static
+    {
+        if (!$this->transferts->contains($transfert)) {
+            $this->transferts->add($transfert);
+            $transfert->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransfert(Transfert $transfert): static
+    {
+        if ($this->transferts->removeElement($transfert)) {
+            // set the owning side to null (unless already changed)
+            if ($transfert->getProduit() === $this) {
+                $transfert->setProduit(null);
             }
         }
 
