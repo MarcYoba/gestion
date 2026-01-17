@@ -8,6 +8,7 @@ use App\Entity\BalanceA;
 use App\Form\AchatAType;
 use App\Entity\FournisseurA;
 use App\Entity\Lots;
+use App\Entity\MagasinA;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,6 +41,9 @@ class AchatAController extends AbstractController
                     $fournisseurA = $em->getReference(FournisseurA::class, $key['fournisseur']);
                     $idproduit = $em->getRepository(ProduitA::class)->findBy(['nom' => $key['produit']]);
                     $produitA = $em->getReference(ProduitA::class, $idproduit[0]->getId());
+                    $magasin = $em->getRepository(MagasinA::class)->findOneBy([
+                        'produit' => $produitA,
+                    ]);
     
                     $ajout = $produitA->getQuantite();
                     $type = $key['type'];
@@ -64,7 +68,23 @@ class AchatAController extends AbstractController
                         $em->persist($lots);
                         $em->flush();
                     }
-                    $produitA->setQuantite($ajout);
+                    if ($magasin) {
+                        $magasin->setQuantite($magasin->getQuantite() + $key["quantite"]);
+                        $operation = $magasin->getOperation();
+                        $operation[] = $date->format('Y-m-d')." "."Achat";
+                        $magasin->setOperation($operation);
+                        $em->persist($magasin);
+                    } else {
+                        $newMagasin = new MagasinA();
+                        $newMagasin->setProduit($produitA);
+                        $newMagasin->setQuantite($key["quantite"]);
+                        $newMagasin->setAgence($tempagence->getAgence());
+                        $newMagasin->setCreatetAt(new \DateTime());
+                        $newMagasin->setUser($this->getUser());
+                        $newMagasin->setOperation([$date->format('Y-m-d')." "."Achat"]);
+                        $em->persist($newMagasin);
+                    }
+
                     $produitA->setExpiration($key['datepera']);
                     $em->persist($achatA);
                 }
