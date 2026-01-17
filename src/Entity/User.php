@@ -200,6 +200,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Brouillon::class)]
     private Collection $brouillons;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Magasin::class)]
+    private Collection $magasins;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Transfert::class)]
+    private Collection $transferts;
+
     
 
     public function __construct() {
@@ -253,6 +259,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->remboursements = new ArrayCollection();
         $this->retraits = new ArrayCollection();
         $this->brouillons = new ArrayCollection();
+        $this->magasins = new ArrayCollection();
+        $this->transferts = new ArrayCollection();
         
     }
 
@@ -1848,6 +1856,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($brouillon->getUser() === $this) {
                 $brouillon->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Magasin>
+     */
+    public function getMagasins(): Collection
+    {
+        return $this->magasins;
+    }
+
+    public function addMagasin(Magasin $magasin): static
+    {
+        if (!$this->magasins->contains($magasin)) {
+            $this->magasins->add($magasin);
+            $magasin->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMagasin(Magasin $magasin): static
+    {
+        if ($this->magasins->removeElement($magasin)) {
+            // set the owning side to null (unless already changed)
+            if ($magasin->getUser() === $this) {
+                $magasin->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transfert>
+     */
+    public function getTransferts(): Collection
+    {
+        return $this->transferts;
+    }
+
+    public function addTransfert(Transfert $transfert): static
+    {
+        if (!$this->transferts->contains($transfert)) {
+            $this->transferts->add($transfert);
+            $transfert->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransfert(Transfert $transfert): static
+    {
+        if ($this->transferts->removeElement($transfert)) {
+            // set the owning side to null (unless already changed)
+            if ($transfert->getUser() === $this) {
+                $transfert->setUser(null);
             }
         }
 

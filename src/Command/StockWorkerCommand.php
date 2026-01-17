@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'app:check-stock',
     description: 'Vérifie les stocks et met à jour le statut des bons de commande.',
 )]
-class CheckStockCommand extends Command
+class StockWorkerCommand extends Command
 {
     private StockCheckerService $stockCheckerService;
 

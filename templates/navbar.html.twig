@@ -126,6 +126,27 @@
     </div>
     </li>
     <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#magasin"
+        aria-expanded="true" aria-controls="magasin">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Magasin</span>
+    </a>
+    <div id="magasin" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Operation des Magasin</h6>
+                {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                    <a class="collapse-item" href="{{ path('app_magasin') }}">Ajouter produit</a>
+                    <a class="collapse-item" href="{{ path('app_magasin_list') }}" >Liste produit</a>
+                    <a class="collapse-item" href="{{ path('app_transfert_list') }}" >Liste Transfert</a>
+                {% else %}
+                    <a class="collapse-item" href="{{ path('app_magasin') }}">Ajouter produit</a>
+                    <a class="collapse-item" href="{{ path('app_magasin_list') }}">Liste produit</a>
+                    <a class="collapse-item" href="{{ path('app_transfert_list') }}" >Liste Transfert</a>
+                {% endif %}
+        </div>
+    </div>
+    </li>
+    <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsefournisseur"
         aria-expanded="true" aria-controls="collapsefournisseur">
         <i class="fas fa-fw fa-folder"></i>

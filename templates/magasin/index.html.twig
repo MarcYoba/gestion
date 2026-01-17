@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Magasin{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container" >
+        
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-2 d-none d-lg-block bg-register-image">
+                        {% include "navbar.html.twig" %}
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="p-5">
+                            <div class="text-center" >
+                                <h1 class="h4 text-gray-900 mb-4">Magasin</h1>
+                            </div>
+                            <div class="card-header py-3">
+                                <div class="form-group row">
+                                    <div class="col-sm-8 mb-6 mb-sm-0">
+                                        Ajouter un produit au Magasin
+                                    </div>
+                                    {% for message in app.flashes('success') %}
+                                        <div class="alert alert-success">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                    <div class="col-sm-2 mb-6 mb-sm-0">
+                                        {% for tempagence in app.user.tempAgences %}
+                                            <a href="{{ path('app_home_dashboard', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
+                                                <i class="fas fa-home"></i>
+                                                    home
+                                            </a>  
+                                        {% endfor %}
+                                    </div>      
+                                </div> 
+                            </div>
+                            {{ form_start(form) }}
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        {{ form_label(form.produit) }}
+                                        <input type="search" id="produitrecher" onkeyup="rechercheentityduproduit()"  class="form-control" placeholder="Recherche Produit">
+                                        {{ form_widget(form.produit, {
+                                            'attr': {
+                                                'class': 'form-control',
+                                                'size': '4',
+                                                'aria-label': 'Sélection du client'
+                                            }
+                                        }) }}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Quantité
+                                        {{ form_label(form.quantite) }}
+                                        {{ form_widget(form.quantite) }}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Date d'entrée
+                                        {{ form_widget(form.createtAt) }}
+                                    </div>
+                                    
+                                </div>  
+                            {{ form_end(form) }}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="{{ asset('js/produit/recherche.js') }}"> </script>
+</body>
+</html>
+{% endblock %}
+
