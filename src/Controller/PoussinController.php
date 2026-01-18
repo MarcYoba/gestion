@@ -67,7 +67,7 @@ class PoussinController extends AbstractController
             return $this->redirectToRoute('app_logout');
         }
         $client = $em->getRepository(Clients::class)->findAll();
-
+        dd($client);
         return $this->render("poussin/Edit.html.twig", [
             "poussins" => $poussin,
             "clients" => $client,
