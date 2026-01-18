@@ -60,14 +60,14 @@ class PoussinController extends AbstractController
     }
 
     #[Route('/poussin/edit/{id}', name:'app_pousssin_edit')]
-    public function Edite(EntityManagerInterface $em, Poussin $poussin): Response
+    public function Edite(EntityManagerInterface $em, int $id): Response
     {
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_logout');
         }
         $client = $em->getRepository(Clients::class)->findAll();
-        dd($client);
+        $poussin = $em->getRepository(Poussin::class)->find($id);
         return $this->render("poussin/Edit.html.twig", [
             "poussins" => $poussin,
             "clients" => $client,
