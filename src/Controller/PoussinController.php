@@ -60,7 +60,7 @@ class PoussinController extends AbstractController
     }
 
     #[Route('/poussin/edit/{id}', name:'app_pousssin_edit')]
-    public function Edite(EntityManagerInterface $em): Response
+    public function Edite(EntityManagerInterface $em, Poussin $poussin): Response
     {
         $user = $this->getUser();
         if (!$user) {
