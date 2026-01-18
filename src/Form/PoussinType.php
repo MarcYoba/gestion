@@ -25,7 +25,7 @@ class PoussinType extends AbstractType
                 ]
             ])
         ->add('client', EntityType::class,[
-                'class' => clients::class,
+                'class' => Clients::class,
                 'choice_label' => 'nom',
                 'label' => 'Sélectionner un client',
                 'placeholder' => 'Choisissez un client',
