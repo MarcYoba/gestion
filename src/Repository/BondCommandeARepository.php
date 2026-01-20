@@ -58,7 +58,7 @@ class BondCommandeARepository extends ServiceEntityRepository
         return $result !== null ? (float) $result : 0.0;
    }
 
-    public function findByProduitACommander(): array
+   public function findByProduitACommander(): array
    {
        return $this->createQueryBuilder('b')
            ->andWhere('b.statut = :val')
@@ -68,5 +68,4 @@ class BondCommandeARepository extends ServiceEntityRepository
            ->getResult()
        ;
    }
-
 }

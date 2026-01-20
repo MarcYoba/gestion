@@ -40,6 +40,7 @@ class StockManager
             // dump('superier, on continue');
         } else {
             $bonCommande->setStatut(0);
+            $bonCommande->setQuantite($magasin->getQuantite());
             // dump('inferieur, on continue');
         }
 
