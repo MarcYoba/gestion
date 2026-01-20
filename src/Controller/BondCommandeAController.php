@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\AchatA;
 use App\Entity\BondCommandeA;
+use App\Entity\FournisseurA;
+use App\Entity\MagasinA;
 use App\Entity\ProduitA;
+use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -45,7 +48,7 @@ class BondCommandeAController extends AbstractController
         $options = new Options();
         $options->set('isRemoteEnabled', true); //Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
-        $bondCommande = $em->getRepository(BondCommandeA::class)->findByProduitACommander();
+        $bondCommande = $em->getRepository(ProduitA::class)->FindByBonCommandAutre();
         $achat = $em->getRepository(AchatA::class)->findAll();
         
         $html = $this->renderView('bond_commande_a/export_pdf.html.twig', [
@@ -132,7 +135,7 @@ class BondCommandeAController extends AbstractController
         ]);
     }
 
-private function lireFichierExcel($spreadsheet): array
+    private function lireFichierExcel($spreadsheet): array
     {
         $donneesCompletes = [];
         
@@ -154,4 +157,51 @@ private function lireFichierExcel($spreadsheet): array
     
     return $donnees;
     }
+    #[Route('/bond/commande/a/liste/fourisseur', name: 'app_bond_commande_a_liste_fourisseur')]
+    public function ListeFourisseur(EntityManagerInterface $entityManager) : Response {
+
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+        $id = $tempagence->getAgence()->getId();
+
+        $foournisseurs = $entityManager->getRepository(FournisseurA::class)->findAll();
+        return $this->render('bond_commande_a/liste_fourisseur.html.twig', [
+            'id' => $id,
+            'fournisseurs' => $foournisseurs,
+        ]);
+    }
+    #[Route('/bond/commande/a/liste/fourisseur/{id}', name: 'app_bond_commande_a_liste_fourisseur_id')]
+    public function ListeFourisseurId(EntityManagerInterface $entityManager, FournisseurA $fournisseur) : Response {
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); //Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        $bondCommande = $entityManager->getRepository(ProduitA::class)->FindByBonCommandFournisseur($fournisseur);
+        $achat = $entityManager->getRepository(AchatA::class)->findAll();
+        $magasin = $entityManager->getRepository(MagasinA::class)->findAll();
+        
+        $html = $this->renderView('bond_commande_a/export_fournisseur_pdf.html.twig', [
+          'bondCommande' => $bondCommande,
+          'achats' => $achat,
+          'fournisseur' => $fournisseur,
+          'magasins' => $magasin,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="bond_de_commande.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
+    }
+    
+
+    
 }
