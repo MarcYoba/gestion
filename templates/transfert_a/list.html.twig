@@ -104,7 +104,7 @@
                                                 <td>{{ transfert.matricule}}</td>
                                                 <td>{{ transfert.createtAt |date("d-m-Y")}}</td>
                                                 <td>
-                                                    <a href='{{ path('app_transfert_edit', {'id': transfert.id})}}' class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cette vente ?\");'>Detransfert</a>
+                                                    <a href='{{ path('app_transfert_a_edit', {'id': transfert.id})}}' class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cette vente ?\");'>Detransfert</a>
                                                 </td>
                                             </tr>
                                         {% endfor %}
