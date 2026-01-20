@@ -53,3 +53,7 @@ services:
             $httpClient: '@http_client'
             $params: '@parameter_bag'
             $logger: '@logger'
+    App\EventListener\ProduitSubscriber:
+        tags:
+            - { name: 'doctrine.event_subscriber'}
+    
