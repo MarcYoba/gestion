@@ -163,7 +163,7 @@
                     <td>{{ caisse.createAt | date("Y-m-d")}}</td>
                     <td>{{ caisse.motif}}</td>
                 </tr>
-                    {% set sommesaisse = sommesaisse + caisse.nomtant %}
+                    {% set sommesaisse = sommesaisse + caisse.montant %}
                 {% endfor %}
                 <tr>
                     <td>Total </td>

@@ -23,7 +23,14 @@ class CaisseAController extends AbstractController
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
             $agence = $tempagence->getAgence();
         if ($form->isSubmitted() && $form->isValid()) {
+            $libelle = $form->get('operation')->getData();
+            $montant = $form->get('montant')->getData();
             
+            if ($libelle == "sortie en caisse") {
+                $montant = $montant * -1;
+                
+                $caisseA->setMontant($montant);
+            }
             $caisseA->setAgence($agence);
             $caisseA->setUser($user);
 
