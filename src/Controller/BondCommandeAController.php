@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\AchatA;
 use App\Entity\BondCommandeA;
 use App\Entity\FournisseurA;
+use App\Entity\Magasin;
 use App\Entity\MagasinA;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class BondCommandeAController extends AbstractController
@@ -202,6 +204,55 @@ class BondCommandeAController extends AbstractController
         );
     }
     
+    #[Route('/bond/commande/a/liste/fournisseur/excel/{id}', name: 'app_bond_command_a_list_fournisseur_id_excel')]
+    public function ListeFourisseurExcel(EntityManagerInterface $em,FournisseurA $fournisseurs) : Response {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'produit');
+        $sheet->setCellValue('B1', 'Quantite Magasin');
+        $sheet->setCellValue('C1', 'Quantite contoire');
+        $sheet->setCellValue('D1', 'foutnisseur');
+        
+      //  $sheet->setCellValue('R1', 'MOMO');
+
+            $i = 2;
+        $bondCommande = $em->getRepository(ProduitA::class)->FindByBonCommandFournisseur($fournisseurs);
+   
+        
+            foreach ($bondCommande as $key => $value) {
+                $produit = $em->getRepository(ProduitA::class)->findOneBy(['nom' => $value['nom']]);
+                $magasin = $em->getRepository(MagasinA::class)->findOneBy(['produit' => $produit]);
+                $quantite = 0;
+                if ($magasin) {
+                    $quantite = $magasin->getQuantite();
+                }
+                $sheet->setCellValue('A'.$i, $value["nom"]);
+                $sheet->setCellValue('B'.$i, $quantite );
+                $sheet->setCellValue('C'.$i, $value["quantite"]);
+                $sheet->setCellValue('D'.$i, $fournisseurs->getNom()); 
+                
+               // $sheet->setCellValue('R'.$i, $value->getMontantmomo());
+                $i =$i+1;
+            }
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+        $nom = $fournisseurs->getNom().".xlsx";
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$nom.'"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;
+    }
 
     
 }
