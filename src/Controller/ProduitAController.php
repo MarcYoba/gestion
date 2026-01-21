@@ -32,7 +32,7 @@ class ProduitAController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $nom = $form->get('nom')->getData();
             $nom = mb_strtoupper($nom, 'UTF-8');
-            $produitExite = $em->getRepository(ProduitA::class)->findBy(['nom' => $nom]);
+            $produitExite = $em->getRepository(ProduitA::class)->findOneBy(['nom' => $nom]);
             if (!empty($produitExite)) {
                return $this->redirectToRoute("produit_a_list"); 
             }
