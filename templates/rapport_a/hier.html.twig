@@ -47,11 +47,11 @@
                 </tr>
                 <tr>
                     <th scope="col">Nom produit</th>
-                    <th scope="col">quantite</th>
-                    <th scope="col">prix</th>
-                    <th scope="col">montant </th>
+                    <th scope="col">Quantite</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Montant </th>
                     <th scope="col">Type paiement</th>
-                    <th scope="col">date vente</th>
+                    <th scope="col">Date vente</th>
                 </tr>
                 {% set prixfacture = 0 %}
                  {% for facture in vente.factureAs %}
@@ -146,10 +146,10 @@
                 <th colspan="4" align="center"> Recapitulatif Operation caise : {{calandrier}} </th>
             </tr>
                 <tr>
-                    <th scope="col">operation</th>
-                    <th scope="col">montant</th>
-                    <th scope="col">date</th>
-                    <th scope="col">motif</th>
+                    <th scope="col">Operation</th>
+                    <th scope="col">Montant</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Motif</th>
                 </tr>
         </thead>
             <tbody>
@@ -213,11 +213,11 @@
             </tr>
             <tr>
                 <th scope="col">Nom produit</th>
-                <th scope="col">quantite</th>
-                <th scope="col">prix Acaht</th>
-                <th scope="col">montant</th>
-                <th scope="col">fournisseur</th>
-                <th scope="col">date</th>
+                <th scope="col">Quantite</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Montant</th>
+                <th scope="col">Fournisseur</th>
+                <th scope="col">Date</th>
             </tr>
         </thead>
             <tbody>
@@ -318,22 +318,23 @@
             </tr>
             <tr>
                 <th scope="col">Date</th>
+                <th scope="col">Quantite</th>
                 <th scope="col">prix Unit</th>
-                <th scope="col">M.Total</th>
-                <th scope="col">Q.Total</th>
-                <th scope="col">M.Cash</th>
-                <th scope="col">M.Om</th>
-                <th scope="col">M.Credit</th>
-                <th scope="col">M.Reste</th>
+                <th scope="col">Montant</th>
+                <th scope="col">Cash</th>
+                <th scope="col">OM</th>
+                <th scope="col">Credit</th>
+                <th scope="col">Reste</th>
             </tr>
         </thead>
         <tbody>
             {% for poussin in poussins %}
                 <tr>
                     <td>{{poussin.datecommande | date("Y-m-d")}}</td>
+                    <td>{{poussin.quantite}}</td>
                     <td>{{poussin.prix}}</td>
                     <td>{{poussin.montant}}</td>
-                    <td>{{poussin.quantite}}</td>
+                    
                     <td>{{poussin.cash}}</td>
                     <td>{{poussin.mobilepay}}</td>
                     <td>{{poussin.credit}}</td>
