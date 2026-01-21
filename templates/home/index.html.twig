@@ -111,14 +111,14 @@
                                             <h5 class="card-title text-center">Direction Générale</h5>
                                             <p class="card-text text-center">Bienvenue dans votre agence. Veuillez accéder à vos services.</p>
                                             <div class="d-flex justify-content-between">
-                                                
-                                                    <a href="{{ path('app_home_dashboard', {'id': 0}) }}" class="btn btn-primary">
-                                                    Provenderie
-                                                    </a>
                                                     {% for agences in agence %}
-                                                        {% if agences.nom == "CVD SOA" %}
+                                                        {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': 0}) }}" class="btn btn-primary">
-                                                                Cabinet
+                                                                Cabinet {{agences.nom }}
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ path('app_home_dashboard', {'id': 0}) }}" class="btn btn-primary">
+                                                            Provenderie {{agences.nom }}
                                                             </a>
                                                         {% endif %}
                                                     {% endfor %}
@@ -137,15 +137,17 @@
                                                 <div class="d-flex justify-content-between">
                                                     {% if agences.nom == "LTN SARL" %}
                                                         <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
-                                                        Provenderie
+                                                        Provenderie 
                                                         </a>
                                                     {% else %}
-                                                        <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
-                                                        Provenderie
-                                                        </a>
-                                                        {% if agences.nom == "CVD SOA" %}
+                                                        
+                                                        {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
-                                                                Cabinet
+                                                                Cabinet {{agences.nom }}
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                            Provenderie {{agences.nom }}
                                                             </a>
                                                         {% endif %}
                                                     {% endif %}
@@ -189,12 +191,13 @@
                                                         Provenderie
                                                     </a>
                                                 {% else %}
-                                                    <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
-                                                        Provenderie
-                                                    </a>
-                                                    {% if agences.nom == "CVD SOA" %}
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
-                                                                Cabinet
+                                                                Cabinet {{agences.nom }}
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                            Provenderie {{agences.nom }}
                                                             </a>
                                                         {% endif %}
                                                 {% endif %}
@@ -219,12 +222,13 @@
                                                         Provenderie
                                                     </a>
                                                 {% else %}
-                                                    <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
-                                                        Provenderie
-                                                    </a>
-                                                    {% if agences.nom == "CVD SOA" %}
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
-                                                                Cabinet
+                                                                Cabinet {{agences.nom }}
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                            Provenderie {{agences.nom }}
                                                             </a>
                                                         {% endif %}
                                                 {% endif %}
@@ -247,12 +251,13 @@
                                                         Provenderie
                                                     </a>
                                                 {% else %}
-                                                    <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
-                                                        Provenderie
-                                                    </a>
-                                                    {% if agences.nom == "CVD SOA" %}
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
-                                                                Cabinet
+                                                                Cabinet {{agences.nom }}
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                            Provenderie {{agences.nom }}
                                                             </a>
                                                         {% endif %}
                                                 
@@ -275,9 +280,13 @@
                                                     <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Provenderie
                                                     </a>
-                                                    {% if agences.nom == "CVD SOA" %}
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
-                                                                Cabinet
+                                                                Cabinet {{agences.nom }}
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                            Provenderie {{agences.nom }}
                                                             </a>
                                                         {% endif %}
                                                 </div>
@@ -296,9 +305,13 @@
                                                     <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Provenderie
                                                     </a>
-                                                    {% if agences.nom == "CVD SOA" %}
+                                                   {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
-                                                                Cabinet
+                                                                Cabinet {{agences.nom }}
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                            Provenderie {{agences.nom }}
                                                             </a>
                                                         {% endif %}
                                                 </div>
@@ -314,12 +327,15 @@
                                                 <h5 class="card-title text-center">{{ agences.nom}}</h5>
                                                 <p class="card-text text-center">Bienvenue dans votre agence. Veuillez accéder à vos services.</p>
                                                 <div class="d-flex justify-content-between">
-                                                    <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
-                                                        Provenderie
-                                                    </a>
-                                                    <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
-                                                        Cabinet
-                                                    </a>
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" %}
+                                                            <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
+                                                                Cabinet {{agences.nom }}
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                            Provenderie {{agences.nom }}
+                                                            </a>
+                                                        {% endif %}
                                                 </div>
                                             </div>
                                         </div>
@@ -336,9 +352,13 @@
                                                     <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Provenderie
                                                     </a>
-                                                    {% if agences.nom == "CVD SOA" %}
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
-                                                                Cabinet
+                                                                Cabinet {{agences.nom }}
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
+                                                            Provenderie {{agences.nom }}
                                                             </a>
                                                         {% endif %}
                                                 </div>
