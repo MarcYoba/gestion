@@ -167,7 +167,7 @@ class VenteAController extends AbstractController
                             $em->flush();
                         }
 
-                        // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7011]);
+                        // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7021]);
                         // if ($balance) {
                         //     $mouvement = $balance->getMouvementCredit();
                         //     $mouvement = $mouvement + $lignevente['credit'];
@@ -187,7 +187,7 @@ class VenteAController extends AbstractController
                             $em->flush();
                         }
 
-                        // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7011]);
+                        // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7021]);
                         // if ($balance) {
                         //     $mouvement = $balance->getMouvementCredit();
                         //     $mouvement = $mouvement + $lignevente['cash'];
@@ -208,7 +208,7 @@ class VenteAController extends AbstractController
                         }
                     }
 
-                    $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 7011]);
+                    $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 7021]);
                         if ($balance) {
                             $mouvement = $balance->getMouvementCredit();
                             $mouvement = $mouvement + $lignevente['Banque'] + $lignevente['credit'] + $lignevente['cash'];
