@@ -167,14 +167,14 @@ class VenteAController extends AbstractController
                             $em->flush();
                         }
 
-                        // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7021]);
-                        // if ($balance) {
-                        //     $mouvement = $balance->getMouvementCredit();
-                        //     $mouvement = $mouvement + $lignevente['credit'];
-                        //     $balance->setMouvementCredit($mouvement);
-                        //     $entityManager->persist($balance);
-                        //     $entityManager->flush();
-                        // }
+                        $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 7021]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementCredit();
+                            $mouvement = $mouvement + $lignevente['credit'];
+                            $balance->setMouvementCredit($mouvement);
+                            $em->persist($balance);
+                            $em->flush();
+                        }
                     }
 
                     if ($lignevente['cash'] > 0) {
@@ -187,14 +187,14 @@ class VenteAController extends AbstractController
                             $em->flush();
                         }
 
-                        // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7021]);
-                        // if ($balance) {
-                        //     $mouvement = $balance->getMouvementCredit();
-                        //     $mouvement = $mouvement + $lignevente['cash'];
-                        //     $balance->setMouvementCredit($mouvement);
-                        //     $entityManager->persist($balance);
-                        //     $entityManager->flush();
-                        // }
+                        $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 7021]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementCredit();
+                            $mouvement = $mouvement + $lignevente['cash'];
+                            $balance->setMouvementCredit($mouvement);
+                            $em->persist($balance);
+                            $em->flush();
+                        }
                     }
 
                     if ($lignevente['Banque'] > 0) {

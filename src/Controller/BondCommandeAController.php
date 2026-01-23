@@ -254,5 +254,53 @@ class BondCommandeAController extends AbstractController
         exit;
     }
 
-    
+    #[Route('/bond/command/a/liste/fournisseur/axcel', name:'app_bond_commande_a_liste_fourisseur_excel')]
+    public function ListeFournisseurAutreExcel(EntityManagerInterface $em) : Response {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'produit');
+        $sheet->setCellValue('B1', 'Quantite Magasin');
+        $sheet->setCellValue('C1', 'Quantite contoire');
+        $sheet->setCellValue('D1', 'foutnisseur');
+        
+      //  $sheet->setCellValue('R1', 'MOMO');
+
+            $i = 2;
+            $bondCommande = $em->getRepository(ProduitA::class)->FindByBonCommandAutre();
+   
+        
+            foreach ($bondCommande as $key => $value) {
+                $produit = $em->getRepository(ProduitA::class)->findOneBy(['nom' => $value['nom']]);
+                $magasin = $em->getRepository(MagasinA::class)->findOneBy(['produit' => $produit]);
+                $quantite = 0;
+                if ($magasin) {
+                    $quantite = $magasin->getQuantite();
+                }
+                $sheet->setCellValue('A'.$i, $value["nom"]);
+                $sheet->setCellValue('B'.$i, $quantite );
+                $sheet->setCellValue('C'.$i, $value["quantite"]);
+                $sheet->setCellValue('D'.$i, 0); 
+                
+               // $sheet->setCellValue('R'.$i, $value->getMontantmomo());
+                $i =$i+1;
+            }
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+        $nom = "autre_bond_commande".".xlsx";
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$nom.'"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;
+    }
 }
