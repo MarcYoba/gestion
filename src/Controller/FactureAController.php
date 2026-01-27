@@ -45,17 +45,6 @@ class FactureAController extends AbstractController
     #[Route('/facture/a/print/{id}', name:'app_print_facture_a')]
     public function Print(EntityManagerInterface $entityManger, int $id, string $filename = 'facture.pdf')
     {
-        $result = Builder::create()
-            ->writer(new PngWriter())
-            ->data('Votre texte ici')
-            ->encoding(new Encoding('UTF-8'))
-            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh()) // <-- Notez le "new" et le nom complet
-            ->size(100)
-            ->margin(10)
-            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
-            ->build();
-        $base64 = $result->getDataUri();
-
         $tempagence = $entityManger->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
         $agence =  $tempagence->getAgence();
 
@@ -66,6 +55,21 @@ class FactureAController extends AbstractController
             $client = $facture[0]->getClient();
             $vente = $facture[0]->getVente();
         }
+        $data = "RCCM:" .$agence->getRccm().
+                " Adresse:".$agence->getAdress()." Tel:".
+                $agence->getTelephone()."vente:".$vente->getId()."Montant:".$vente->getPrix().
+                "FCFA Client:".$client->getNom()."telephone:".$client->getTelephone();
+
+        $result = Builder::create()
+            ->writer(new PngWriter())
+            ->data($data)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh()) // <-- Notez le "new" et le nom complet
+            ->size(200)
+            ->margin(10)
+            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->build();
+        $base64 = $result->getDataUri();
 
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
