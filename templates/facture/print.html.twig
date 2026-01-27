@@ -91,11 +91,15 @@
         <h1 class="bold">
            <strong>{{agences.Activite}}</strong> <strong>{{agences.nom}}</strong> <br>
             <strong>{{ agences.adress }}</strong><br>
+            <strong>NUI:{{ agences.contribuable }}</strong><strong>RCCM:{{ agences.rccm }}</strong>
         </h1>
         <small></small>
     </div>
-
+    <div class=" header center text-center">
+        <img src="{{ qrCode }}" alt="QR Code">
+    </div>
     <div class="info-client">
+        <small></small>
         <strong>Vente N°:</strong> {{ vente.id }}<br>
         <strong>Date:</strong> {{ "now"|date("d/m/Y H:i") }}<br>
         <strong>Client: {{ client.nom|upper }}<br></strong>
@@ -139,8 +143,8 @@
 
     <div class="footer">
         Merci de votre confiance !<br>
-        *** À bientôt ***
-        
+        *** À bientôt *** <br>
+        Tel: <strong>{{ agences.telephone }}</strong>
     </div>
 </body>
 </html>
