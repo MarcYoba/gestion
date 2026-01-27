@@ -38,10 +38,10 @@ class ProduitAController extends AbstractController
                return $this->redirectToRoute("produit_a_list"); 
             }
             $produitA->setNom($nom);
-            // $produitA->setQuantite($stock);
+            $produitA->setQuantite(0);
             $produitA->setUser($this->getUser());
             $produitA->setGain(0);
-            $produitA->setStockdebut($produitA->getQuantite());
+            $produitA->setStockdebut(0);
 
             $employer = new Employer();
             $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
