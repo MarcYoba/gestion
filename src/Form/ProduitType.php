@@ -32,7 +32,10 @@ class ProduitType extends AbstractType
             ->add('quantite', NumberType::class,[
                 'label' => 'Quantité',
                 'attr' => [
-                    'class' => 'form-control form-control-user'
+                    'class' => 'form-control form-control-user',
+                    'readonly' => true,
+                    'value' => 0,
+
                 ]
             ])
             ->add('stockdebut', NumberType::class,[

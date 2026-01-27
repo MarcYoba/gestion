@@ -42,7 +42,9 @@ class ProduitAType extends AbstractType
                 'label' => 'Quantité',
                 'attr' => [
                     'class' => 'form-control form-control-user',
-                    'placeholder' => 'Quantite'
+                    'placeholder' => 'Quantite',
+                    'readonly' => true,
+                    'value' => 0,
                 ]
             ])
             ->add('cathegorie', ChoiceType::class,[

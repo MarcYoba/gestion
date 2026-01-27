@@ -83,11 +83,26 @@ class ClientsController extends AbstractController
         ]);
     }
 
-    #[Route('/clients/edit', name: 'clients_edit')]
-    public function edit(): Response
+    #[Route('/clients/edit/{id}', name: 'clients_edit')]
+    public function edit(EntityManagerInterface $em,Clients $client): Response
     {
-        return $this->render('clients/edit.html.twig', [
-            'controller_name' => 'ClientsController',
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
+        $agence = $tempagence->getAgence()->getId();
+        return $this->render('clients/edite.html.twig', [
+            'clients' => $client,
+            'id' => $agence,
+        ]);
+    }
+    #[Route('/clients/a/edit/{id}', name: 'clients_edit_a')]
+    public function edit_a(EntityManagerInterface $em,Clients $client): Response
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
+        $agence = $tempagence->getAgence()->getId();
+        return $this->render('clients/edite_a.html.twig', [
+            'clients' => $client,
+            'id' => $agence,
         ]);
     }
     #[Route('/clients/delete', name: 'clients_delete')]
@@ -362,6 +377,40 @@ class ClientsController extends AbstractController
         return $this->render("clients/import.html.twig",[
             "id" => $agence
         ]);
+    }
+
+    #[Route('/clients/update', name:'app_client_update')]
+    public function Update(EntityManagerInterface $em,Request $request): Response
+    {
+        $variable = $request->request->all('clients');
+        
+        foreach($variable as $key => $value)
+        {
+            $client = $em->getRepository(Clients::class)->findOneBy(['id' =>$key]);
+            $client->setNom($value['Nom']);
+            $client->setTelephone($value['telephone']);
+            $client->setLocalisation($value['intitule']);
+            $em->persist($client);
+            $em->flush();
+        }
+        return $this->redirectToRoute('clients_list');    
+    }
+
+    #[Route('/clients/a/update', name:'app_client_update_a')]
+    public function Update_a(EntityManagerInterface $em,Request $request): Response
+    {
+        $variable = $request->request->all('clients');
+        
+        foreach($variable as $key => $value)
+        {
+            $client = $em->getRepository(Clients::class)->findOneBy(['id' =>$key]);
+            $client->setNom($value['Nom']);
+            $client->setTelephone($value['telephone']);
+            $client->setLocalisation($value['intitule']);
+            $em->persist($client);
+            $em->flush();
+        }
+        return $this->redirectToRoute('app_cleints_a_list');    
     }
 
 }
