@@ -24,8 +24,6 @@ class CaisseType extends AbstractType
                     'retour en caisse' => 'retour en caisse',
                     'sortie en caisse' => 'sortie en caisse',
                     'sortie OM MOMO' => 'sortie OM MOMO',
-                    'sortie Dr Toukam' => 'sortie Dr Toukam',
-                    'sortie Mr Abdel' => 'sortie Mr Abdel ',
                     'sortie SKAB' => 'sortie SKAB',
                     'sortie Banque' => 'sortie Banque',
                 ],
