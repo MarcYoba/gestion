@@ -173,6 +173,7 @@ function recherchePrix(){
             document.getElementById("enregistremet").innerHTML = '<button  class="btn btn-primary btn-user btn-block" onclick="enregistrementDonnees('+'dataTable'+')" id="enregistrer">Enregistrer</button>'
             document.getElementById("prixglobal").value = data.message;
             document.getElementById("quantiteStokage").value = data.quantite;
+            document.getElementById("posologie").value = data.posologie;
             console.log(data);
         }else if(data.success == false){
         }else{

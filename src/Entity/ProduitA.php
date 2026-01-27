@@ -77,6 +77,9 @@ class ProduitA
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: BondCommandeA::class)]
     private Collection $bondCommandeAs;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $posologie = null;
+
     public function __construct()
     {
         $this->achatAs = new ArrayCollection();
@@ -455,6 +458,18 @@ class ProduitA
                 $bondCommandeA->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPosologie(): ?string
+    {
+        return $this->posologie;
+    }
+
+    public function setPosologie(?string $posologie): static
+    {
+        $this->posologie = $posologie;
 
         return $this;
     }

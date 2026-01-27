@@ -76,6 +76,7 @@
                                             <th>Prix vente</th>
                                             <th>Prix achat</th>
                                             <th>Quantite</th>
+                                            <th>Posologie</th>
                                             <th>Date</th>
                                             <th>operation</th>
                                         </tr>
@@ -87,6 +88,7 @@
                                             <th>Prix vente</th>
                                             <th>Prix achat</th>
                                             <th>Quantite</th>
+                                            <th>Posologie</th>
                                             <th>Date</th>
                                             <th>operation1</th>
                                         </tr>
@@ -100,6 +102,7 @@
                                                     <td>{{ produit.prixvente }}</td>
                                                     <td>{{ produit.prixachat }}</td>
                                                     <td>{{ produit.quantite }}</td>
+                                                    <td>{{ produit.posologie }}</td>
                                                     <td>{{ produit.createdAt|date("d-m-Y") }}</td>
                                                     <td>
                                                         <a href="{{ path('produit_a_edit', {'id': produit.id}) }}" class='btn btn-primary'>

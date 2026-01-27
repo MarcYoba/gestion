@@ -40,16 +40,14 @@
                                                 <a href="{{ path('app_home_dashboardA', {'id': tempagence.id}) }}" class="btn btn-primary">
                                                 <i class="fa fa-home"></i>
                                                 Home</a> 
-                                            </div>
-                                            <div class="col-sm-2"> 
-                                                <a href="liste.php" class="btn btn-success"> 
+                                        </div>
+                                        <div class="col-sm-2"> 
+                                                <a href="{{path('app_vaccin_list')}}" class="btn btn-success"> 
                                                 <i class="fa fa-list"></i>
                                                 Liste</a>
                                                 
-                                            </div>
-                                        <div class="col-sm-2 ">
-                                        <a class="m-0 font-weight-bold text-success" href="liste.php">Retour</a>
                                         </div>
+                                        
                                 </div>
                             
                             {{ form_start(form)}}
@@ -66,7 +64,7 @@
                                 <div class="form-group row">
                                     
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="search" id="recherche" onkeyup="recherduclient()"  class="form-control form-control-user" placeholder="recherche en utilisant le numero client"><br>
+                                    <input type="search" id="recherche" onkeyup="recherduclientVaccin()"  class="form-control form-control-user" placeholder="recherche en utilisant le numero client"/>
                                         {{ form_widget(form.client)
                                         }}  
                                     </div>
@@ -129,7 +127,7 @@
         </div>
 
     </div>
-    <script src="asset{'js/client/search_client.js'}"></script>
+    <script src="{{asset('js/client/search_client.js')}}"></script>
 </body>
 
 </html>
