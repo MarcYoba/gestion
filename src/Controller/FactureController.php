@@ -8,9 +8,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Label\LabelAlignment;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Writer\PngWriter;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 
 class FactureController extends AbstractController
 {
@@ -35,6 +43,16 @@ class FactureController extends AbstractController
     #[Route('/facture/print/{id}', name:'app_print_facture')]
     public function Print(EntityManagerInterface $entityManger, int $id, string $filename = 'facture.pdf')
     {
+        $result = Builder::create()
+            ->writer(new PngWriter())
+            ->data('Votre texte ici')
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh()) // <-- Notez le "new" et le nom complet
+            ->size(100)
+            ->margin(10)
+            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->build();
+        $base64 = $result->getDataUri();
         $user = $this->getUser();
         if ($user === null) {
             return $this->redirectToRoute('app_login');
@@ -59,6 +77,7 @@ class FactureController extends AbstractController
         'client' => $client,
         'factures' => $facture,
         'agences' => $agence,
+        'qrCode' => $base64,
         ]);
 
         $dompdf->loadHtml($html);

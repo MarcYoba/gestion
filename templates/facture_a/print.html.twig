@@ -98,7 +98,9 @@
             <strong>{{ agences.rccm }}</strong><br>
         </small>
     </div>
-
+    <div class=" header center text-center">
+        <img src="{{ qrCode }}" alt="QR Code">
+    </div>
     <div class="info-client">
         <strong>Vente N°:</strong> {{ vente.id }}<br>
         <strong>Date:</strong> {{ "now"|date("d/m/Y H:i") }}<br>

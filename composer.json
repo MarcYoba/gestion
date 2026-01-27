@@ -16,6 +16,7 @@
         "doctrine/orm": "^2.20",
         "dompdf/dompdf": "^3.1",
         "endroid/qr-code": "^4.8",
+        "endroid/qr-code-bundle": "^4.3",
         "guzzlehttp/guzzle": "^7.10",
         "phpoffice/phpspreadsheet": "^2.1",
         "sensio/framework-extra-bundle": "*",
@@ -41,6 +42,7 @@
     "config": {
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
+            "endroid/installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
