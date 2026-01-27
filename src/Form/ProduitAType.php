@@ -98,6 +98,13 @@ class ProduitAType extends AbstractType
                     'class' => 'form-control form-control-user'
                 ]
             ])
+            ->add('posologie', TextType::class, [
+                'label' => 'posologie du produit',
+                'attr' => [
+                    'class' => 'form-control form-control-user',
+                    'placeholder' => 'posologie du produit'
+                ]
+            ])
             ->add('button',SubmitType::class,[
                 'label' => 'Enregistrer',
                 'attr' => [

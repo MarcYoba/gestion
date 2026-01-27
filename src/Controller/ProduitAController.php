@@ -128,6 +128,7 @@ class ProduitAController extends AbstractController
                         'success' => true,
                         'message' => $produit[0]->getPrixvente(),
                         'quantite' => $produit[0]->getQuantite(),
+                        'posologie' => $produit[0]->getPosologie(),
                     ]);
                 } else {
                     return $this->json(['error' => 'Produit non trouvé'], 404);
