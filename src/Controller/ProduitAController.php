@@ -38,7 +38,7 @@ class ProduitAController extends AbstractController
                return $this->redirectToRoute("produit_a_list"); 
             }
             $produitA->setNom($nom);
-            // $produitA->setQuantite($stock);
+            $produitA->setQuantite(0);
             $produitA->setUser($this->getUser());
             $produitA->setGain(0);
             $produitA->setStockdebut($produitA->getQuantite());
