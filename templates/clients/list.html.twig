@@ -95,11 +95,11 @@
                                             <tr>
                                                 <td>{{client.id}}</td>
                                                 <td>{{client.nom}}</td>
-                                                <td>{{ client.user.localisation}}</td>
+                                                <td>{{ client.localisation}}</td>
                                                 <td>{{client.telephone}}</td>
                                                 <td>{{client.createdAt | date("Y-m-d")}}</td>
                                                 <td>
-                                                <button class='btn btn-primary' onclick='#'><i class='fas fa-pencil-alt'></i></button>
+                                                <a href='{{path('clients_edit',{'id':client.id})}}' class='btn btn-primary'><i class='fas fa-pencil-alt'></i></a>
                                                 <a href='#' class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer le client?\");'><i class='fas fa-trash-alt'></i></a>
                                                 </td>
                                             </tr>

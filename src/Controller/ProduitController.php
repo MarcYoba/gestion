@@ -32,6 +32,7 @@ class ProduitController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $nom = $form->get('nom')->getData();
+            $stock = $form->get('stockdebut')->getData();
             $nom = mb_strtoupper($nom, 'UTF-8');
             $produitExite = $entityManager->getRepository(Produit::class)->findBy(['nom' => $nom]);
             if (!empty($produitExite)) {
@@ -40,6 +41,7 @@ class ProduitController extends AbstractController
             $produit->setNom($nom);
             $produit->setPrixachat(0);
             $produit->setGain(0);
+            $produit->setQuantite($stock);
             $produit->setUser($security->getUser());
             $employer = new Employer();
             $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
