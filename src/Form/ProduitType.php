@@ -34,7 +34,7 @@ class ProduitType extends AbstractType
                 'attr' => [
                     'class' => 'form-control form-control-user',
                     'readonly' => true,
-                    'value' => 0,
+                    // 'value' => 0,
 
                 ]
             ])
