@@ -152,22 +152,8 @@ class AgenceController extends AbstractController
      */
     public function edit(Agence $agence, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $agence = new Agence();
-        $form = $this->createForm(AgenceType::class,$agence);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-           // $user = $this->getUser();
-            $agence->setCreatedBY($agence->getUser()->getId());
-
-            $entityManager->persist($agence);
-            $entityManager->flush();
-
-           return $this->redirectToRoute("app_home");
-        }  
-        return $this->render('agence/index.html.twig', [
-            'form' => $form->createView(),
-            'agence' => $agence,
+        return $this->render('agence/edit.html.twig', [
+            'agences' => $agence,
         ]);
     }
     #[Route('/agence/a/edit/{id}', name: 'app_agence_edit_a')]
@@ -195,5 +181,24 @@ class AgenceController extends AbstractController
         }
         $entityManager->flush();
         return $this->redirectToRoute('app_agence_list_a');
+    }
+    #[Route('/agence/update', name: 'update_agence')]
+    public function update(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $agences = $request->request->all('agences');
+        
+        foreach ($agences as $key => $value) {
+            $agence = $entityManager->getRepository(Agence::class)->find($key);
+            $agence->setNom($value['nom']);
+            $agence->setAdress($value['adress']);
+            $agence->setActivite($value['activite']);
+            $agence->setContribuable($value['contribuable']);
+            $agence->setRccm($value['rccm']);
+            $agence->setTelephone($value['telephone']);
+            $agence->setPresentation($value['presentation']);
+            $entityManager->persist($agence);
+        }
+        $entityManager->flush();
+        return $this->redirectToRoute('app_agence_list');
     }
 }
