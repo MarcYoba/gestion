@@ -75,7 +75,8 @@
                                             <th>Nom</th>
                                             <th>Prix vente</th>
                                             <th>Prix achat</th>
-                                            <th>Quantite</th>
+                                            <th>Contoire</th>
+                                            <th>Magasin</th>
                                             <th>Posologie</th>
                                             <th>Date</th>
                                             <th>operation</th>
@@ -87,7 +88,8 @@
                                             <th>Nom</th>
                                             <th>Prix vente</th>
                                             <th>Prix achat</th>
-                                            <th>Quantite</th>
+                                            <th>Contoire</th>
+                                            <th>Magasin</th>
                                             <th>Posologie</th>
                                             <th>Date</th>
                                             <th>operation1</th>
@@ -102,6 +104,11 @@
                                                     <td>{{ produit.prixvente }}</td>
                                                     <td>{{ produit.prixachat }}</td>
                                                     <td>{{ produit.quantite }}</td>
+                                                    {% for magasin in produit.magasins|default([]) %}
+                                                        <td>{{ magasin.quantite|default(0) }}</td>
+                                                    {% else %}
+                                                        <td>0</td>
+                                                    {% endfor %}
                                                     <td>{{ produit.posologie }}</td>
                                                     <td>{{ produit.createdAt|date("d-m-Y") }}</td>
                                                     <td>

@@ -206,6 +206,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Transfert::class)]
     private Collection $transferts;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: InventaireA::class)]
+    private Collection $inventaireAs;
+
     
 
     public function __construct() {
@@ -261,6 +264,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->brouillons = new ArrayCollection();
         $this->magasins = new ArrayCollection();
         $this->transferts = new ArrayCollection();
+        $this->inventaireAs = new ArrayCollection();
         
     }
 
@@ -1916,6 +1920,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($transfert->getUser() === $this) {
                 $transfert->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, InventaireA>
+     */
+    public function getInventaireAs(): Collection
+    {
+        return $this->inventaireAs;
+    }
+
+    public function addInventaireA(InventaireA $inventaireA): static
+    {
+        if (!$this->inventaireAs->contains($inventaireA)) {
+            $this->inventaireAs->add($inventaireA);
+            $inventaireA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventaireA(InventaireA $inventaireA): static
+    {
+        if ($this->inventaireAs->removeElement($inventaireA)) {
+            // set the owning side to null (unless already changed)
+            if ($inventaireA->getUser() === $this) {
+                $inventaireA->setUser(null);
             }
         }
 

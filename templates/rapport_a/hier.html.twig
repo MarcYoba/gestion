@@ -176,16 +176,17 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="5" align="center"> Quantite Pour chaque produit : {{ calandrier }} </th>
+                <th colspan="6" align="center"> Quantite Pour chaque produit : {{ calandrier }} </th>
             </tr>
             <tr>
-                <th colspan="5" align="center"> Recapitulatif Quantite Vendue </th>
+                <th colspan="6" align="center"> Recapitulatif Quantite Vendue </th>
             </tr>
             <tr>
                 <th scope="col">Mon du produit </th>
                 <th scope="col">Quantite debut</th>
                 <th scope="col">Quantite Vendue</th>
                 <th scope="col">Quantite fin</th>
+                <th scope="col">Stock magasin</th>
                 <th scope="col">Date</th>
             </tr>
         </thead>
@@ -196,6 +197,7 @@
                     <th scope="col">{{historiqueA[1]}}</th>
                     <th scope="col">{{historiqueA[2]}}</th>
                     <th scope="col">{{historiqueA[3]}}</th>
+                    <th scope="col">{{historiqueA[4]}}</th>
                     <th scope="col">{{ calandrier}}</th>
                 </tr>
             {% endfor %}

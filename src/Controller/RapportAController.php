@@ -8,6 +8,7 @@ use App\Entity\Consultation;
 use App\Entity\DepenseA;
 use App\Entity\FactureA;
 use App\Entity\HistoriqueA;
+use App\Entity\MagasinA;
 use App\Entity\Poussin;
 use App\Entity\ProduitA;
 use App\Entity\ProspectionA;
@@ -62,7 +63,8 @@ class RapportAController extends AbstractController
         foreach ($produit as $key => $value) {
             $hist = $em->getRepository(HistoriqueA::class)->findByDate($date,$value->getProduit()->getId(),$id);
             $fact = $em->getRepository(FactureA::class)->findBySommeProduit($date,$value->getProduit()->getId(),$id);
-            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite()]);
+            $magasin = $em->getRepository(MagasinA::class)->findOneBy(["produit" => $value->getProduit()->getId()]);
+            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite(),$magasin->getQuantite()]);
         }
         
         $html = $this->renderView('rapport_a/jour_courante.html.twig', [
@@ -140,7 +142,8 @@ class RapportAController extends AbstractController
             $hist = $em->getRepository(HistoriqueA::class)->findByDate($date,$value->getProduit()->getId(),$id);
             $fact = $em->getRepository(FactureA::class)->findByQuantiteProduitVendu($date,$value->getProduit()->getId(),$id);
             $lasthist = $em->getRepository(HistoriqueA::class)->findByLastDate(new \DateTime($date->format("Y-m-d")),$value->getProduit()->getId(),$id);
-            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$lasthist]);
+            $magasin = $em->getRepository(MagasinA::class)->findOneBy(["produit" => $value->getProduit()->getId()]);
+            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$lasthist,$magasin->getQuantite()]);
         }
         
         $html = $this->renderView('rapport_a/hier.html.twig', [
