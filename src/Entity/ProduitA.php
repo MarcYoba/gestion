@@ -80,6 +80,12 @@ class ProduitA
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $posologie = null;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: InventaireA::class)]
+    private Collection $inventaireAs;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: MagasinA::class)]
+    private Collection $magasins;
+
     public function __construct()
     {
         $this->achatAs = new ArrayCollection();
@@ -89,6 +95,8 @@ class ProduitA
         $this->historiqueAs = new ArrayCollection();
         $this->lots = new ArrayCollection();
         $this->bondCommandeAs = new ArrayCollection();
+        $this->inventaireAs = new ArrayCollection();
+        $this->magasins = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -470,6 +478,65 @@ class ProduitA
     public function setPosologie(?string $posologie): static
     {
         $this->posologie = $posologie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, InventaireA>
+     */
+    public function getInventaireAs(): Collection
+    {
+        return $this->inventaireAs;
+    }
+
+    public function addInventaireA(InventaireA $inventaireA): static
+    {
+        if (!$this->inventaireAs->contains($inventaireA)) {
+            $this->inventaireAs->add($inventaireA);
+            $inventaireA->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventaireA(InventaireA $inventaireA): static
+    {
+        if ($this->inventaireAs->removeElement($inventaireA)) {
+            // set the owning side to null (unless already changed)
+            if ($inventaireA->getProduit() === $this) {
+                $inventaireA->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+    /**
+     * @return Collection<int, MagasinA>
+     */
+    public function getMagasins(): Collection
+    {
+        return $this->magasins;
+    }
+
+    public function addMagasin(MagasinA $magasin): static
+    {
+        if (!$this->magasins->contains($magasin)) {
+            $this->magasins->add($magasin);
+            $magasin->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMagasin(MagasinA $magasin): static
+    {
+        if ($this->magasins->removeElement($magasin)) {
+            // set the owning side to null (unless already changed)
+            if ($magasin->getProduit() === $this) {
+                $magasin->setProduit(null);
+            }
+        }
 
         return $this;
     }

@@ -84,4 +84,20 @@ class HistoriqueARepository extends ServiceEntityRepository
     
         return $result ? (int) $result['quantite'] : 0;
     }
+
+    public function findForDate($date,$produit,$agence) : ?HistoriqueA
+    {
+        return $this->createQueryBuilder('h')
+            ->where('h.produitA = :produits')
+            ->andWhere('h.createtAd = :date')
+            ->andWhere('h.agence = :agences')
+            ->setParameter('produits',$produit)
+            ->setParameter('date', $date)
+            ->setParameter('agences',$agence)
+            ->orderBy('h.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

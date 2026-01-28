@@ -138,6 +138,59 @@ class ProduitAController extends AbstractController
         return $this->json(['error' => 'Prix non spécifié'], 404);
     }
 
+    #[Route('/produit/a/recherche/quantite', name: 'produit_quantite_a_recherche')]
+    public function RecherchePrixQuantite(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $date = date("Y-m-d");
+        if ($request->isXmlHttpRequest() || $request->getContentType()==='json') {
+            $json = $request->getContent();
+            $donnees = json_decode($json, true);
+            if (isset($donnees['nom'])) {
+                $produit = $entityManager->getRepository(ProduitA::class)->findBy(['id' => $donnees['nom']]);
+                if (empty($donnees['date'])) {
+                    if ($produit) {
+                        return $this->json([
+                            'success' => true,
+                            'message' => $produit[0]->getPrixvente(),
+                            'quantite' => $produit[0]->getQuantite(),
+                            'posologie' => $produit[0]->getPosologie(),
+                        ]);
+                    } else {
+                        return $this->json(['error' => 'Produit non trouvé'], 404);
+                    }
+                }else if ($donnees['date'] == $date) {
+                    if ($produit) {
+                        return $this->json([
+                            'success' => true,
+                            'message' => $produit[0]->getPrixvente(),
+                            'quantite' => $produit[0]->getQuantite(),
+                            'posologie' => $produit[0]->getPosologie(),
+                        ]);
+                    } else {
+                        return $this->json(['error' => 'Produit non trouvé'], 404);
+                    }
+                }else{
+                    $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+                    $agence = $tempagence->getAgence();
+                    $date = new \DateTime($donnees['date']);
+                    $historique = $entityManager->getRepository(HistoriqueA::class)->findForDate($date,$produit,$agence);
+                    if ($historique) {
+                        return $this->json([
+                            'success' => true,
+                            'message' => $produit[0]->getPrixvente(),
+                            'quantite' => $historique->getQuantite(),
+                            'posologie' => $produit[0]->getPosologie(),
+                        ]);
+                    } else {
+                        return $this->json(['error' => 'Produit non trouvé'], 404);
+                    }
+                }
+                
+            }
+        }
+        return $this->json(['error' => 'quantite non spécifié'], 404);
+    }
+
     #[Route('/produit/a/impot', name:'app_produit_a_import')]
     public function FunctionName(Request $request, EntityManagerInterface $entityManager) : Response 
     {
