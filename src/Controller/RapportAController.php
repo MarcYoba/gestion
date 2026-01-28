@@ -61,10 +61,14 @@ class RapportAController extends AbstractController
         $produit = $em->getRepository(FactureA::class)->findByProduitVendu($date,$id);
         $historiqueA = [];
         foreach ($produit as $key => $value) {
+            $quantite = 0;
             $hist = $em->getRepository(HistoriqueA::class)->findByDate($date,$value->getProduit()->getId(),$id);
             $fact = $em->getRepository(FactureA::class)->findBySommeProduit($date,$value->getProduit()->getId(),$id);
             $magasin = $em->getRepository(MagasinA::class)->findOneBy(["produit" => $value->getProduit()->getId()]);
-            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite(),$magasin->getQuantite()]);
+            if($magasin) {
+                $quantite = $magasin->getQuantite();
+            }
+            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite(),$quantite]);
         }
         
         $html = $this->renderView('rapport_a/jour_courante.html.twig', [
@@ -139,11 +143,15 @@ class RapportAController extends AbstractController
         $produit = $em->getRepository(FactureA::class)->findByProduitVendu($date,$id);
         $historiqueA = [];
         foreach ($produit as $key => $value) {
+            $quantite = 0;
             $hist = $em->getRepository(HistoriqueA::class)->findByDate($date,$value->getProduit()->getId(),$id);
             $fact = $em->getRepository(FactureA::class)->findByQuantiteProduitVendu($date,$value->getProduit()->getId(),$id);
             $lasthist = $em->getRepository(HistoriqueA::class)->findByLastDate(new \DateTime($date->format("Y-m-d")),$value->getProduit()->getId(),$id);
             $magasin = $em->getRepository(MagasinA::class)->findOneBy(["produit" => $value->getProduit()->getId()]);
-            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$lasthist,$magasin->getQuantite()]);
+            if($magasin) {
+                $quantite = $magasin->getQuantite();
+            }
+            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$lasthist,$quantite]);
         }
         
         $html = $this->renderView('rapport_a/hier.html.twig', [
