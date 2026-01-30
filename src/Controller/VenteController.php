@@ -233,6 +233,7 @@ class VenteController extends AbstractController
         return $this->render('vente/index.html.twig', [
             'form' => $form->createView(),
             'produit' => $produit,
+            'agences' => $tempagence->getAgence(),
         ]);
     }
 
