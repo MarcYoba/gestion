@@ -163,8 +163,14 @@
                                                     Quantite
                                                     <input type="number" class="form-control form-control-user"
                                                     name="quantite" id="quantite" placeholder="quantite" required value="0"><br>
-                                                    <input type="number" class="form-control form-control-user"
+                                                    {% if agences.nom == ETS RIKY %}
+                                                        <input type="number" class="form-control form-control-user"
+                                                    name="prixglobal" id="prixglobal" placeholder="Prix du produit"><br>
+                                                    {% else %}
+                                                        <input type="number" class="form-control form-control-user"
                                                     name="prixglobal" id="prixglobal" placeholder="Prix du produit" readonly><br>
+                                                    {% endif %}
+                                                    
                                                     <i  id="montanttotal" class="form-control form-control-user"><span id="resultat" ></span></i>
                                                 </p>
                                                 <p class="col-md-3" >
