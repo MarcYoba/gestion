@@ -100,4 +100,20 @@ class HistoriqueARepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findByProduitAgence($produit,$agence,$date) : ?HistoriqueA
+    {
+        return $this->createQueryBuilder('h')
+            ->where('h.produitA = :produits')
+            ->andWhere('h.agence = :agences')
+            ->andWhere('h.createtAd =:date')
+            ->setParameter('produits',$produit)
+            ->setParameter('agences',$agence)
+            ->setParameter('date',$date)
+            ->orderBy('h.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

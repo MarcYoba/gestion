@@ -65,7 +65,7 @@ class FactureAController extends AbstractController
             ->data($data)
             ->encoding(new Encoding('UTF-8'))
             ->errorCorrectionLevel(new ErrorCorrectionLevelHigh()) // <-- Notez le "new" et le nom complet
-            ->size(200)
+            ->size(130)
             ->margin(10)
             ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
             ->build();
