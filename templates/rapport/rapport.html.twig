@@ -1,175 +1,710 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
-{% block title %}Hello RapportController!{% endblock %}
+{% block title %}Hello RapportController {% endblock %}
 
 {% block body %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>GESTION DE STOCK</title>
+    <title>Rapports</title>
 
-    <!-- Custom fonts for this template-->
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
 </head>
 
-<body class="bg-gradient-primary">
+<body id="page-top">
 
     <div class="container">
-
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                    <div class="col-lg-12">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Rapport</h1>
-                             </div>
-                            
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                <div class="form-group row">
-                                    <div class="col-sm-10 ">
-                                    <h6 class="m-0 font-weight-bold text-primary">Impression des rapports</h6>
-                                    </div>
-                                    <div class="col-sm-2 ">
-                                    <a class="m-0 font-weight-bold text-warning" href="{{ path('app_home_dashboard', {'id': id}) }}">Retour</a>
-                                    </div>
-                                </div>
-                                </div>
-                                <div class="form-group row">
-                                    <br>
-                                    <div class="col-sm-8 mb-3 mb-sm-0">
-                                        
-                                    </div>
-                                    <div class="col-sm-4 mb-3 mb-sm-0">
-                                        <a href="{{ path('rapport_day') }}">
-                                            <button type="" name="" id="" class="btn btn-primary btn-user btn-block">
-                                            Rapport du jour
-                                            </button> 
-                                        </a>
-                                    </div>
-                                </div>
-                                
-                                <hr>
-                                <form class="user" action="#" method="post">
-                                    <hr>
-                                    <div class="form-group row">
-                                        <div class="col-sm-4 mb-3 mb-sm-0">
-                                            <input type="date" class="form-control form-control-user" id="date"
-                                            name="date" placeholder="telephone client" required>
-                                        </div>
-                                        <div class="col-sm-4"></div>
-                                        <div class="col-sm-4">
-                                        <a href="#">
-                                                <button type="" name="" id="" class="btn btn-primary btn-user btn-block">
-                                                Rapport pour chaque Date
-                                                </button> 
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <hr>  
-                                </form>
-                                <form class="user" action="#" method="post">
-                                    <div class="form-group row">
-                                        <div class="col-sm-4">
-                                            <input type="date" class="form-control form-control-user" id="date"
-                                                name="datedebutsemain" placeholder="telephone client" required>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <input type="date" class="form-control form-control-user" id="date"
-                                                name="datefinsemain" placeholder="telephone client" required>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <a href="#">
-                                                <button type="" name="" id="" class="btn btn-primary btn-user btn-block">
-                                                    Rapport part semain / MOI
-                                                </button> 
-                                            </a>
-                                        </div>
-                                    </div>
-                                        <hr>
-                                        <hr>
-                                </form>
-
-                            <form action="#" method="post">
-                            <div class="form-group row">
-                                    <div class="col-sm-3">
-                                       <input type="number" class="form-control form-control-user" id="mois"
-                                        name="mois" placeholder="numero du moi" required>
-                                    </div>
-                                    <div class="col-sm-3">
-                                       <input type="date" class="form-control form-control-user" id="date"
-                                        name="date" placeholder="Date">
-                                    </div>
-                                    <div class="col-sm-2"></div>
-                                    <div class="col-sm-4">
-                                            <button type="" name="" id="" class="btn btn-primary btn-user btn-block">
-                                            Rapport Mensuelle
-                                            </button> 
-                                    </div>
-                                </div>
-                                <hr>
-                                <hr>
-
-                            </form>
-
-                            <form class="user" action="#" method="post">
-                                <div class="form-group row">
-                                    <div class="col-sm-4">
-                                        <input type="number" class="form-control form-control-user" id="anne"
-                                        name="anne" placeholder="Entrez l'année " required>
-                                    </div>
-                                    <div class="col-sm-4"></div>
-                                    <div class="col-sm-4">
-                                            <button type="" name="" id="" class="btn btn-primary btn-user btn-block">
-                                            rapport Trimestriele et Semestrielle 
-                                            </button> 
-                                    </div>
-                                </div>
-                                <hr>
-                                <hr>
-                            </form>
-
-                            <form action="#" method="post">
-                            <div class="form-group row">
-                                    <div class="col-sm-4">
-                                        <input type="number" class="form-control form-control-user" id="anne"
-                                        name="anne" placeholder="Entrez l'année " required>
-                                    </div>
-                                    <div class="col-sm-4"></div>
-                                    <div class="col-sm-4">
-                                            <button type="" name="" id="" class="btn btn-primary btn-user btn-block">
-                                            Rapport Annuel
-                                            </button> 
-                                    </div>
-                                </div>
-                                <hr>
-                                <hr>
-
-                            </form>
-                            </div>
-                            
-                            <hr>
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center mt-5 mb-4">
+                    <h1 class="h4 text-gray-900">Génération de Rapports</h1>
+                    <a class="font-weight-bold text-warning" href="{{ path('app_home_dashboard', {'id': id}) }}">Retour au Tableau de Bord</a>
                 </div>
             </div>
         </div>
 
-    </div>
+        <div class="row">
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Rapport Immédiat
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">Rapport du Jour</div>
+                            </div>
+                            <div class="col-auto">
+                                <a href="{{ path('rapport_day')}}">
+                                    <button type="button" class="btn btn-success btn-sm">
+                                        <i class="fas fa-print fa-2x text-white-50"></i> Générer
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <form class="user" action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Rapport Ponctuel
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Rapport pour une Date Précise</div>
+                                    <div class="form-group mt-2">
+                                        <input type="date" class="form-control form-control-sm" id="date_rapport_jour"
+                                            name="date" required>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-calendar-alt fa-2x text-white-50"></i> Générer
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <form class="user" action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-xl-8 col-lg-8 mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Rapport Périodique
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Rapport par Semaine / Mois</div>
+                                    <div class="form-group row mt-2">
+                                        <div class="col-sm-5 mb-sm-0">
+                                            <input type="date" class="form-control form-control-sm" name="datedebutsemain"
+                                                placeholder="Date de début" required>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <input type="date" class="form-control form-control-sm" name="datefinsemain"
+                                                placeholder="Date de fin" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-info btn-sm">
+                                        <i class="fas fa-chart-line fa-2x text-white-50"></i> Générer
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Rapport Mensuel
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Rapport par Mois</div>
+                                    <div class="form-group row mt-2">
+                                        <div class="col-sm-6 mb-sm-0">
+                                            <input type="number" class="form-control form-control-sm" name="mois"
+                                                placeholder="N° du mois (1-12)" min="1" max="12" required>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Année" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-calendar-check fa-2x text-white-50"></i> Générer
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <form class="user" action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                        Rapport Mi-Annuel
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Trimestriel / Semestriel</div>
+                                    <div class="form-group mt-2">
+                                        <input type="number" class="form-control form-control-sm" name="anne"
+                                            placeholder="Entrez l'année" required>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-calendar-alt fa-2x text-white-50"></i> Générer
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-dark shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                        Rapport Complet
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Rapport Annuel</div>
+                                    <div class="form-group mt-2">
+                                        <input type="number" class="form-control form-control-sm" name="anne"
+                                            placeholder="Entrez l'année " required>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-dark btn-sm">
+                                        <i class="fas fa-chart-bar fa-2x text-white-50"></i> Générer
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Suivi Client
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Rapport Dette Client</div>
+                                    <div class="form-group row mt-2">
+                                        <div class="col-sm-4">
+                                            <select class="form-control form-control-sm" name="semestre">
+                                                <option value="">ALL Semestres</option>
+                                                <option value="1">1er Semestre</option>
+                                                <option value="2">2ème Semestre</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <select class="form-control form-control-sm" name="speculation">
+                                                <option value="">ALL Spéculations</option>
+                                                <option value="CHAIRE">CHAIRE</option>
+                                                <option value="PONDEUSE">PONDEUSE</option>
+                                                <option value="PORC">PORC</option>
+                                                <option value="LAPIN">LAPIN</option>
+                                                <option value="AUTRE">AUTRE</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Année" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-info btn-sm">
+                                        <i class="fas fa-users fa-2x text-white-50"></i> Générer
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Performance Spéculation
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Rapport Spéculation Client</div>
+                                    <div class="form-group row mt-2">
+                                        <div class="col-sm-4">
+                                            <select class="form-control form-control-sm" name="semestre">
+                                                <option value="ALL">ALL Semestres</option>
+                                                <option value="1">1er Semestre</option>
+                                                <option value="2">2ème Semestre</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <select class="form-control form-control-sm" name="speculation">
+                                                <option value="ALL">ALL Spéculations</option>
+                                                <option value="CHAIRE">CHAIRE</option>
+                                                <option value="PONDEUSE">PONDEUSE</option>
+                                                <option value="PORC">PORC</option>
+                                                <option value="LAPIN">LAPIN</option>
+                                                <option value="AUTRE">AUTRE</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Année" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-layer-group fa-2x text-white-50"></i> Générer
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Suivi Financier
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Dépense par Poste</div>
+                                    <div class="form-group row mt-2">
+                                        <div class="col-sm-3">
+                                            <select class="form-control form-control-sm" name="semestre">
+                                                <option value="">ALL Semestres</option>
+                                                <option value="1">1er Semestre</option>
+                                                <option value="2">2ème Semestre</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <select class="form-control form-control-sm" name="speculation">
+                                                <option value="">ALL Postes</option>
+                                                <option value="Autres achats">Autres achats</option>
+                                                <option value="service exterieur">Charges générales</option>
+                                                <option value="impots et taxes">Impôts et taxes</option>
+                                                <option value="charge personnel">Charges de personnel</option>
+                                                <option value="autre charge">Autres charges</option>
+                                                <option value="Voyages">Voyages et déplacements</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Année" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="fas fa-dollar-sign fa-2x text-white-50"></i> Générer
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Liste des client avec leurs spéculations
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">client avec leurs spéculations Excel</div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="fas fa-print fa-2x text-white-50"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Liste des ventes par client 
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Liste des ventes par client </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class=" fas fa-solid fa-coins fa-2x text-white-50"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        ⁠liste des ventes par spéculation  
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">⁠liste des ventes par spéculation  </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-info btn-sm">
+                                            <i class=" fas fa-solid fa-coins fa-2x text-white-50"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-dark shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                        ⁠liste des ventes par produits (inclue les quantités vendus et les prix totaux) 
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">⁠liste des ventes par produits (inclue les quantités vendus et les prix totaux)  </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-dark btn-sm">
+                                            <i class="fas fa-solid fa-basket-shopping fa-coins fa-2x text-white-50"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        liste des ventes par mois et par produit 
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">liste des ventes par mois et par produit  </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-regular fa-cart-arrow-down"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        liste des ventes par mois et par client
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">liste des ventes par mois et par client  </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-regular fa-cart-arrow-down"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        liste des dettes par client (date  et montant)
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">liste des dettes par client (date  et montant) </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-calendar-check fa-2x text-white-50"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        liste des dettes par clients (montant total par client)
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">liste des dettes par clients (montant total par client)  </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-info btn-sm">
+                                            <i class="fas fa-regular fa-cart-arrow-down"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        liste des versements par client (client et montant total)
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">liste des versements par client (client et montant total)  </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-regular fa-cart-arrow-down"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        liste des versements par client (client et montant total)
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">liste des versements par client (client et montant total)</div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-info btn-sm">
+                                            <i class="fas fa-regular fa-cart-arrow-down"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                        tableau comparative des dettes, versements et reste à payer par client
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">tableau comparative des dettes, versements et reste à payer par client</div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-solid fa-briefcase"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        ⁠liste détaillés des dépenses (date, motif et montant)
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">⁠liste détaillés des dépenses (date, motif et montant) </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-calendar-check fa-2x text-white-50"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        liste des dépenses globales (motif et montant)
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">liste des dépenses globales (motif et montant) </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-chart-line fa-2x text-white-50"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="#" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        liste des dettes par clients (Client, Dette, Date)
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">liste des dettes par clients (Client, Dette, Date)  </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-info btn-sm">
+                                            <i class="fas fa-regular fa-cart-arrow-down"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
 
 </body>
-
 </html>
 {% endblock %}
