@@ -34,6 +34,7 @@
         {%  set sommeVente = 0 %}
         {%   set sommeCash = 0 %}
         {%   set sommeOm = 0 %}
+        {%   set sommemomo = 0 %}
         {%   set sommeCredit = 0 %}
         {%   set sommeReduction = 0 %}
         {% for vente in ventes %}
@@ -90,7 +91,8 @@
                 {% set sommeVente = sommeVente + vente.prix %}
                 {% set sommeCash = sommeCash + vente.montantcash %}
                 {% set sommeCredit = sommeCredit + vente.montantcredit %}
-                {% set sommeOm = sommeOm + vente.montantmomo %}
+                {% set sommemomo = sommemomo + vente.montantmomo %}
+                {% set sommeOm = sommeOm + vente.om %}
                 {% set sommeReduction = sommeReduction + vente.reduction %}
                 {% set sommeBanque = sommeBanque + vente.montantbanque %}
         {% endfor %}
@@ -99,16 +101,17 @@
 
     <br><br><br> <table style="width:100%">
         <thead>
-         <tr><th colspan="10" align="center"> Resultat vente du : {{date}}</th></tr>
+         <tr><th colspan="11" align="center"> Resultat vente du : {{date}}</th></tr>
         </thead>
         <tbody>
             <tr>
-            <td colspan="10" align="center"> Recapitulatif Vente </td>
+            <td colspan="11" align="center"> Recapitulatif Vente </td>
             </tr>
                 <tr>
                 <th scope="col">Total Vente</th>
                 <th scope="col">Total Cash</th>
                 <th scope="col">Total OM</th>
+                <th scope="col">Total MOMO</th>
                 <th scope="col">Total Credit </th>
                 <th scope="col">Total Banque </th>
                 <th scope="col">Total reduction</th>
@@ -121,6 +124,7 @@
                 <tr>
                     <td>{{sommeVente}}</td>
                     <td>{{sommeCash}}</td>
+                    <td>{{sommemomo}}</td> 
                     <td>{{sommeOm}}</td> 
                     <td>{{sommeCredit}}</td>
                     <td>{{sommeBanque}}</td>
@@ -128,12 +132,12 @@
                     <td>{{sommeDepense}}</td>
                     <td>{{totalversement}}</td>
                     <td>{{sommecaisse}}</td>
-                    <td>{{ (sommeBanque + sommeCash + sommeOm) - sommeReduction}}</td>
+                    <td>{{ (sommeBanque + sommeCash + sommeOm + totalversement)+ sommecaisse +  sommemomo}}</td>
                 </tr>
                 <tr>
                     <td colspan="4"> Argent en main du 01-12-2024 au {{date}}</td>
                     <td colspan="2"></td>
-                    <td colspan="3"> Total credit du 01-12-2024 au {{date}}</td>
+                    <td colspan="4"> Total credit du 01-12-2024 au {{date}}</td>
                     <td colspan="1"></td>
                 </tr>
         
@@ -179,28 +183,30 @@
         <br><br><br> 
         <table style="width:100%">
         <thead>
-            <tr><th colspan="5" align="center"> Quantite Pour chaque produit : {{date}}</th></tr>
+            <tr><th colspan="6" align="center"> Quantite Pour chaque produit : {{date}}</th></tr>
         </thead>
         <tbody>
             <tr>
-            <td colspan="5" align="center"> Recapitulatif Quantite Vendue </td>
+            <td colspan="6" align="center"> Recapitulatif Quantite Vendue </td>
             </tr>
                 <tr>
                 <th scope="col">Mon du produit </th>
                 <th scope="col">Quantite debut</th>
                 <th scope="col">Quantite</th>
-                <th scope="col">Quantite fin</th>
+                <th scope="col">Quantite Producttion</th>
+                <th scope="col">Magasin</th>
                 <th scope="col">Date</th>
             </tr>
+            {% for histoique in histoiques %}
                 <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            
+                <td>{{histoique[0]}}</td>
+                <td>{{histoique[1]}}</td>
+                <td>{{histoique[2]}}</td>
+                <td>{{histoique[3]}}</td>
+                <td>{{histoique[4]}}</td>
+                <td>{{"now" | date('Y-m-d')}}</td>
+                </tr> 
+            {% endfor %}
         </tbody>
     </table>
 

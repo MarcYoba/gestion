@@ -243,10 +243,10 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Caisse </h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{ path('app_caisse') }}">caisse</a>
+                <a class="collapse-item" href="{{ path('app_caisse') }}">Ajouter caisse</a>
                 <a class="collapse-item" href="{{ path('app_caisse_list') }}">liste caisse</a>
             {% else %}
-                <a class="collapse-item" href="{{ path('app_caisse') }}" >Caisse</a>
+                <a class="collapse-item" href="{{ path('app_caisse') }}" >Ajouter Caisse</a>
                 <a class="collapse-item" href="{{ path('app_caisse_list') }}">liste caisse</a>
             {% endif %}
         </div>
@@ -284,9 +284,9 @@
             <h6 class="collapse-header">Depense:</h6>
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('depenses_list',{'id': app.request.get('id')}) }}">Liste Depense</a>
-                <a class="collapse-item" href="{{ path('app_depenses') }}">Depenses</a>
+                <a class="collapse-item" href="{{ path('app_depenses') }}"> Ajouter Depenses</a>
             {% else %}
-                <a class="collapse-item" href="{{ path('app_depenses') }}">Depenses</a>
+                <a class="collapse-item" href="{{ path('app_depenses') }}">Ajouter Depenses</a>
                 <a class="collapse-item" href="{{ path('depenses_list') }}">Liste Depense</a>
             {% endif %}
         </div>
@@ -301,7 +301,7 @@
         </a>
         <div id="prospection" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Dette :</h6>
+                <h6 class="collapse-header">Prospection :</h6>
                     <a class="collapse-item" href="{{ path('app_prospection')}}">Porspection</a>
             </div>
         </div>
