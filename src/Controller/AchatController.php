@@ -79,6 +79,8 @@ class AchatController extends AbstractController
                         $newMagasin->setOperation([$date->format('Y-m-d')." "."Achat"]);
                         $entityManager->persist($newMagasin);
                     }
+                    $produit->setPrixachat($key["prix"]);
+                    $entityManager->persist($produit);
                     $entityManager->persist($achat);
                     
                 }

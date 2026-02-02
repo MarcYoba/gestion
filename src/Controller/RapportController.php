@@ -8,6 +8,7 @@ use App\Entity\Facture;
 use App\Entity\Historique;
 use App\Entity\Magasin;
 use App\Entity\TempAgence;
+use App\Entity\Transfert;
 use App\Entity\Vente;
 use App\Entity\Versement;
 use DateTime;
@@ -77,9 +78,11 @@ class RapportController extends AbstractController
         $sommeversement = $em->getRepository(Versement::class)->findBysommeDay($date);
         
         
+        
         $date  = new DateTime($date);
         $sommecaisse = $em->getRepository(Caisse::class)->findBySommeCaisseDay($date,$agence);
-        
+        $transfert = $em->getRepository(Transfert::class)->findBy(['createtAt' => $date]);
+
         $histoiques = [];
         $histoique = $em->getRepository(Facture::class)->findByProduitVendu($date,$agence);
             foreach ($histoique as $key => $value) {
@@ -115,6 +118,7 @@ class RapportController extends AbstractController
         'totalversement' => $totalversement,
         'sommecaisse' => $sommecaisse,
         'histoiques' => $histoiques,
+        'magasins' => $transfert,
         ]);
 
         $dompdf->loadHtml($html);
@@ -122,14 +126,14 @@ class RapportController extends AbstractController
 
         // 5. Rendre le PDF
         $dompdf->render();
-
+        $document = "rapport_du_".$date->format("Y-m-d").".pdf";
         // 6. Retourner le PDF dans la réponse
         return new Response(
             $dompdf->output(),
             Response::HTTP_OK,
             [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="document.pdf"', // 'inline' pour affichage navigateur
+                'Content-Disposition' => 'inline; filename="'.$document.'"', // 'inline' pour affichage navigateur
             ]
         );
     }
