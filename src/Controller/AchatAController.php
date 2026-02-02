@@ -55,6 +55,7 @@ class AchatAController extends AbstractController
                     $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
                     $achatA->setAgence($tempagence->getAgence());
                     $achatA->setForunisseur($fournisseurA);
+                    $produitA->setPrixachat($key["prix"]);
                     $achatA->setProduit($produitA);
     
                     $ajout += $key["quantite"];
@@ -84,7 +85,7 @@ class AchatAController extends AbstractController
                         $newMagasin->setOperation([$date->format('Y-m-d')." "."Achat"]);
                         $em->persist($newMagasin);
                     }
-
+                    $produitA->setPrixachat($key["prix"]);
                     $produitA->setExpiration($key['datepera']);
                     $em->persist($achatA);
                 }
