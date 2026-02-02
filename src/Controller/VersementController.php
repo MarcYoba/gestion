@@ -122,7 +122,7 @@ class VersementController extends AbstractController
     }
 
     #[Route('/versement/download/{id}', name: 'versement_dwonload')]
-    public function dwonload(EntityManagerInterface $entityManager,$id) : Response 
+    public function dwonload(EntityManagerInterface $entityManager,Versement $versement) : Response 
     {
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
@@ -132,7 +132,7 @@ class VersementController extends AbstractController
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
 
-        $versement = $entityManager->getRepository(Versement::class)->find($id);
+        
 
         $html = $this->render('versement/download.html.twig', [
            'versements' => $versement,

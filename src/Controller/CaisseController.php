@@ -21,6 +21,11 @@ class CaisseController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $user = $this->getUser();
+            $operation = $form->get('operation')->getData();
+            $montant = $form->get('montant')->getData();
+            if ($operation == "sortie en caisse") {
+                $caisse->setMontant(-abs($montant));
+            }
             $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
             $agence = $tempagence->getAgence();
             $caisse->setAgence($agence);

@@ -17,21 +17,27 @@ class CaisseType extends AbstractType
     {
         $builder
             ->add('montant',NumberType::class,[
-                'attr' => ['class' => 'form-control form-control-user']
+                'attr' => [
+                    'class' => 'form-control form-control-user',
+                    'placeholder' => 'Entrer le Montant ',
+                ]
             ])
             ->add('operation',ChoiceType::class,[
                 'choices' => [
                     'retour en caisse' => 'retour en caisse',
                     'sortie en caisse' => 'sortie en caisse',
                     'sortie OM MOMO' => 'sortie OM MOMO',
-                    'sortie SKAB' => 'sortie SKAB',
+                    'sortie Poussin' => 'sortie Poussin',
                     'sortie Banque' => 'sortie Banque',
                 ],
                 'placeholder' => 'Choisissez une catégorie',
                 'attr' => ['class' => 'form-control form-control-user']
             ])
             ->add('motif',TextType::class,[
-                'attr' => ['class' => 'form-control form-control-user']
+                'attr' => [
+                    'class' => 'form-control form-control-user',
+                    'placeholder' => 'Entrer la description',
+                    ]
             ])
             ->add('createAt',DateType::class,[
                 'widget' => 'single_text',

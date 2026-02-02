@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Caisse;
 use App\Entity\Depenses;
+use App\Entity\Facture;
+use App\Entity\Historique;
+use App\Entity\Magasin;
 use App\Entity\TempAgence;
 use App\Entity\Vente;
 use App\Entity\Versement;
@@ -51,7 +54,7 @@ class RapportController extends AbstractController
      */
     public function rapport_day(EntityManagerInterface $em,Request $request): Response
     {
-
+        $user = $this->getUser();
         $date = date("Y-m-d");
         if ($request->isMethod('POST')) {
            $date = $request->request->get('date');
@@ -61,6 +64,8 @@ class RapportController extends AbstractController
                 return $this->redirectToRoute("app_rapport");
            }
         }
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $agence = $tempagence->getAgence()->getId();
 
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
@@ -70,11 +75,28 @@ class RapportController extends AbstractController
         $depense = $em->getRepository(Depenses::class)->findByDay($date);
         $sommeDepense = $em->getRepository(Depenses::class)->findBySommeDay($date);
         $sommeversement = $em->getRepository(Versement::class)->findBysommeDay($date);
-
+        
+        
         $date  = new DateTime($date);
+        $sommecaisse = $em->getRepository(Caisse::class)->findBySommeCaisseDay($date,$agence);
+        
+        $histoiques = [];
+        $histoique = $em->getRepository(Facture::class)->findByProduitVendu($date,$agence);
+            foreach ($histoique as $key => $value) {
+                $quantite = 0;
+                $hist = $em->getRepository(Historique::class)->findByDate($date,$value->getProduit()->getId(),$agence);
+                $fact = $em->getRepository(Facture::class)->findByQuantiteProduitVendu($date,$value->getProduit()->getId(),$agence);
+                $lasthist = $em->getRepository(Historique::class)->findByLastDate(new \DateTime($date->format("Y-m-d")),$value->getProduit()->getId(),$agence);
+                $magasin = $em->getRepository(Magasin::class)->findOneBy(["produit" => $value->getProduit()->getId()]);
+                if($magasin) {
+                    $quantite = $magasin->getQuantite();
+                }
+                array_push($histoiques,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite(),$quantite]);
+            }
+        
         $caisse = $em->getRepository(Caisse::class)->findBy(['createAt' => $date]);
         $versement = $em->getRepository(Versement::class)->findBy(['createdAd' => $date]);
-        $sommecaisse = $em->getRepository(Caisse::class)->findBySommeCaisseDay($date);
+
         $totalversement = 0;
         foreach ($sommeversement as $key => $value) {
             $totalversement = $totalversement + $value[1] + $value[2] + $value[3];
@@ -92,6 +114,7 @@ class RapportController extends AbstractController
         'sommeversement' => $sommeversement,
         'totalversement' => $totalversement,
         'sommecaisse' => $sommecaisse,
+        'histoiques' => $histoiques,
         ]);
 
         $dompdf->loadHtml($html);

@@ -163,14 +163,14 @@ class VenteController extends AbstractController
                             $entityManager->flush();
                         }
 
-                        // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7011]);
-                        // if ($balance) {
-                        //     $mouvement = $balance->getMouvementCredit();
-                        //     $mouvement = $mouvement + $lignevente['credit'];
-                        //     $balance->setMouvementCredit($mouvement);
-                        //     $entityManager->persist($balance);
-                        //     $entityManager->flush();
-                        // }
+                        $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7011]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementCredit();
+                            $mouvement = $mouvement + $lignevente['credit'];
+                            $balance->setMouvementCredit($mouvement);
+                            $entityManager->persist($balance);
+                            $entityManager->flush();
+                        }
                     }
 
                     if ($lignevente['cash'] > 0) {
@@ -183,14 +183,14 @@ class VenteController extends AbstractController
                             $entityManager->flush();
                         }
 
-                        // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7011]);
-                        // if ($balance) {
-                        //     $mouvement = $balance->getMouvementCredit();
-                        //     $mouvement = $mouvement + $lignevente['cash'];
-                        //     $balance->setMouvementCredit($mouvement);
-                        //     $entityManager->persist($balance);
-                        //     $entityManager->flush();
-                        // }
+                        $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 7011]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementCredit();
+                            $mouvement = $mouvement + $lignevente['cash'];
+                            $balance->setMouvementCredit($mouvement);
+                            $entityManager->persist($balance);
+                            $entityManager->flush();
+                        }
                     }
 
                     if ($lignevente['Banque'] > 0) {

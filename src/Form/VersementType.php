@@ -21,24 +21,31 @@ class VersementType extends AbstractType
             ->add('montant', NumberType::class,[
                 'attr' => [
                     'class' => 'form-control form-control-user',
-                    'placeholder' => 'Montant']
+                    'placeholder' => 'Montant Net en cash'
+                ],
+                'label' => 'Montant du versement en cash',
             ])
             ->add('Om', NumberType::class,[
                 'attr' => [
                     'class' => 'form-control form-control-user',
-                    'placeholder' => 'OM / MOMO']
+                    'placeholder' => 'OM / MOMO'
+                ],
+                'label' => 'Montant versement Mobile',
             ])
             ->add('banque', NumberType::class,[
                 'attr' => [
                     'class' => 'form-control form-control-user',
-                    'placeholder' => 'Banque']
+                    'placeholder' => 'Banque Depose en baque'
+                ],
+                'label' => 'Montant versement bancaire',
             ])
             ->add('createdAd', DateType::class,[
                 'widget' => 'single_text',
                 'attr' => [
                     'class' => 'form-control form-control-user',
-                    'placeholder' => 'Date'],
-                
+                    'value' => (new \DateTime())->format('Y-m-d')
+                ],
+                'label' => 'Date du versement',
             ])
             ->add('clients', EntityType::class, [
                 'class' => Clients::class,
@@ -48,12 +55,14 @@ class VersementType extends AbstractType
                 'attr' => [
                     'class' => 'form-control form-control-user form-select',
                     'placeholder' => 'client'],
-                'label' => 'Sélectionner un utilisateur',
+                'label' => 'Sélectionner Le client',
             ])
             ->add('description', TextType::class,[
                 'attr' => [
                     'class' => 'form-control form-control-user',
-                    'placeholder' => 'Description']
+                    'placeholder' => 'Description'
+                ],
+                'label' => 'Instituler du versement',
             ])
         ;
     }
