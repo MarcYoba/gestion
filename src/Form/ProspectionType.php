@@ -69,6 +69,12 @@ class ProspectionType extends AbstractType
                     'class' => 'form-control form-control-user'
                 ]
             ])
+            ->add('nature',TextType::class,[
+                'label' => 'Nom du propect',
+                'attr' => [
+                    'class' => 'form-control form-control-user'
+                ]
+            ])
         ;
     }
 
