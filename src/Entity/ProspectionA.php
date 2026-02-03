@@ -47,6 +47,9 @@ class ProspectionA
     #[ORM\ManyToOne(inversedBy: 'prospectionAs')]
     private ?Agence $agence = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nature = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -180,6 +183,18 @@ class ProspectionA
     public function setAgence(?Agence $agence): static
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    public function getNature(): ?string
+    {
+        return $this->nature;
+    }
+
+    public function setNature(?string $nature): static
+    {
+        $this->nature = $nature;
 
         return $this;
     }

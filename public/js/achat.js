@@ -112,6 +112,7 @@ function enregistrementDonnees(){
     const tableau = document.getElementById('dataTable');
     const datevar = document.getElementById('datefacture').value;
     const Type = document.getElementById('type').value;
+    document.getElementById("retraitButonsave").innerText ='Enregistrement en cours...';
     
 
     let donnees = [];
@@ -167,7 +168,7 @@ function enregistrementDonnees(){
         
       
     } else {
-        document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> ajouter une ligne pour vendre </p>'; 
+        document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> ajouter une ligne d\'achat </p>'; 
     }
     
 }
