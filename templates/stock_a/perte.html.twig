@@ -108,7 +108,7 @@
                                                 <th>{{ produit[5] }}</th>
                                                 <th>{{ produit[5] *  produit[4]}}</th>
                                                 <th>{{ "now" | date("Y-m-d")}}</th>
-                                                {% set perte = perte + (produit[1] - (produit[2] + produit[3]) * produit[4]) %}
+                                                {% set perte = perte + (produit[5] *  produit[4]) %}
                                             </tr>
                                         {% endfor %}
                                     </tbody>
