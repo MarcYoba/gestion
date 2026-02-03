@@ -96,6 +96,19 @@ class DailyProduitHistoryManager
     {
         $historyData = $this->getHistoryData();
         $historyData[date('Y-m-d')] = true;
+
+        $filePath = 'public/historique/daily_Produit_history.json';
+        $dir = dirname($filePath);
+
+        // 1. Si le dossier n'existe pas, on le crée
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true); 
+        }
+
+        // 2. Si le fichier n'existe pas, on peut créer un JSON vide []
+        if (!file_exists($filePath)) {
+            file_put_contents($filePath, json_encode([]));
+        }
         
         // Nettoyer les anciennes entrées (30 jours)
         $thirtyDaysAgo = new \DateTime('-30 days');
