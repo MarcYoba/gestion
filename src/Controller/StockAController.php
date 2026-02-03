@@ -66,7 +66,8 @@ class StockAController extends AbstractController
                 $historiquequatite = $historiques->getQuantite();
             }
             $stocktreel = $value->getQuantite() + (empty($magasinQt)?0:$magasinQt->getQuantite());
-            array_push($produits, [$value->getNom(),$historiquequatite + $sommeachat,$sommevente,$stocktreel,$value->getPrixvente()]);
+            $perte = ($historiquequatite + $sommeachat) - ($sommevente + $stocktreel);
+            array_push($produits, [$value->getNom(),$historiquequatite + $sommeachat,$sommevente,$stocktreel,$perte,$value->getPrixvente()]);
         }
         
         return $this->render('stock_a/perte.html.twig', [
