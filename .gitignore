@@ -18,3 +18,5 @@ yarn-error.log
 /public/historique/*.json
 /public/upaloads/
 /public/historique/
+public/historique/daily_ProduitA_history.json
+public/historique/daily_Produit_history.json
