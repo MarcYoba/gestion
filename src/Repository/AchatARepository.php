@@ -288,7 +288,7 @@ class AchatARepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     
-        return $result > 0 ? (int)$result : 0;
+        return $result != 0 ? (int)$result : 0;
     }
 
 }

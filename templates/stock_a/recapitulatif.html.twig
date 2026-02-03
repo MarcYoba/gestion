@@ -101,34 +101,17 @@
                                         </tr>
                                     </tfoot>
                                     <tbody id="liste">
-                                        {% for produit in produits %}
+                                        {% for produit in produitsData %}
                                             <tr>
-                                                <th>{{ produit.nom}}</th>
-                                                <th></th>
-                                                {% set sommeachat = 0 %}
-                                                {% set quantite = 0 %}
-                                                {% for achat in produit.achatAs %}
-                                                    {% set sommeachat = sommeachat + achat.quantite %}
-                                                {% endfor %}
-                                                <th>{{ sommeachat }}</th>
-                                                <th>{{ sommeachat}}</th>
-                                                <th></th> 
-                                                {% set sommevente = 0 %}
-                                                {% for facture in produit.factureAs %}
-                                                    {% set sommevente = sommevente + facture.quantite %}
-                                                {% endfor %}
-                                                <th>{{sommevente }}</th> 
-                                                <th>{{produit.quantite}}</th>
-                                                <th>
-                                                    {% for magasin in produit.magasins %}
-                                                        {{ magasin.quantite }}
-                                                        
-                                                        {% if magasin.quantite >= 0 %}
-                                                            {% set quantite = magasin.quantite %}
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </th>
-                                                <th>{{produit.quantite + quantite}}</th>
+                                                <th>{{ produit[0] }}</th>
+                                                <th>{{ produit[1] }}</th>
+                                                <th>{{ produit[2] }}</th>
+                                                <th>{{ produit[1] + produit[2] }}</th>
+                                                <th>{{ produit[3] }}</th>
+                                                <th>{{ produit[4] }}</th> 
+                                                <th>{{ produit[5] }}</th>
+                                                <th>{{ produit[6] }}</th>
+                                                <th>{{ produit[5] + produit[6] }}</th>
                                                 <th>{{ "now" | date("Y-m-d")}}</th>
                                             </tr>
                                         {% endfor %}
