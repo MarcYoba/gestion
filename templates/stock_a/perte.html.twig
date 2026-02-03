@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StockAController!{% endblock %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Recapitulatif</title>
+
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        {% include "navbarA.html.twig" %}
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                {% include "topbar.html.twig" %}
+                <div class="container-fluid">
+                    <h1 class="h3 mb-2 text-gray-800">RECAPITULATIF  GENERALE</h1>
+                    <p class="mb-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="row">
+                                    <h6 class="m-0 font-weight-bold text-primary">RECAPITULATIF GENERALE</h6>
+                            </div>
+                            <br>
+                            <form class="user" action="../pdf/Recapitulatif.php" method="post">
+                            <div class="row">
+                                <p class="col-md-2" >
+                                        <input type="date" class="form-control form-control-user"
+                                        name="datedebut" id="datedebut" placeholder="quantite" require>
+                                    </p>
+                                    <p class="col-md-2" >
+                                        <input type="date" class="form-control form-control-user"
+                                        name="datefin" id="datefin" placeholder="quantite" require>
+                                    </p>
+                                <p class="col-md-3">
+                                <input type="text" id="recherche" onkeyup="myFunction()" class="form-control form-control-user" placeholder="recherche produit"><br>
+                                </p>
+                                <p class="col-md-3"> 
+                                    
+                                    <select id="nomProduit"  name="nomProduit"  class="form-control form-select" size="4" multiple aria-label="multiple select ">
+                                      {% for row in produits %}
+                                                <option value="{{ row.id }}"> {{ row.nom }}</option>
+                                           {% endfor %} 
+                                    </select>
+                                </p>
+               
+                                <p class="col-md-2">
+                                    <button class='btn btn-info btn-user'>Imprimer</button>
+                                    <br>
+                                    <label for="annee">Année recherche :</label>
+                                    <select class="form-control" id="annee" name="annee" onchange="reload()">
+                                        {% for currentYear in 2022..2040 %}
+                                            <option value="{{ currentYear }}"> {{ currentYear }} </option>
+                                        {% endfor %}
+                                    </select>
+                                </p>
+                            </div>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-page-length='80' data-order='[[0, "desc"]]'>
+                                    <thead>  
+                                        <tr>
+                                            <th>Produit</th>
+                                            <th>Stock Initial(I) + Som Achat(A)</th>
+                                            <th>Total Vente</th>
+                                            <th>Stock REEL</th>
+                                            <th>Perte</th>
+                                            <th>Prix Unite</th>
+                                            <th>Montant</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Produit</th>
+                                            <th>Stock Initial(I) + Som Achat(A)</th>
+                                            <th>Total Vente</th>
+                                            <th>Stock REEL</th>
+                                            <th>Perte</th>
+                                            <th>Prix Unite</th>
+                                            <th>Montant</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody id="liste">
+                                        {% set perte = 0 %}
+                                        {% for produit in produitsData %}
+                                            <tr>
+                                                <th>{{ produit[0] }}</th>
+                                                <th>{{ produit[1] }}</th>
+                                                <th>{{ produit[2] }}</th>
+                                                <th>{{ produit[3] }}</th>
+                                                <th>{{ produit[1] - (produit[2] + produit[3]) }}</th> 
+                                                <th>{{ produit[4] }}</th>
+                                                <th>{{ (produit[1] - (produit[2] + produit[3]) * produit[4]) }}</th>
+                                                <th>{{ "now" | date("Y-m-d")}}</th>
+                                                {% set perte = perte + (produit[1] - (produit[2] + produit[3]) * produit[4]) %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>Montant Total des Pertes : {{ perte }} </h3>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Production &copy;  {{ "now" | date("Y") }}</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+
+    <!-- Bootstrap core JavaScript-->
+    
+    <script>
+        function reload() {
+            var annee = document.getElementById("annee").value;
+            window.location.href = "recaptliste.php?date=" + annee;
+        }
+    </script>
+
+</body>
+
+</html>
+{% endblock %}

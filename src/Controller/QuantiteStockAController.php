@@ -29,7 +29,7 @@ class QuantiteStockAController extends AbstractController
         foreach ($produit as $key => $value) {
             $historique = $em->getRepository(HistoriqueA::class)->findByDate($date,$value->getId(),$id);
             $achat = $em->getRepository(AchatA::class)->findBySommeAchatProduit($date->format("Y"),$value->getId(),$id);
-            $facture = $em->getRepository(FactureA::class)->findBySommeProduit($date->format("Y"), $value->getId(),$id);
+            $facture = $em->getRepository(FactureA::class)->findBySommeProduit(new \DateTimeImmutable($date->format("Y")), $value->getId(),$id);
             array_push($quantiteStock,[$value->getNom(),$historique,$achat,$facture,$value->getQuantite()]);   
         }
         return $this->render('quantite_stock_a/index.html.twig', [
