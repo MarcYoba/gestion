@@ -98,7 +98,7 @@ class DailyProduitAHistoryManager
         $historyData = $this->getHistoryData();
         $historyData[date('Y-m-d')] = true;
 
-        $filePath = 'public/historique/daily_ProduitA_history.json';
+        $filePath = 'historique/daily_ProduitA_history.json';
         $dir = dirname($filePath);
 
         // 1. Si le dossier n'existe pas, on le crée
