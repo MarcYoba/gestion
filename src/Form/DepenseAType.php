@@ -23,8 +23,10 @@ class DepenseAType extends AbstractType
                 'choices' => [
                     'Autres achats ( Tami, marteau, ralonge, etc.)' => 'Autres achats',
                     'charges générales ( Loyer, eau, electricite, etc.)' => 'service exterieur',
+                    'Constructions' => 'Constructions',
                     'impôts et taxes' => 'impots et taxes',
-                    'charges de personnel(Salaires)' => 'charge personnel',
+                    'Frais d’établissement' => 'Frais etablissement',
+                    'Logiciels' => 'Logiciels',
                     'autre charge(Heures supplémentaires, primes,Motivation,Miting etc.)' => 'autre charge',
                     'Voyages et déplacements, deplacement pour versement,seminaire, autre depense ' => 'Voyages',
                 ],

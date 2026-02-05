@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\BalanceA;
 use App\Entity\DepenseA;
 use App\Form\DepenseAType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +21,25 @@ class DepenseAController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $type = $form->get('type')->getData();
+            $montant = $form->get('montant')->getData();
+            if ($type == "Voyages") {
+                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5111]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementDebit();
+                            $mouvement = $mouvement + $montant;
+                            $balance->setMouvementDebit($mouvement);
+                            $em->persist($balance);
+                            
+                        }
+                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6111]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementCredit();
+                            $mouvement = $mouvement + $montant;
+                            $balance->setMouvementCredit($mouvement);
+                            $em->persist($balance);
+                        }
+            }
             $user = $this->getUser();
             $depense->setUser($user);
 
