@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Balance;
 use App\Entity\BalanceA;
 use App\Entity\TempAgence;
 use App\Entity\VenteA;
@@ -24,13 +25,19 @@ class CompteResultatController extends AbstractController
         if ($request->isMethod('POST')) {
             $year = $request->get('annee');
             
+            $sommevente = $entityManager->getRepository(Balance::class)->findOneBy(["Compte" => 7021]);
+            $sommeachat = $entityManager->getRepository(Balance::class)->findOneBy(["Compte" => 6021]);
+            $transport = $entityManager->getRepository(Balance::class)->findOneBy(["Compte" => 6111]);
 
             $options = new Options();
             $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
             $dompdf = new Dompdf($options);
 
             $html = $this->renderView('compte_resultat/compte.html.twig', [
-                'year' => $year
+                'year' => $year,
+                'sommeventes' => $sommevente,
+                'sommeacahts' => $sommeachat,
+                'transports' => $transport,
             ]);
 
             $dompdf->loadHtml($html);

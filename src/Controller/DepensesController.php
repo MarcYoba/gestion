@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Agence;
+use App\Entity\Balance;
 use App\Entity\Depenses;
 use App\Entity\TempAgence;
 use App\Form\DepensesType;
@@ -49,6 +50,26 @@ class DepensesController extends AbstractController
             }else{
                 $depenses->setImageName("pas d'image");
                 $depenses->setImageSize(0);
+            }
+
+            $type = $form->get('type')->getData();
+            $montant = $form->get('montant')->getData();
+            if ($type == "Voyages") {
+                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5111]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementDebit();
+                            $mouvement = $mouvement + $montant;
+                            $balance->setMouvementDebit($mouvement);
+                            $entityManager->persist($balance);
+                            
+                        }
+                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6111]);
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementCredit();
+                            $mouvement = $mouvement + $montant;
+                            $balance->setMouvementCredit($mouvement);
+                            $entityManager->persist($balance);
+                        }
             }
             
             $depenses->setUser($user);
