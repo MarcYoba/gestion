@@ -31,10 +31,10 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="row">
-                                    <h6 class="m-0 font-weight-bold text-primary">RECAPITULATIF GENERALE</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">RECAPITULATIF PERTE</h6>
                             </div>
                             <br>
-                            <form class="user" action="../pdf/Recapitulatif.php" method="post">
+                            <form class="user" action="#" method="post">
                             <div class="row">
                                 <p class="col-md-2" >
                                         <input type="date" class="form-control form-control-user"
@@ -45,10 +45,12 @@
                                         name="datefin" id="datefin" placeholder="quantite" require>
                                     </p>
                                 <p class="col-md-3">
-                                <input type="text" id="recherche" onkeyup="myFunction()" class="form-control form-control-user" placeholder="recherche produit"><br>
+                                    <a href="{{ path('app_stock_a_download')}}" class="btn btn-warning">
+                                        <i class="fa fa-download"></i>
+                                        EXPORTER Excel</a>
                                 </p>
                                 <p class="col-md-3"> 
-                                    
+                                    <input type="text" id="recherche" onkeyup="myFunction()" class="form-control form-control-user" placeholder="recherche produit"><br>
                                     <select id="nomProduit"  name="nomProduit"  class="form-control form-select" size="4" multiple aria-label="multiple select ">
                                       {% for row in produits %}
                                                 <option value="{{ row.id }}"> {{ row.nom }}</option>
