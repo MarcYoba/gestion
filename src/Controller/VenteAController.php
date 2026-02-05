@@ -167,14 +167,6 @@ class VenteAController extends AbstractController
                             $em->flush();
                         }
 
-                        $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 7021]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementCredit();
-                            $mouvement = $mouvement + $lignevente['credit'];
-                            $balance->setMouvementCredit($mouvement);
-                            $em->persist($balance);
-                            $em->flush();
-                        }
                     }
 
                     if ($lignevente['cash'] > 0) {
@@ -183,15 +175,6 @@ class VenteAController extends AbstractController
                             $mouvement = $balance->getMouvementDebit();
                             $mouvement = $mouvement + $lignevente['cash'];
                             $balance->setMouvementDebit($mouvement);
-                            $em->persist($balance);
-                            $em->flush();
-                        }
-
-                        $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 7021]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementCredit();
-                            $mouvement = $mouvement + $lignevente['cash'];
-                            $balance->setMouvementCredit($mouvement);
                             $em->persist($balance);
                             $em->flush();
                         }

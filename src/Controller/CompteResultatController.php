@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\BalanceA;
 use App\Entity\TempAgence;
 use App\Entity\VenteA;
 use Doctrine\ORM\EntityManagerInterface;
@@ -64,6 +65,9 @@ class CompteResultatController extends AbstractController
 
             $vente = $entityManager->getRepository(VenteA::class)->findVenteMontantYear($id,$year);
             $lastvente = $entityManager->getRepository(VenteA::class)->findVenteMontantLastYear($id,$year);
+            $sommevente = $entityManager->getRepository(BalanceA::class)->findOneBy(["Compte" => 7021]);
+            $sommeachat = $entityManager->getRepository(BalanceA::class)->findOneBy(["Compte" => 6021]);
+            $transport = $entityManager->getRepository(BalanceA::class)->findOneBy(["Compte" => 6111]);
 
             $options = new Options();
             $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
@@ -73,6 +77,9 @@ class CompteResultatController extends AbstractController
                 'year' => $year,
                 'vente' => $vente,
                 'lastvente' => $lastvente,
+                'sommeventes' => $sommevente,
+                'sommeacahts' => $sommeachat,
+                'transports' => $transport, 
             ]);
 
             $dompdf->loadHtml($html);
