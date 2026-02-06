@@ -67,5 +67,28 @@ class VersementRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findBysommeSomme($date_debut,$date_fin,$agence) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.montant),0), COALESCE(SUM(v.Om),0), COALESCE(SUM(v.banque),0)')
+            ->Where('v.createdAd  BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate',$date_debut)
+            ->setParameter('endDate',$date_fin)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByVersementSemaine($date_debut,$date_fin,$agence) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->Where('v.createdAd  BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate',$date_debut)
+            ->setParameter('endDate',$date_fin)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
 

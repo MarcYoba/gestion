@@ -73,4 +73,33 @@ class CaisseRepository extends ServiceEntityRepository
     
         return $result != 0 ? (float)$result : 0;
     }
+
+    public function findBySommeCaisseSemaine($date_debut,$date_fin,$agence) : float
+    {
+        $result = $this->createQueryBuilder('c')
+            ->select('COALESCE(SUM(c.montant),0)')
+            ->Where('c.createAt  BETWEEN :startDate AND :endDate')
+            ->andWhere('c.Agence =:agences')
+            ->setParameter('startDate', $date_debut)
+            ->setParameter('endDate', $date_fin)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    
+        return $result != 0 ? (float)$result : 0;
+    }
+
+    public function findByCaisseAgence($date_debut,$date_fin, $agence) : array 
+    {
+        return $this->createQueryBuilder('c')
+            ->Where('c.createAt BETWEEN :startDate AND :endDate')
+            ->andWhere('c.Agence =:agences')
+            ->setParameter('startDate', $date_debut)
+            ->setParameter('endDate', $date_fin)
+            ->setParameter('agences', $agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -120,4 +120,44 @@ class FactureRepository extends ServiceEntityRepository
 
         return (float) $result;
     }
+
+    public function findByProduitVenduSemaine($date_debut,$date_fin,$agence) : array 
+    {
+        // $date = new \DateTimeImmutable($date);
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('f')
+            ->where('f.createdAt  BETWEEN :startDate AND :endDate')
+            ->andWhere('f.agence = :agences')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->orderBy('f.produit','ASC')
+            ->groupBy('f.produit')
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
+
+    public function findByQuantiteProduitVenduSemaine($date_debut,$date_fin, $produit, $agence): float
+    {
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+
+        $result = $this->createQueryBuilder('f')
+            ->select('COALESCE(SUM(f.quantite), 0)')
+            ->where('f.produit = :produit')
+            ->andWhere('f.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('f.agence = :agence')
+            ->setParameter('produit', $produit)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agence', $agence)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (float) $result;
+    }
 }
