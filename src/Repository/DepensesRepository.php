@@ -92,4 +92,38 @@ class DepensesRepository extends ServiceEntityRepository
     
         return (float) $result;
     }
+
+    public function findBySommeDepenseSemaine($start_Date,$end_Date,$agence) : array 
+    {
+        $startDate = (clone $start_Date)->setTime(0, 0, 0);
+        $endDate = (clone $end_Date)->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('d')
+            ->where('d.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('d.agence =:agences')
+            ->setParameter('startDate',$startDate)
+            ->setParameter('endDate',$endDate)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findBySommeSemaine($start_Date,$end_Date,$agence) : float 
+    {
+        $startDate = (clone $start_Date)->setTime(0, 0, 0);
+        $endDate = (clone $end_Date)->setTime(23, 59, 59);
+
+        $query = $this->createQueryBuilder('d')
+            ->select('COALESCE(SUM(d.montant),0)')
+            ->where('d.createdAt BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate',$startDate)
+            ->setParameter('endDate',$endDate)
+            ->getQuery()
+        ;
+
+        $result = $query->getSingleScalarResult();
+    
+        return (float) $result;
+    }
 }

@@ -45,4 +45,16 @@ class TransfertRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findByTransfertSemaine($date_debut,$date_fin,$agence): array
+       {
+           return $this->createQueryBuilder('t')
+                ->where('t.agence = :agence')
+                ->andWhere('t.createtAt BETWEEN :startDate AND :endDate')
+                ->setParameter('agence', $agence)
+                ->setParameter('startDate', $date_debut)
+                ->setParameter('endDate', $date_fin)
+                ->getQuery()
+                ->getResult()
+            ;
+       }
 }

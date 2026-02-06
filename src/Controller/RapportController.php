@@ -232,5 +232,100 @@ class RapportController extends AbstractController
             ]
         );
     }
-    
+
+    #[Route(path: '/rapport/semain', name: 'rapport_semain')]
+    public function rapport_month(EntityManagerInterface $em,Request $request): Response
+    {
+        $user = $this->getUser();
+        $date = date("Y-m-d");
+        $datedebutsemain = date("Y-m-d");
+        $datefinsemain = date("Y-m-d");
+        if ($request->isMethod('POST')) {
+           $datedebutsemain = $request->request->get('datedebutsemain');
+           $datefinsemain = $request->request->get('datefinsemain');
+           if(empty($datedebutsemain) && empty($datefinsemain))
+           {
+                $this->addFlash("error", "Vous deviez selectiion aune date valide");
+                return $this->redirectToRoute("app_rapport");
+           }
+        }
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $agence = $tempagence->getAgence()->getId();
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+
+        $vente = $em->getRepository(Vente::class)->findRapportVenteToSemain(new \DateTimeImmutable($datedebutsemain), new \DateTimeImmutable($datefinsemain),$agence);
+        $depense = $em->getRepository(Depenses::class)->findBySommeDepenseSemaine(new \DateTimeImmutable($datedebutsemain),new \DateTimeImmutable($datefinsemain),$agence);
+        $sommeDepense = $em->getRepository(Depenses::class)->findBySommeSemaine(new \DateTimeImmutable($datedebutsemain),new \DateTimeImmutable($datefinsemain),$agence);
+        $sommeversement = $em->getRepository(Versement::class)->findBysommeSomme(new \DateTime($datedebutsemain),new \DateTime($datefinsemain),$agence);
+        
+        
+        
+        
+        $sommecaisse = $em->getRepository(Caisse::class)->findBySommeCaisseSemaine(new \DateTime($datedebutsemain),new \DateTime($datefinsemain),$agence);
+        $transfert = $em->getRepository(Transfert::class)->findByTransfertSemaine(new \DateTime($datedebutsemain),new \DateTime($datefinsemain),$agence);
+        
+
+        $histoiques = [];
+        $benefice = [];
+        $histoique = $em->getRepository(Facture::class)->findByProduitVenduSemaine(new \DateTimeImmutable($datedebutsemain),new \DateTimeImmutable($datefinsemain),$agence);
+            foreach ($histoique as $key => $value) {
+                $quantite = 0;
+                $hist = $em->getRepository(Historique::class)->findByDate(new \DateTime($datedebutsemain),$value->getProduit()->getId(),$agence);
+                
+                $fact = $em->getRepository(Facture::class)->findByQuantiteProduitVenduSemaine(new \DateTimeImmutable($datedebutsemain), new \DateTimeImmutable($datefinsemain), $value->getProduit()->getId(), $agence);
+               // $lasthist = $em->getRepository(Historique::class)->findByLastDate(new \DateTime($date->format("Y-m-d")),$value->getProduit()->getId(),$agence);
+                $magasin = $em->getRepository(Magasin::class)->findOneBy(["produit" => $value->getProduit()->getId()]);
+                $achat = $em->getRepository(Achat::class)->findByPrixAchatProduit($value->getProduit()->getId(),$agence);
+                if($magasin) {
+                    $quantite = $magasin->getQuantite();
+                }
+                array_push($histoiques,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite(),$quantite]);
+                array_push($benefice,[$value->getProduit()->getNom(),$fact,$value->getProduit()->getPrixvente(),$achat,($value->getProduit()->getPrixvente() - $achat) * $fact]);
+            }
+        
+        $caisse = $em->getRepository(Caisse::class)->findByCaisseAgence(new \DateTime($datedebutsemain),new \DateTime($datefinsemain), $agence);
+        $versement = $em->getRepository(Versement::class)->findByVersementSemaine(new \DateTime($datedebutsemain),new \DateTime($datefinsemain),$agence);
+
+        $totalversement = 0;
+        foreach ($sommeversement as $key => $value) {
+            $totalversement = $totalversement + $value[1] + $value[2] + $value[3];
+        }
+        
+
+        
+        $html = $this->renderView('rapport/rapport_semaine.html.twig', [
+        'ventes' => $vente,
+        'date_debut' => $datedebutsemain,
+        'date_fin' => $datefinsemain,
+        'caisses' => $caisse,
+        'versements' => $versement,
+        'depenses' => $depense,
+        'sommeDepense' => $sommeDepense,
+        'sommeversement' => $sommeversement,
+        'totalversement' => $totalversement,
+        'sommecaisse' => $sommecaisse,
+        'histoiques' => $histoiques,
+        'magasins' => $transfert,
+        'benefices' => $benefice,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+        $document = "rapport_du_".$datedebutsemain."au".$datefinsemain.".pdf";
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="'.$document.'"', // 'inline' pour affichage navigateur
+            ]
+        );
+    }
 }

@@ -454,4 +454,21 @@ class VenteRepository extends ServiceEntityRepository
         
         ;
     }
+
+    public function findRapportVenteToSemain($date_debut, $date_fin,$agence) : array 
+    {
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence =:agences')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getResult()
+        
+        ;
+    }
 }
