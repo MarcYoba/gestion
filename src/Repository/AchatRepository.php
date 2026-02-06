@@ -222,5 +222,21 @@ class AchatRepository extends ServiceEntityRepository
             ->getResult()
        ;
     }
+
+    public function findByPrixAchatProduit($produit,$agence) : int
+    {
+        $result = $this->createQueryBuilder('a')
+            ->select('a.prix')
+            ->andWhere('a.produit = :val')
+            ->andWhere('a.agence = :agences')
+            ->setParameter('val', $produit)
+            ->setParameter('agences', $agence)
+            ->orderBy('a.createdAt', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult(); // Retourne un tableau ou null
+
+        return $result ? (int)$result['prix'] : 0;
+    }
     
 }

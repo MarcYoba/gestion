@@ -37,6 +37,7 @@
         {%   set sommemomo = 0 %}
         {%   set sommeCredit = 0 %}
         {%   set sommeReduction = 0 %}
+        {% set sommeprix = 0 %}
         {% for vente in ventes %}
             <tr>
             <td colspan="6" align="center"> Formule   Vente N= {{vente.id}} Client : {{ vente.client.nom}}  Tel: {{ vente.client.telephone}} utilisateur {{vente.user.username }} heure {{ vente.heure}} aliment : {{vente.aliment}}</td>
@@ -58,13 +59,14 @@
                         <td> {{ facture.prix * facture.quantite}} </td>
                         <td> {{ vente.type}} </td>
                         <td> {{ facture.createdAt | date("Y-m-d")}} </td>
+                        {% set sommeprix = sommeprix + facture.prix %}
                     </tr>
                 {% endfor %} 
                  <tr>
                     <td>Total</td>
                     <td>{{ vente.quantite}}</td>
                     {% if vente.prix != 0 %}
-                        <td>{{ vente.prix / vente.quantite}}</td>
+                        <td>{{ sommeprix }}</td>
                     {% else %}
                         <td>0</td>
                     {% endif %}
@@ -288,6 +290,58 @@
                 {% endfor %}
             </tbody>
     </table>
+    {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+        <br><br><br> 
+        <table style="width:100%">
+                <thead>
+                <tr><th colspan="7" align="center"> Calcules des Bénéfices  : {{date}}</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td colspan="7" align="center"> Calcules des Bénéfices  </td>
+                    </tr>
+                    <tr>
+                        <th scope="col">Produit</th>
+                        <th scope="col">Quantite Vendue</th>
+                        <th scope="col">Prix  Vente</th>
+                        <th scope="col">Prix Achat</th>
+                        <th scope="col">P.vente - P.achat</th>
+                        <th scope="col">Bénéfices</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                    {% set beneficequantite = 0 %}
+                    {% set beneficemontant = 0 %}
+                    {% set beneficetotal = 0 %}
+                    {% set beneficevente = 0 %}
+                    {% set beneficeachat = 0 %}
+                    {% for benefice in benefices %}
+                        <tr>
+                            <td>{{benefice[0]}}</td>
+                            <td>{{benefice[1]}}</td>
+                            <td>{{benefice[2]}}</td>
+                            <td>{{benefice[3]}}</td>
+                            <td>{{benefice[2] - benefice[3]}}</td>
+                            <td>{{benefice[4]}}</td>
+                            <td>{{date}}</td>
+                            {% set beneficeachat = beneficeachat + benefice[3] %}
+                            {% set beneficevente = beneficevente + benefice[2] %}
+                            {% set beneficequantite = beneficequantite + benefice[1] %}
+                            {% set beneficemontant = beneficemontant + (benefice[2] - benefice[3]) %}
+                            {% set beneficetotal = beneficetotal + benefice[4] %}
+                        </tr>
+                    {% endfor %}
+                    <tr> 
+                        <th scope="col">Total</th>
+                        <th scope="col">{{beneficequantite}}</th>
+                        <th scope="col">{{beneficevente}}</th>
+                        <th scope="col">{{beneficeachat}}</th>
+                        <th scope="col">{{beneficemontant}}</th>
+                        <th scope="col">{{beneficetotal}}</th>
+                        <th scope="col">{{date}}</th>
+                    </tr>
+                </tbody>
+        </table>
+    {% endif %}
 
 </body>
 </html>
