@@ -28,6 +28,9 @@ class CompteResultatController extends AbstractController
             $sommevente = $entityManager->getRepository(Balance::class)->findOneBy(["Compte" => 7021]);
             $sommeachat = $entityManager->getRepository(Balance::class)->findOneBy(["Compte" => 6021]);
             $transport = $entityManager->getRepository(Balance::class)->findOneBy(["Compte" => 6111]);
+            $serviceexterieur = $entityManager->getRepository(Balance::class)->findOneBy(["Compte" => 6411]);
+            $chargepersonnel = $entityManager->getRepository(Balance::class)->findOneBy(["Compte" => 4211]);
+            $impots = $entityManager->getRepository(Balance::class)->findOneBy(["Compte" => 6311]);
 
             $options = new Options();
             $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
@@ -38,6 +41,9 @@ class CompteResultatController extends AbstractController
                 'sommeventes' => $sommevente,
                 'sommeacahts' => $sommeachat,
                 'transports' => $transport,
+                'serviceexterieur' => $serviceexterieur,
+                'chargepersonnel' => $chargepersonnel,
+                'impots' => $impots,
             ]);
 
             $dompdf->loadHtml($html);
@@ -75,6 +81,11 @@ class CompteResultatController extends AbstractController
             $sommevente = $entityManager->getRepository(BalanceA::class)->findOneBy(["Compte" => 7021]);
             $sommeachat = $entityManager->getRepository(BalanceA::class)->findOneBy(["Compte" => 6021]);
             $transport = $entityManager->getRepository(BalanceA::class)->findOneBy(["Compte" => 6111]);
+            $serviceexterieur = $entityManager->getRepository(BalanceA::class)->findOneBy(["Compte" => 6411]);
+            $chargepersonnel = $entityManager->getRepository(BalanceA::class)->findOneBy(["Compte" => 4211]);
+            $impots = $entityManager->getRepository(BalanceA::class)->findOneBy(["Compte" => 6311]);
+
+             // Calculs intermédiaires
 
             $options = new Options();
             $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
@@ -86,7 +97,10 @@ class CompteResultatController extends AbstractController
                 'lastvente' => $lastvente,
                 'sommeventes' => $sommevente,
                 'sommeacahts' => $sommeachat,
-                'transports' => $transport, 
+                'transports' => $transport,
+                'serviceexterieur' => $serviceexterieur,
+                'chargepersonnel' => $chargepersonnel,
+                'impots' => $impots,
             ]);
 
             $dompdf->loadHtml($html);

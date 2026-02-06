@@ -27,6 +27,7 @@ class DepenseAType extends AbstractType
                     'impôts et taxes' => 'impots et taxes',
                     'Frais d’établissement' => 'Frais etablissement',
                     'Logiciels' => 'Logiciels',
+                    'Terrains' => 'Terrains',
                     'autre charge(Heures supplémentaires, primes,Motivation,Miting etc.)' => 'autre charge',
                     'Voyages et déplacements, deplacement pour versement,seminaire, autre depense ' => 'Voyages',
                 ],
