@@ -59,7 +59,7 @@
             <th scope="col">Achats de marchandises </th>
             <th scope="col">-</th>
             <th scope="col">-1</th>
-            <th scope="col">{{ sommeacahts.MouvementDebit }}</th>
+            <th scope="col">{{ sommeacahts.MouvementDebit * (-1) }}</th>
             <th scope="col">0</th>
         </tr>
             
@@ -77,7 +77,7 @@
             <th scope="col" style="color: blue;">MARGE COMMERCIALE (Somme TA à RB)</th>
             <th scope="col" style="color: blue;"></th>
             <th scope="col" style="color: blue;"></th>
-            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">{{ sommeventes.MouvementCredit + (sommeacahts.MouvementDebit * (-1) )}}</th>
             <th scope="col" style="color: blue;">0</th>
         </tr>
         
@@ -107,13 +107,13 @@
             <th scope="col">0</th>
             <th scope="col">0</th>
         </tr>
-        
+        {% set XB = sommeventes.MouvementCredit %}
         <tr>
             <td>XB</td>
             <th scope="col" style="color: blue;">CHIFFRE AFFAIRES (TA+TB+TC+TD)</th>
             <th scope="col" style="color: blue;"></th>
             <th scope="col" style="color: blue;"></th>
-            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">{{ XB }}</th>
             <th scope="col" style="color: blue;">0</th>
         </tr>
         
@@ -203,7 +203,7 @@
             <th scope="col">Transports</th>
             <th scope="col">-</th>
             <th scope="col">-1</th>
-            <th scope="col">{{ transports.MouvementCredit }}</th>
+            <th scope="col">{{ transports.MouvementCredit * (-1) }}</th>
             <th scope="col">0</th>
         </tr>
         
@@ -212,7 +212,7 @@
             <th scope="col">Services extérieurs </th>
             <th scope="col">-</th>
             <th scope="col">-1</th>
-            <th scope="col">0</th>
+            <th scope="col">{{serviceexterieur.MouvementDebit}}</th>
             <th scope="col">0</th>
         </tr>
         
@@ -221,7 +221,7 @@
             <th scope="col">Impôts et taxes </th>
             <th scope="col">-</th>
             <th scope="col">-1</th>
-            <th scope="col">0</th>
+            <th scope="col">{{ impots.MouvementDebit }}</th>
             <th scope="col">0</th>
         </tr>
         
@@ -233,13 +233,13 @@
             <th scope="col">0</th>
             <th scope="col">0</th>
         </tr>
-        
+        {% set XC = XB + (transports.MouvementCredit * (-1)) %}
         <tr>
             <td>XC</td>
             <th scope="col" style="color: blue;">VALEUR AJOUTEE (XB +RA+RB) + (somme TE à RJ)  </th>
             <th scope="col" style="color: blue;"></th>
             <th scope="col" style="color: blue;"></th>
-            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">{{ XC }}</th>
             <th scope="col" style="color: blue;">0</th>
         </tr>
         
@@ -248,16 +248,16 @@
             <th scope="col">Charges de personnel  </th>
             <th scope="col">-</th>
             <th scope="col">-1</th>
-            <th scope="col">0</th>
+            <th scope="col">{{chargepersonnel.MouvementDebit}}</th>
             <th scope="col">0</th>
         </tr>
-        
+        {% set RD = XC %}
         <tr>
             <td>RD</td>
             <th scope="col" style="color: blue;">EXCEDENT BRUT EXPLOITATION (XC+RK)   </th>
             <th scope="col" style="color: blue;"></th>
             <th scope="col" style="color: blue;"></th>
-            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">{{ RD }}</th>
             <th scope="col" style="color: blue;">0</th>
         </tr>
 
@@ -278,13 +278,13 @@
             <th scope="col">0</th>
             <th scope="col">0</th>
         </tr>
-        
+        {% set XE = 0 %}
         <tr>
             <td>XE</td>
             <th scope="col" style="color: blue;">RESULTAT EXPLOITATION (XD+TJ+ RL)  </th>
             <th scope="col" style="color: blue;"></th>
             <th scope="col" style="color: blue;"></th>
-            <th scope="col" style="color: blue;">0</th>
+            <th scope="col" style="color: blue;">{{ XE }}</th>
             <th scope="col" style="color: blue;">0</th>
         </tr>
 

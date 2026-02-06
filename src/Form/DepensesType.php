@@ -33,11 +33,10 @@ class DepensesType extends AbstractType
                 'choices' => [
                     'Autres achats ( Tami, marteau, ralonge, etc.)' => 'Autres achats',
                     'charges générales ( Loyer, eau, electricite, etc.)' => 'service exterieur',
-                    'Frais d’établissement' => 'Frais établissement',
+                    'Frais d’établissement' => 'Frais etablissement',
                     'Constructions' => 'Constructions',
                     'impôts et taxes' => 'impots et taxes',
                     'Logiciels' => 'Logiciels',
-                    'Terrains' => 'Terrains',
                     'Terrains' => 'Terrains',
                     'autre charge(Heures supplémentaires, primes,Motivation,Miting etc.)' => 'autre charge',
                     'Voyages et déplacements, deplacement pour versement,seminaire, autre depense ' => 'Voyages',
