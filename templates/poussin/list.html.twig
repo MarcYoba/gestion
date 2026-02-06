@@ -165,10 +165,10 @@
                                                 <td>{{ poussin.quantite}}</td>
                                                 <td>{{ poussin.prix}} </td>
                                                 <td>{{ poussin.montant}}</td>
-                                                <td>{{ poussin.montant}}</td>
                                                 <td>{{ poussin.mobilepay + poussin.cash }}</td>
-                                                <td>{{ poussin.reste}}</td>
-                                                <td>{{ poussin.status}}</td>
+                                                <td>{{ poussin.reste }}</td>
+                                                <td>{{ poussin.status }}</td>
+                                                <td>{{ poussin.datelivaison | date("d-m-Y")}}</td>
                                                 <td>{{ poussin.daterapelle |date("d-m-Y")}}</td>
                                                 <td>
                                                 <a href='{{ path('app_pousssin_edit', {'id': poussin.id}) }}' class='btn btn-primary'><i class='fas fa-pencil-alt'></i></a>

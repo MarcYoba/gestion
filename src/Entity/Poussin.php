@@ -15,7 +15,7 @@ class Poussin
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'poussins')]
-    private ?clients $client = null;
+    private ?Clients $client = null;
 
     #[ORM\Column]
     private ?float $quantite = null;
@@ -61,12 +61,12 @@ class Poussin
         return $this->id;
     }
 
-    public function getClient(): ?clients
+    public function getClient(): ?Clients
     {
         return $this->client;
     }
 
-    public function setClient(?clients $client): static
+    public function setClient(?Clients $client): static
     {
         $this->client = $client;
 

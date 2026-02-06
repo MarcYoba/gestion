@@ -46,7 +46,7 @@ class FactureRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function findBySommeProduit($date,$produit,$agence) : int
+    public function findBySommeProduit($date,$produit,$agence) : float
     {
         $result= $this->createQueryBuilder('f')
             ->select('COALESCE(SUM(f.quantite), 0)')
@@ -60,7 +60,7 @@ class FactureRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     
-        return $result > 0 ? (int)$result : 0;
+        return $result > 0 ? (float)$result : 0;
     }
 
     public function findByProduitVendu($date,$agence) : array 
@@ -101,7 +101,7 @@ class FactureRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByQuantiteProduitVendu($date, $produit, $agence): int
+    public function findByQuantiteProduitVendu($date, $produit, $agence): float
     {
         $startDate = (clone $date)->setTime(0, 0, 0);
         $endDate = (clone $date)->setTime(23, 59, 59);
@@ -118,6 +118,6 @@ class FactureRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return (int) $result;
+        return (float) $result;
     }
 }
