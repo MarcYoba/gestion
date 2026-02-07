@@ -65,8 +65,8 @@
                         <td> {{ facture.createAt | date("Y-m-d")}} </td>
                     </tr>
                     {% set prixfacture = prixfacture + facture.prix %}
-                    {%   set sommemomo = 0 %}
-                    {%   set sommemomo = sommemomo + vente.momo %}
+                    
+                    
                 {% endfor %} 
                  <tr>
                     <td>Total</td>
@@ -99,7 +99,8 @@
                 {% set sommeVente = sommeVente + vente.prix %}
                 {% set sommeCash = sommeCash + vente.cash %}
                 {% set sommeCredit = sommeCredit + vente.credit %}
-                {% set sommeOm = sommeOm + vente.momo %}
+                {% set sommemomo = sommemomo + vente.momo %}
+                {% set sommeOm = sommeOm + vente.om %}
                 {% set sommeReduction = sommeReduction + vente.reduction %}
             {% endfor %}
             
