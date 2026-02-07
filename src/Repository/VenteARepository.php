@@ -248,7 +248,7 @@ class VenteARepository extends ServiceEntityRepository
         return $this->createQueryBuilder('v')
             ->select('SUM(v.prix) AS TotalVente, SUM(v.quantite) AS quantite, 
                     SUM(v.cash) as cash, SUM(v.reduction) as reduction,
-                    SUM(v.banque) AS banque, SUM(v.credit) AS credit, SUM(v.momo) AS momo')
+                    SUM(v.banque) AS banque, SUM(v.credit) AS credit, SUM(v.momo) AS momo, SUM(v.om) AS om')
             ->where('v.createAt BETWEEN :start AND :end')
             ->setParameter('start', $startDate->format('Y-m-d 00:00:00'))
             ->setParameter('end', $endDate->format('Y-m-d 23:59:59'))

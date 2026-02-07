@@ -116,4 +116,19 @@ class HistoriqueARepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findByHistoriquePeriode($dateDebut, $dateFin, $agence) : array
+    {
+        return $this->createQueryBuilder('h')
+            ->andWhere('h.agence = :agences')
+            ->andWhere('h.createtAd >= :dateDebut')
+            ->andWhere('h.createtAd <= :dateFin')
+            ->setParameter('agences',$agence)
+            ->setParameter('dateDebut',$dateDebut)
+            ->setParameter('dateFin',$dateFin)
+            ->orderBy('h.produitA', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
