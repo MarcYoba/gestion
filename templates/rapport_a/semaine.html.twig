@@ -38,6 +38,7 @@
         {%  set sommeVente = 0 %}
         {%   set sommeCash = 0 %}
         {%   set sommeOm = 0 %}
+        {%   set sommemomo = 0 %}
         {%   set sommeCredit = 0 %}
         {%   set sommeReduction = 0 %}
          
@@ -64,6 +65,8 @@
                         <td> {{ facture.createAt | date("Y-m-d")}} </td>
                     </tr>
                     {% set prixfacture = prixfacture + facture.prix %}
+                    {%   set sommemomo = 0 %}
+                    {%   set sommemomo = sommemomo + vente.momo %}
                 {% endfor %} 
                  <tr>
                     <td>Total</td>
@@ -109,12 +112,13 @@
                 <th colspan="9" align="center"> Resultat vente du : {{ calandrier }} </th>
             </tr>
             <tr>
-                <th colspan="9" align="center"> Recapitulatif Vente </th>
+                <th colspan="10" align="center"> Recapitulatif Vente </th>
             </tr>
             <tr>
                 <th scope="col">Total Vente</th>
                 <th scope="col">Total Cash</th>
                 <th scope="col">Total OM</th>
+                <th scope="col">Total MOMO</th>
                 <th scope="col">Total Credit </th>
                 <th scope="col">Total reduction</th>
                 <th scope="col">Total Depense</th>
@@ -127,6 +131,7 @@
                  <td>{{ sommeVente }}</td>
                 <td> {{ sommeCash }}</td>
                 <td> {{ sommeOm }}</td>
+                <td> {{ sommemomo }}</td>
                 <td>{{ sommeCredit }}</td>
                 <td>{{ sommeReduction }}</td>
                 <td>{{ sommedepense}}</td>

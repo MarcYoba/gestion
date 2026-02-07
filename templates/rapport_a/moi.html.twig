@@ -38,20 +38,17 @@
         </thead>
         <tbody>
         <tr> 
-                <td scope="col" colspan="7" align="center">Rapport Mensuel</td>
-                </tr>
-        
-        
-        
-            <tr>
+            <td scope="col" colspan="8" align="center">Rapport Mensuel</td>
+        </tr>
+        <tr>
             <th scope="col">Q.Total</th>
             <th scope="col">M.Total</th>
             <th scope="col">M.Cash</th>
             <th scope="col">M.Dette</th>
             <th scope="col">M.OM</th>
+            <th scope="col">M.MOMO</th>
             <th scope="col">Reduction</th>
             <th scope="col">M.Banque</th>
-
         </tr>
         {% for vente in ventes %}
             <tr>
@@ -59,6 +56,7 @@
                 <td>{{vente.TotalVente}}</td>
                 <td>{{vente.cash}}</td>
                 <td>{{vente.credit}}</td>
+                <td>{{vente.om}}</td>
                 <td>{{vente.momo}}</td>
                 <td>{{vente.reduction}}</td>
                 <td>{{vente.banque}}</td>

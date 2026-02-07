@@ -13,9 +13,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
 
     <title>AB COMPTA</title>
 
@@ -38,51 +35,41 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Historique stock</h6>
                             </div>
                             <br>
-                            <form class="user" action="getstock.php" method="post">
-                            <div class="row">
-                                
-                                <p class="col-md-0"></p>
-                                <div class="col-md-3"> 
-                                   <input type="search" id="recherche" onkeyup="recherduclient()"  class="form-control form-control-user" placeholder="recherche"><br>
-                                    <select id="ABCOMPTA_client"  name="ABCOMPTA_client"   class="form-control form-select" size="4" multiple aria-label="multiple select">   <!--  -->
-                                        <option value="ALL" selected>ALL</option>             
-                                            {% for clients in client %}
-                                                <option value="{{ clients.id }}">{{ clients.nom }}</option>  
-                                            {% endfor %}
-                                    </select>
+                            <form class="user" action="{{ path('app_historique_a_download')}}" method="post">
+                                <div class="row">
+                                    <p class="col-md-0"></p>
+                                    <div class="col-md-3"> 
+                                        <input type="search" id="recherche" onkeyup="recherduclient()"  class="form-control form-control-user" placeholder="recherche"><br>
+                                        <select id="ABCOMPTA_client"  name="ABCOMPTA_client"   class="form-control form-select" size="4" multiple aria-label="multiple select">   <!--  -->
+                                            <option value="ALL" selected>ALL</option>             
+                                                {% for clients in client %}
+                                                    <option value="{{ clients.id }}">{{ clients.nom }}</option>  
+                                                {% endfor %}
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-md-2">
+                                        <input class="form-control form-control-user" type="date" id="datedebut" name="datedebut"><br>
+                                        <input class="form-control form-control-user" type="date" id="datefin" name="datefin">   
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <button class="btn btn-warning">
+                                            <i class="fa fa-download"></i>
+                                            EXPORTER Excel
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="annee">Année recherche</label>
+                                        <select class="form-control" id="annee" name="annee" onchange="reload()">
+                                            <option >Recherche a</option>
+                                                {% for i in 2024..2040 %}
+                                                    <option value="{{ i }}">{{ i }}</option>
+                                                {% endfor %}
+                                        </select>
+                                    </div>
+                                    
                                 </div>
-                                
-                                <p class="col-md-2">
-                                <input class="form-control form-control-user" type="date" id="date" name="date"><br>
-                                <input class="form-control form-control-user" type="date" id="date2" name="date2">   
-                                </p>
-                                <p class="col-md-2" >
-                                        <input class="form-check-input" type="checkbox" id="reel" name="reel" value="reel">
-                                            <label class="form-check-label" id="reel">Stock reel</label><br>
-                                        
-                                        <input class="form-check-input" type="checkbox" id="Achat" name="Achat" value="Achat" onclick="rediriger()">
-                                            <label class="form-check-label" id="credit">Achat</label>
-                                    </p>
-
-                                    <p class="col-md-2" >
-                                        <input class="form-check-input" type="checkbox" id="Intentaire" name="Intentaire" value="Intentaire">
-                                        <label class="form-check-label" id="Intentaire">Intentaire</label><br>
-
-                                        <input class="form-check-input" type="checkbox" id="vente" name="vente" value="vente">
-                                        <label class="form-check-label" id="vente">vente</label>
-                                    </p>
-                                <p class="col-md-2">
-                                    <button class='btn btn-info btn-user'>Affichier</button>
-                                    <br>
-                                    <label for="annee">Année recherche</label>
-                                    <select class="form-control" id="annee" name="annee" onchange="reload()">
-                                        <option >Recherche a</option>
-                                            {% for i in 2024..2040 %}
-                                                <option value="{{ i }}">{{ i }}</option>
-                                            {% endfor %}
-                                    </select>
-                                </p>
-                            </div>
                             </form>
                         </div>
                         <div class="card-body">
