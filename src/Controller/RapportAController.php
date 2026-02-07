@@ -233,7 +233,7 @@ class RapportAController extends AbstractController
         }
         $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek($date_debut,$date_fin,$id);
         
-        //dd($vente);
+        //dd($date_debut,$date_fin,$vente);
         $html = $this->renderView('rapport_a/semaine.html.twig', [
         'calandrier' => $calandrier,
         'date_debut' => $date_debut,
