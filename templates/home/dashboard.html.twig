@@ -46,12 +46,14 @@
         <div class="modal-body">
             <div class="form-group row">
                 <div class="col-sm-4">
-                    <h1>La gestion des stocks limite (stock maximum)</h1>
+                    
+                        Bone Commande : {{ bondCommandes | default(0) }}
+                    
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-        {# <a href="#" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Liste Commande</a> #}
+            <a href="{{path('app_bond_commande_liste_fourisseur')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Bond de Commande</a>
         </div>
         </div>
     </div>

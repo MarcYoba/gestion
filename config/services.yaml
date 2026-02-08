@@ -56,4 +56,7 @@ services:
     App\EventListener\ProduitSubscriber:
         tags:
             - { name: 'doctrine.event_subscriber'}
+    App\EventListener\ProduitSubscriberProduit:
+        tags:
+            - { name: 'doctrine.event_subscriber'}
     

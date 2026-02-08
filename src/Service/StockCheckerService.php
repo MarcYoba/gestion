@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\BondCommandeA;
+use App\Entity\MagasinA;
 use App\Entity\ProduitA;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,7 +30,9 @@ class StockCheckerService
         // Créer un nouveau bon de commande
         foreach ($products as $product) {
             $bonCommand = $this->entityManager->getRepository(BondCommandeA::class)->findOneBy(['produit' => $product]);
-            if ($product->getQuantite() > $bonCommand->getLimite() ) {
+            $magasin = $this->entityManager->getRepository(MagasinA::class)->findOneBy(['produit' => $product]);
+            $quantite = $product->getQuantite() + $magasin->getQuantite();
+            if ($quantite <= $bonCommand->getLimite() ) {
                 $bonCommand->setStatut(1);
             }else{
                 $bonCommand->setStatut(0);

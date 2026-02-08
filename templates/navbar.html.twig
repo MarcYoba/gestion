@@ -117,10 +117,14 @@
                     <a class="collapse-item" href="{{ path('produit_list') }}">Liste produit</a>
                     <a class="collapse-item" href="{{ path('app_produit') }}" id="ajouterProduit">Ajouter un produit</a>
                     <a class="collapse-item" href="{{ path('app_produit_import') }}">Importer</a>
+                    <a class="collapse-item" href="{{ path('app_produit_stock_export') }}">Export</a>
+                    <a class="collapse-item" href="{{ path('app_bond_commande') }}">Stock Limite </a>
                 {% else %}
                     <a class="collapse-item" href="{{ path('app_produit') }}" id="ajouterProduit">Ajouter un produit</a>
                     <a class="collapse-item" href="{{ path('produit_list') }}">Liste produit</a>
                     <a class="collapse-item" href="{{ path('app_produit_import') }}">Importer</a>
+                    <a class="collapse-item" href="{{ path('app_produit_stock_export') }}">Export</a>
+                    <a class="collapse-item" href="{{ path('app_bond_commande') }}">Stock Limite </a>
                 {% endif %}
         </div>
     </div>

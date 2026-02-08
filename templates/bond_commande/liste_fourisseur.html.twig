@@ -1,0 +1,81 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Hello RapportController {% endblock %}
+
+{% block body %}
+<body id="page-top" class="bg-light"> 
+    <div class="container mt-5">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center mb-4">
+                    <h1 class="h3 text-gray-800">Exportation des bonde de Commande part fournisseur</h1>
+                    <a class="font-weight-bold text-success" href="{{ path('app_home_dashboard', {'id': id}) }}">
+                        <i class="fas fa-arrow-circle-left"></i> Retour au Tableau de Bord
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for forunisseur in fournisseurs %}
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Bonde de Commande
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{forunisseur.nom}}<br>{{forunisseur.telephone}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="{{ path('app_bond_commande_liste_fourisseur_id',{'id':forunisseur.id})}}">
+                                        <button type="button" class="btn btn-success btn-sm">
+                                            <i class="fas fa-print fa-2x text-white-50"></i> PDF
+                                        </button>
+                                    </a>
+                                    <a href="{{ path('app_bond_command_list_fournisseur_id_excel',{'id':forunisseur.id})}}">
+                                        <button type="button" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-print fa-2x text-white-50"></i> Excel
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                    Bonde de Commande
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">Autre Fournisseur</div>
+                            </div>
+                            <div class="col-auto">
+                                <a href="{{ path('app_bond_commande_export_pdf')}}">
+                                    <button type="button" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-print fa-2x text-white-50"></i> PDF
+                                    </button>
+                                </a>
+                                <a href="{{ path('app_bond_commande_liste_fourisseur_excel')}}">
+                                    <button type="button" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-print fa-2x text-white-50"></i> Excel
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+</body>
+
+</html>
+{% endblock %}
