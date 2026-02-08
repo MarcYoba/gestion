@@ -56,4 +56,27 @@ class ProduitRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function FindByBonCommandAutre() : array {
+        return $this->createQueryBuilder('p')
+            ->join('p.bondCommandes', 'b') 
+            ->leftJoin('p.achat', 'a')  
+            ->select('p.nom, p.quantite')
+            ->where('b.statut > 0')        
+            ->andWhere('a.id IS NULL')     
+            ->groupBy('p.nom')
+            ->getQuery()
+            ->getResult();
+    }
+    public function FindByBonCommandFournisseur($fournisseur) : array {
+        return $this->createQueryBuilder('p')
+            ->join('p.bondCommandes','b')
+            ->join('p.achat','a')
+            ->select('p.nom,p.quantite')
+            ->where('b.statut > 0')
+            ->andWhere('a.fournisseur =:fourni')
+            ->setParameter('fourni',$fournisseur)
+            ->groupBy('p.nom')
+            ->getQuery()
+            ->getResult();
+    }
 }

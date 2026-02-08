@@ -2,12 +2,12 @@
 // src/Service/StockManager.php
 namespace App\Service;
 
-use App\Entity\BondCommandeA;
-use App\Entity\MagasinA;
-use App\Entity\ProduitA;
+use App\Entity\BondCommande;
+use App\Entity\Magasin;
+use App\Entity\Produit;
 use Doctrine\ORM\EntityManagerInterface;
 
-class StockManager
+class StockManagerProduit
 {
     private $entityManager;
 
@@ -16,11 +16,11 @@ class StockManager
         $this->entityManager = $entityManager;
     }
 
-    public function verifierLimiteCommande(ProduitA $produit): void
+    public function verifierLimiteCommande(Produit $produit): void
     {
         // On vérifie si le produit appartient au MagasinA
         // dump($produit->getId());
-        $magasin = $this->entityManager->getRepository(MagasinA::class)->findOneBy(['produit' => $produit]);
+        $magasin = $this->entityManager->getRepository(Magasin::class)->findOneBy(['produit' => $produit]);
         
         if (!$magasin) {
             // dump('produit non trouver au magasin, on continue');
@@ -28,7 +28,7 @@ class StockManager
             
         }
         // dump('On vérifie si le produit appartient au MagasinA, on continue');
-        $bonCommande = $this->entityManager->getRepository(BondCommandeA::class)->findOneBy(['produit' => $produit]);
+        $bonCommande = $this->entityManager->getRepository(BondCommande::class)->findOneBy(['produit' => $produit]);
         if (!$bonCommande) {
             return;
         }

@@ -270,4 +270,45 @@ class ProduitController extends AbstractController
             ]
         );
     }
+
+    #[Route('/produit/stock/export', name: 'app_produit_stock_export')]
+    public function exportStock(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $produits = $entityManager->getRepository(Produit::class)->findBy(['agence' => $id]);
+
+        // Créer un nouveau fichier Excel
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Ajouter les en-têtes de colonnes
+        $sheet->setCellValue('A1', 'Nom du Produit');
+        $sheet->setCellValue('B1', 'Quantité en Stock');
+
+        // Remplir les données des produits
+        $row = 2; // Commence à la ligne 2 pour éviter les en-têtes
+        foreach ($produits as $produit) {
+            $sheet->setCellValue('A' . $row, $produit->getNom());
+            $sheet->setCellValue('B' . $row, $produit->getQuantite());
+            $row++;
+        }
+
+        // Générer le fichier Excel et le retourner en réponse
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        ob_start();
+        $writer->save('php://output');
+        $excelContent = ob_get_clean();
+        $name = "stock_produits_" . date('Y-m-d') . ".xlsx";
+        return new Response(
+            $excelContent,
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="' . $name . '"',
+            ]
+        );
+    }
 }

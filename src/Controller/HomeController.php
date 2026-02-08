@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Agence;
+use App\Entity\BondCommande;
 use App\Entity\BondCommandeA;
 use App\Entity\Caisse;
 use App\Entity\Clients;
@@ -114,6 +115,7 @@ class HomeController extends AbstractController
         $somdepense = $entityManager->getRepository(Depenses::class)->findBySommeDepenseAgence($agence);
         $produitfacturer = $entityManager->getRepository(Facture::class)->findByProduitplusVendu($agence);
         $client = $entityManager->getRepository(Vente::class)->findBy20FirstClient($agence);
+        $bondCommande = $entityManager->getRepository(BondCommande::class)->findBySommeBonCommande();
 
         return $this->render('home/dashboard.html.twig', [
             'agence' => $agence,
@@ -125,6 +127,7 @@ class HomeController extends AbstractController
             'somdepense' => $somdepense,
             'produitvendu' => $produitfacturer,
             'clients' => $client,
+            'bondCommandes' => $bondCommande,
         ]);
     }
 

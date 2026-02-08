@@ -45,4 +45,28 @@ class BondCommandeRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findBySommeBonCommande(): float
+   {
+       $query = $this->createQueryBuilder('b')
+            ->select('COUNT(b.id)')
+           ->andWhere('b.statut > :val')
+           ->setParameter('val', 0)
+           ->getQuery()
+       ;
+
+        $result = $query->getSingleScalarResult();
+        return $result !== null ? (float) $result : 0.0;
+   }
+
+   public function findByProduitACommander(): array
+   {
+       return $this->createQueryBuilder('b')
+           ->andWhere('b.statut > :val')
+           ->setParameter('val', 0)
+           ->orderBy('b.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 }

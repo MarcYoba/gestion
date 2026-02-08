@@ -49,7 +49,7 @@ class BondCommandeARepository extends ServiceEntityRepository
    {
        $query = $this->createQueryBuilder('b')
             ->select('COUNT(b.id)')
-           ->andWhere('b.statut = :val')
+           ->andWhere('b.statut > :val')
            ->setParameter('val', 0)
            ->getQuery()
        ;
@@ -61,7 +61,7 @@ class BondCommandeARepository extends ServiceEntityRepository
    public function findByProduitACommander(): array
    {
        return $this->createQueryBuilder('b')
-           ->andWhere('b.statut = :val')
+           ->andWhere('b.statut > :val')
            ->setParameter('val', 0)
            ->orderBy('b.id', 'ASC')
            ->getQuery()

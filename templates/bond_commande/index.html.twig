@@ -1,20 +1,116 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
-{% block title %}Hello BondCommandeController!{% endblock %}
+{% block title %}Hello RapportController {% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<body id="page-top" class="bg-light"> 
+    <div class="container mt-5">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center mb-4">
+                    <h1 class="h3 text-gray-800">Génération des Bond De Commande</h1>
+                    {% for tempagence in app.user.tempAgences %}
+                        <a href="{{ path('app_home_dashboard', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
+                            <i class="fas fa-arrow-circle-left"></i> Retour au Tableau de Bord
+                        </a>  
+                    {% endfor %}
+                </div>
+                <div class="card-header py-3">
+                                <div class="form-group row">
+                                    <div class="col-sm-8 mb-3 mb-sm-0">
+                                        Enregistrer un Produit
+                                    </div>
+                                    {% for message in app.flashes('success') %}
+                                        <div class="alert alert-success alert-dismissible fade show">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/gestion/src/Controller/BondCommandeController.php'|file_link(0) }}">src/Controller/BondCommandeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/gestion/templates/bond_commande/index.html.twig'|file_link(0) }}">templates/bond_commande/index.html.twig</a></code></li>
-    </ul>
-</div>
+                                    {% for message in app.flashes('warning') %}
+                                        <div class="alert alert-warning">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+
+                                    {% for message in app.flashes('error') %}
+                                        <div class="alert alert-danger">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                    <div class="col-sm-2 mb-3 mb-sm-0">
+                                        {% for tempagence in app.user.tempAgences %}
+                                            <a href="{{ path('app_home_dashboard', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
+                                                <i class="fas fa-home"></i>
+                                                home
+                                            </a>  
+                                        {% endfor %}
+                                    </div>
+                                    {# <div class="col-sm-2 mb-3 mb-sm-0">
+                                        <a href="{{ path('produit_a_list') }}" class="btn btn-success btn-user btn-block">
+                                            <i class="fas fa-list"></i>
+                                            List
+                                        </a>
+                                    </div>       #}
+                                </div> 
+                            </div>
+            </div>
+        </div>
+
+        <div class="row">
+            
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Bond de Commande PDF
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">Tous le bonde commande en pdf</div>
+                            </div>
+                            <div class="col-auto">
+                                <a href="{{ path('app_bond_commande_export_pdf')}}">
+                                    <button type="button" class="btn btn-success btn-sm">
+                                        <i class="fas fa-print fa-2x text-white-50"></i> Générer
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <form class="user" action="{{ path('app_bond_commande')}}" method="post" enctype="multipart/form-data">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Telecharger un fichier Bond de Commande 
+                                    </div>
+                                    <div class="h5 mb-1 font-weight-bold text-gray-800">Limite de stock</div>
+                                    <div class="form-group row no-gutters">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="file" class="form-control form-control-user" id="ficher"
+                                            name="ficher" required>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-info btn-sm">
+                                        <i class="fas fa-calendar-alt fa-2x text-white-50"></i> Impoter
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>           
+        </div>
+    </div>
+
+</body>
+</html>
 {% endblock %}
