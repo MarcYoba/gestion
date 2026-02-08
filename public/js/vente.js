@@ -130,6 +130,33 @@ function calculeTotal(){
     
 }
 
+function calculeTotalstocknegatif(){
+    let verQuantite = parseInt(document.getElementById("quantite").value);
+    let stoQuantite = parseInt(document.getElementById("quantiteStokage").value);
+
+    // console.log("valeure : "+verQuantite);
+    // console.log("valeure : "+stoQuantite);
+
+    // if (verQuantite <= stoQuantite) {
+        document.getElementById("resultat").textContent = document.getElementById("quantite").value * document.getElementById("prixglobal").value;
+
+        quantiteTotal = 0;
+        prixtotal = 0;
+        calculeprixTotalquantitetotal();
+        document.getElementById("quantitetotal").innerHTML = quantiteTotal + parseFloat(document.getElementById("quantite").value);
+        document.getElementById("Total").value = Math.ceil(prixtotal + parseFloat(document.getElementById("quantite").value * document.getElementById("prixglobal").value));
+        document.getElementById("prixtotal").textContent = Math.ceil(prixtotal + parseFloat(document.getElementById("quantite").value * document.getElementById("prixglobal").value));
+        document.getElementById("verificatiobDonne").innerHTML =''; 
+    // }else{
+    //     if (verQuantite>=0) {
+    //         alert('Vous voulez faire une action impossible;  cette vente vous crée des  problèmes.  Est-ce que vous êtes sûre pour les problèmes ?'); 
+    //         document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-danger"> Les quantite ne sont pas conforme  </p>';
+    //     }
+        
+    // }
+    
+}
+
 
 function recherchePrix(){
     
@@ -201,6 +228,79 @@ inputreduction.addEventListener('input',calculeReductionProduit);
 function ajouterLigne(dataTable,...donnees){
     calculeprixTotalquantitetotal();
     calculeTotal();
+    const  inputFournisseur = document.getElementById("idclient").innerText;
+    const  inputDescrition = document.getElementById("nomProduit").value;
+    const  inputQuantite = document.getElementById("quantite").value;
+    const  inputPrix = document.getElementById("prixglobal").value;
+   // const  Typepaiement = document.getElementById("Typepaiement").value;
+
+    if (inputFournisseur !="" && inputDescrition !="" && inputQuantite !=0 && inputPrix !=0 ) {
+        const tableau = document.getElementById(dataTable);
+        document.getElementById("verificatiobDonne").innerHTML ='';
+        const nbligne = tableau.rows.length;
+        //creer une nouvelle ligne
+       const nouvelleLigne = tableau.insertRow();
+       
+        const nouvellecellule = nouvelleLigne.insertCell();
+        const input = document.createElement('p');
+        input.innerHTML = inputFournisseur;
+        input.classList.add('form-control', 'form-control-user');
+        nouvellecellule.appendChild(input);
+    
+        
+        const nouvellecellule2 = nouvelleLigne.insertCell();
+        const p2 = document.createElement('p');
+        p2.innerHTML = inputDescrition;
+        p2.classList.add('form-control', 'form-control-user');
+        nouvellecellule2.appendChild(p2);
+    
+        const nouvellecellule3 = nouvelleLigne.insertCell();
+        const p3 = document.createElement('p');
+        p3.innerHTML = inputQuantite;
+        p3.classList.add('form-control', 'form-control-user');
+        nouvellecellule3.appendChild(p3);
+    
+        const nouvellecellule4 = nouvelleLigne.insertCell();
+        const p4 = document.createElement('p');
+        p4.innerHTML = inputPrix;
+        p4.classList.add('form-control', 'form-control-user');
+        nouvellecellule4.appendChild(p4);
+    
+        const nouvellecellule5 = nouvelleLigne.insertCell();
+        const p5 = document.createElement('p');
+        p5.innerHTML = (inputQuantite * inputPrix);
+        p5.classList.add('form-control', 'form-control-user');
+        nouvellecellule5.appendChild(p5);
+        
+        const nouvellecellule6 = nouvelleLigne.insertCell();
+        const p6 = document.createElement('p');
+        p6.id = (nbligne +1);
+        p6.innerHTML ='<a class="btn btn-primary" onclick="getLigne(dataTable,'+(nbligne +1)+')"><i class="fas fa-pencil-alt"></i></a>  ' + (nbligne +1);
+       // p6.classList.add('form-control', 'form-control-user');
+        nouvellecellule6.appendChild(p6);
+        
+        quantiteTotal = 0;
+        prixtotal = 0;
+        calculeprixTotalquantitetotal();
+        document.getElementById("quantitetotal").innerHTML = quantiteTotal;
+        document.getElementById("prixtotal").textContent = prixtotal;
+        document.getElementById("quantite").value='';
+        document.getElementById("prixglobal").value='';
+       // document.getElementById("prixtotal").textContent = '';
+        document.getElementById("resultat").innerHTML='';
+        document.getElementById("nomProduit").value='';  
+       // document.getElementById("Typepaiement").value='';
+    }
+    else{
+        document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-danger"> verifiez les donne enregistrer </p>';
+    }
+    
+    
+}
+
+function ajouterLignestocknegatif(dataTable,...donnees){
+    calculeprixTotalquantitetotal();
+    calculeTotalstocknegatif();
     const  inputFournisseur = document.getElementById("idclient").innerText;
     const  inputDescrition = document.getElementById("nomProduit").value;
     const  inputQuantite = document.getElementById("quantite").value;
