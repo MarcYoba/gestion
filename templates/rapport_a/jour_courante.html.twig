@@ -472,6 +472,64 @@
             {% endfor %}
         </tbody>
     </table>
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="4" align="center"> Tableau terrains  : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th colspan="4" align="center"> Recapitulatif terrains : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th scope="col">localisation</th>
+                <th scope="col">Client</th>
+                <th scope="col">telephone</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for terrain in terrains %}
+                <tr>
+                    <td>{{terrain.localisation}}</td>
+                    <td>{{terrain.client.nom}}</td>
+                    <td>{{terrain.client.telephone}}</td>
+                    <td>{{terrain.createtAt | date("Y-m-d")}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="4" align="center"> Tableau Inventaire  : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th colspan="4" align="center"> Recapitulatif Inventaire : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th scope="col">Produit</th>
+                <th scope="col">Contoire</th>
+                <th scope="col">Inventaire</th>
+                <th scope="col">Ecart</th>
+                <th scope="col">Justificatif</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inventaire in inventaires %}
+                <tr>
+                    <td>{{inventaire.produit.nom}}</td>
+                    <td>{{inventaire.quantite }}</td>
+                    <td>{{inventaire.inventaire}}</td>
+                    <td>{{inventaire.ecart}}</td>
+                    <td>{{inventaire.justificatif}}</td>
+                    <td>{{inventaire.createtAt | date("Y-m-d")}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
 {% endblock %}

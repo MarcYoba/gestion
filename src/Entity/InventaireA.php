@@ -32,6 +32,9 @@ class InventaireA
     #[ORM\Column]
     private ?float $ecart = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $justificatif = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +108,18 @@ class InventaireA
     public function setEcart(float $ecart): static
     {
         $this->ecart = $ecart;
+
+        return $this;
+    }
+
+    public function getJustificatif(): ?string
+    {
+        return $this->justificatif;
+    }
+
+    public function setJustificatif(string $justificatif): static
+    {
+        $this->justificatif = $justificatif;
 
         return $this;
     }

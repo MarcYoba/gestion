@@ -74,24 +74,28 @@
                                             }
                                         }) }}
                                     </div>
-                                    <div class="col-sm-3">
-                                        <label>Derneire inventaire</lable>
+                                    <div class="col-sm-4">
+                                        <label>Quantite En stock</lable>
                                         {{ form_widget(form.quantite) }}
                                     </div>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-4">
+                                        <label>Ecart Precedent</lable>
+                                        <input type="number" name="quantite" id="quantite" class="form-control" readonly>
+                                    </div>
+                                    <div class="col-sm-4">
                                         <label>Quantite Vendu</lable>
                                         <input type="number" name="vendu" id="vendu" class="form-control" readonly>
                                     </div>
-                                    <div class="col-sm-2">
-                                        <label>Quant contoire</lable>
+                                    <div class="col-sm-4">
+                                        <label>Quantite contoire</lable>
                                         <input type="number" name="stock" id="stock" class="form-control" readonly>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <label>inventaire du jour</lable>
                                         {{ form_widget(form.inventaire) }}
                                     </div>
                                     
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-4">
                                         {{ form_label(form.ecart) }}
                                         {{ form_widget(form.ecart) }}
                                     </div>
