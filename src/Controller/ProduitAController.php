@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Employer;
+use App\Entity\FactureA;
 use App\Entity\HistoriqueA;
+use App\Entity\InventaireA;
 use App\Entity\Lots;
+use App\Entity\MagasinA;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use App\Form\ProduitAType;
@@ -141,6 +144,9 @@ class ProduitAController extends AbstractController
     #[Route('/produit/a/recherche/quantite', name: 'produit_quantite_a_recherche')]
     public function RecherchePrixQuantite(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
         $date = date("Y-m-d");
         if ($request->isXmlHttpRequest() || $request->getContentType()==='json') {
             $json = $request->getContent();
@@ -149,22 +155,30 @@ class ProduitAController extends AbstractController
                 $produit = $entityManager->getRepository(ProduitA::class)->findBy(['id' => $donnees['nom']]);
                 if (empty($donnees['date'])) {
                     if ($produit) {
+                        $inventaire = $entityManager->getRepository(InventaireA::class)->findOneBy(["produit" => $produit[0]->getId()],['id'=>'DESC']);
+                        $facturation = $entityManager->getRepository(FactureA::class)->findBySommeProduit(new \DateTimeImmutable($date),$produit[0]->getId(),$id);
                         return $this->json([
                             'success' => true,
                             'message' => $produit[0]->getPrixvente(),
-                            'quantite' => $produit[0]->getQuantite(),
+                            'quantite' => empty($inventaire) ? 0 : $inventaire->getEcart(),
                             'posologie' => $produit[0]->getPosologie(),
+                            'facturation' => $facturation,
+                            'contoire' => $produit[0]->getQuantite(),
                         ]);
                     } else {
                         return $this->json(['error' => 'Produit non trouvé'], 404);
                     }
                 }else if ($donnees['date'] == $date) {
                     if ($produit) {
+                        $inventaire = $entityManager->getRepository(InventaireA::class)->findOneBy(["produit" => $produit[0]->getId()],['id'=>'DESC']);
+                        $facturation = $entityManager->getRepository(FactureA::class)->findBySommeProduit(new \DateTimeImmutable($date),$produit[0]->getId(),$id);
                         return $this->json([
                             'success' => true,
                             'message' => $produit[0]->getPrixvente(),
-                            'quantite' => $produit[0]->getQuantite(),
+                            'quantite' => empty($inventaire) ? 0 : $inventaire->getEcart(),
                             'posologie' => $produit[0]->getPosologie(),
+                            'facturation' => $facturation,
+                            'contoire' => $produit[0]->getQuantite(),
                         ]);
                     } else {
                         return $this->json(['error' => 'Produit non trouvé'], 404);
@@ -174,12 +188,16 @@ class ProduitAController extends AbstractController
                     $agence = $tempagence->getAgence();
                     $date = new \DateTime($donnees['date']);
                     $historique = $entityManager->getRepository(HistoriqueA::class)->findForDate($date,$produit,$agence);
-                    if ($historique) {
+                    $inventaire = $entityManager->getRepository(InventaireA::class)->findOneBy(["produit" => $produit[0]->getId()],['id'=>'DESC']);
+                    $facturation = $entityManager->getRepository(FactureA::class)->findBySommeProduit(new \DateTimeImmutable($donnees['date']),$produit[0]->getId(),$id);
+                    if ($produit) {
                         return $this->json([
                             'success' => true,
                             'message' => $produit[0]->getPrixvente(),
-                            'quantite' => $historique->getQuantite(),
+                            'quantite' => empty($inventaire) ? 0 : $inventaire->getEcart(),
                             'posologie' => $produit[0]->getPosologie(),
+                            'facturation' => $facturation,
+                            'contoire' => $produit[0]->getQuantite(),
                         ]);
                     } else {
                         return $this->json(['error' => 'Produit non trouvé'], 404);
