@@ -75,15 +75,23 @@
                                         }) }}
                                     </div>
                                     <div class="col-sm-3">
-                                        {{ form_label(form.quantite) }}
+                                        <label>Derneire inventaire</lable>
                                         {{ form_widget(form.quantite) }}
                                     </div>
+                                    <div class="col-sm-2">
+                                        <label>Quantite Vendu</lable>
+                                        <input type="number" name="vendu" id="vendu" class="form-control" readonly>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>Quant contoire</lable>
+                                        <input type="number" name="stock" id="stock" class="form-control" readonly>
+                                    </div>
                                     <div class="col-sm-3">
-                                        {{ form_label(form.inventaire) }}
+                                        <label>inventaire du jour</lable>
                                         {{ form_widget(form.inventaire) }}
                                     </div>
                                     
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         {{ form_label(form.ecart) }}
                                         {{ form_widget(form.ecart) }}
                                     </div>

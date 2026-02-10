@@ -5,7 +5,8 @@ rechercheproduit.addEventListener('input',calculeTotal);
 function calculeTotal(){
     let quantite = parseInt(document.getElementById("inventaire_a_quantite").value) || 0 ;
     let stock = parseInt(document.getElementById("inventaire_a_inventaire").value) || 0 ;
-    document.getElementById("inventaire_a_ecart").value = stock - quantite;    
+    let vendu = parseInt(document.getElementById("vendu").value) || 0;
+    document.getElementById("inventaire_a_ecart").value = (stock + vendu) - quantite;    
 }
 
 function recherchequantite(){
@@ -28,8 +29,9 @@ function recherchequantite(){
     .then(response => response.json())
     .then(data => { 
         if (data.success == true) {
-            
             document.getElementById("inventaire_a_quantite").value = data.quantite;
+            document.getElementById("vendu").value = data.facturation;
+            document.getElementById("stock").value = data.contoire;
             console.log(data);
         }else if(data.success == false){
         }else{
