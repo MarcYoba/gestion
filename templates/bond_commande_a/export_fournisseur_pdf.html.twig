@@ -43,9 +43,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            {% for bond  in bondCommande %}
-            
+        {% for bond  in bondCommande %}
+            <tr>
                 {% if (bond.quantite <= bond.limite) or (bond.quantite == 0) %}
                     <td>{{bond.nom}}</td>
                     <td>{{bond.quantite}}</td>
@@ -60,8 +59,8 @@
                         {{fournisseur.nom}}      
                     </td>
                 {% endif %}
-            {% endfor %}
-        </tr>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 </body>
