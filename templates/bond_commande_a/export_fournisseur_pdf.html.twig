@@ -44,16 +44,18 @@
         </thead>
         <tbody>
         {% for bond  in bondCommande %}
+            {% set quantite = 0 %}
+            {% for maga in magasins %}
+                {% if maga.produit.nom == bond.nom %}
+                    {% set quantite = maga.quantite %}
+                {% endif %}
+            {% endfor %}
             <tr>
-                {% if (bond.quantite <= bond.limite) or (bond.quantite == 0) %}
+                {% if ((bond.quantite + quantite) <= bond.limite) or (bond.quantite == 0) %}
                     <td>{{bond.nom}}</td>
                     <td>{{bond.quantite}}</td>
                     <td>
-                        {% for maga in magasins %}
-                            {% if maga.produit.nom == bond.nom %}
-                                {{maga.quantite}}
-                            {% endif %}
-                        {% endfor %}
+                        {{quantite}}  
                     </td>
                     <td> 
                         {{fournisseur.nom}}      
