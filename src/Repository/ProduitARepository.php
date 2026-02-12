@@ -95,7 +95,7 @@ class ProduitARepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->join('p.bondCommandeAs','b')
             ->join('p.achatAs','a')
-            ->select('p.nom,p.quantite')
+            ->select('p.nom,p.quantite,b.limite')
             ->where('b.statut > 0')
             ->andWhere('a.forunisseur =:fourni')
             ->setParameter('fourni',$fournisseur)

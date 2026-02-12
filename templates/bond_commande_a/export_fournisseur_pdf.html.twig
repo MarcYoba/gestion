@@ -29,36 +29,39 @@
 <br><br><br> 
     <table style="width:100%">
         <thead>
-         <tr>
+        <tr>
             <th colspan="4" align="center">Bonde de commande des produit </th>
         </tr>
         <tr>
-         <th colspan="4" align="center">{{ fournisseur.nom}} : {{ fournisseur.telephone}}</th>
-         </tr>
-        </thead>
-        <tbody>
+            <th colspan="4" align="center">{{ fournisseur.nom}} : {{ fournisseur.telephone}}</th>
+        </tr>
         <tr>
             <th scope="col">Produit</th>
             <th scope="col">Quantite contoire</th>
             <th scope="col">Quantite Magasin</th>
             <th scope="col">Fournisseur</th>
         </tr>
-        {% for bond  in bondCommande %}
-            <tr>
-                <td>{{bond.nom}}</td>
-                <td>{{bond.quantite}}</td>
-                <td>
-                    {% for maga in magasins %}
-                        {% if maga.produit.nom == bond.nom %}
-                            {{maga.quantite}}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td> 
-                    {{fournisseur.nom}}      
-                </td>
-            </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+        <tr>
+            {% for bond  in bondCommande %}
+            
+                {% if (bond.quantite <= bond.limite) or (bond.quantite == 0) %}
+                    <td>{{bond.nom}}</td>
+                    <td>{{bond.quantite}}</td>
+                    <td>
+                        {% for maga in magasins %}
+                            {% if maga.produit.nom == bond.nom %}
+                                {{maga.quantite}}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td> 
+                        {{fournisseur.nom}}      
+                    </td>
+                {% endif %}
+            {% endfor %}
+        </tr>
         </tbody>
     </table>
 </body>
