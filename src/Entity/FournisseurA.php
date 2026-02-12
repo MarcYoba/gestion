@@ -46,9 +46,13 @@ class FournisseurA
     #[ORM\ManyToOne(inversedBy: 'fournisseurAs')]
     private ?User $user = null;
 
+    #[ORM\ManyToMany(targetEntity: ProduitA::class, inversedBy: 'fournisseurAs')]
+    private Collection $produit;
+
     public function __construct()
     {
         $this->achatAs = new ArrayCollection();
+        $this->produit = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -190,6 +194,30 @@ class FournisseurA
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProduitA>
+     */
+    public function getProduit(): Collection
+    {
+        return $this->produit;
+    }
+
+    public function addProduit(ProduitA $produit): static
+    {
+        if (!$this->produit->contains($produit)) {
+            $this->produit->add($produit);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(ProduitA $produit): static
+    {
+        $this->produit->removeElement($produit);
 
         return $this;
     }

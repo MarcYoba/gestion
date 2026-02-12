@@ -57,6 +57,8 @@ class AchatAController extends AbstractController
                     $achatA->setForunisseur($fournisseurA);
                     $produitA->setPrixachat($key["prix"]);
                     $achatA->setProduit($produitA);
+                    $fournisseurA->addProduit($produitA);
+                    $em->persist($fournisseurA);
     
                     $ajout += $key["quantite"];
                     
