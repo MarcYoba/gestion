@@ -179,7 +179,7 @@ class AchatAController extends AbstractController
         ]);
     }
 
-    #[Route('/achat/a/update',name:'achat_update_a', methods:'POST' )]
+    #[Route('/achat/a/update/achat',name:'achat_update_a', methods:'POST' )]
     public function update(EntityManagerInterface $entityManager, Request $request) : Response 
     {
        $user = $this->getUser();
@@ -289,7 +289,7 @@ class AchatAController extends AbstractController
         );
     }
 
-    #[Route('/achat/a/import/bond', name: 'achat_a_import_bond')]
+    #[Route('/achat/a/import/bond/achat', name: 'achat_a_import_bond')]
     public function Import_Bond(EntityManagerInterface $em, Request $request,SluggerInterface $slugger) : Response 
     {
         // Dans votre méthode de contrôleur

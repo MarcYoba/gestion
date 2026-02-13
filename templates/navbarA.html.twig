@@ -544,150 +544,69 @@ Administrateur
 <!-- Nav Item - Charts -->
 
 <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#jounale"
-            aria-expanded="true" aria-controls="jounale">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Journal Comptable</span>
-        </a>
-        <div id="jounale" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Journal Comptable:</h6>
-                <a class="collapse-item" href="{{path('app_comptabilite_a_journale')}}">Jounal</a> 
-            </div>
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#comptabilite"
+        aria-expanded="true" aria-controls="comptabilite">
+        <i class="fas fa-fw fa-calculator"></i>
+        <span>Comptabilité</span>
+    </a>
+    <div id="comptabilite" class="collapse" aria-labelledby="headingComptabilite" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Comptabilité générale:</h6>
+            <a class="collapse-item" href="{{ path('app_comptabilite_a_journale') }}">
+                <i class="fas fa-fw fa-book mr-2"></i>Journal Comptable
+            </a>
+            <a class="collapse-item" href="{{ path('app_comptabilite_a_EM') }}">
+                <i class="fas fa-fw fa-chart-line mr-2"></i>Analyse Evolutive (Mois)
+            </a>
+            <a class="collapse-item" href="{{ path('app_comptabilite_a_week') }}">
+                <i class="fas fa-fw fa-chart-line mr-2"></i>Analyse Evolutive (Semaine)
+            </a>
+            <a class="collapse-item" href="{{ path('app_comptabilite_a_Mage_beneficier') }}">
+                <i class="fas fa-fw fa-percent mr-2"></i>Marge bénéficiaire
+            </a>
+            <a class="collapse-item" href="{{ path('app_comptabilite_a_Chiffre_affaire') }}">
+                <i class="fas fa-fw fa-chart-simple mr-2"></i>Chiffre d'affaires
+            </a>
+            <a class="collapse-item" href="{{ path('app_comptabilite_a_produit_stoker') }}">
+                <i class="fas fa-fw fa-boxes mr-2"></i>Production et Stocks
+            </a>
+            <div class="dropdown-divider"></div>
+            <h6 class="collapse-header">Bilan:</h6>
+            
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_passif_a') }}">
+                    <i class="fas fa-fw fa-arrow-right mr-2"></i>Passif - Ajouter
+                </a>
+                <a class="collapse-item" href="{{ path('app_passif_a_list', {'date': 'now'| date("Y")}) }}">
+                    <i class="fas fa-fw fa-list mr-2"></i>Passif - Liste
+                </a>
+            {% endif %}
+            
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles or "ROLE_DIRECTEUR" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_actif_a') }}">
+                    <i class="fas fa-fw fa-arrow-left mr-2"></i>Actif - Ajouter
+                </a>
+                <a class="collapse-item" href="{{ path('app_actif_a_list', {'date': 'now'| date("Y")}) }}">
+                    <i class="fas fa-fw fa-list mr-2"></i>Actif - Liste
+                </a>
+                <a class="collapse-item" href="{{ path('app_immobilisation_a') }}">
+                    <i class="fas fa-fw fa-building mr-2"></i>Immobilisation
+                </a>
+            {% endif %}
+            
+            <div class="dropdown-divider"></div>
+            <a class="collapse-item" href="{{ path('app_tresorerie_a') }}">
+                <i class="fas fa-fw fa-coins mr-2"></i>Trésorerie
+            </a>
+            <a class="collapse-item" href="{{ path('app_compte_resultat_a') }}">
+                <i class="fas fa-fw fa-file-invoice mr-2"></i>Compte d'exploitation
+            </a>
+            <a class="collapse-item" href="{{ path('app_balance_a') }}">
+                <i class="fas fa-fw fa-scale-balanced mr-2"></i>Balance
+            </a>
         </div>
+    </div>
 </li>
-<li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#inventaire"
-            aria-expanded="true" aria-controls="inventaire">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Analyse Evolutive</span>
-        </a>
-        <div id="inventaire" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Analyse Evolutive:</h6>
-                <a class="collapse-item" href="{{ path('app_comptabilite_a_EM')}}">Analyse Evolutive Moi</a> 
-                <a class="collapse-item" href="{{ path('app_comptabilite_a_week')}}">Analyse Evolutive Semaine</a> 
-            </div>
-        </div>
-</li>
-
-<li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#etatresultat"
-            aria-expanded="true" aria-controls="etatresultat">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Etat des resultats</span>
-        </a>
-        <div id="etatresultat" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Etat des resultats:</h6>
-                <a class="collapse-item" href="{{ path('app_comptabilite_a_Mage_beneficier')}}">marge beneficiere</a> 
-                <a class="collapse-item" href="{{ path('app_comptabilite_a_Chiffre_affaire')}}">CHIFFRE AFFAIRES</a>
-                <a class="collapse-item" href="{{ path('app_comptabilite_a_produit_stoker')}}">Production et Stocks</a>  
-            </div>
-        </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#bilan"
-            aria-expanded="true" aria-controls="bilan">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Passif Bilan </span>
-        </a>
-        <div id="bilan" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header"> Bilan Comptable :</h6>
-                {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                    <a class="collapse-item" href="{{path('app_passif_a')}}">Passif Bilan</a>
-                    <a class="collapse-item" href="{{path('app_passif_a_list', {'date': 'now'| date("Y")})}}">liste Passif</a>
-                    <a class="collapse-item" href="{{path('app_depense_passif_a_list')}}">Edite<a/>
-                {% else %}
-                    
-                {% endif %}
-                
-            </div>
-        </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#bilan"
-            aria-expanded="true" aria-controls="bilan">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>bilan</span>
-        </a>
-        <div id="bilan" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Bilan:</h6>
-                      
-            </div>
-        </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#actif"
-            aria-expanded="true" aria-controls="bilan">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Actif Bilan </span>
-        </a>
-        <div id="actif" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header"> Bilan Comptable:</h6>
-                {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                    <a class="collapse-item" href="{{ path('app_actif_a')}}">Ajouter un Actif</a>
-                    <a class="collapse-item" href="{{ path('app_actif_a_list', {'date': 'now'| date("Y")})}}">liste Actif</a>
-                    <a class="collapse-item" href="{{path('app_depense_actif_a_liste')}}">Edite</a>
-                    <a class="collapse-item" href="{{ path('app_immobilisation_a')}}">Immobilisation</a>
-                {% elseif "ROLE_DIRECTEUR" in app.user.roles %}
-                    <a class="collapse-item" href="{{ path('app_actif_a')}}">Ajouter un Actif</a>
-                    <a class="collapse-item" href="{{ path('app_actif_a_list', {'date': 'now'| date("Y")})}}">liste Actif</a>
-                    <a class="collapse-item" href="{{path('app_depense_actif_a_liste')}}">Edite</a>
-                    <a class="collapse-item" href="{{ path('app_immobilisation_a')}}">Immobilisation</a>
-                {% else %}
-
-                {% endif %}
-                
-            </div>
-        </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#tresor"
-            aria-expanded="true" aria-controls="tresor">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Tresorerie</span>
-        </a>
-        <div id="tresor" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header"> Tresorerie :</h6>
-                <a class="collapse-item" href="{{path('app_tresorerie_a')}}"> tresorerie</a>
-                <a class="collapse-item" href="{{ path('app_tresorerie_a_list')}}">liste </a>
-                
-            </div>
-        </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#compteresultat"
-            aria-expanded="true" aria-controls="compteresultat">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Compte D'exploitation : </span>
-        </a>
-        <div id="compteresultat" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header"> Compte D'exploitation :</h6>
-                <a class="collapse-item" href="{{ path('app_compte_resultat_a')}}">Compte D'exploitation</a>
-            </div>
-        </div>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#balance"
-            aria-expanded="true" aria-controls="balance">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Balance : </span>
-        </a>
-        <div id="balance" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header"> Balance :</h6>
-                <a class="collapse-item" href="{{ path('app_balance_a')}}">Balance</a>
-            </div>
-        </div>
-    </li>
-
 <!-- Nav Item - Tables --> 
 <li class="nav-item">
 <a class="nav-link" href="{{path('deepseek_test')}}">
