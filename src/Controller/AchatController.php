@@ -62,6 +62,8 @@ class AchatController extends AbstractController
                     $achat->setAgence($tempagence->getAgence());
                     $achat->setFournisseur($fournisseur);
                     $achat->setProduit($produit);
+                    $fournisseur->addProduit($produit);
+                    $entityManager->persist($fournisseur);
 
                     if ($magasin) {
                         $magasin->setQuantite($magasin->getQuantite() + $key["quantite"]);

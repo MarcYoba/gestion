@@ -47,9 +47,13 @@ class Fournisseur
     #[ORM\ManyToOne(inversedBy: 'fournisseurs')]
     private ?Agence $agence = null;
 
+    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'fournisseurs')]
+    private Collection $produit;
+
     public function __construct()
     {
         $this->achat = new ArrayCollection();
+        $this->produit = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -191,6 +195,30 @@ class Fournisseur
     public function setAgence(?Agence $agence): static
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Produit>
+     */
+    public function getProduit(): Collection
+    {
+        return $this->produit;
+    }
+
+    public function addProduit(Produit $produit): static
+    {
+        if (!$this->produit->contains($produit)) {
+            $this->produit->add($produit);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): static
+    {
+        $this->produit->removeElement($produit);
 
         return $this;
     }

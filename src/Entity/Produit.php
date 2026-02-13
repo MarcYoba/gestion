@@ -74,6 +74,9 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Transfert::class)]
     private Collection $transferts;
 
+    #[ORM\ManyToMany(targetEntity: Fournisseur::class, mappedBy: 'produit')]
+    private Collection $fournisseurs;
+
     public function __construct()
     {
         $this->achat = new ArrayCollection();
@@ -84,6 +87,7 @@ class Produit
         $this->bondCommandes = new ArrayCollection();
         $this->magasins = new ArrayCollection();
         $this->transferts = new ArrayCollection();
+        $this->fournisseurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -458,6 +462,33 @@ class Produit
             if ($transfert->getProduit() === $this) {
                 $transfert->setProduit(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Fournisseur>
+     */
+    public function getFournisseurs(): Collection
+    {
+        return $this->fournisseurs;
+    }
+
+    public function addFournisseur(Fournisseur $fournisseur): static
+    {
+        if (!$this->fournisseurs->contains($fournisseur)) {
+            $this->fournisseurs->add($fournisseur);
+            $fournisseur->addProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFournisseur(Fournisseur $fournisseur): static
+    {
+        if ($this->fournisseurs->removeElement($fournisseur)) {
+            $fournisseur->removeProduit($this);
         }
 
         return $this;

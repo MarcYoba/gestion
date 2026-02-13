@@ -123,7 +123,7 @@ class BondCommandeController extends AbstractController
         $bondCommande = $em->getRepository(Produit::class)->FindByBonCommandAutre();
         $achat = $em->getRepository(Achat::class)->findAll();
         
-        $html = $this->renderView('bond_commande_a/export_pdf.html.twig', [
+        $html = $this->renderView('bond_commande/export_pdf.html.twig', [
           'bondCommandes' => $bondCommande,
           'achats' => $achat,
         ]);
@@ -166,7 +166,7 @@ class BondCommandeController extends AbstractController
         $achat = $entityManager->getRepository(Achat::class)->findAll();
         $magasin = $entityManager->getRepository(Magasin::class)->findAll();
         
-        $html = $this->renderView('bond_commande_a/export_fournisseur_pdf.html.twig', [
+        $html = $this->renderView('bond_commande/export_fournisseur_pdf.html.twig', [
           'bondCommande' => $bondCommande,
           'achats' => $achat,
           'fournisseur' => $fournisseur,
@@ -288,5 +288,68 @@ class BondCommandeController extends AbstractController
         // Sauvegarder le fichier directement dans la sortie
         $writer->save('php://output');
         exit;
+    }
+
+    #[Route('/bond/commande/update/produit', name: 'app_bond_commande_update')]
+    public function update(EntityManagerInterface $em,Request $request): Response
+    {
+        $processed = 0;
+        if ($request->isMethod('POST')) {
+           $file =  $request->files->get('ficher');
+           if ($file && $file->isValid()) {
+                   try {
+                    $extension = strtolower($file->getClientOriginalExtension());
+                    $extensionsAutorisees = ['xlsx', 'xls', 'csv'];
+
+                    if (!in_array($extension, $extensionsAutorisees)) {
+                        throw new \Exception('Seuls les fichiers Excel (XLSX, XLS) et CSV sont autorisés');
+                    }
+
+                    $spreadsheet = IOFactory::load($file->getPathname());
+                    $spreadsheet = IOFactory::load($file->getPathname());
+        
+                    $donnees = $this->lireFichierExcel($spreadsheet);
+                    $donnees = $donnees['Worksheet'];
+                    array_shift($donnees);
+                    $total = count($donnees);
+                    $i = 0;
+                    $trouver = 0;
+                    $this->addFlash('success', 'Importation démarrée');
+                
+                    foreach ($donnees as $key => $value) {
+                        $produit = $em->getRepository(Produit::class)->findOneBy(["nom" => $value[0]]);
+                        $fournisseurs = $em->getRepository(Fournisseur::class)->findOneBy(["nom" => $value[1]]);
+                        
+                        if ($produit){
+                           if ($fournisseurs){
+                                $fournisseurs->addProduit($produit);
+                                $em->persist($fournisseurs);
+                                $em->flush(); 
+                                $trouver++;
+                           }
+                        }
+                        $processed++;
+                        $progress = round(($i + 1) / $total * 100);
+                        // Messages avec barre de progression ASCII
+                        if ($progress % 20 === 0) {
+                            $bar = str_repeat('█', $progress / 5) . str_repeat('░', 20 - ($progress / 5));
+                            $this->addFlash('success', "[$bar] $progress% - Ligne " . ($i + 1) . "/$total");
+                        }
+                        $i++;
+                    }
+                    
+                    $this->addFlash('success', 'Importation terminée avec succès! Produit trouver : '.$trouver);
+
+                    return $this->redirectToRoute('app_bond_commande_update');
+                } catch (\Exception $e) {
+                    $this->addFlash("error", 'Erreur lors de la lecture du fichier: ' . $e->getMessage() );
+                }
+            } else {
+            $this->addFlash("error", "echec de chargement du fichier");
+           }
+        }
+        return $this->render('bond_commande/index.html.twig', [
+            'controller_name' => 'BondCommandeAController',
+        ]);
     }
 }
