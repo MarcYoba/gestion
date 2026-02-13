@@ -97,7 +97,7 @@ class ProduitARepository extends ServiceEntityRepository
         ->innerJoin('p.fournisseurAs', 'f')
         ->select('p.nom, p.quantite, b.limite')
         ->where('b.statut > 0')
-        ->orWhere('f.id = :fourni')
+        ->Where('f.id = :fourni')
         ->setParameter('fourni', $fournisseur)
         ->addGroupBy('p.nom')
         ->getQuery()
