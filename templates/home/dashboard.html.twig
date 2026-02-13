@@ -46,9 +46,13 @@
         <div class="modal-body">
             <div class="form-group row">
                 <div class="col-sm-4">
-                    
-                        Bone Commande : {{ bondCommandes | default(0) }}
-                    
+                    Bone Commande : {{ bondCommandes | default(0) }}
+                </div>
+                <div class="col-sm-4">
+                    Produit sans stock limite : {{ produitsanslinite | default(0) }}
+                </div>
+                <div class="col-sm-4">
+                    Produit sans Fournisseurs : {{ produitsansfournisseur | default(0) }}
                 </div>
             </div>
         </div>

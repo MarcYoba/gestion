@@ -116,6 +116,8 @@ class HomeController extends AbstractController
         $produitfacturer = $entityManager->getRepository(Facture::class)->findByProduitplusVendu($agence);
         $client = $entityManager->getRepository(Vente::class)->findBy20FirstClient($agence);
         $bondCommande = $entityManager->getRepository(BondCommande::class)->findBySommeBonCommande();
+        $produitsanslinite = $entityManager->getRepository(Produit::class)->FindbyEmptyBonCommand();
+        $produitsansfournisseur = $entityManager->getRepository(Produit::class)->FindbyEmptyFournisseur();
 
         return $this->render('home/dashboard.html.twig', [
             'agence' => $agence,
@@ -128,6 +130,8 @@ class HomeController extends AbstractController
             'produitvendu' => $produitfacturer,
             'clients' => $client,
             'bondCommandes' => $bondCommande,
+            'produitsanslinite' => count($produitsanslinite),
+            'produitsansfournisseur' => count($produitsansfournisseur),
         ]);
     }
 
@@ -192,6 +196,8 @@ class HomeController extends AbstractController
         $peramption = $entityManager->getRepository(ProduitA::class)->findByDateExpiration(6);
         $lotsperemtion = $entityManager->getRepository(Lots::class)->findByDateExpirationLots(6);
         $bondCommandeA = $entityManager->getRepository(BondCommandeA::class)->findBySommeBonCommande();
+        $produitsanslinite = $entityManager->getRepository(ProduitA::class)->FindbyEmptyBonCommand();
+        $produitsansfournisseur = $entityManager->getRepository(ProduitA::class)->FindbyEmptyFournisseur();
         
         if (empty($expiration)) {
             $expiration = [];
@@ -215,6 +221,8 @@ class HomeController extends AbstractController
             'dateexpiration' => $dateexpiration,
             'commandepoussins' => $commandepoussin,
             'bondCommandeA' => $bondCommandeA,
+            'produitsanslinite' => count($produitsanslinite),
+            'produitsansfournisseur' => count($produitsansfournisseur),
         ]);
     }
 }

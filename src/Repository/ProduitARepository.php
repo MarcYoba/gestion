@@ -115,4 +115,24 @@ class ProduitARepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function FindbyEmptyBonCommand() : array {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.bondCommandeAs', 'b') 
+            ->select('p.nom, p.quantite')
+            ->where('b.id IS NULL')            
+            ->groupBy('p.nom')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function FindByEmptyFournisseur() : array {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.fournisseurAs', 'f') 
+            ->select('p.nom, p.quantite')
+            ->where('f.id IS NULL')            
+            ->groupBy('p.nom')
+            ->getQuery()
+            ->getResult();
+    }
 }
