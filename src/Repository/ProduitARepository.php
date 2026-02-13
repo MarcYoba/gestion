@@ -109,7 +109,8 @@ class ProduitARepository extends ServiceEntityRepository
             ->leftJoin('p.bondCommandeAs', 'b') 
             ->leftJoin('p.fournisseurAs', 'f') 
             ->select('p.nom, p.quantite')
-            ->where('b.statut > 0')             
+            ->where('b.statut > 0')
+            ->where('f.id IS NULL')            
             ->groupBy('p.nom')
             ->getQuery()
             ->getResult();
