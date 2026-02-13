@@ -304,7 +304,7 @@ class BondCommandeAController extends AbstractController
         exit;
     }
 
-    #[Route('/bond/commande/a/update', name: 'app_bond_commande_a_update')]
+    #[Route('/bond/commande/a/update/produit', name: 'app_bond_commande_a_update')]
     public function update(EntityManagerInterface $em,Request $request): Response
     {
         $processed = 0;
