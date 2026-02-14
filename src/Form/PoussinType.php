@@ -112,6 +112,13 @@ class PoussinType extends AbstractType
                     'placeholder' => 'Entrez le Paiement Reste',
                     'class' => 'form-control form-control-user'
                 ]
+            ]) 
+        ->add('banque', NumberType::class, [
+                'label' => 'Banque',
+                'attr' => [
+                    'placeholder' => 'Entrez le Paiement Reste',
+                    'class' => 'form-control form-control-user'
+                ]
             ])  
         ;
     }
