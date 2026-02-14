@@ -57,24 +57,29 @@ class HistoriqueAController extends AbstractController
 
                 $i = 2;
                 $ii = 1;
+                $data = [];
                 $lettre = ord('B');
                 $colString  = 0;
+                $firstcase = 1;
+
                 $historique = $em->getRepository(HistoriqueA::class)->findByHistoriquePeriode(new \DateTime($date_debut), new \DateTime($date_fin), $id);
-                
                 foreach ($historique as $key => $value) {
                     $attrdate = $value->getCreatetAd()->format('Y-m-d');
                     if ($lastedate != $attrdate) {
                         $lastedate = $attrdate;
                         $colString = chr($lettre);
                         $fiscolString  = $colString . '1';
+                        array_push($data,$fiscolString);
                         $sheet->setCellValue($fiscolString, $attrdate);
                         $lettre ++;
-                        
+                        $i = 2;
                     }
+                    
                     $sheet->setCellValue('A'.$i, $value->getProduitA()->getNom());
                     $sheet->setCellValue($colString.$i, $value->getQuantite());
                     $i =$i+1;
                 }
+                
             $nom = "historique".date("Y-m-d");
             // Créer un writer pour le format XLSX
             $writer = new Xlsx($spreadsheet);

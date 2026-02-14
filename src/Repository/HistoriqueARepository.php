@@ -120,13 +120,12 @@ class HistoriqueARepository extends ServiceEntityRepository
     public function findByHistoriquePeriode($dateDebut, $dateFin, $agence) : array
     {
         return $this->createQueryBuilder('h')
-            ->andWhere('h.agence = :agences')
-            ->andWhere('h.createtAd >= :dateDebut')
-            ->andWhere('h.createtAd <= :dateFin')
+            ->Where('h.agence = :agences')
+            ->andWhere('h.createtAd BETWEEN :dateDebut AND :dateFin')
             ->setParameter('agences',$agence)
             ->setParameter('dateDebut',$dateDebut)
             ->setParameter('dateFin',$dateFin)
-            ->orderBy('h.produitA', 'ASC')
+            ->orderBy('h.createtAd', 'ASC')
             ->getQuery()
             ->getResult()
         ;
