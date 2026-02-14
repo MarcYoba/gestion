@@ -471,6 +471,38 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="6" align="center"> Tableau Inventaire  : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th colspan="6" align="center"> Recapitulatif Inventaire : {{ calandrier}} </th>
+            </tr>
+            <tr>
+                <th scope="col">Produit</th>
+                <th scope="col">Contoire</th>
+                <th scope="col">Inventaire</th>
+                <th scope="col">Ecart</th>
+                <th scope="col">Justificatif</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inventaire in inventaires %}
+                <tr>
+                    <td>{{inventaire.produit.nom}}</td>
+                    <td>{{inventaire.quantite }}</td>
+                    <td>{{inventaire.inventaire}}</td>
+                    <td>{{inventaire.ecart}}</td>
+                    <td>{{inventaire.justificatif}}</td>
+                    <td>{{inventaire.createtAt | date("Y-m-d")}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
 {% endblock %}

@@ -8,6 +8,7 @@ use App\Entity\Consultation;
 use App\Entity\DepenseA;
 use App\Entity\FactureA;
 use App\Entity\HistoriqueA;
+use App\Entity\Inventaire;
 use App\Entity\InventaireA;
 use App\Entity\MagasinA;
 use App\Entity\Poussin;
@@ -130,6 +131,7 @@ class RapportAController extends AbstractController
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
         $sommeCaisse = $em->getRepository(CaisseA::class)->findBySommeCaisse($date,$id);
+        $inventaire = $em->getRepository(InventaireA::class)->findBy(["createtAt" => new \DateTime($date)]);
         $date = new \DateTimeImmutable($date);
         $caisse = $em->getRepository(CaisseA::class)->findBy(["createAt" => $date]);
         $vente = $em->getRepository(VenteA::class)->findRapportToDay($date);
@@ -143,6 +145,7 @@ class RapportAController extends AbstractController
         $terrain = $em->getRepository(ProspectionA::class)->findBy(['createtAt'=>$date]);
         $sommeDepense = $em->getRepository(DepenseA::class)->findBySommeDepense($date,$id);
         $sommeVersement = $em->getRepository(VersementA::class)->findBySommeVersement($date,$id);
+        
         
         $produit = $em->getRepository(FactureA::class)->findByProduitVendu($date,$id);
         $historiqueA = [];
@@ -174,6 +177,7 @@ class RapportAController extends AbstractController
         'sommedepense' => $sommeDepense,
         'sommeVersement' => $sommeVersement,
         'sommeCaisse' => $sommeCaisse,
+        'inventaires' => $inventaire,
         ]);
 
         $dompdf->loadHtml($html);
