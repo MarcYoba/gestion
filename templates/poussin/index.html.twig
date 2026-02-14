@@ -103,22 +103,27 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         OM/MOMO
                                         {{ form_widget(form.mobilepay) }} 
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         Credit
                                         {{ form_widget(form.credit) }}
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         Cash
                                         {{ form_widget(form.cash) }}
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
+                                        Banque
+                                        {{ form_widget(form.banque) }}
+                                    </div>
+                                    <div class="col-sm-2">
                                         Reste
                                         {{ form_widget(form.reste) }}
                                     </div>
+                                    
                                 </div>
                                 
                                 <button type="submit" name="submit" id="submit" class="btn btn-success btn-user btn-block">

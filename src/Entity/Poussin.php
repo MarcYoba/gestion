@@ -56,6 +56,9 @@ class Poussin
     #[ORM\ManyToOne(inversedBy: 'poussins')]
     private ?Agence $agence = null;
 
+    #[ORM\Column]
+    private ?float $banque = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -225,6 +228,18 @@ class Poussin
     public function setAgence(?Agence $agence): static
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    public function getBanque(): ?float
+    {
+        return $this->banque;
+    }
+
+    public function setBanque(float $banque): static
+    {
+        $this->banque = $banque;
 
         return $this;
     }

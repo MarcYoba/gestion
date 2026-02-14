@@ -315,10 +315,10 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="8" align="center"> Tableau des poussins : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="9" align="center"> Tableau des poussins : {{ "now" | date("Y-m-d")}} </th>
             </tr>
             <tr>
-                <th colspan="8" align="center">  Recapitulatif des poussins: {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="9" align="center">  Recapitulatif des poussins: {{ "now" | date("Y-m-d")}} </th>
             </tr>
             <tr>
                 <th scope="col">Date</th>
@@ -327,6 +327,7 @@
                 <th scope="col">Montant</th>
                 <th scope="col">Cash</th>
                 <th scope="col">OM</th>
+                <th scope="col">Banque</th>
                 <th scope="col">Credit</th>
                 <th scope="col">Reste</th>
             </tr>
@@ -340,6 +341,7 @@
                     <td>{{poussin.montant}}</td>
                     <td>{{poussin.cash}}</td>
                     <td>{{poussin.mobilepay}}</td>
+                    <td>{{poussin.banque}}</td>
                     <td>{{poussin.credit}}</td>
                     <td>{{poussin.reste}}</td>
                 </tr>
