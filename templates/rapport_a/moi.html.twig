@@ -196,23 +196,23 @@
     <td colspan="7" align="center"> Commade Poussin </td>
     </tr>
         <tr>
-        <th scope="col">Date</th>
-        <th scope="col">prix Unit</th>
+        <th scope="col">Detail prix</th>
         <th scope="col">M.Total</th>
         <th scope="col">Q.Total</th>
         <th scope="col">M.Cash</th>
         <th scope="col">M.Om</th>
         <th scope="col">M.credit</th>
+        <th scope="col">Banque</th>
     </tr>
     {% for poussin in poussins %}
         <tr>
             <td>{{poussin.Prix}}</td>
             <td>{{poussin.Montant}}</td>
-            <td>{{poussin.Montant}}</td>
             <td>{{poussin.Quantite}}</td>
             <td>{{poussin.Cash}}</td>
             <td>{{poussin.Mobilepay}}</td>
             <td>{{poussin.Credit}}</td>
+            <td>{{poussin.Banque}}</td>
         </tr>
     {% endfor %}
 </tbody>
