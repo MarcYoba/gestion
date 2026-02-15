@@ -1,0 +1,256 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rapport du Trimestre{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Facture</title>
+    <style>
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
+</style>
+</head>
+<body>
+
+<br><br><br> 
+<table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="2" align="center">Vente Trimestre : {{ annees }} </th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>Numero du Trimestre</th>
+            <th>Montant</th>
+        </tr>
+            {% set trimestre = 1 %}
+            {% for vente in ventes %}
+                <tr>
+                    <th>{{ trimestre  }}</th>
+                    <th>{{ vente }}</th>
+                </tr>
+                {% set trimestre = trimestre + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+<br><br><br> <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="2" align="center">Vente Semesttre : {{ annees }} </th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>Numero de semestre</th>
+            <th>Montant</th>
+        </tr>
+        {% set trimestre = 1 %}
+        {% for ventessemetre in ventessemetres %}
+            <tr>
+                <th>{{ trimestre }}</th>
+                <th>{{ventessemetre}}</th>
+            </tr>
+            {% set trimestre = trimestre + 1 %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+<br><br><br> <table style="width:100%">
+    <thead>
+        <tr><th colspan="2" align="center">Depense Trimestre : {{ annees }} </th></tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>Numero de Trimestre</th>
+        <th>Montant</th>
+    </tr>
+    {% set trimestre = 1 %}
+    {% for depense in depenses %}
+        <tr>
+            <th>{{ trimestre }}</th>
+            <th>{{ depense }}</th>
+        </tr>  
+        {% set trimestre = trimestre + 1 %}
+    {% endfor %}  
+    </tbody>
+</table>
+
+<br><br><br> <table style="width:100%">
+    <thead>
+        <tr>
+            <th colspan="2" align="center">Depense Semestre : {{ annees }} </th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>Numero de semestre</th>
+        <th>Montant</th>
+    </tr>
+    {% set trimestre = 1 %}
+    {% for depense in depensesemestres %}
+        <tr>
+            <th>{{ trimestre }}</th>
+            <th>{{ depense }}</th>
+        </tr>  
+        {% set trimestre = trimestre + 1 %}
+    {% endfor %} 
+    </tbody>
+</table>
+
+<br><br><br> <table style="width:100%">
+    <thead>
+        <tr>
+            <th colspan="2" align="center">Achat Trimestre : {{ annees }} </th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>Numero du Trimestre</th>
+        <th>Montant</th>
+    </tr>
+    {% set trimestre = 1 %}
+    {% for achat in achats %}
+        <tr>
+            <th>{{ trimestre }}</th>
+            <th>{{ achat }}</th>
+        </tr>  
+        {% set trimestre = trimestre + 1 %}
+    {% endfor %} 
+    </tbody>
+</table>
+
+<br><br><br> <table style="width:100%">
+    <thead>
+        <tr>
+            <th colspan="2" align="center">Achat Semesttre : {{ annees }}</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>Numero de semestre</th>
+        <th>Montant</th>
+    </tr>
+    {% set trimestre = 1 %}
+    {% for achat in achatsemetres %}
+        <tr>
+            <th>{{ trimestre }}</th>
+            <th>{{ achat }}</th>
+        </tr>  
+        {% set trimestre = trimestre + 1 %}
+    {% endfor %} 
+    </tbody>
+</table>
+
+
+<br><br><br> <table style="width:100%">
+    <thead>
+    <tr>
+        <th colspan="2" align="center">Versement Trimestre </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>Numero du Trimestre</th>
+        <th>Montant</th>
+    </tr>
+    {% set trimestre = 1 %}
+    {% for versement in versements %}
+        <tr>
+            <th>{{ trimestre }}</th>
+            <th>{{ versement }}</th>
+        </tr>  
+        {% set trimestre = trimestre + 1 %}
+    {% endfor %}   
+    </tbody>
+</table>
+
+<br><br><br> <table style="width:100%">
+    <thead>
+        <tr>
+            <th colspan="2" align="center">Versement Semesttre</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>Numero de semestre</th>
+        <th>Montant</th>
+    </tr>
+    {% set trimestre = 1 %}
+    {% for versement in versementsemestre %}
+        <tr>
+            <th>{{ trimestre }}</th>
+            <th>{{ versement }}</th>
+        </tr>  
+        {% set trimestre = trimestre + 1 %}
+    {% endfor %}
+    </tbody>
+</table>
+
+<br><br><br> <table style="width:100%">
+    <thead>
+    <tr>
+        <th colspan="3" align="center">Poussin Trimestre </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>Numero du Trimestre</th>
+        <th>Montant</th>
+        <th>Quantite</th>
+    </tr>
+    {% set trimestre = 1 %}
+    {% for poussin in poussins %}
+        <tr>
+            <th>{{ trimestre }}</th>
+            <th>{{ poussin.Montant  | default(0)}}</th>
+            <th>{{ poussin.Quantite  | default(0)}}</th>
+        </tr>  
+        {% set trimestre = trimestre + 1 %}
+    {% endfor %}   
+    </tbody>
+</table>
+
+<br><br><br> <table style="width:100%">
+    <thead>
+        <tr>
+            <th colspan="3" align="center">Poussin Semesttre</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>Numero de semestre</th>
+        <th>Montant</th>
+        <th>Quantite</th>
+    </tr>
+    {% set trimestre = 1 %}
+    {% for poussin in poussinsemeste %}
+        <tr>
+            <th>{{ trimestre }}</th>
+            <th>{{ poussin.Montant | default(0)}}</th>
+            <th>{{ poussin.Quantite | default(0)}}</th>
+        </tr>  
+        {% set trimestre = trimestre + 1 %}
+    {% endfor %}
+    </tbody>
+</table>
+
+
+</body>
+</html>
+{% endblock %}

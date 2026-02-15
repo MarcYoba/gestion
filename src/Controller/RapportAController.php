@@ -347,4 +347,91 @@ class RapportAController extends AbstractController
             ]
         );        
     }
+
+    #[Route('/rapport/a/trimestre', name:'app_rapport_trimestre')]
+    public function rapport_trimestre(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+           if(empty($anne))
+           {
+                $this->addFlash("error", "Vous deviez selectiion aune date valide");
+                return $this->redirectToRoute("app_rapport_a");
+           }
+        }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        
+        $vente = [];
+        $achat = [];
+        $depense = [];
+        $poussin = [];
+        $versement = [];
+        $achatsemetre = [];
+        $ventesemetre = [];
+        $depensesemetre = [];
+        $poussinsemestre =[];
+        $versementsemestre = [];
+
+        $trimestre = 1;
+        while ($trimestre <= 4) {
+            array_push($vente,$em->getRepository(VenteA::class)->findByMontantTrimestre($trimestre,$anne,$id));
+            array_push($depense,$em->getRepository(DepenseA::class)->findByDepensesTrimestre($trimestre,$anne,$id));
+            array_push($achat,$em->getRepository(AchatA::class)->findByMontantTrimestre($trimestre,$anne,$id));
+            array_push($versement,$em->getRepository(VersementA::class)->findByVersementTrimestre($trimestre,$anne,$id));
+            $array_poussin = $em->getRepository(Poussin::class)->findByPoussinTrimestre($trimestre,$anne,$id) ;
+            array_push($poussin,$array_poussin[0]);
+            if ($trimestre <= 2) {
+                array_push($achatsemetre,$em->getRepository(AchatA::class)->findByMontantSemestre($trimestre,$anne,$id));
+                array_push($ventesemetre,$em->getRepository(VenteA::class)->findByMontantSemestre($trimestre,$anne,$id));
+                array_push($depensesemetre,$em->getRepository(DepenseA::class)->findByDepensesSemestre($trimestre,$anne,$id));
+                array_push($versementsemestre,$em->getRepository(VersementA::class)->findByVersementSemestre($trimestre,$anne,$id));
+                $array_poussin = $em->getRepository(Poussin::class)->findByPoussinSemestre($trimestre,$anne,$id);
+                array_push($poussinsemestre,$array_poussin[0]);
+            }
+            $trimestre ++;
+        }
+        
+        $html = $this->renderView('rapport_a/trimestre.html.twig', [
+        'annees' => $anne,
+        'ventes' => $vente,
+        'ventessemetres' => $ventesemetre,
+        'depenses' => $depense,
+        'depensesemestres' => $depensesemetre,
+        'achats' => $achat,
+        'achatsemetres' => $achatsemetre,
+        'versements' => $versement,
+        'versementsemestre' => $versementsemestre,
+        'poussins' => $poussin,
+        'poussinsemeste' => $poussinsemestre,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="document.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );        
+    }
 }
