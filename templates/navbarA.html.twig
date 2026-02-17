@@ -240,7 +240,7 @@
 <div id="dette" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
     <h6 class="collapse-header">Créance:</h6>
-        <a class="collapse-item" href="#">Liste Créance</a>
+        <a class="collapse-item" href="{{path('app_dette_a')}}">Liste Créance</a>
     </div>
 </div>
 </li>
@@ -261,6 +261,24 @@
                 <a class="collapse-item" href="{{ path('app_caisse_a') }}">Caisse</a>
                 <a class="collapse-item" href="{{ path('app_caisse_a_list') }}">liste caisse</a>
             {% endif %}
+        <div class="dropdown-divider"></div>
+        <h6 class="collapse-header">Banque:</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_emprunt_a') }}">Declaration Emrpunt</a>
+                <a class="collapse-item" href="{{ path('app_emprunt_list_a') }}">Liste </a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_emprunt_a') }}">Declaration Emrpunt</a>
+                <a class="collapse-item" href="{{ path('app_emprunt_list_a') }}">Liste </a>
+            {% endif %}
+        <div class="dropdown-divider"></div>
+        <h6 class="collapse-header">Banque -> Caisse:</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_retrait_a') }}">Retrait</a>
+                <a class="collapse-item" href="{{ path('app_retrait_list') }}">Liste </a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_retrait_a') }}">Retrait</a>
+                <a class="collapse-item" href="{{ path('app_retrait_list') }}">Liste </a>
+            {% endif %}
     </div>
 </div>
 </li>
@@ -280,6 +298,24 @@
             {% else %}
                 <a class="collapse-item" href="{{ path('depense_a_list') }}">Liste Depense</a>
                 <a class="collapse-item" href="{{ path('app_depense_a') }}">Depense</a>
+            {% endif %}
+        <div class="dropdown-divider"></div>
+        <h6 class="collapse-header">Salaire:</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_salaire_a') }}">Payer Salaire</a>
+                <a class="collapse-item" href="{{ path('app_salaire_list_a') }}">Liste </a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_salaire_a') }}"> Payer Salaire</a>
+                <a class="collapse-item" href="{{ path('app_salaire_list_a') }}">Liste </a>
+            {% endif %}
+        <div class="dropdown-divider"></div>
+        <h6 class="collapse-header">Charges sociales:</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{ path('app_sociales_a') }}">Declaration sociales</a>
+                <a class="collapse-item" href="{{ path('app_sociales_list_a') }}">Liste </a>
+            {% else %}
+                <a class="collapse-item" href="{{ path('app_sociales_a') }}">Declaration sociales</a>
+                <a class="collapse-item" href="{{ path('app_sociales_list_a') }}">Liste </a>
             {% endif %}
     </div>
 </div>
@@ -447,85 +483,6 @@
             {% else %}
                 <a class="collapse-item" href="{{ path('app_agence_new_a') }}" id="ajouterFourniseur">Ajouter une Agence</a>
                 <a class="collapse-item" href="{{ path('app_agence_list_a') }}">liste Agence</a>
-            {% endif %}
-        </div>
-    </div>
-</li>
-
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Salaire"
-        aria-expanded="true" aria-controls="Salaire">
-        <i class="fas fa-fw fa-folder"></i>
-        <span>Salaire </span>
-    </a>
-    <div id="Salaire" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Salaire</h6>
-            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{ path('app_salaire_a') }}">Salaire</a>
-                <a class="collapse-item" href="{{ path('app_salaire_list_a') }}">Liste </a>
-            {% else %}
-                <a class="collapse-item" href="{{ path('app_salaire_a') }}">Salaire</a>
-                <a class="collapse-item" href="{{ path('app_salaire_list_a') }}">Liste </a>
-            {% endif %}
-        </div>
-    </div>
-</li>
-
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#sociales"
-        aria-expanded="true" aria-controls="sociales">
-        <i class="fas fa-fw fa-folder"></i>
-        <span>charges sociales </span>
-    </a>
-    <div id="sociales" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">charges sociales</h6>
-            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{ path('app_sociales_a') }}">Declaration sociales</a>
-                <a class="collapse-item" href="{{ path('app_sociales_list_a') }}">Liste </a>
-            {% else %}
-                <a class="collapse-item" href="{{ path('app_sociales_a') }}">Declaration sociales</a>
-                <a class="collapse-item" href="{{ path('app_sociales_list_a') }}">Liste </a>
-            {% endif %}
-        </div>
-    </div>
-</li>
-
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Emprunt"
-        aria-expanded="true" aria-controls="Emprunt">
-        <i class="fas fa-fw fa-folder"></i>
-        <span>Emprunt bancaire </span>
-    </a>
-    <div id="Emprunt" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Emprunt bancaire</h6>
-            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{ path('app_emprunt_a') }}">Declaration Emrpunt</a>
-                <a class="collapse-item" href="{{ path('app_emprunt_list_a') }}">Liste </a>
-            {% else %}
-                <a class="collapse-item" href="{{ path('app_emprunt_a') }}">Declaration Emrpunt</a>
-                <a class="collapse-item" href="{{ path('app_emprunt_list_a') }}">Liste </a>
-            {% endif %}
-        </div>
-    </div>
-</li>
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#retrait"
-        aria-expanded="true" aria-controls="retrait">
-        <i class="fas fa-fw fa-folder"></i>
-        <span>Retrait banque->caisse </span>
-    </a>
-    <div id="retrait" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Retrait banque->caisse</h6>
-            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{ path('app_retrait_a') }}">Retrait</a>
-                <a class="collapse-item" href="{{ path('app_retrait_list') }}">Liste </a>
-            {% else %}
-                <a class="collapse-item" href="{{ path('app_retrait_a') }}">Retrait</a>
-                <a class="collapse-item" href="{{ path('app_retrait_list') }}">Liste </a>
             {% endif %}
         </div>
     </div>
