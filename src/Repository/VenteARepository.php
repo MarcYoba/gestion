@@ -452,4 +452,17 @@ class VenteARepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findRapportVenteToCredit($agence) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->Where('v.agence =:agences')
+            ->andWhere('v.credit >:credits')
+            ->setParameter('agences',$agence)
+            ->setParameter('credits',0)
+            ->getQuery()
+            ->getResult()
+        
+        ;
+    }
 }
