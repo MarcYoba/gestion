@@ -156,4 +156,25 @@ class FactureARepository extends ServiceEntityRepository
 
         return (int) $result;
     }
+
+    public function findByFactureProduit($first_date,$end_date,$agence,$produit) : array 
+    {
+        // $date = new \DateTimeImmutable($date);
+        $startDate = (clone $first_date)->setTime(0, 0, 0);
+        $endDate = (clone $end_date)->setTime(23, 59, 59);
+
+       return $this->createQueryBuilder('f')
+            ->where('f.createAt  BETWEEN :startDate AND :endDate')
+            ->andWhere('f.agence = :agences')
+            ->andWhere('f.produit =:produits')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->setParameter('produits',$produit)
+            ->orderBy('f.produit','ASC')
+            ->groupBy('f.produit')
+            ->getQuery()
+            ->getResult();
+
+    }
 }

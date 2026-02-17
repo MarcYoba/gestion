@@ -510,47 +510,52 @@ class VenteAController extends AbstractController
         $id = $tempagence->getAgence()->getId();
         $date = new \DateTime(date("Y-m-d"));
         $vente = [];
+        $nomProduit = 0;
+        $clients = 0;
        if ($request->isMethod('POST')) {
             $produit = $request->request->All();
-            
+            $nomProduit = $produit['nomProduit'];
+            $clients = $produit['client'];
+            $first_date = new \DateTimeImmutable($produit['date']);
+            $end_date = new \DateTimeImmutable($produit['date2']);
             if (!empty($produit['OM']) || !empty($produit['credit']) || !empty($produit['cash'])) {
                 
                 if (isset($produit['OM']) && isset($produit['credit']) && isset($produit['cash'])) {
                     
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id);
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id);
                     }else{
                         $vente = $em->getRepository(VenteA::class)->findRapportToDay($date);
                     }
                 }else if (isset($produit['credit']) && isset($produit['OM'])) {   
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekCreditOm(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id);
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekCreditOm(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id);
                     }else{
                         $vente = $em->getRepository(VenteA::class)->findRapportToDayCreditOm($date,$id);
                     }
                 }else if (isset($produit['OM'])) {
                 
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekOm(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id); 
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekOm(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id); 
                     }else{
                         $vente = $em->getRepository(VenteA::class)->findRapportToDayOm($date,$id);
                     }
                 } else if (isset($produit['credit'])) {
                     
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekCredit(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id); 
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekCredit(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id); 
                     }else{
                         $vente = $em->getRepository(VenteA::class)->findRapportToDayCredit($date,$id);
                     }
                 } else if(isset($produit['cash'])) { 
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekCash(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id); 
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekCash(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id); 
                     }else{
                         $vente = $em->getRepository(VenteA::class)->findRapportToDayCash($date,$id);
                     }
                 } else {
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id);
+                        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id);
                     }else{
                         $vente = $em->getRepository(VenteA::class)->findRapportToDay($date);
                     } 
@@ -558,7 +563,7 @@ class VenteAController extends AbstractController
                 
             } else {
                 if(!empty($produit['date']) && !empty($produit['date2'])){
-                    $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek($produit['date'],$produit['date2'],$id);
+                    $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeek(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id);
                 }else{
                     $vente = $em->getRepository(VenteA::class)->findRapportToDay($date);
                 }   
@@ -570,11 +575,11 @@ class VenteAController extends AbstractController
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
 
-        $produit = $em->getRepository(FactureA::class)->findByProduitVendu($date,$id);
+        $produit = $em->getRepository(FactureA::class)->findByProduitVenduSemaine($first_date,$end_date,$id);
         $historiqueA = [];
         foreach ($produit as $key => $value) {
-            $hist = $em->getRepository(HistoriqueA::class)->findByDate($date,$value->getProduit()->getId(),$id);
-            $fact = $em->getRepository(FactureA::class)->findBySommeProduit($date,$value->getProduit()->getId(),$id);
+            $hist = $em->getRepository(HistoriqueA::class)->findByDate($first_date,$value->getProduit()->getId(),$id);
+            $fact = $em->getRepository(FactureA::class)->findBySommeProduit($first_date,$value->getProduit()->getId(),$id);
             array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite()]);
         }
 
@@ -582,6 +587,8 @@ class VenteAController extends AbstractController
             'ventes' => $vente,
             'date' => $date,
             'historiqueAs' => $historiqueA,
+            'produits' => $nomProduit,
+            'clients' => $clients,
         ]);
 
         $dompdf->loadHtml($html);

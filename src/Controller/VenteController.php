@@ -513,39 +513,39 @@ class VenteController extends AbstractController
                 if (isset($produit['OM']) && isset($produit['credit']) && isset($produit['cash'])) {
                     
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeek(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id);
+                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeek(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id);
                     }else{
                         $vente = $em->getRepository(Vente::class)->findRapportToDay($date);
                     }
                 }else if (isset($produit['credit']) && isset($produit['OM'])) {   
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeekCreditOm(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id);
+                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeekCreditOm(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id);
                     }else{
                         $vente = $em->getRepository(Vente::class)->findRapportToDayCreditOm($date,$id);
                     }
                 }else if (isset($produit['OM'])) {
                 
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeekOm(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id); 
+                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeekOm(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id); 
                     }else{
                         $vente = $em->getRepository(Vente::class)->findRapportToDayOm($date,$id);
                     }
                 } else if (isset($produit['credit'])) {
                     
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeekCredit(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id); 
+                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeekCredit(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id); 
                     }else{
                         $vente = $em->getRepository(Vente::class)->findRapportToDayCredit($date,$id);
                     }
                 } else if(isset($produit['cash'])) { 
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeekCash(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id); 
+                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeekCash(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id); 
                     }else{
                         $vente = $em->getRepository(Vente::class)->findRapportToDayCash($date,$id);
                     }
                 } else {
                     if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeek(new \DateTime($produit['date']),new \DateTime($produit['date2']),$id);
+                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeek(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id);
                     }else{
                         $vente = $em->getRepository(Vente::class)->findRapportToDay($date);
                     } 
