@@ -55,10 +55,13 @@
 
                             
                             <form  action="{{ path('achat_download_a')}}" method="post" class="user row" >
-                                <div class="row">
+                                <div class="form-group row">
                                     <p class="col-md-2" >
                                         <input type="date" class="form-control form-control-user"
-                                        name="date1" id="date1" placeholder="quantite">
+                                        name="date1" id="date1" placeholder="quantite"><br>
+                                        <a href="{{path('achat_a_download')}}" class="btn btn-warning">
+                                            <i class="fa fa-download"></i>
+                                            EXPORTER</a>
                                     </p>
                                     <p class="col-md-2" >
                                         <input type="date" class="form-control form-control-user"

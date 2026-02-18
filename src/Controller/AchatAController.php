@@ -14,6 +14,8 @@ use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -347,5 +349,54 @@ class AchatAController extends AbstractController
         return $this->render('achat_a/view.html.twig', [
             'achat' => $achat,
         ]);
+    }   
+
+    #[Route('/achat/a/download', name: 'achat_a_download')]
+    public function export_excel(EntityManagerInterface $em,Request $request) : Response {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'id');
+        $sheet->setCellValue('B1', 'PRODUIT');
+        $sheet->setCellValue('C1', 'PRIX');
+        $sheet->setCellValue('D1', 'QUANTITE');
+        $sheet->setCellValue('E1', 'MONTANT');
+        $sheet->setCellValue('F1', 'FOURNISSEUR');
+        $sheet->setCellValue('G1', 'TYPE');
+        $sheet->setCellValue('H1', 'DATE');
+        $sheet->setCellValue('I1', 'UTILISATEUR');
+
+            $i = 2;
+            $vente = $em->getRepository(AchatA::class)->findBy(['agence'=>$id]);
+
+            foreach ($vente as $key => $value) {
+                $sheet->setCellValue('A'.$i, $value->getId());
+                $sheet->setCellValue('B'.$i, $value->getProduit()->getNom());
+                $sheet->setCellValue('C'.$i, $value->getQuantite());
+                $sheet->setCellValue('D'.$i, $value->getPrix());
+                $sheet->setCellValue('E'.$i, $value->getMontant());
+                $sheet->setCellValue('F'.$i, $value->getForunisseur()->getNom());
+                $sheet->setCellValue('G'.$i, $value->getType());
+                $sheet->setCellValue('H'.$i, $value->getCreatedAt());
+                $sheet->setCellValue('I'.$i, $value->getUser()->getUsername());
+                $i =$i+1;
+            }
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_achat.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;
     }
 }
