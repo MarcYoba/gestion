@@ -32,22 +32,28 @@
     <table class="table table-bordered" id="tableactif" width="100%" cellspacing="0" data-page-length='50' >
         <thead>
             <tr>
-                <th colspan="4" style="text-align: center;">Inventaire du {{ 'now' | date("Y-m-d")}}</th>
+                <th colspan="7" style="text-align: center;">Versement du {{ 'now' | date("Y-m-d")}}</th>
             </tr>
             <tr>
                 <th style="text-align: center;">Id</th>
-                <th style="text-align: center;">Produit</th>
-                <th  style="text-align: center;">Quantite</th>
-                <th  style="text-align: center;">Stock du {{'now' | date("Y-m-d")}}</th>
+                <th style="text-align: center;">Client</th>
+                <th  style="text-align: center;">Montant</th>
+                <th  style="text-align: center;">OM/MOMO</th>
+                <th  style="text-align: center;">Banque</th>
+                <th  style="text-align: center;">Description</th>
+                <th  style="text-align: center;">Date</th>
             </tr>
         </thead>
         <tbody>
-            {% for produit in produits %}
+            {% for versement in versements %}
                 <tr>
-                    <td style="">{{ produit.id }}</td>   
-                    <td style="">{{ produit.nom }}</td>
-                    <td style="">{{ produit.quantite }}</td>
-                    <td></td>        
+                    <td style="">{{ versement.id }}</td>   
+                    <td style="">{{ versement.client.nom }}</td>
+                    <td style="">{{ versement.montant }}</td>
+                    <td style="">{{ versement.om }}</td>
+                    <td style="">{{ versement.banque }}</td>
+                    <td style="">{{ versement.description }}</td>
+                    <td> {{versement.createdAt | date("Y-m-d") }} </td>        
                 </tr>
             {% endfor %}
         </tbody>

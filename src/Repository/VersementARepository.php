@@ -99,6 +99,22 @@ class VersementARepository extends ServiceEntityRepository
         
     }
 
+    public function findByVersementClient($first_date,$end_date,$agence,$client) : array
+    {
+        return $this->createQueryBuilder('v')
+            ->Where('v.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('v.agence = :agences')
+            ->andWhere('v.client = :clients')
+            ->setParameter('debut', $first_date)
+            ->setParameter('fin', $end_date)
+            ->setParameter('agences',$agence)
+            ->setParameter('clients',$client)
+            ->getQuery()
+            ->getResult()
+        ;
+        
+    }
+
     public function findByMoi($value,$annee): array
     {
         return $this->createQueryBuilder('v')
