@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Versement{% endblock %}
+{% block title %}Caisse{% endblock %}
 
 {% block body %}
 <!DOCTYPE html>
@@ -32,22 +32,24 @@
     <table class="table table-bordered" id="tableactif" width="100%" cellspacing="0" data-page-length='50' >
         <thead>
             <tr>
-                <th colspan="4" style="text-align: center;">Inventaire du {{ 'now' | date("Y-m-d")}}</th>
+                <th colspan="4" style="text-align: center;">Caisse du {{ 'now' | date("Y-m-d")}}</th>
             </tr>
             <tr>
                 <th style="text-align: center;">Id</th>
-                <th style="text-align: center;">Produit</th>
-                <th  style="text-align: center;">Quantite</th>
-                <th  style="text-align: center;">Stock du {{'now' | date("Y-m-d")}}</th>
+                <th style="text-align: center;">Montant</th>
+                <th  style="text-align: center;">Motif</th>
+                <th  style="text-align: center;">Operation</th>
+                <th  style="text-align: center;">Date</th>
             </tr>
         </thead>
         <tbody>
-            {% for produit in produits %}
+            {% for caisse in caisses %}
                 <tr>
-                    <td style="">{{ produit.id }}</td>   
-                    <td style="">{{ produit.nom }}</td>
-                    <td style="">{{ produit.quantite }}</td>
-                    <td></td>        
+                    <td style="">{{ caisse.id }}</td>   
+                    <td style="">{{ caisse.montant }}</td>
+                    <td style="">{{ caisse.motif }}</td>
+                    <td>{{caisse.operation}}</td>
+                    <td>{{caisse.createAt | date("Y-m-d")}}</td>       
                 </tr>
             {% endfor %}
         </tbody>

@@ -6,6 +6,8 @@ use App\Entity\CaisseA;
 use App\Form\CaisseAType;
 use App\Entity\TempAgence;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,5 +62,47 @@ class CaisseAController extends AbstractController
     #[Route('/caisse/a/etat', name : 'etat_a_caisse')]
     public function Etat_Caisse(){
          return $this->json(['success'=> true,'message'=> 'success']);
+    }
+
+    #[Route('/caisse/a/download', name: 'caisse_a_download')]
+    public function download(EntityManagerInterface $em, Request $request) : Response {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        
+        if ($request->isMethod('POST')) {
+            $first_date = $request->request->get('date1');
+            $end_date = $request->request->get('date2');
+            
+            if (empty($first_date) || empty($end_date)) {
+                $first_date = new \DateTime();
+                $end_date = new \DateTime();
+            }
+        }
+        
+        $caisse = $em->getRepository(CaisseA::class)->findByCaisseSemaine($first_date, $end_date, $tempagence->getAgence());
+        $html = $this->renderView('caisse_a/download.html.twig', [
+            'caisses' => $caisse,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="Inventaire.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
     }
 }
