@@ -26,6 +26,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\Request;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -434,4 +436,153 @@ class RapportAController extends AbstractController
             ]
         );        
     }
+
+    #[Route('/rapport/a/anneul', name:'app_rapport_annuel')]
+    public function rapport_annuel(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+           if(empty($anne))
+           {
+                $this->addFlash("error", "Vous deviez selectiion aune date valide");
+                return $this->redirectToRoute("app_rapport_a");
+           }
+        }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        
+        $ventemoi = [];
+        $venteSemain = [];
+        $moi = 1;
+        while ($moi <= 12) {
+            array_push($ventemoi,$em->getRepository(VenteA::class)->findByMontantMonth($moi,$anne,$id));
+            $moi ++;
+        }
+        // Trouver le premier lundi de l'année
+        $premierJour = new DateTime("$anne-01-01");
+        
+        // Ajuster au premier lundi de l'année
+        if ($premierJour->format('N') != 1) { // N = 1 pour lundi
+            $premierJour->modify('next monday');
+        }
+        
+        // Calculer le nombre de semaines dans l'année
+        $dernierJour = new DateTime("$anne-12-31");
+        $nombreSemaines = $dernierJour->format('W');
+        
+        // Générer chaque semaine
+        for ($semaine = 1; $semaine <= $nombreSemaines; $semaine++) {
+            // Calculer le lundi de la semaine
+            $lundi = clone $premierJour;
+            $lundi->modify('+' . ($semaine - 1) . ' weeks');
+            
+            // Calculer le dimanche de la semaine
+            $dimanche = clone $lundi;
+            $dimanche->modify('+6 days');
+            
+            // Vérifier si la semaine est dans l'année
+            if ($lundi->format('Y') <= $anne || $dimanche->format('Y') >= $anne) {
+                $val = $em->getRepository(VenteA::class)->findBySommeVenteToWeek(
+                    new \DateTimeImmutable($lundi->format('Y-m-d')), 
+                    new \DateTimeImmutable($dimanche->format('Y-m-d')),
+                    $id);
+                array_push($venteSemain,[$semaine,$val]);
+                
+            }
+        }
+        $html = $this->renderView('rapport_a/anne.html.twig', [
+        'annees' => $anne,
+        'ventes' => $ventemoi,
+        'semains' => $venteSemain,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="rapport_annuel.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );        
+    }
+
+    #[Route('/rapport/a/dette/client', name:'app_rapport_dette_client')]
+    public function rapport_dette_client(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'id');
+        $sheet->setCellValue('B1', 'CLIENT');
+        $sheet->setCellValue('C1', 'TYPE VENTE');
+        $sheet->setCellValue('D1', 'TOTAL');
+
+            $i = 2;
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+           $semestre = $request->request->get('semestre');
+           $speculation = $request->request->get('speculation');
+            $ventespeculation = [];
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+           if ($semestre == "ALL" || $speculation == "ALL") {
+                $trimestre = 1;
+                while ($trimestre <= 2) {
+                        $ventesemetre = $em->getRepository(VenteA::class)->findByVenteDetteSemestre($trimestre,$anne,$id);
+                    $trimestre ++;
+                    foreach ($ventesemetre as $key => $value) {
+                        $sheet->setCellValue('A'.$i, $i);
+                        $sheet->setCellValue('B'.$i,  $value['nom']);
+                        $sheet->setCellValue('C'.$i, $value['type']);
+                        $sheet->setCellValue('D'.$i,  $value[1]);
+                        $i =$i+1;
+                    }
+                }
+           }
+        }
+
+            
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_dette_client.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
+    }    
 }
