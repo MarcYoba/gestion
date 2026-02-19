@@ -465,4 +465,58 @@ class VenteARepository extends ServiceEntityRepository
         
         ;
     }
+
+    public function findBySommeVenteToWeek($date_debut, $date_fin,$agence) : float
+    {
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+    
+        $query = $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0) AS Montant')
+            ->where('v.createAt BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence =:agences')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+        ;
+
+        $result = $query->getSingleScalarResult();
+
+        return $result > 0 ? (float)$result : 0;
+    }
+
+    public function findByVenteDetteSemestre($trimestre,$annee,$agence) : array 
+    {
+        $debutTrimestre = null;
+        $finTrimestre = null;
+        
+        switch($trimestre) {
+            case 1:
+                $debutTrimestre = new \DateTimeImmutable("$annee-01-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-06-30 23:59:59");
+                break;
+            case 2:
+                $debutTrimestre = new \DateTimeImmutable("$annee-07-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-12-31 23:59:59");
+                break;
+            default:
+                throw new \InvalidArgumentException("Trimestre invalide : doit être entre 1 et 3");
+        }
+
+        return $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0) , c.nom , v.type ')
+            ->innerJoin('v.client','c')
+            ->where('v.createAt BETWEEN :debut AND :fin')
+            ->andWhere('v.agence = :agences')
+            ->andWhere('v.credit > 0')
+            ->setParameter('debut',$debutTrimestre)
+            ->setParameter('fin',$finTrimestre)
+            ->setParameter('agences',$agence)
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
 }
