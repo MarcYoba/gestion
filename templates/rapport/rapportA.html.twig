@@ -229,7 +229,7 @@
             <div class="col-xl-6 col-md-6 mb-4">
                 <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">
-                        <form action="#" method="post">
+                        <form action="{{ path('app_rapport_depense_post')}}" method="post">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
@@ -238,15 +238,15 @@
                                     <div class="h5 mb-1 font-weight-bold text-gray-800">Dépense par Poste</div>
                                     <div class="form-group row">
                                         <div class="col-sm-4 mb-2 mb-sm-0">
-                                            <select class="form-control form-control-sm" name="semestre">
-                                                <option value="">ALL Semestres</option>
+                                            <select class="form-control form-control-sm" name="semestre" id="semestre">
+                                                <option value="ALL">ALL Semestres</option>
                                                 <option value="1">1er Semestre</option>
                                                 <option value="2">2ème Semestre</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-4 mb-2 mb-sm-0">
-                                            <select class="form-control form-control-sm" name="poste_depense">
-                                                <option value="">ALL Postes</option>
+                                            <select class="form-control form-control-sm" name="poste_depense" id="poste_depense">
+                                                <option value="ALL">ALL Postes</option>
                                                 <option value="Autres achats">Autres achats (Tami, marteau, etc.)</option>
                                                 <option value="service exterieur">Charges générales (Loyer, Eau, Elec.)</option>
                                                 <option value="impots et taxes">Impôts et taxes</option>

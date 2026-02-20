@@ -178,4 +178,34 @@ class DepenseARepository extends ServiceEntityRepository
         ;
         return $result > 0 ? (float)$result : 0; 
     }
+
+    public function findByDepensesParPost($trimestre,$annee,$agence) : array 
+    {
+        $debutTrimestre = null;
+        $finTrimestre = null;
+        
+        switch($trimestre) {
+            case 1:
+                $debutTrimestre = new \DateTimeImmutable("$annee-01-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-06-30 23:59:59");
+                break;
+            case 2:
+                $debutTrimestre = new \DateTimeImmutable("$annee-07-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-12-31 23:59:59");
+                break;
+            default:
+                throw new \InvalidArgumentException("Trimestre invalide : doit être entre 1 et 2");
+        }
+        return $this->createQueryBuilder('d')
+            ->select('COALESCE(SUM(d.montant),0) AS Montant, d.type')
+            ->Where('d.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('d.agence = :agences')
+            ->setParameter('debut', $debutTrimestre)
+            ->setParameter('fin', $finTrimestre)
+            ->setParameter('agences',$agence)
+            ->groupBy('d.type')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
