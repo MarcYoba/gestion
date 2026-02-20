@@ -647,4 +647,63 @@ class RapportAController extends AbstractController
         $writer->save('php://output');
         exit;       
     }
+
+    #[Route('/rapport/a/depense/globale', name:'app_rapport_depense_globale')]
+    public function rapport_depense_globale(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'semestre');
+        $sheet->setCellValue('B1', 'Description');
+        $sheet->setCellValue('c1', 'Montant');
+        $sheet->setCellValue('d1', 'Cthegorie');
+
+            $i = 2;
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+           
+            $ventespeculation = [];
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+                $trimestre = 1;
+                while ($trimestre <= 2) {
+                    $ventesemetre = $em->getRepository(DepenseA::class)->findByDepensesGlobale($trimestre,$anne,$id);
+                    
+                    foreach ($ventesemetre as $key => $value) {
+                        $sheet->setCellValue('A'.$i, "semestre".$trimestre);
+                        $sheet->setCellValue('B'.$i,  $value->getDescription());
+                        $sheet->setCellValue('C'.$i, $value->getMontant());
+                        $sheet->setCellValue('D'.$i, $value->getType());
+                        $i =$i+1;
+                    }
+                    $trimestre ++;
+                }
+        }
+
+            
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_depesne_globale.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
+    }
 }
