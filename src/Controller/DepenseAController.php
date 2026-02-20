@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\BalanceA;
 use App\Entity\DepenseA;
+use App\Entity\TempAgence;
 use App\Form\DepenseAType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +24,10 @@ class DepenseAController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $type = $form->get('type')->getData();
             $montant = $form->get('montant')->getData();
+
+            $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+            $agence = $tempagence->getAgence(); 
+
             if ($type == "Voyages") {
                 $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5111]);
                         if ($balance) {
@@ -91,6 +96,7 @@ class DepenseAController extends AbstractController
 
             $user = $this->getUser();
             $depense->setUser($user);
+            $depense->setAgence($agence);
 
             $em->persist($depense);
             $em->flush();
