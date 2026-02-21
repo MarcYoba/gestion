@@ -35,6 +35,9 @@ class InventaireA
     #[ORM\Column(length: 255)]
     private ?string $justificatif = null;
 
+    #[ORM\ManyToOne(inversedBy: 'inventaireAs')]
+    private ?Agence $agence = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +123,18 @@ class InventaireA
     public function setJustificatif(string $justificatif): static
     {
         $this->justificatif = $justificatif;
+
+        return $this;
+    }
+
+    public function getAgence(): ?Agence
+    {
+        return $this->agence;
+    }
+
+    public function setAgence(?Agence $agence): static
+    {
+        $this->agence = $agence;
 
         return $this;
     }
