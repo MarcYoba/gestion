@@ -17,8 +17,8 @@ class Vaccin
     #[ORM\Column(length: 255)]
     private ?string $sujet = null;
 
-    #[ORM\Column]
-    private ?int $age = null;
+    #[ORM\Column(length: 255)]
+    private ?string $age = null;
 
     #[ORM\Column(length: 255)]
     private ?string $typeSujet = null;
@@ -76,12 +76,12 @@ class Vaccin
         return $this;
     }
 
-    public function getAge(): ?int
+    public function getAge(): ?string
     {
         return $this->age;
     }
 
-    public function setAge(int $age): static
+    public function setAge(string $age): static
     {
         $this->age = $age;
 

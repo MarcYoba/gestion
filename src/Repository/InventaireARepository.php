@@ -45,4 +45,19 @@ class InventaireARepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findByproduit($agence,$moi,$anne) : array 
+    {
+        return $this-> createQueryBuilder('i')
+            ->where('i.agence =:agences')
+            ->andWhere('MONTH(i.createtAt) =:moi')
+            ->andWhere('YEAR(i.createtAt) =:anne')
+            ->setParameter('agences',$agence)
+            ->setParameter('moi',$moi)
+            ->setParameter('anne',$anne)
+            ->groupBy('i.produit')
+            ->orderBy('i.produit','ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
