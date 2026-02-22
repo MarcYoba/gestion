@@ -301,7 +301,7 @@
             <div class="col-xl-6 col-md-6 mb-4">
                 <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">
-                        <form action="#" method="post">
+                        <form action="{{ path('app_rapport_depense_detail')}}" method="post">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
@@ -327,7 +327,7 @@
             <div class="col-xl-6 col-md-6 mb-4">
                 <div class="card border-left-info shadow h-100 py-2">
                     <div class="card-body">
-                        <form action="#" method="post">
+                        <form action="{{ path('app_rapport_versement_client') }}" method="post">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
@@ -353,13 +353,13 @@
             <div class="col-xl-6 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
-                        <form action="#" method="post">
+                        <form action="{{ path('app_rapport_versement_client_date')}}" method="post">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        liste des versements par client (client et montant total)
+                                        liste des versements par client (client et montant total, date)
                                     </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">liste des versements par client (client et montant total)  </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">liste des versements par client (client et montant total, date)  </div>
                                 </div>
                                 <div class="form-group mt-2">
                                     <input type="number" class="form-control form-control-sm" name="anne"
@@ -379,7 +379,7 @@
             <div class="col-xl-6 col-md-6 mb-4">
                 <div class="card border-left-info shadow h-100 py-2">
                     <div class="card-body">
-                        <form action="#" method="post">
+                        <form action="{{ path('app_rapport_vente_client_credit')}}" method="post">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
@@ -405,7 +405,7 @@
             <div class="col-xl-6 col-md-6 mb-4">
                 <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">
-                        <form action="#" method="post">
+                        <form action="{{ path('app_rapport_vente_client_date') }}" method="post">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
@@ -431,7 +431,33 @@
             <div class="col-xl-6 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
-                        <form action="#" method="post">
+                        <form action="{{ path('app_rapport_vente_client') }}" method="post">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        liste des ventes  par client
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">liste des ventes  par client  </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="number" class="form-control form-control-sm" name="anne"
+                                                placeholder="Entrez l'année " required>
+                                </div>
+                                <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-regular fa-cart-arrow-down"></i> Générer
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <form action="{{ path('app_rapport_vente_client_mois') }}" method="post">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
