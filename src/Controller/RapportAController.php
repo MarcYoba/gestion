@@ -706,4 +706,430 @@ class RapportAController extends AbstractController
         $writer->save('php://output');
         exit;       
     }
+
+    #[Route('/rapport/a/depense/detail', name:'app_rapport_depense_detail')]
+    public function rapport_depense_detail(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'semestre');
+        $sheet->setCellValue('B1', 'Description');
+        $sheet->setCellValue('c1', 'Montant');
+        $sheet->setCellValue('d1', 'Cthegorie');
+
+            $i = 2;
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+           
+            $ventespeculation = [];
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+                $trimestre = 1;
+                while ($trimestre <= 2) {
+                    $ventesemetre = $em->getRepository(DepenseA::class)->findByDepensesGlobale($trimestre,$anne,$id);
+                    
+                    foreach ($ventesemetre as $key => $value) {
+                        $sheet->setCellValue('A'.$i, "semestre".$trimestre);
+                        $sheet->setCellValue('B'.$i,  $value->getDescription());
+                        $sheet->setCellValue('C'.$i, $value->getMontant());
+                        $sheet->setCellValue('D'.$i, $value->getType());
+                        $i =$i+1;
+                    }
+                    $trimestre ++;
+                }
+        }
+
+            
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_depesne_detail.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
+    }
+
+    #[Route('/rapport/a/vente/client', name:'app_rapport_vente_client')]
+    public function rapport_vente_client(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'Nom');
+        $sheet->setCellValue('B1', 'Cash');
+        $sheet->setCellValue('C1', 'Banque');
+        $sheet->setCellValue('D1', 'Credit');
+        $sheet->setCellValue('E1', 'Momo');
+        $sheet->setCellValue('F1', 'om');
+        $sheet->setCellValue('G1', 'Total');
+
+            $i = 2;
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+                $vente  = $em->getRepository(VenteA::class)->findByVenteClient($anne);
+                foreach ($vente as $key => $value) {
+
+                    $sheet->setCellValue('A'.$i, $value['nom']);
+                    $sheet->setCellValue('B'.$i,  $value['cash']);
+                    $sheet->setCellValue('C'.$i, $value['banque']);
+                    $sheet->setCellValue('D'.$i, $value['credit']);
+                    $sheet->setCellValue('E'.$i, $value['momo']);
+                    $sheet->setCellValue('F'.$i, $value['om']);
+                    $sheet->setCellValue('G'.$i, $value['TotalVente']);
+
+                    $i =$i+1;
+                }
+        }
+
+            
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_vente_part_client.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
+    }
+
+    #[Route('/rapport/a/vente/client/credit', name:'app_rapport_vente_client_credit')]
+    public function rapport_vente_client_credit(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'Nom');
+        $sheet->setCellValue('B1', 'Cash');
+        $sheet->setCellValue('C1', 'Banque');
+        $sheet->setCellValue('D1', 'Credit');
+        $sheet->setCellValue('E1', 'Momo');
+        $sheet->setCellValue('F1', 'om');
+        $sheet->setCellValue('G1', 'Total');
+
+            $i = 2;
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+                $vente  = $em->getRepository(VenteA::class)->findVenteByClientDette($anne);
+                foreach ($vente as $key => $value) {
+
+                    $sheet->setCellValue('A'.$i, $value['nom']);
+                    $sheet->setCellValue('B'.$i,  $value['cash']);
+                    $sheet->setCellValue('C'.$i, $value['banque']);
+                    $sheet->setCellValue('D'.$i, $value['credit']);
+                    $sheet->setCellValue('E'.$i, $value['momo']);
+                    $sheet->setCellValue('F'.$i, $value['om']);
+                    $sheet->setCellValue('G'.$i, $value['TotalVente']);
+
+                    $i =$i+1;
+                }
+        }
+
+            
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_vente_client_credit.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
+    }
+
+    #[Route('/rapport/a/vente/client/credit/date', name:'app_rapport_vente_client_date')]
+    public function rapport_vente_client_date(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'Nom');
+        $sheet->setCellValue('B1', 'Cash');
+        $sheet->setCellValue('C1', 'Banque');
+        $sheet->setCellValue('D1', 'Credit');
+        $sheet->setCellValue('E1', 'Momo');
+        $sheet->setCellValue('F1', 'om');
+        $sheet->setCellValue('G1', 'Total');
+        $sheet->setCellValue('H1', 'Date');
+
+            $i = 2;
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+                $vente  = $em->getRepository(VenteA::class)->findByVenteByClientDette($anne);
+                foreach ($vente as $key => $value) {
+
+                    $sheet->setCellValue('A'.$i, $value['nom']);
+                    $sheet->setCellValue('B'.$i,  $value['cash']);
+                    $sheet->setCellValue('C'.$i, $value['banque']);
+                    $sheet->setCellValue('D'.$i, $value['credit']);
+                    $sheet->setCellValue('E'.$i, $value['momo']);
+                    $sheet->setCellValue('F'.$i, $value['om']);
+                    $sheet->setCellValue('G'.$i, $value['TotalVente']);
+                    $sheet->setCellValue('H'.$i, $value['dates']);
+
+                    $i =$i+1;
+                }
+        }
+
+            
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_vente_client_date.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
+    }
+
+    #[Route('/rapport/a/versement/client', name:'app_rapport_versement_client')]
+    public function rapport_versement(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'Nom');
+        $sheet->setCellValue('B1', 'Montant');
+        
+        $i = 2;
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+                $vente  = $em->getRepository(VersementA::class)->findByclientGlobale($anne);
+                foreach ($vente as $key => $value) {
+
+                    $sheet->setCellValue('A'.$i, $value['nom']);
+                    $sheet->setCellValue('B'.$i,  $value['Montant']);
+                    $i =$i+1;
+                }
+        }
+
+            
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_vente_versement.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
+    }
+
+    #[Route('/rapport/a/versement/client/date', name:'app_rapport_versement_client_date')]
+    public function rapport_versement_date(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'Nom');
+        $sheet->setCellValue('B1', 'Montant');
+        $sheet->setCellValue('C1', 'Montant');
+
+        $i = 2;
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+                $vente  = $em->getRepository(VersementA::class)->findByclientDate($anne);
+                foreach ($vente as $key => $value) {
+
+                    $sheet->setCellValue('A'.$i, $value['nom']);
+                    $sheet->setCellValue('B'.$i,  $value['Montant']);
+                    $sheet->setCellValue('C'.$i,  $value['dates']);
+                    $i =$i+1;
+                }
+        }
+
+            
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_vente_versement_date.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
+    }
+
+    #[Route('/rapport/a/vente/client/mois', name:'app_rapport_vente_client_mois')]
+    public function rapport_vente_client_month(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+        $mois =[
+            1 => 'Janvier',
+            2 => 'Fevrier',
+            3 => 'Mars',
+            4 => 'Avril',
+            5 => 'Mai',
+            6 => 'Juin',
+            7 => 'Juillet',
+            8 => 'Aout',
+            9 => 'Septembre',
+            10 => 'Octobre',
+            11 => 'Novembre',
+            12 => 'Decembre',
+        ];
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+
+        $i = 1;
+        $lastmoi = 0;
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+            foreach ($mois as $key => $val) {
+                if ($lastmoi != $key) {
+                    $lastmoi = $key;
+                    $sheet->setCellValue('A'.$i, $val);
+                    $sheet->getStyle('A'.$i)->getFont()
+                        ->getColor()->setARGB('FFFF0000');
+                    $i =$i+1;
+                    $sheet->setCellValue('A'.$i, 'Nom');
+                    $sheet->setCellValue('B'.$i, 'Cash');
+                    $sheet->setCellValue('C'.$i, 'Banque');
+                    $sheet->setCellValue('D'.$i, 'Credit');
+                    $sheet->setCellValue('E'.$i, 'Momo');
+                    $sheet->setCellValue('F'.$i, 'OM');
+                    $sheet->setCellValue('G'.$i, 'Total');
+                    $i =$i+1;
+                    
+                }
+                $vente  = $em->getRepository(VenteA::class)->findByVenteClientMonth($anne,$key);
+                
+                foreach ($vente as $key => $value) {
+
+                    $sheet->setCellValue('A'.$i, $value['nom']);
+                    $sheet->setCellValue('B'.$i,  $value['cash']);
+                    $sheet->setCellValue('C'.$i, $value['banque']);
+                    $sheet->setCellValue('D'.$i, $value['credit']);
+                    $sheet->setCellValue('E'.$i, $value['momo']);
+                    $sheet->setCellValue('F'.$i, $value['om']);
+                    $sheet->setCellValue('G'.$i, $value['TotalVente']);
+
+                    $i =$i+1;
+                }
+            }
+        }
+
+            
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_vente_part_client_mois.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
+    }
 }

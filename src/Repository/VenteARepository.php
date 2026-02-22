@@ -517,6 +517,72 @@ class VenteARepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
 
+    public function findByVenteClient($annee) : array
+    {
+        // Créer les dates de début et fin du mois
+        return $this->createQueryBuilder('v')
+            ->select('c.nom,SUM(v.prix) AS TotalVente,SUM(v.cash) as cash,
+                SUM(v.banque) AS banque, SUM(v.credit) AS credit, 
+                SUM(v.momo) AS momo, SUM(v.om) AS om')
+            ->innerJoin('v.client', 'c')
+            ->where('YEAR(v.createAt) =:annes')
+            ->setParameter('annes',$annee)
+            ->groupBy('v.client')
+            ->orderBy('v.client','ASC')
+            ->getQuery()
+            ->getResult(); 
+    }
+
+    public function findByVenteClientMonth($annee,$moi) : array
+    {
+        // Créer les dates de début et fin du mois
+        return $this->createQueryBuilder('v')
+            ->select('c.nom,SUM(v.prix) AS TotalVente,SUM(v.cash) as cash,
+                SUM(v.banque) AS banque, SUM(v.credit) AS credit, 
+                SUM(v.momo) AS momo, SUM(v.om) AS om')
+            ->innerJoin('v.client', 'c')
+            ->where('YEAR(v.createAt) =:annes')
+            ->andWhere('MONTH(v.createAt) =:mois')
+            ->setParameter('annes',$annee)
+            ->setParameter('mois',$moi)
+            ->groupBy('v.client')
+            ->orderBy('v.client','ASC')
+            ->getQuery()
+            ->getResult(); 
+    }
+
+    public function findVenteByClientDette($annee) : array
+    {
+        // Créer les dates de début et fin du mois
+        return $this->createQueryBuilder('v')
+            ->select('c.nom,SUM(v.prix) AS TotalVente,SUM(v.cash) as cash,
+                SUM(v.banque) AS banque, SUM(v.credit) AS credit, 
+                SUM(v.momo) AS momo, SUM(v.om) AS om')
+            ->innerJoin('v.client', 'c')
+            ->where('YEAR(v.createAt) =:annes')
+            ->andWhere('v.credit > 0')
+            ->setParameter('annes',$annee)
+            ->groupBy('v.client')
+            ->orderBy('v.client','ASC')
+            ->getQuery()
+            ->getResult(); 
+    }
+
+    public function findByVenteByClientDette($annee) : array
+    {
+        // Créer les dates de début et fin du mois
+        return $this->createQueryBuilder('v')
+            ->select('c.nom,v.prix AS TotalVente,v.cash as cash,
+                v.banque AS banque, v.credit AS credit, 
+                v.momo AS momo, v.om AS om, v.createAt as dates')
+            ->innerJoin('v.client', 'c')
+            ->where('YEAR(v.createAt) =:annes')
+            ->andWhere('v.credit > 0')
+            ->setParameter('annes',$annee)
+            ->orderBy('v.client','ASC')
+            ->getQuery()
+            ->getResult(); 
     }
 }
