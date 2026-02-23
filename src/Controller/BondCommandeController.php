@@ -25,6 +25,7 @@ class BondCommandeController extends AbstractController
     public function index(EntityManagerInterface $em, Request $request): Response
     {
         $processed = 0;
+        $produits = $em->getRepository(Produit::class)->findAll();
         if ($request->isMethod('POST')) {
            $file =  $request->files->get('ficher');
            if ($file && $file->isValid()) {
@@ -89,6 +90,7 @@ class BondCommandeController extends AbstractController
         }
         return $this->render('bond_commande/index.html.twig', [
             'controller_name' => 'BondCommandeController',
+            'produits' => $produits,
         ]);
     }
     private function lireFichierExcel($spreadsheet): array
@@ -350,6 +352,45 @@ class BondCommandeController extends AbstractController
         }
         return $this->render('bond_commande/index.html.twig', [
             'controller_name' => 'BondCommandeAController',
+        ]);
+    }
+
+    #[Route('/bond/commande/stock/limite', name: 'app_bond_commande_limite')]
+    public function limite(EntityManagerInterface $em, Request $request) : Response {
+
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+        $id = $tempagence->getAgence()->getId();
+        $produits = $em->getRepository(Produit::class)->findAll();
+        
+        if ($request->getMethod('POST')) {
+            $produit = $request->request->get('produit');
+            $quantite = $request->request->get('limite');
+
+            $prod = $em->getRepository(Produit::class)->findOneBy(['id' => $produit]);
+
+            if ($prod){
+                            $bondCommande = $em->getRepository(BondCommande::class)->findOneBy(['produit' => $prod]);
+                            if ($bondCommande){
+                                $bondCommande->setLimite((int)$quantite);
+                                $bondCommande->setStatut(1);
+                                $em->persist($bondCommande);
+                                $em->flush();
+                            }else{
+                                $bondCommande = new BondCommande();
+                                $bondCommande->setLimite((int)$quantite);
+                                $bondCommande->setStatut(1);
+                                $bondCommande->setCreatetAt(new \DateTime());
+                                $bondCommande->setProduit($prod);
+                                $em->persist($bondCommande);
+                                $em->flush();
+                            }
+            }
+             $this->addFlash('success', 'Enregistrement terminée avec succès!  : ');
+        }
+
+        return $this->render('bond_commande/index.html.twig', [
+            'controller_name' => 'BondCommandeAController',
+            'produits' => $produits,
         ]);
     }
 }
