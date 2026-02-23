@@ -37,6 +37,7 @@ class DepensesType extends AbstractType
                     'Constructions' => 'Constructions',
                     'impôts et taxes' => 'impots et taxes',
                     'Logiciels' => 'Logiciels',
+                    'ration alimentaire' => 'ration',
                     'Terrains' => 'Terrains',
                     'autre charge(Heures supplémentaires, primes,Motivation,Miting etc.)' => 'autre charge',
                     'Voyages et déplacements, deplacement pour versement,seminaire, autre depense ' => 'Voyages',
