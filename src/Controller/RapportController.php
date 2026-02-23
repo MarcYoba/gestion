@@ -17,6 +17,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use PhpParser\Node\Stmt\Foreach_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -77,7 +78,7 @@ class RapportController extends AbstractController
         $depense = $em->getRepository(Depenses::class)->findByDay($date);
         $sommeDepense = $em->getRepository(Depenses::class)->findBySommeDay($date);
         $sommeversement = $em->getRepository(Versement::class)->findBysommeDay($date);
-        
+        $achat = $em->getRepository(Achat::class)->findByRapportDay($date,$agence);
         
         
         $date  = new DateTime($date);
@@ -91,6 +92,7 @@ class RapportController extends AbstractController
                 $quantite = 0;
                 $hist = $em->getRepository(Historique::class)->findByDate($date,$value->getProduit()->getId(),$agence);
                 $fact = $em->getRepository(Facture::class)->findByQuantiteProduitVendu($date,$value->getProduit()->getId(),$agence);
+                $prix = $em->getRepository(Facture::class)->findByPrixProduitVendu($date, $value->getProduit()->getId(), $agence);
                 $lasthist = $em->getRepository(Historique::class)->findByLastDate(new \DateTime($date->format("Y-m-d")),$value->getProduit()->getId(),$agence);
                 $magasin = $em->getRepository(Magasin::class)->findOneBy(["produit" => $value->getProduit()->getId()]);
                 $achat = $em->getRepository(Achat::class)->findByPrixAchatProduit($value->getProduit()->getId(),$agence);
@@ -98,7 +100,10 @@ class RapportController extends AbstractController
                     $quantite = $magasin->getQuantite();
                 }
                 array_push($histoiques,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite(),$quantite]);
-                array_push($benefice,[$value->getProduit()->getNom(),$fact,$value->getProduit()->getPrixvente(),$achat,($value->getProduit()->getPrixvente() - $achat) * $fact]);
+                foreach ($prix as $key => $val) {
+                    array_push($benefice,[$value->getProduit()->getNom(),$val["quantites"],$val["prix"],$achat,($value->getProduit()->getPrixvente() - $achat) * $val["quantites"]]);
+                }
+                
             }
         
         $caisse = $em->getRepository(Caisse::class)->findBy(['createAt' => $date]);
@@ -124,6 +129,7 @@ class RapportController extends AbstractController
         'histoiques' => $histoiques,
         'magasins' => $transfert,
         'benefices' => $benefice,
+        'achats' => $achat,
         ]);
 
         $dompdf->loadHtml($html);

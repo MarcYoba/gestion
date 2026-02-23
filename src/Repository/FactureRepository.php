@@ -121,6 +121,27 @@ class FactureRepository extends ServiceEntityRepository
         return (float) $result;
     }
 
+    public function findByPrixProduitVendu($date, $produit, $agence): array
+    {
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+
+        $result = $this->createQueryBuilder('f')
+            ->select('COALESCE(SUM(f.quantite), 0) as quantites,f.prix')
+            ->where('f.produit = :produit')
+            ->andWhere('f.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('f.agence = :agence')
+            ->setParameter('produit', $produit)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agence', $agence)
+            ->groupBy('f.prix')
+            ->getQuery()
+            ->getResult();
+
+        return  $result;
+    }
+
     public function findByProduitVenduSemaine($date_debut,$date_fin,$agence) : array 
     {
         // $date = new \DateTimeImmutable($date);

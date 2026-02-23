@@ -171,6 +171,24 @@ class AchatRepository extends ServiceEntityRepository
        ;
     }
 
+    public function findByRapportDay($date,$agence) : array
+    {
+        $date = new \DateTimeImmutable($date);
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('a')
+            ->where('a.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('a.agence = :agences')
+            ->setParameter('debut', $startDate)
+            ->setParameter('fin', $endDate)
+            ->setParameter('agences',$agence)
+            ->orderBy('a.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+       ;
+    }
+
     public function findByFirstAndLastDayProduit($first_date,$end_date,$produit,$agence) : array
     {
         $debut = new \DateTimeImmutable($first_date);
