@@ -152,11 +152,13 @@ class BondCommandeController extends AbstractController
 
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
         $id = $tempagence->getAgence()->getId();
+        $produits = $entityManager->getRepository(Produit::class)->findAll();
 
         $foournisseurs = $entityManager->getRepository(Fournisseur::class)->findAll();
         return $this->render('bond_commande/liste_fourisseur.html.twig', [
             'id' => $id,
             'fournisseurs' => $foournisseurs,
+            'produits' => $produits,
         ]);
     }
     #[Route('/bond/commande/liste/fourisseur/{id}', name: 'app_bond_commande_liste_fourisseur_id')]
@@ -392,5 +394,36 @@ class BondCommandeController extends AbstractController
             'controller_name' => 'BondCommandeAController',
             'produits' => $produits,
         ]);
+    }
+
+    #[Route('/bond/commande/produit', name: 'app_bond_commande_fournisseur_produit')]
+    public function produit_fournisseur(EntityManagerInterface $entityManager, Request $request) : Response 
+    {
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
+        $id = $tempagence->getAgence()->getId();
+        $produits = $entityManager->getRepository(Produit::class)->findAll();
+        $foournisseurs = $entityManager->getRepository(Fournisseur::class)->findAll();
+
+        if ($request->getMethod('POST')) {
+            $idproduit = $request->request->get('produit');
+            $idfournisseur = $request->request->get('fournisseur');
+
+            $fournisseur = $entityManager->getRepository(Fournisseur::class)->findOneBy(['id' => $idfournisseur]);
+            $produit = $entityManager->getRepository(Produit::class)->findOneBy(['id' => $idproduit]);
+
+            if ($produit && $fournisseur) {
+                $fournisseur->addProduit($produit);
+                $entityManager->persist($fournisseur);
+                $entityManager->flush(); 
+                $this->addFlash('success', 'Enregistrement terminée avec succès!  : ');
+            }
+        }
+
+       return $this->render('bond_commande/index.html.twig', [
+            'id' => $id,
+            'fournisseurs' => $foournisseurs,
+            'produits' => $produits,
+        ]);
+
     }
 }
