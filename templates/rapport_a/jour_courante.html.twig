@@ -436,13 +436,15 @@
         </thead>
         <tbody>
             {% for vaccin in vaccins %}
-                <td>{{vaccin.sujet}}</td>
-                <td>{{vaccin.client.nom}}</td>
-                <td>{{vaccin.typeVaccin}}</td>
-                <td>{{vaccin.createtAD | date("Y-m-d")}}</td>
-                <td>{{vaccin.dateVaccin | date("Y-m-d")}}</td>
-                <td>{{vaccin.montant}}</td>
-                <td>{{vaccin.resteMontant}}</td>
+                <tr>
+                    <td>{{vaccin.sujet}}</td>
+                    <td>{{vaccin.client.nom}}</td>
+                    <td>{{vaccin.typeVaccin}}</td>
+                    <td>{{vaccin.createtAD | date("Y-m-d")}}</td>
+                    <td>{{vaccin.dateVaccin | date("Y-m-d")}}</td>
+                    <td>{{vaccin.montant}}</td>
+                    <td>{{vaccin.resteMontant}}</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
