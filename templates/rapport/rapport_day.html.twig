@@ -183,6 +183,45 @@
         </table>
 
         <br><br><br> 
+    <table style="width:100%">
+        <thead>
+            <tr><th colspan="5" align="center"> Tableau Achat : {{date}}</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td colspan="5" align="center"> Recapitulatif Operation d'achat </td>
+                </tr>
+                    <tr>
+                    <th scope="col">Produit</th>
+                    <th scope="col">Quantite</th>
+                    <th scope="col">prix</th>
+                    <th scope="col">Montant</th>
+                    <th scope="col">Date</th>
+                </tr>
+                {% set sommecaisse = 0 %}
+                {% for achat in achats %}
+                <tr>
+                    <td>{{achat.produit.nom}}</td>
+                    <td>{{achat.quantite}}</td>
+                    <td>{{achat.prix}}</td>
+                    <td>{{achat.montant}}</td>
+                    <td>{{achat.createdAt | date("Y-m-d")}}</td>
+                </tr>
+                {% set sommecaisse = sommecaisse +  achat.montant %}
+                {% endfor %}
+                
+                <tr>
+                <td>-----</td>
+                <td>-----</td>
+                <td>-----</td>
+                <td>{{ sommecaisse}}</td>
+                <td>{{date}}</td>
+            </tr> 
+            
+            </tbody>
+        </table>
+
+        <br><br><br> 
         <table style="width:100%">
         <thead>
             <tr><th colspan="6" align="center"> Quantite Pour chaque produit : {{date}}</th></tr>
