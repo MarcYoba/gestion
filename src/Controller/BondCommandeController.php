@@ -419,7 +419,7 @@ class BondCommandeController extends AbstractController
             }
         }
 
-       return $this->render('bond_commande/index.html.twig', [
+       return $this->render('bond_commande/liste_fourisseur.html.twig', [
             'id' => $id,
             'fournisseurs' => $foournisseurs,
             'produits' => $produits,
