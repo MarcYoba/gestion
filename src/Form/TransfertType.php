@@ -28,6 +28,7 @@ class TransfertType extends AbstractType
                 'widget' => 'single_text',
                 'attr' => [
                     'class' => 'form-control',
+                    'value' => date("Y-m-d"),
                 ]
             ])
             ->add('produit', EntityType::class,[

@@ -25,12 +25,13 @@ class TransfertController extends AbstractController
         $transfert = new Transfert();
         $form = $this->createForm(TransfertType::class,$transfert);
         $form->handleRequest($request);
+        $magasin = $em->getRepository(Magasin::class)->findOneBy(['id' => $id]);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $quantite = $form->get('quantite')->getData();
             $produit = $form->get('produit')->getData();
             
             $agence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
-            $magasin = $em->getRepository(Magasin::class)->findOneBy(['id' => $id]);
             $produits = $em->getRepository(Produit::class)->findOneBy(['id' => $produit->getId()]);
             $reste = $magasin->getQuantite()-$quantite;
             $magasin->setQuantite($reste);
@@ -58,6 +59,7 @@ class TransfertController extends AbstractController
         }
         return $this->render('transfert/index.html.twig', [
             'form' => $form->createView(),
+            'magasins' => $magasin,
         ]);
     }
     #[Route('/transfert/list', name: 'app_transfert_list')]

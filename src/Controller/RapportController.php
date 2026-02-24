@@ -101,7 +101,7 @@ class RapportController extends AbstractController
                 }
                 array_push($histoiques,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite(),$quantite]);
                 foreach ($prix as $key => $val) {
-                    array_push($benefice,[$value->getProduit()->getNom(),$val["quantites"],$val["prix"],$achat,($value->getProduit()->getPrixvente() - $achat) * $val["quantites"]]);
+                    array_push($benefice,[$value->getProduit()->getNom(),$val["quantites"],$val["prix"],$achat,($val["prix"] - $achat) * $val["quantites"]]);
                 }
                 
             }
@@ -190,11 +190,14 @@ class RapportController extends AbstractController
                 $lasthist = $em->getRepository(Historique::class)->findByLastDate(new \DateTime($date->format("Y-m-d")),$value->getProduit()->getId(),$agence);
                 $magasin = $em->getRepository(Magasin::class)->findOneBy(["produit" => $value->getProduit()->getId()]);
                 $achat = $em->getRepository(Achat::class)->findByPrixAchatProduit($value->getProduit()->getId(),$agence);
+                $prix = $em->getRepository(Facture::class)->findByPrixProduitVendu($date, $value->getProduit()->getId(), $agence);
                 if($magasin) {
                     $quantite = $magasin->getQuantite();
                 }
                 array_push($histoiques,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite(),$quantite]);
-                array_push($benefice,[$value->getProduit()->getNom(),$fact,$value->getProduit()->getPrixvente(),$achat,($value->getProduit()->getPrixvente() - $achat) * $fact]);
+                foreach ($prix as $key => $val) {
+                    array_push($benefice,[$value->getProduit()->getNom(),$val["quantites"],$val["prix"],$achat,($val["prix"] - $achat) * $val["quantites"]]);
+                }
             }
         
         $caisse = $em->getRepository(Caisse::class)->findBy(['createAt' => $date]);
