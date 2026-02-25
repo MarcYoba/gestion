@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Employer;
 use App\Entity\ProduitA;
 use App\Entity\TransfertA;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -24,6 +25,14 @@ class TransfertAType extends AbstractType
                     'placeholder' => 'definir la quantite',
                 ]
             ])
+            ->add('matricule',NumberType::class,[
+                
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'definir matricule',
+                    'readonly' => true,
+                ]
+            ])
             ->add('createtAt',DateType::class,[
                 'widget' => 'single_text',
                 'attr' => [
@@ -31,17 +40,16 @@ class TransfertAType extends AbstractType
                     'value' => date("Y-m-d"),
                 ]
             ])
-            ->add('produit', EntityType::class,[
-                'class' => ProduitA::class,
+            ->add('Employer', EntityType::class,[
+                'class' => Employer::class,
                 'choice_label' => 'nom',
-                
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Sélectionner un produit',
+                    'placeholder' => 'Sélectionner un Employer',
                 ],
             ])
             ->add('button',SubmitType::class,[
-                'label' => 'Enregistrer',
+                'label' => 'Transferer pour validation',
                 'attr' => [
                     'class' => 'btn btn-primary btn-user btn-block',
                     'style' => 'margin-top: 1rem;' // Adds spacing to move the button to a new line

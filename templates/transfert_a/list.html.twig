@@ -42,7 +42,7 @@
                                         {% endfor %}
                                     </div>
                                     <div class="col-sm-2"> 
-                                        <a href="{{ path('app_magasin')}}" class="btn btn-success">
+                                        <a href="{{ path('app_magasin_a')}}" class="btn btn-success">
                                         <i class="fa fa-plus"></i>
                                          Ajouter
                                          </a>             
@@ -98,6 +98,10 @@
                                                 <td>{{ transfert.quantite}}</td>
                                                 {% if transfert.statut == "Transféré" %}
                                                     <td class='text text-success'>{{ transfert.statut}}</td>
+                                                {% elseif transfert.statut == "Attente" %}
+                                                    <td class='text text-warning'>{{ transfert.statut}}</td>
+                                                {% elseif transfert.statut == "Annuler" %}
+                                                    <td class='text text-primary'>{{ transfert.statut}}</td>
                                                 {% else %}
                                                     <td class='text text-danger'>{{ transfert.statut}}</td>
                                                 {% endif %}
@@ -106,9 +110,17 @@
                                                 {% if transfert.statut == "Transféré" %}
                                                     <td>
                                                         <a href='{{ path('app_transfert_a_edit', {'id': transfert.id})}}' class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cette vente ?\");'>Detransfert</a>
+                                                        <a href="{{ path('app_transfert_a_details', {'id': transfert.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>
+                                                    </td>
+                                                {% elseif transfert.statut == "Attente" %}
+                                                    <td>
+                                                        <a href='{{ path('app_transfert_a_valider', {'id': transfert.id})}}' class='btn btn-warning' onclick='return confirm(\"Êtes-vous sûr de vouloir valider cette vente ?\");'>Valider</a>
+                                                        <a href="{{ path('app_transfert_a_details', {'id': transfert.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>
                                                     </td>
                                                 {% else %}
-                                                    <td></td>
+                                                    <td>
+                                                        <a href="{{ path('app_transfert_a_details', {'id': transfert.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>
+                                                    </td>
                                                 {% endif %}
                                             </tr>
                                         {% endfor %}

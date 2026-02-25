@@ -52,18 +52,22 @@
                                     {% endfor %}     
                                 </div> 
                             </div>
-                            {{ form_start(form) }}
-                                <div class="form-group row">
+                                <form class="user" action="{{ path('app_transfert_a_valider', {'id': transferts.id}) }}" method="post" enctype="multipart/form-data">                                <div class="form-group row">
                                     <div class="col-sm-6">
                                         <p class="mb-1">
-                                            <strong>N° de transfert :</strong> {{ form_widget(form.matricule, {'attr': {'value': matricule}}) }}
+                                            <strong>N° de transfert : </strong>
+                                            <input type="text" name="transferts[{{ transferts.id }}][matricule]" 
+                                            value="{{ transferts.matricule }}" class="form-control" readonly>
                                         </p>
                                     </div>
                                     <div class="col-sm-6">
-                                        <p class="mb-1">Date : <strong>{{ form_widget(form.createtAt) }}</strong></p>
+                                        <p class="mb-1">Date : <strong>
+                                        <input type="date" name="transferts[{{ transferts.id }}][createtAt]" 
+                                            value="{{ transferts.createtAt | date('Y-m-d') }}" class="form-control" readonly>
+                                        </strong></p>
                                     </div>
                                     <div class="col-sm-6">
-                                        <p class="mb-1">Magasin d'origine : <strong>{{ Agences.nom ?? 'Magasin central' }}</strong></p>
+                                        <p class="mb-1">Magasin d'origine : <strong>{{ transferts.agence.nom ?? 'Magasin central' }}</strong></p>
                                     </div>
                                     <div class="col-sm-6">
                                         <p class="mb-1"><strong>Destination :</strong> Production, vente, etc.</p>
@@ -75,21 +79,31 @@
                                         </p>
                                     </div>
                                     <div class="col-sm-6">
-                                        Produit : <strong>{{ magasins.produit.nom }}</strong>
-                                        <input type="text" id="produit" name="produit" value="{{ magasins.produit.id }}" class="form-control" readonly>
+                                        Produit : <strong>{{ transferts.produit.nom }}</strong>
+                                        <input type="text" name="transferts[{{ transferts.id }}][produit]" value="{{ transferts.produit.id }}" class="form-control" readonly>
                                     </div>
                                     <div class="col-sm-6">
                                         Quantité
-                                        {{ form_label(form.quantite) }}
-                                        {{ form_widget(form.quantite) }}
+                                        <input type="text" name="transferts[{{ transferts.id }}][quantite]" value="{{ transferts.quantite }}" class="form-control" readonly>
                                     </div>
                                     <div class="col-sm-6">
-                                        Approuvé par
-                                        
-                                        {{ form_widget(form.Employer) }}
+                                        Creé par
+                                        <input type="text" name="transferts[{{ transferts.id }}][utilisateur]" value="{{ transferts.user.username }}" class="form-control" readonly>
                                     </div>
-                                </div>  
-                            {{ form_end(form) }}
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6">  
+                                        <button type="submit" name="transferts[{{ transferts.id }}][transferer]" value="Transféré" class="btn btn-primary btn-user btn-block">
+                                            Transférer
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-6">  
+                                        <button type="submit" name="transferts[{{ transferts.id }}][Annuler]" value="Annuler"  class="btn btn-danger btn-user btn-block">
+                                            Annuler
+                                        </button>
+                                    </div>
+                                </div>
+                            </form> 
                             
                         </div>
                     </div>
