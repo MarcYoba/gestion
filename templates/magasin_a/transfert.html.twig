@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transfer{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GESTION DE STOCK</title>
+
+    <!-- Custom fonts for this template-->
+
+</head>
+
+<body class="bg-gradient-success">
+
+    <div class="container" >
+        
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-2 d-none d-lg-block bg-register-image">
+                        {% include "navbarA.html.twig" %}
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="p-5">
+                            <div class="text-center" >
+                                <h1 class="h4 text-gray-900 mb-4">Rédaction du bon de transfert avec produit unique</h1>  
+                            </div>
+                            <div class="card-header py-3">
+                                <div class="col-sm-2 mb-6 mb-sm-0">
+                                    {% for message in app.flashes('success') %}
+                                        <div class="alert alert-success">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-sm-6 mb-6 mb-sm-0">
+                                    {% for tempagence in app.user.tempAgences %}
+                                        <a href="{{ path('app_home_dashboard', {'id': tempagence.agence.id}) }}" class="btn btn-success btn-user btn-block">
+                                            <i class="fas fa-home"></i>
+                                                home
+                                        </a>  
+                                    {% endfor %}     
+                                </div> 
+                            </div>
+                            <form class="user" action="{{ path('app_magasin_a_bon') }}" method="post" enctype="multipart/form-data">                                <div class="form-group row">
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <input type="search" name="produitrecher" id="produitrecher" class="form-control" onkeyup="rechercheTramsfertAProduit()"  class="form-control" placeholder="Recherche Produit"/>
+                                        <select id="transfert_a_produit"  name="transfert_a_produit"  class="form-control form-select" size="5"  multiple aria-label="multiple select " required>
+                                            {% for produit in produits %}
+                                                <option value="{{ produit.id }}">{{ produit.nom }}</option>
+                                            {% endfor %}                         
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select id="employer"  name="employer"  class="form-control form-select" size="5"  multiple aria-label="multiple select " required>
+                                            {% for employer in employers %}
+                                                <option value="{{ employer.id }}">{{ employer.nom }}</option>
+                                            {% endfor %}                         
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <strong>Quantite</strong>
+                                        <input type="text" name="quantite" value="0" class="form-control"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button class="btn btn-info btn-user" onclick="ajouterLigne('dataTable', 
+                                                    5, 10)"><i class="fas fa-check"></i> Valider la selection</button>  
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="dataTable"  width="100%" cellspacing="0">
+                                                    <thead>
+                                                    
+                                                        <tr>
+                                                            <th>Produit</th>
+                                                            <th>Quantite</th>
+                                                            <th>Matricule</th>
+                                                            <th>Validation</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                       
+                                                        
+                                                    </tfoot>
+                                                    <tbody>
+                                                        <tr class="br-primary">
+                                                            <th  >
+                                                            <div class="form-group ">
+                                                                
+                                                            </div>
+                                                            </th>
+                                                            <th>
+                                                                <div class="form-group row">
+                                     
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            
+                                                        </th>
+                                                        <th>
+                                                            <span id="modifierligne"></span>
+                                                            <span id="idfacture" class="drop"></span>
+                                                            <span id="idvente" class="drop"></span>
+                                                        </th> 
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <hr>
+                                                
+                                            </div>
+                                        </div>
+                                <button type="submit"  class="btn btn-success btn-user btn-block">
+                                    Transférer
+                                </button>
+                            </form> 
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="{{ asset('js/produit/recherche.js') }}"> </script>
+</body>
+</html>
+{% endblock %}
+
+

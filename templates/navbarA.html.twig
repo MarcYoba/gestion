@@ -386,46 +386,26 @@
             <a class="collapse-item" href="{{ path('app_consultation_list')}}" >liste Consultation</a> 
             <a class="collapse-item" href="{{path('app_suivi_list')}}" >liste des suivi</a>
         {% endif %}
-    </div>
-</div>
-</li>
+        <div class="dropdown-divider"></div>
+        <h6 class="collapse-header"> Vaccin:</h6>
 
-<li class="nav-item">
-<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#vaccin"
-    aria-expanded="true" aria-controls="vaccin">
-    <i class="fas fa-fw fa-folder"></i>
-    <span>Vaccin </span>
-</a>
-<div id="vaccin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Vaccin</h6>
-            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{path('app_vaccin')}}" >Adminitrer un Vaccin</a>
-                <a class="collapse-item" href="{{path('app_vaccin_list')}}">Liste Vaccin</a>
-            {% else %}
-                <a class="collapse-item" href="{{path('app_vaccin')}}" >Adminitrer un Vaccin</a>
-                <a class="collapse-item" href="{{path('app_vaccin_list')}}">Liste Vaccin</a>
-            {% endif %}
-    </div>
-</div>
-</li>
+        {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+            <a class="collapse-item" href="{{path('app_vaccin')}}" >Adminitrer un Vaccin</a>
+            <a class="collapse-item" href="{{path('app_vaccin_list')}}">Liste Vaccin</a>
+        {% else %}
+            <a class="collapse-item" href="{{path('app_vaccin')}}" >Adminitrer un Vaccin</a>
+            <a class="collapse-item" href="{{path('app_vaccin_list')}}">Liste Vaccin</a>
+        {% endif %}
+        <div class="dropdown-divider"></div>
+        <h6 class="collapse-header"> Autopsie:</h6>
 
-<li class="nav-item">
-<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Autopsie"
-    aria-expanded="true" aria-controls="vaccin">
-    <i class="fas fa-fw fa-folder"></i>
-    <span>Autopsie </span>
-</a>
-<div id="Autopsie" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Autopsie </h6>
-            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{path('app_autopsie')}}" >Autopsie</a>
-                <a class="collapse-item" href="{{path('app_autopsie_liste')}}">Liste</a>
-            {% else %}
-                <a class="collapse-item" href="{{path('app_autopsie')}}" >Autopsie</a>
-                <a class="collapse-item" href="{{path('app_autopsie_liste')}}">Liste</a>
-            {% endif %}
+        {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+            <a class="collapse-item" href="{{path('app_autopsie')}}" >Autopsie</a>
+            <a class="collapse-item" href="{{path('app_autopsie_liste')}}">Liste</a>
+        {% else %}
+            <a class="collapse-item" href="{{path('app_autopsie')}}" >Autopsie</a>
+            <a class="collapse-item" href="{{path('app_autopsie_liste')}}">Liste</a>
+        {% endif %}
     </div>
 </div>
 </li>
@@ -451,26 +431,6 @@
 </li>
 
 <li class="nav-item">
-<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#employer"
-    aria-expanded="true" aria-controls="employer">
-    <i class="fas fa-fw fa-folder"></i>
-    <span>Employer </span>
-</a>
-<div id="employer" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Employer </h6>
-            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{path('app_employer_a')}}">Employer</a>
-                <a class="collapse-item" href="{{path('employer_list_a')}}">Liste </a>
-            {% else %}
-                <a class="collapse-item" href="{{path('employer_list_a')}}">Liste </a>
-                <a class="collapse-item" href="{{path('app_employer_a')}}">Employer</a>
-            {% endif %}
-    </div>
-</div>
-</li>
-
-<li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Agence"
         aria-expanded="true" aria-controls="Agence">
         <i class="fas fa-fw fa-folder"></i>
@@ -485,6 +445,15 @@
             {% else %}
                 <a class="collapse-item" href="{{ path('app_agence_new_a') }}" id="ajouterFourniseur">Ajouter une Agence</a>
                 <a class="collapse-item" href="{{ path('app_agence_list_a') }}">liste Agence</a>
+            {% endif %}
+            <div class="dropdown-divider"></div>
+            <h6 class="collapse-header"> Employer:</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{path('app_employer_a')}}">Employer</a>
+                <a class="collapse-item" href="{{path('employer_list_a')}}">Liste </a>
+            {% else %}
+                <a class="collapse-item" href="{{path('employer_list_a')}}">Liste </a>
+                <a class="collapse-item" href="{{path('app_employer_a')}}">Employer</a>
             {% endif %}
         </div>
     </div>
