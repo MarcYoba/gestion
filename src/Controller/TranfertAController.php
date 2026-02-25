@@ -23,43 +23,42 @@ class TranfertAController extends AbstractController
             return $this->redirectToRoute('app_logout');
         }
         $transfert = new TransfertA();
+        
         $form = $this->createForm(TransfertAType::class,$transfert);
         $form->handleRequest($request);
-
         $magasin = $em->getRepository(MagasinA::class)->findOneBy(['id' => $id]);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $quantite = $form->get('quantite')->getData();
-            $produit = $form->get('produit')->getData();
+        $produits = $em->getRepository(ProduitA::class)->findOneBy(['id' => $magasin->getProduit()->getId()]);
+        $agence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+
+        $numero = str_pad(random_int(0, 99), 3, '0', STR_PAD_LEFT);
+        $datePart = date('Ymd');
+        $lettres = chr(random_int(65, 90)) . chr(random_int(65, 90));
             
-            $agence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
-            $produits = $em->getRepository(ProduitA::class)->findOneBy(['id' => $produit->getId()]);
+        $matricule = $numero . $datePart . $lettres;
+        $transfert->setMatricule($matricule);
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            //$errors = $form->getErrors(true);
+            $quantite = $form->get('quantite')->getData();
             $reste = $magasin->getQuantite()-$quantite;
             $magasin->setQuantite($reste);
-
-
-            $numero = str_pad(random_int(0, 99), 3, '0', STR_PAD_LEFT);
-            $datePart = date('Ymd');
-            $lettres = chr(random_int(65, 90)) . chr(random_int(65, 90));
-            
-            $matricule = $numero . $datePart . $lettres;
             
             $transfert->setUser($user);
             $transfert->setReste($reste);
             $transfert->setAgence($agence->getAgence());
-            $transfert->setStatut("Transféré");
-            $transfert->setMatricule($matricule);
-
-            $produits->setQuantite($produits->getQuantite()+$quantite);
+            $transfert->setStatut("Attente");
+            $transfert->setProduit($produits);
 
             $em->persist($magasin);
             $em->persist($transfert);
-            $em->persist($produits);
             $em->flush();
             return $this->redirectToRoute('app_transfert_a_list');
         }
         return $this->render('transfert_a/index.html.twig', [
             'form' => $form->createView(),
             'magasins' => $magasin,
+            'matricule' => $matricule,
+            'Agences' => $agence->getAgence(),
         ]);
     }
     #[Route('/transfert/a/list', name: 'app_transfert_a_list')]
@@ -84,20 +83,65 @@ class TranfertAController extends AbstractController
             return $this->redirectToRoute('app_logout');
         }
         if ($transfert) {
-            $produit = $em->getRepository(ProduitA::class)->findOneBy(['id' => $transfert->getProduit()->getId()]);
-            $produit->setQuantite($produit->getQuantite()-$transfert->getQuantite());
-            $em->persist($produit);
+            if ($transfert->getUser() == $this->getUser()) {
+                $produit = $em->getRepository(ProduitA::class)->findOneBy(['id' => $transfert->getProduit()->getId()]);
+                $produit->setQuantite($produit->getQuantite()-$transfert->getQuantite());
+                $em->persist($produit);
 
-            $magasin = $em->getRepository(MagasinA::class)->findOneBy(['produit' => $transfert->getProduit()->getId()]);
-            $magasin->setQuantite($magasin->getQuantite()+$transfert->getQuantite());
-            $em->persist($magasin);
-            
-            $transfert->setStatut("Détransféré");
+                $magasin = $em->getRepository(MagasinA::class)->findOneBy(['produit' => $transfert->getProduit()->getId()]);
+                $magasin->setQuantite($magasin->getQuantite()+$transfert->getQuantite());
+                $em->persist($magasin);
+                
+                $transfert->setStatut("Détransféré");
 
-            $em->persist($transfert);
-            $em->flush();
+                $em->persist($transfert);
+                $em->flush();
+            }
         }
         
         return $this->redirectToRoute('app_transfert_a_list');
+    }
+
+    #[Route('/transfert/a/valider/{id}', name: 'app_transfert_a_valider')]
+    public function valider(EntityManagerInterface $em,TransfertA $transfert,Request $request): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_logout');
+        }
+         $data = $request->request->all('transferts');
+        if ($data) {
+            if ($transfert) {
+                if ($transfert->getUser() == $this->getUser()) {
+                    foreach ($data as $key => $value) {
+                        if (isset($value["transferer"]) == "Transféré") {
+                            $produit = $em->getRepository(ProduitA::class)->findOneBy(['id' => $value['produit']]);
+                            $produit->setQuantite($produit->getQuantite()+$transfert->getQuantite());
+                            $em->persist($produit);
+                            $transfert->setStatut($value["transferer"]);
+                            $em->persist($transfert);
+                            $em->flush();
+                        }else{
+                           $transfert->setStatut($value["Annuler"]);
+                            $em->persist($transfert);
+                            $em->flush(); 
+                        }
+                    }
+                }
+                return $this->redirectToRoute('app_transfert_a_list'); 
+            }
+        }
+        return $this->render('transfert_a/valider.html.twig', [
+            'transferts' => $transfert,
+        ]);
+    }
+
+    #[Route('/transfert/a/details/{id}', name: 'app_transfert_a_details')]
+    public function details(EntityManagerInterface $em,TransfertA $transfert) : Response {
+        $transferts = $em->getRepository(TransfertA::class)->findBy(['matricule' => $transfert->getMatricule()]);
+
+        return $this->render('transfert_a/detailles.html.twig', [
+            'transferts' => $transferts,
+        ]); 
     }
 }

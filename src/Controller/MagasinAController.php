@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\MagasinA;
+use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use App\Form\MagasinAType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -87,5 +88,14 @@ class MagasinAController extends AbstractController
             $em->flush();
         }
        return $this->redirectToRoute('app_magasin_a_list');
+    }
+
+    #[Route('/magasin/bon/tranfert', name: 'app_magasin_a_bon')]
+    public function transfert(EntityManagerInterface $em,Request $request) : Response {
+        $produit = $em->getRepository(ProduitA::class)->findAll();
+
+        return $this->render('magasin_a/transfert.html.twig', [
+            'produits' => $produit,
+        ]);
     }
 }

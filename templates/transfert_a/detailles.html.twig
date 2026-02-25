@@ -52,45 +52,50 @@
                                     {% endfor %}     
                                 </div> 
                             </div>
-                            {{ form_start(form) }}
+                            {% for transfert in transferts %}
+                                <h5 class="text text-center"> Transfert : {{ transfert.id }}</h5>
+                                <hr>
                                 <div class="form-group row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <p class="mb-1">
-                                            <strong>N° de transfert :</strong> {{ form_widget(form.matricule, {'attr': {'value': matricule}}) }}
+                                            <strong>N° de transfert : </strong>
+                                            {{ transfert.matricule }}
                                         </p>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <p class="mb-1">Date : <strong>{{ form_widget(form.createtAt) }}</strong></p>
+                                    <div class="col-sm-4">
+                                        <p class="mb-1">Date : <strong>
+                                        {{ transfert.createtAt | date('Y-m-d') }}
+                                        </strong>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <p class="mb-1">Magasin d'origine : <strong>{{ Agences.nom ?? 'Magasin central' }}</strong></p>
+                                    <div class="col-sm-4">
+                                        <p class="mb-1">Magasin d'origine : <strong>{{ transfert.agence.nom ?? 'Magasin central' }}</strong></p>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <p class="mb-1"><strong>Destination :</strong> Production, vente, etc.</p>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <p class="mb-1">
                                             Demandé par : <strong>{{ app.user.username }}</strong>
-                                            <input type="text" id="user" name="user" value="{{ app.user.id }}" class="form-control" readonly>
                                         </p>
                                     </div>
-                                    <div class="col-sm-6">
-                                        Produit : <strong>{{ magasins.produit.nom }}</strong>
-                                        <input type="text" id="produit" name="produit" value="{{ magasins.produit.id }}" class="form-control" readonly>
+                                    <div class="col-sm-4">
+                                        Produit : <strong>{{ transfert.produit.nom }}</strong>
                                     </div>
-                                    <div class="col-sm-6">
-                                        Quantité
-                                        {{ form_label(form.quantite) }}
-                                        {{ form_widget(form.quantite) }}
+                                    <div class="col-sm-4">
+                                        Quantité : 
+                                        <strong> {{ transfert.quantite }} </strong>
                                     </div>
-                                    <div class="col-sm-6">
-                                        Approuvé par
-                                        
-                                        {{ form_widget(form.Employer) }}
+                                    <div class="col-sm-4">
+                                        Creé par
+                                        <strong> {{ transfert.user.username }} </strong>
                                     </div>
-                                </div>  
-                            {{ form_end(form) }}
-                            
+                                    <div class="col-sm-4">
+                                        Validé par
+                                        <strong>{{ transfert.Employer.nom }}</strong>
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -102,5 +107,3 @@
 </body>
 </html>
 {% endblock %}
-
-
