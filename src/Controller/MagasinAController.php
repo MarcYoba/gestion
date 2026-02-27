@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Employer;
 use App\Entity\MagasinA;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
@@ -93,9 +94,12 @@ class MagasinAController extends AbstractController
     #[Route('/magasin/bon/tranfert', name: 'app_magasin_a_bon')]
     public function transfert(EntityManagerInterface $em,Request $request) : Response {
         $produit = $em->getRepository(ProduitA::class)->findAll();
+        $employer = $em->getRepository(Employer::class)->findAll();
 
+        
         return $this->render('magasin_a/transfert.html.twig', [
             'produits' => $produit,
+            'employers' => $employer,
         ]);
     }
 }
