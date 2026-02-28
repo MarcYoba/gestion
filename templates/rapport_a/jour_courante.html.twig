@@ -134,7 +134,7 @@
                 <td>{{ sommedepense}}</td>
                 <td>{{ sommeVersement}}</td>
                 <td>{{sommeCaisse}}</td>
-                <td>{{ (sommeVente + sommeVersement + sommemomo + sommeOm) - sommeCredit - sommeReduction - sommedepense + sommeCaisse}}</td>
+                <td>{{ sommeCash + sommeVersement + sommemomo + sommeOm - (sommedepense - sommeCaisse)}}</td>
             </tbody>
         </thead>
     </table> 

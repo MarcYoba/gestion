@@ -175,6 +175,14 @@
                     <a class="collapse-item" href="{{ path('app_inventaire_a') }}">Inventaire</a>
                     <a class="collapse-item" href="{{ path('app_inventaire_a_list') }}">List</a>
                 {% endif %}
+            <h6 class="collapse-header">Inventaire Caisse</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                    <a class="collapse-item" href="{{ path('app_inventaire_caisse_a') }}">Inventaire</a>
+                    <a class="collapse-item" href="{{ path('app_inventaire_caisse_a_list') }}" >List</a>
+                {% else %}
+                    <a class="collapse-item" href="{{ path('app_inventaire_caisse_a') }}">Inventaire</a>
+                    <a class="collapse-item" href="{{ path('app_inventaire_caisse_a_list') }}">List</a>
+                {% endif %}
         </div>
     </div>
 </li>

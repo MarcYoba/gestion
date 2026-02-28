@@ -45,7 +45,7 @@ class RapportAController extends AbstractController
         $dompdf = new Dompdf($options);
         $date = date("Y-m-d");
 
-        $sommeCaisse = $em->getRepository(CaisseA::class)->findBySommeCaisse($date,$id);
+        $sommeCaisse = $em->getRepository(CaisseA::class)->findBySommeCaisse(new \DateTime($date),$id);
         $inventaire = $em->getRepository(InventaireA::class)->findBy(['createtAt'=> new \DateTime($date)]);
         $date = new \DateTimeImmutable($date);
         $caisse = $em->getRepository(CaisseA::class)->findBy(["createAt" => $date]);
