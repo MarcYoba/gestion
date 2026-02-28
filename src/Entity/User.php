@@ -209,6 +209,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: InventaireA::class)]
     private Collection $inventaireAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: InventaireCaisseA::class)]
+    private Collection $inventaireCaisseAs;
+
     
 
     public function __construct() {
@@ -265,6 +268,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->magasins = new ArrayCollection();
         $this->transferts = new ArrayCollection();
         $this->inventaireAs = new ArrayCollection();
+        $this->inventaireCaisseAs = new ArrayCollection();
         
     }
 
@@ -1950,6 +1954,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($inventaireA->getUser() === $this) {
                 $inventaireA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, InventaireCaisseA>
+     */
+    public function getInventaireCaisseAs(): Collection
+    {
+        return $this->inventaireCaisseAs;
+    }
+
+    public function addInventaireCaisseA(InventaireCaisseA $inventaireCaisseA): static
+    {
+        if (!$this->inventaireCaisseAs->contains($inventaireCaisseA)) {
+            $this->inventaireCaisseAs->add($inventaireCaisseA);
+            $inventaireCaisseA->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventaireCaisseA(InventaireCaisseA $inventaireCaisseA): static
+    {
+        if ($this->inventaireCaisseAs->removeElement($inventaireCaisseA)) {
+            // set the owning side to null (unless already changed)
+            if ($inventaireCaisseA->getUser() === $this) {
+                $inventaireCaisseA->setUser(null);
             }
         }
 

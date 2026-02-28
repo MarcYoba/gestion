@@ -90,7 +90,7 @@ class CaisseARepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
-        return $result > 0 ? (float)$result : 0;
+        return (float)$result ;
     }
 
     public function findBySommeCaisseSemaine($first_date,$end_date,$agence) : float 
@@ -105,6 +105,6 @@ class CaisseARepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
-        return $result > 0 ? (float)$result : 0;
+        return  (float)$result ;
     }
 }
