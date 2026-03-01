@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\InventaireCaisseA;
 use App\Entity\TempAgence;
+use App\Entity\VenteA;
 use App\Form\InventaireCaisseAType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +20,15 @@ class InventaireCaisseAController extends AbstractController
         $inventaire = new InventaireCaisseA();
         $form = $this->createForm(InventaireCaisseAType::class,$inventaire);
         $form->handleRequest($request);
+        $user  = $this->getUser();
+        $tempreagence = $em->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+        $agence = $tempreagence->getAgence();
+        $date_debut = new \DateTimeImmutable();
+        $date_fin = new \DateTimeImmutable();
+        $vente = $em->getRepository(VenteA::class)->findRapportVenteToWeekCash($date_debut, $date_fin,$agence);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user  = $this->getUser();
-            $tempreagence = $em->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
-            $agence = $tempreagence->getAgence();
+            
             $inventaire->setAgence($agence);
             $inventaire->setUser($user);
             $em->persist($inventaire);
