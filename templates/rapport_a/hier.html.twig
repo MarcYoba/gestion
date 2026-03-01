@@ -512,6 +512,38 @@
             {% endfor %}
         </tbody>
     </table>
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="6" align="center"> Tableau Inventaire Caisse  : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th colspan="6" align="center"> Recapitulatif Inventaire Caisse : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th>id</th>
+                <th>Montant vendu cash</th>
+                <th>Montant Caisse</th>
+                <th>Ecart</th>
+                <th>Justificatif</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inventaire in inventaireCaisses %}
+                <tr>
+                    <td>{{inventaire.id}}</td>
+                    <td>{{inventaire.vente }}</td>
+                    <td>{{inventaire.caisse}}</td>
+                    <td>{{inventaire.ecart}}</td>
+                    <td>{{inventaire.justificatif}}</td>
+                    <td>{{inventaire.createtAt | date("Y-m-d")}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 </body>
 </html>
 {% endblock %}

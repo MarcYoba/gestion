@@ -436,6 +436,27 @@ class VenteARepository extends ServiceEntityRepository
         ;
     }
 
+    public function findRapportSommeVenteToCash($date_debut, $date_fin,$agence) : float
+    {
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+    
+        $result = $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.cash),0) AS totalCash')
+            ->where('v.createAt BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence =:agences')
+            ->andWhere('v.cash >:cash')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->setParameter('cash',0)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return (float) $result;
+    }
+
     public function findBy20FirstClient($agence) : array 
     {
         return $this->createQueryBuilder('v')

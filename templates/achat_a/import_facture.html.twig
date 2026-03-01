@@ -93,20 +93,30 @@
     
     <script>
         const imageUpload = document.getElementById('image');
-        const imageContainer = document.getElementById('imageContainer');
+const imageContainer = document.getElementById('imageContainer');
 
-        imageUpload.addEventListener('change', () => {
-        const file = imageUpload.files[0];
+imageUpload.addEventListener('change', () => {
+    // Vider le conteneur
+    imageContainer.innerHTML = '';
+    
+    const file = imageUpload.files[0];
+    if (file) {
         const reader = new FileReader();
-
         reader.onload = (e) => {
             const img = new Image();
             img.src = e.target.result;
+            img.alt = 'Aperçu facture';
+            img.style.maxWidth = '100%';
             imageContainer.appendChild(img);
         };
-
+        reader.onerror = () => {
+            imageContainer.innerHTML = '<span class="text-danger">Erreur de lecture du fichier</span>';
+        };
         reader.readAsDataURL(file);
-        });
+    } else {
+        imageContainer.innerHTML = '<span class="text-muted">Aucune image sélectionnée</span>';
+    }
+});
     </script>
 </body>
 </html>

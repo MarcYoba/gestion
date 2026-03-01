@@ -27,7 +27,6 @@ class InventaireCaisseAType extends AbstractType
                 'attr' =>[
                 'class' => 'form-control',
                     'placeholder' => 'definir la vente',
-                    'readonly' => true,
                 ],
             ])
             ->add('ecart',NumberType::class,[
@@ -47,7 +46,6 @@ class InventaireCaisseAType extends AbstractType
                 'attr' =>[
                 'class' => 'form-control',
                     'placeholder' => 'texte justificatif',
-                    'readonly' => true,
                 ],
             ])
         ;

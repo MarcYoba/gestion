@@ -109,13 +109,13 @@
         <i class="fas fa-angle-up"></i>
     </a>
     <script>
-        const  inputQuantite = document.getElementById("vendu");
+        const  inputQuantite = document.getElementById("inventaire_caisse_a_caisse");
         inputQuantite.addEventListener('input',calculeechar);
 
       function calculeechar() {
-        let vente = parseFloat(document.getElementById("vente").value);
-        let caisse = parseFloat(document.getElementById("vendu").value);
-        document.getElementById("ecart").value = caisse - vente ;
+        let vente = parseFloat(document.getElementById("inventaire_caisse_a_vente").value);
+        let caisse = parseFloat(document.getElementById("inventaire_caisse_a_caisse").value);
+        document.getElementById("inventaire_caisse_a_ecart").value = caisse - vente ;
       }   
     </script>
 </body>
