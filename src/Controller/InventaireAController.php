@@ -133,10 +133,9 @@ class InventaireAController extends AbstractController
                 $letter ++;
                 $row = 2;
             }
-            $cle = array_search($value->getProduit()->getNom(),$inventaire);
-            $cle = $cle + 2;
-            $sheet->setCellValue($colString.$cle, $value->getEcart());
-            $row++;
+            // $cle = array_search($value->getProduit()->getNom(),$inventaire);
+            // $cle = $cle + 2;
+            // $sheet->setCellValue($colString.$cle, $value->getEcart());
         }
         // $colString = chr($letter);
         // $fiscolString  = $colString . '1';
