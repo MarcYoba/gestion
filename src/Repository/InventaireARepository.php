@@ -60,4 +60,19 @@ class InventaireARepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByQuantiteProduit($agence,$moi,$anne) : array 
+    {
+        return $this-> createQueryBuilder('i')
+            ->where('i.agence =:agences')
+            ->andWhere('MONTH(i.createtAt) =:moi')
+            ->andWhere('YEAR(i.createtAt) =:anne')
+            ->setParameter('agences',$agence)
+            ->setParameter('moi',$moi)
+            ->setParameter('anne',$anne)
+            ->orderBy('i.createtAt','ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
