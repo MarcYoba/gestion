@@ -129,8 +129,8 @@ class InventaireAController extends AbstractController
                 $lastdate = $value->getCreatetAt()->format("Y-m-d");
                 $colString = chr($letter);
                 $fiscolString  = $colString . '1';
-                $sheet->setCellValue($fiscolString, $lastdate);
-                $letter ++;
+               // $sheet->setCellValue($fiscolString, $lastdate);
+                //$letter ++;
             }
             // $cle = array_search($value->getProduit()->getNom(),$inventaire);
             // $cle = $cle + 2;
