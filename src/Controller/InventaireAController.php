@@ -138,13 +138,24 @@ class InventaireAController extends AbstractController
             $sheet->setCellValue($colString.$cle, $value->getEcart());
             $row++;
         }
+        $letter ++;
+        $colString = chr($letter);
+        $fiscolString  = $colString . '1';
+        $sheet->setCellValue($fiscolString, "Prix de vente");
+
+        foreach ($produits as $key => $value) {
+            $cle = array_search($value->getProduit()->getNom(),$inventaire);
+            $cle = $cle + 2;
+            $sheet->setCellValue($colString.$cle, $value->getProduit()->getPrixvente());
+            $row++;
+        }
 
         // Générer le fichier Excel et le retourner en réponse
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         ob_start();
         $writer->save('php://output');
         $excelContent = ob_get_clean();
-        $name = "stock_perte_" . date('Y-m-d') . ".xlsx";
+        $name = "stock_perte_cabinet_" . date('Y-m-d') . ".xlsx";
         return new Response(
             $excelContent,
             Response::HTTP_OK,
