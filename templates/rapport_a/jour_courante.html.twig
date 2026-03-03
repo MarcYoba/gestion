@@ -507,14 +507,15 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="6" align="center"> Tableau Inventaire  : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="7" align="center"> Tableau Inventaire  : {{ "now" | date("Y-m-d")}} </th>
             </tr>
             <tr>
-                <th colspan="6" align="center"> Recapitulatif Inventaire : {{ "now" | date("Y-m-d")}} </th>
+                <th colspan="7" align="center"> Recapitulatif Inventaire : {{ "now" | date("Y-m-d")}} </th>
             </tr>
             <tr>
                 <th scope="col">Produit</th>
                 <th scope="col">Contoire</th>
+                <th scope="col">Ecart precedent</th>
                 <th scope="col">Inventaire</th>
                 <th scope="col">Ecart</th>
                 <th scope="col">Justificatif</th>
@@ -526,6 +527,7 @@
                 <tr>
                     <td>{{inventaire.produit.nom}}</td>
                     <td>{{inventaire.quantite }}</td>
+                    <td>0</td>
                     <td>{{inventaire.inventaire}}</td>
                     <td>{{inventaire.ecart}}</td>
                     <td>{{inventaire.justificatif}}</td>

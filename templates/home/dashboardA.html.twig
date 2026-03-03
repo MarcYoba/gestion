@@ -62,13 +62,16 @@
                         Commande Client :
                     </div>
                     <div class="col-sm-4">
-                        Bone Commande : {{ bondCommandeA| default(0) }}
+                        Bon Commande : {{ bondCommandeA| default(0) }}
                     </div>
                     <div class="col-sm-4">
                         Produit sans stock limite : {{ produitsanslinite | default(0) }}
                     </div>
                     <div class="col-sm-4">
                         Produit sans Fournisseurs : {{ produitsansfournisseur | default(0) }}
+                    </div>
+                    <div class="col-sm-4">
+                        Tranfert de produit en Attente : {{ bontransfert | default(0) }}
                     </div>
                 </div>
             </div>
@@ -78,6 +81,7 @@
                 <a href="{{path('app_produit_perimer')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Peremtion ou Proche</a>
                 <a href="{{path('app_poussin_download')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Poussin non livree</a>
                 <a href="{{path('app_bond_commande_a_liste_fourisseur')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Bond de Commande</a>
+                <a href="{{path('app_transfert_a_list')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Transfert en attent</a>
             </div>
             </div>
         </div>
