@@ -125,14 +125,14 @@ class InventaireAController extends AbstractController
         //Remplir les données des produits
         foreach ($liste as $key => $value) {
             $newdate = $value->getCreatetAt()->format("Y-m-d");
-            if ($lastdate != $newdate) {
-                $lastdate = $value->getCreatetAt()->format("Y-m-d");
-                $colString = chr($letter);
-                $fiscolString  = $colString . '1';
-                $sheet->setCellValue($fiscolString, $lastdate);
-                $letter ++;
-                $row = 2;
-            }
+            // if ($lastdate != $newdate) {
+            //     $lastdate = $value->getCreatetAt()->format("Y-m-d");
+            //     $colString = chr($letter);
+            //     $fiscolString  = $colString . '1';
+            //     $sheet->setCellValue($fiscolString, $lastdate);
+            //     $letter ++;
+            //     $row = 2;
+            // }
             // $cle = array_search($value->getProduit()->getNom(),$inventaire);
             // $cle = $cle + 2;
             // $sheet->setCellValue($colString.$cle, $value->getEcart());
