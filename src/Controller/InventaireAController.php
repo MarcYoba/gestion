@@ -118,7 +118,7 @@ class InventaireAController extends AbstractController
             $row++;
         }
 
-        $liste = $em->getRepository(InventaireA::class)->findByproduit($id,$moi,$anne);
+        $liste = $em->getRepository(InventaireA::class)->findByQuantiteProduit($id,$moi,$anne);
         $row = 2;
         $letter = ord('B');
         $lastdate = 0;
