@@ -114,13 +114,14 @@ class TranfertAController extends AbstractController
          $data = $request->request->all('transferts');
         if ($data) {
             if ($transfert) {
-                if ($transfert->getEmployer()->getId() == $user->getEmployer()->getId()) {
+                
                     foreach ($data as $key => $value) {
                         if (isset($value["transferer"]) == "Transféré") {
                             $produit = $em->getRepository(ProduitA::class)->findOneBy(['id' => $value['produit']]);
                             $produit->setQuantite($produit->getQuantite()+$transfert->getQuantite());
                             $em->persist($produit);
                             $transfert->setStatut($value["transferer"]);
+                            $transfert->setEmployer($user->getEmployer());
                             $em->persist($transfert);
                             $em->flush();
                         }else{
@@ -129,7 +130,7 @@ class TranfertAController extends AbstractController
                             $em->flush(); 
                         }
                     }
-                }
+                
                 return $this->redirectToRoute('app_transfert_a_list'); 
             }
         }
