@@ -121,6 +121,7 @@ class TranfertAController extends AbstractController
                             $produit->setQuantite($produit->getQuantite()+$transfert->getQuantite());
                             $em->persist($produit);
                             $transfert->setStatut($value["transferer"]);
+                            $transfert->setEmployer($user->getEmployer());
                             $em->persist($transfert);
                             $em->flush();
                         }else{
