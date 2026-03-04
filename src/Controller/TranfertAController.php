@@ -137,11 +137,29 @@ class TranfertAController extends AbstractController
     }
 
     #[Route('/transfert/a/details/{id}', name: 'app_transfert_a_details')]
-    public function details(EntityManagerInterface $em,TransfertA $transfert) : Response {
+    public function details(EntityManagerInterface $em,int $id) : Response {
+        $transfert = $em->getRepository(TransfertA::class)->findOneBy(['id' => $id]);
+        if (!$this->getUser() || !$transfert) {
+            return $this->redirectToRoute('app_logout');
+        }
         $transferts = $em->getRepository(TransfertA::class)->findBy(['matricule' => $transfert->getMatricule()]);
-
+        
+        $route = $em->getRepository(TransfertA::class)->findOneBy(['id' => ($id-1)]);
+        if ($route) {
+            $route = $route->getId();
+        }else{
+            $route = -1;
+        }
+        $next = $em->getRepository(TransfertA::class)->findOneBy(['id' => ($id+1)]);
+        if ($next) {
+            $next = $next->getId();
+        }else{
+            $next = -1;
+        }
         return $this->render('transfert_a/detailles.html.twig', [
             'transferts' => $transferts,
+            'route' => $route,
+            'next' => $next,
         ]); 
     }
 }
