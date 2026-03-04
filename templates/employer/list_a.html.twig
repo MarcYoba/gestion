@@ -70,7 +70,8 @@
                                             <th>Nom</th>
                                             <th>Agence</th>
                                             <th>Date</th>
-                                            <th>Roles</th>
+                                            <th>Roles Employer</th>
+                                            <th>Roles utilisateur</th>
                                             <th>Operation</th>
                                         </tr>
                                     </thead>
@@ -80,7 +81,8 @@
                                             <th>Nom</th>
                                             <th>Agence</th>
                                             <th>Date</th>
-                                            <th>Roles</th>
+                                            <th>Roles Employer</th>
+                                            <th>Roles utilisateur</th>
                                             <th>Operation</th>
                                         </tr>
                                     </tfoot>
@@ -94,6 +96,9 @@
                                             <td>
                                                 {{ employ.poste }}
                                                 
+                                            </td>
+                                            <td>
+                                                {{ employ.user.roles|join(', ') }}
                                             </td>
                                             <td>
                                             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}

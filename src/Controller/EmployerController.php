@@ -22,6 +22,10 @@ class EmployerController extends AbstractController
         $form = $this->createForm(EmployerType::class,$emplyer);
         $form->handleRequest($request);
 
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_logout');
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $exitingUser = $entityManager->getRepository(Employer::class)->findOneBy(['user' => $emplyer->getUser()->getId()]);
             if ($exitingUser) {
@@ -49,6 +53,9 @@ class EmployerController extends AbstractController
         $emplyer = new Employer();
         $form = $this->createForm(EmployerType::class,$emplyer);
         $form->handleRequest($request);
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_logout');
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             
@@ -57,6 +64,8 @@ class EmployerController extends AbstractController
                 $this->addFlash('error', 'Le nom d\'utilisateur existe déjà. Veuillez en choisir un autre.');
                 return $this->redirectToRoute('app_employer');
             }else {
+                $user = $form->get('user')->getData();
+                $role = $user->getRoles();
                 $role[] = $form->get('poste')->getData();
                 $emplyer->setNom($emplyer->getUser()->getUsername());
                 $user = $emplyer->getUser();
@@ -84,6 +93,9 @@ class EmployerController extends AbstractController
         $emplyer = $entityManager->getRepository(Employer::class)->findAll();
         $agence = $entityManager->getRepository(Agence::class)->findAll();
         $user = $entityManager->getRepository(User::class)->findAll();
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_logout');
+        }
         return $this->render('employer/list.html.twig', [
             'employers' => $emplyer,
             'agence' => $agence,
@@ -99,6 +111,9 @@ class EmployerController extends AbstractController
         $emplyer = $entityManager->getRepository(Employer::class)->findAll();
         $agence = $entityManager->getRepository(Agence::class)->findAll();
         $user = $entityManager->getRepository(User::class)->findAll();
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_logout');
+        }
         return $this->render('employer/list_a.html.twig', [
             'employers' => $emplyer,
             'agence' => $agence,
@@ -116,6 +131,9 @@ class EmployerController extends AbstractController
 
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
         $id = $tempagence->getAgence()->getId();
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_logout');
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
@@ -140,10 +158,17 @@ class EmployerController extends AbstractController
 
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
         $id = $tempagence->getAgence()->getId();
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_logout');
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $user = $form->get('user')->getData();
+            $role = $user->getRoles();
+            $role[] = $form->get('poste')->getData();
+            $user->setRoles($role);
 
+            $entityManager->flush();
             return $this->redirectToRoute('employer_list_a');
         }
 
@@ -161,6 +186,9 @@ class EmployerController extends AbstractController
     {
         $entityManager->remove($employer);
         $entityManager->flush();
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_logout');
+        }
 
         return $this->redirectToRoute('employer_list');
     }
@@ -171,6 +199,9 @@ class EmployerController extends AbstractController
     {
         $user = $this->getUser();
         $employer = $em->getRepository(Employer::class)->findOneBy(["user" => $user]);
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_logout');
+        }
         if ($employer) {
             return $this->redirectToRoute("app_home");
         }

@@ -6,6 +6,7 @@ use App\Entity\MagasinA;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use App\Entity\TransfertA;
+use App\Entity\User;
 use App\Form\TransfertAType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -106,13 +107,14 @@ class TranfertAController extends AbstractController
     public function valider(EntityManagerInterface $em,TransfertA $transfert,Request $request): Response
     {
         $user = $this->getUser();
+        $user = $em->getRepository(User::class)->findOneBy(['id' => $user]);
         if (!$user) {
             return $this->redirectToRoute('app_logout');
         }
          $data = $request->request->all('transferts');
         if ($data) {
             if ($transfert) {
-                if ($transfert->getUser() == $this->getUser()) {
+                if ($transfert->getEmployer()->getId() == $user->getEmployer()->getId()) {
                     foreach ($data as $key => $value) {
                         if (isset($value["transferer"]) == "Transféré") {
                             $produit = $em->getRepository(ProduitA::class)->findOneBy(['id' => $value['produit']]);
