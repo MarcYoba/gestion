@@ -103,9 +103,11 @@
                                 </div>
                                 <hr>
                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                                <button type="submit"  class="btn btn-primary btn-user btn-block">
-                                    Enregistrer un nouveau employer
-                                </button>
+                                {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                                    <button type="submit"  class="btn btn-primary btn-user btn-block">
+                                        Enregistrer un nouveau employer
+                                    </button>
+                                {% endif %}
                                 </span>
                            
                             {{ form_end(form) }}
