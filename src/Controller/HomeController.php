@@ -16,6 +16,7 @@ use App\Entity\Poussin;
 use App\Entity\Produit;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
+use App\Entity\TransfertA;
 use App\Entity\User;
 use App\Entity\Vente;
 use App\Entity\VenteA;
@@ -198,6 +199,7 @@ class HomeController extends AbstractController
         $bondCommandeA = $entityManager->getRepository(BondCommandeA::class)->findBySommeBonCommande();
         $produitsanslinite = $entityManager->getRepository(ProduitA::class)->FindbyEmptyBonCommand();
         $produitsansfournisseur = $entityManager->getRepository(ProduitA::class)->FindbyEmptyFournisseur();
+        $bontransfert = $entityManager->getRepository(TransfertA::class)->findBy(['statut' => 'Attente']);
         
         if (empty($expiration)) {
             $expiration = [];
@@ -223,6 +225,7 @@ class HomeController extends AbstractController
             'bondCommandeA' => $bondCommandeA,
             'produitsanslinite' => count($produitsanslinite),
             'produitsansfournisseur' => count($produitsansfournisseur),
+            'bontransfert' => count($bontransfert),
         ]);
     }
 }
