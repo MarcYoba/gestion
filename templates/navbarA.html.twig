@@ -332,25 +332,6 @@
 </li>
 
 <li class="nav-item">
-<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#utilisateur"
-    aria-expanded="true" aria-controls="utilisateur">
-    <i class="fas fa-fw fa-folder"></i>
-    <span>utilisateur</span>
-</a>
-<div id="utilisateur" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">utilisateur:</h6>
-            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{path('user_list_a')}}">Liste</a>
-            {% else %}
-                <a class="collapse-item" href="{{path('user_list_a')}}" id="ajouterUtilisateur">ajouter utilisateur</a>
-                <a class="collapse-item" href="{{path('user_list_a')}}">Liste</a>
-            {% endif %}  #
-    </div>
-</div>
-</li>
-
-<li class="nav-item">
 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#volaille"
     aria-expanded="true" aria-controls="volaille">
     <i class="fas fa-fw fa-folder"></i>
@@ -462,6 +443,14 @@
             {% else %}
                 <a class="collapse-item" href="{{path('employer_list_a')}}">Liste </a>
                 <a class="collapse-item" href="{{path('app_employer_a')}}">Employer</a>
+            {% endif %}
+            <div class="dropdown-divider"></div>
+            <h6 class="collapse-header">utilisateur:</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                <a class="collapse-item" href="{{path('user_list_a')}}">Liste</a>
+            {% else %}
+                <a class="collapse-item" href="{{path('user_list_a')}}" id="ajouterUtilisateur">ajouter utilisateur</a>
+                <a class="collapse-item" href="{{path('user_list_a')}}">Liste</a>
             {% endif %}
         </div>
     </div>
