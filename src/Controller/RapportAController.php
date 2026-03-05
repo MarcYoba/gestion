@@ -45,9 +45,16 @@ class RapportAController extends AbstractController
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
         $date = date("Y-m-d");
+        $inventaire = [];
 
         $sommeCaisse = $em->getRepository(CaisseA::class)->findBySommeCaisse(new \DateTime($date),$id);
-        $inventaire = $em->getRepository(InventaireA::class)->findBy(['createtAt'=> new \DateTime($date)]);
+        $tableau = $em->getRepository(InventaireA::class)->findBy(['createtAt'=> new \DateTime($date)]);
+        foreach ($tableau as $key => $value) {
+            $ecar = $em->getRepository(InventaireA::class)->findBy(['produit' => $value->getProduit()->getId()],['id' => 'DESC'],2);
+            $ecar = array_pop($ecar);
+            array_push($inventaire,[$value,$ecar->getEcart()]);
+        }
+
         $inventaireCaisse = $em->getRepository(InventaireCaisseA::class)->findBy(['createtAt'=> new \DateTime($date)]);
         $date = new \DateTimeImmutable($date);
         $caisse = $em->getRepository(CaisseA::class)->findBy(["createAt" => $date]);
@@ -132,11 +139,17 @@ class RapportAController extends AbstractController
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
-        
+        $inventaire = [];
+
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
         $sommeCaisse = $em->getRepository(CaisseA::class)->findBySommeCaisse($date,$id);
-        $inventaire = $em->getRepository(InventaireA::class)->findBy(["createtAt" => new \DateTime($date)]);
+        $tableau = $em->getRepository(InventaireA::class)->findBy(["createtAt" => new \DateTime($date)]);
+        foreach ($tableau as $key => $value) {
+            $ecar = $em->getRepository(InventaireA::class)->findBy(['produit' => $value->getProduit()->getId()],['id' => 'DESC'],2);
+            $ecar = array_pop($ecar);
+            array_push($inventaire,[$value,$ecar->getEcart()]);
+        }
         $inventaireCaisse = $em->getRepository(InventaireCaisseA::class)->findBy(['createtAt'=> new \DateTime($date)]);
         $date = new \DateTimeImmutable($date);
         $caisse = $em->getRepository(CaisseA::class)->findBy(["createAt" => $date]);

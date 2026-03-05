@@ -525,13 +525,13 @@
         <tbody>
             {% for inventaire in inventaires %}
                 <tr>
-                    <td>{{inventaire.produit.nom}}</td>
-                    <td>{{inventaire.quantite }}</td>
-                    <td>0</td>
-                    <td>{{inventaire.inventaire}}</td>
-                    <td>{{inventaire.ecart}}</td>
-                    <td>{{inventaire.justificatif}}</td>
-                    <td>{{inventaire.createtAt | date("Y-m-d")}}</td>
+                    <td>{{inventaire[0].produit.nom}}</td>
+                    <td>{{inventaire[0].quantite }}</td>
+                    <td>{{inventaire[1]}}</td>
+                    <td>{{inventaire[0].inventaire}}</td>
+                    <td>{{inventaire[0].ecart}}</td>
+                    <td>{{inventaire[0].justificatif}}</td>
+                    <td>{{inventaire[0].createtAt | date("Y-m-d")}}</td>
                 </tr>
             {% endfor %}
         </tbody>
