@@ -51,9 +51,21 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="row">
-                                <div class="col-sm-10"> 
+                                <div class="col-sm-6"> 
                                     <h6 class="m-0 font-weight-bold text-primary">Tables Vente</h6>
                                 </div>
+                                <div class="col-sm-2">
+                                    {% for tempagence in app.user.tempAgences %}
+                                    <i class="fa fa-home"></i>
+                                    <a href="{{ path('app_home_dashboard', {'id': tempagence.agence.id}) }}" class="btn btn-primary">Home</a> 
+                                    {% endfor %}
+                                </div>
+                                <div class="col-sm-2">
+                                     
+                                    <a href="{{ path('app_vente')}}" class="btn btn-primary"> 
+                                    <i class="fa fa-plus"></i>
+                                    Ajouter</a>
+                                </div>  
                                 <div class="col-sm-2"> 
                                     <a href="{{path('vente_excel')}}" class="btn btn-warning">
                                         <i class="fa fa-download"></i>

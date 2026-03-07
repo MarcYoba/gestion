@@ -181,4 +181,21 @@ class FactureRepository extends ServiceEntityRepository
 
         return (float) $result;
     }
+
+    public function findByQuantiteProduitVenduAnne($date, $produit, $agence): int
+    {
+
+        $result = $this->createQueryBuilder('f')
+            ->select('COALESCE(SUM(f.quantite), 0)')
+            ->where('f.produit = :produit')
+            ->andWhere('YEAR(f.createdAt) = :startDate')
+            ->andWhere('f.agence = :agence')
+            ->setParameter('produit', $produit)
+            ->setParameter('startDate', $date)
+            ->setParameter('agence', $agence)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $result;
+    }
 }
