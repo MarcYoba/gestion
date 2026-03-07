@@ -36,13 +36,27 @@
                     </div>
                     <div class="col-lg-10">
                         <div class="p-5">
-                            <div class="card-header py-3">
-                                <h1 class="m-0 font-weight-bold text-primary">Creation d' Agence </h1>
-                            </div><br>
+                            <div class=" card-header py-3 row">
+                                <div class="col-sm-6"> 
+                                    <h6 class="m-0 font-weight-bold text-primary">Creation d' Agence</h6>
+                                 </div>
+                                <div class="col-sm-2">
+                                    {% for tempagence in app.user.tempAgences %}
+                                         <a href="{{ path('app_home_dashboard', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
+                                             <i class="fas fa-home"></i>
+                                                 home
+                                         </a>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-sm-2"> 
+                                    <a href="{{path('app_agence_list')}}" class="btn btn-warning">
+                                    <i class="fa fa-list"></i>list</a>
+                                </div> 
+                            </div>    
                             {{ form_errors(form) }}
                             {{ form_start(form) }}
                              
-                                <div class="form-group row">
+                                <div class="form-group row mt-3">
                                     <div class="col-sm-4 mb-3 mb-sm-0">
                                         {{ form_row(form.nom) }}
                                     </div>

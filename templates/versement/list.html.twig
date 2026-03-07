@@ -52,7 +52,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="form-group row">
-                            <form method="post" action="../pdf/getversement.php">
+                            <form method="post" action="#">
                                 <div class="col-md-0">
                                     <h6 class="m-0 font-weight-bold text-primary">Tables Versement</h6>
                                 </div>
@@ -76,8 +76,10 @@
                                     </select>
                                 </div>
                                 
-                                <div class="col-md-1" >
-                                    <a href="../versement/liste.php"  class="btn btn-info btn-user" >Liste</a>
+                                <div class="col-md-2" >
+                                    <a href="{{ path('app_versement') }}"  class="btn btn-info btn-user" >
+                                        <i class="fas fa-plus"></i> Ajouter
+                                    </a>
                                 </div>
 
                                 

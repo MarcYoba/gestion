@@ -33,12 +33,14 @@
                     </div>
                     <div class="col-lg-10">
                         <div class="p-5">
-                            <div class="text-center" >
-                                <h1 class="h4 text-gray-900 mb-4">Magasin</h1>
+                            <div class="row">
+                                <div class="col-sm-6"> 
+                                    <h6 class="m-0 font-weight-bold text-primary">Magasin</h6>
+                                </div>
                             </div>
-                            <div class="card-header py-3">
+                            <div class="card-header py-3 mt-5">
                                 <div class="form-group row">
-                                    <div class="col-sm-8 mb-6 mb-sm-0">
+                                    <div class="col-sm-6 mb-4 mb-sm-0">
                                         Ajouter un produit au Magasin
                                     </div>
                                     {% for message in app.flashes('success') %}
@@ -53,6 +55,16 @@
                                                     home
                                             </a>  
                                         {% endfor %}
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a href="{{ path('app_magasin')}}" class="btn btn-primary"> 
+                                        <i class="fa fa-plus"></i>
+                                        Ajouter</a>
+                                    </div>  
+                                    <div class="col-sm-2"> 
+                                        <a href="{{path('app_magasin_list')}}" class="btn btn-warning">
+                                            <i class="fa fa-liste"></i>
+                                            list</a>
                                     </div>      
                                 </div> 
                             </div>
