@@ -177,4 +177,23 @@ class FactureARepository extends ServiceEntityRepository
             ->getResult();
 
     }
+
+    public function findByFactureProduitMonth($anne,$agence,$moi) : array 
+    {
+        // $date = new \DateTimeImmutable($date);
+       return $this->createQueryBuilder('f')
+            ->select('p.nom as produitNom, SUM(f.quantite) as quantite, SUM(f.montant) as montant')
+            ->join('f.produit', 'p') // Jointure avec l'entité Produit
+            ->where('YEAR(f.createAt) =:annees')
+            ->andWhere('MONTH(f.createAt) =:mois')
+            ->andWhere('f.agence = :agences')
+            ->setParameter('annees', $anne)
+            ->setParameter('mois', $moi)
+            ->setParameter('agences',$agence)
+            ->orderBy('f.produit','ASC')
+            ->groupBy('f.produit')
+            ->getQuery()
+            ->getResult();
+
+    }
 }

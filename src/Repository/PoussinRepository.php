@@ -174,4 +174,38 @@ class PoussinRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByPoussinByClient($annee,$agence) : array 
+    {
+        return $this->createQueryBuilder('p')
+            ->select('c.nom as clientNom, SUM(p.quantite) AS Quantite')
+            ->join('p.client', 'c')
+            ->Where('YEAR(p.datecommande) = :annee')
+            ->andWhere('p.agence =:agences')
+            ->setParameter('agences',$agence)
+            ->setParameter('annee',$annee)
+            ->groupBy('c.nom')
+            ->orderBy('Quantite', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByPoussinByClientMonth($annee,$agence,$mois) : array 
+    {
+        return $this->createQueryBuilder('p')
+            ->select('c.nom as clientNom, SUM(p.quantite) AS Quantite')
+            ->join('p.client', 'c')
+            ->Where('YEAR(p.datecommande) = :annee')
+            ->andWhere('MONTH(p.datecommande) = :mois')
+            ->andWhere('p.agence =:agences')
+            ->setParameter('agences',$agence)
+            ->setParameter('annee',$annee)
+            ->setParameter('mois',$mois)
+            ->groupBy('c.nom')
+            ->orderBy('Quantite', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -29,69 +29,69 @@ class DepenseAController extends AbstractController
             $agence = $tempagence->getAgence(); 
 
             if ($type == "Voyages") {
-                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5111]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $em->persist($balance);
+                // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5111]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $em->persist($balance);
                             
-                        }
-                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6111]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementCredit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementCredit($mouvement);
-                            $em->persist($balance);
-                        }
+                //         }
+                // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6111]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementCredit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementCredit($mouvement);
+                //             $em->persist($balance);
+                //         }
             }else if($type == "Frais etablissement"){
-                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 2011]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $em->persist($balance);
-                        }
+                // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 2011]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $em->persist($balance);
+                //         }
             }else if($type == "Logiciels"){
-                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 2051]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $em->persist($balance);
-                        }
+                // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 2051]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $em->persist($balance);
+                //         }
             }else if($type == "impots et taxes"){
-                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6311]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $em->persist($balance);
-                        }
+                // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6311]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $em->persist($balance);
+                //         }
             }else if($type == "Constructions"){
-                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 2131]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $em->persist($balance);
-                        }
+                // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 2131]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $em->persist($balance);
+                //         }
             }else if($type == "Terrains"){
-                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 2111]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $em->persist($balance);
-                        }
+                // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 2111]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $em->persist($balance);
+                //         }
             }else if($type == "service exterieur"){
-                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6411]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $em->persist($balance);
-                        }
+                // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6411]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $em->persist($balance);
+                //         }
             }
 
             $user = $this->getUser();

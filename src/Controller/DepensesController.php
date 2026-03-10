@@ -55,69 +55,69 @@ class DepensesController extends AbstractController
             $type = $form->get('type')->getData();
             $montant = $form->get('montant')->getData();
             if ($type == "Voyages") {
-                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5111]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $entityManager->persist($balance);
+                // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5111]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $entityManager->persist($balance);
                             
-                        }
-                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6111]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementCredit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementCredit($mouvement);
-                            $entityManager->persist($balance);
-                        }
+                //         }
+                // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6111]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementCredit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementCredit($mouvement);
+                //             $entityManager->persist($balance);
+                //         }
             }else if($type == "Frais etablissement"){
-                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 2011]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $entityManager->persist($balance);
-                        }
+                // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 2011]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $entityManager->persist($balance);
+                //         }
             }else if($type == "Logiciels"){
-                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 2051]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $entityManager->persist($balance);
-                        }
+                // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 2051]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $entityManager->persist($balance);
+                //         }
             }else if($type == "impots et taxes"){
-                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6311]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $entityManager->persist($balance);
-                        }
+                // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6311]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $entityManager->persist($balance);
+                //         }
             }else if($type == "Constructions"){
-                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 2131]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $entityManager->persist($balance);
-                        }
+                // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 2131]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $entityManager->persist($balance);
+                //         }
             }else if($type == "Terrains"){
-                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 2111]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $entityManager->persist($balance);
-                        }
+                // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 2111]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $entityManager->persist($balance);
+                //         }
             }else if($type == "service exterieur"){
-                $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6411]);
-                        if ($balance) {
-                            $mouvement = $balance->getMouvementDebit();
-                            $mouvement = $mouvement + $montant;
-                            $balance->setMouvementDebit($mouvement);
-                            $entityManager->persist($balance);
-                        }
+                // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6411]);
+                //         if ($balance) {
+                //             $mouvement = $balance->getMouvementDebit();
+                //             $mouvement = $mouvement + $montant;
+                //             $balance->setMouvementDebit($mouvement);
+                //             $entityManager->persist($balance);
+                //         }
             }
             
             $depenses->setUser($user);
