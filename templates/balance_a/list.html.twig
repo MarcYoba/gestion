@@ -69,8 +69,13 @@
                                         </button>
                                     </form>
                                 </div>
-        
-                                
+                                {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                                    <div class="col-md-2">
+                                        <a class="user btn btn-danger btn-user" href="{{ path('app_balance_all_delete_a') }}" >
+                                            <i class="fas fa-trash"></i> dellete
+                                        </a>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         

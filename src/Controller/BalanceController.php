@@ -222,4 +222,18 @@ class BalanceController extends AbstractController
         $this->addFlash('success', 'Balances mises à jour avec succès');
         return $this->redirectToRoute('app_balance_list');
     }
+
+    #[Route('balance/all/delete', name:'app_balance_all_delete')]
+    public function deleteAll(EntityManagerInterface $entityManager) : Response 
+    {
+        $user  = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence();
+        $balances = $entityManager->getRepository(Balance::class)->findBy(['agence'=>$id]);
+        foreach ($balances as $balance) {
+            $entityManager->remove($balance);
+        }
+        $entityManager->flush();
+        return $this->redirectToRoute('app_balance_list');
+    }
 }
