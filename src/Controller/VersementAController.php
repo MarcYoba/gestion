@@ -33,37 +33,37 @@ class VersementAController extends AbstractController
             $em->persist($versement);
             $em->flush();
 
-            if ($form->get('montant')->getData() > 0) {
-                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5111]);
-                if ($balance) {
-                    $mouvement = $balance->getMouvementDebit();
-                    $mouvement = $mouvement + $form->get('montant')->getData();
-                    $balance->setMouvementDebit($mouvement);
-                    $em->persist($balance);
-                    $em->flush();
-                }
+            // if ($form->get('montant')->getData() > 0) {
+            //     $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5111]);
+            //     if ($balance) {
+            //         $mouvement = $balance->getMouvementDebit();
+            //         $mouvement = $mouvement + $form->get('montant')->getData();
+            //         $balance->setMouvementDebit($mouvement);
+            //         $em->persist($balance);
+            //         $em->flush();
+            //     }
 
-            }
+            // }
 
-            if ($form->get('banque')->getData() > 0) {
-                $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5121]);
-                if ($balance) {
-                    $mouvement = $balance->getMouvementDebit();
-                    $mouvement = $mouvement + $form->get('banque')->getData();
-                    $balance->setMouvementDebit($mouvement);
-                    $em->persist($balance);
-                    $em->flush();
-                }
-            }
+            // if ($form->get('banque')->getData() > 0) {
+            //     $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5121]);
+            //     if ($balance) {
+            //         $mouvement = $balance->getMouvementDebit();
+            //         $mouvement = $mouvement + $form->get('banque')->getData();
+            //         $balance->setMouvementDebit($mouvement);
+            //         $em->persist($balance);
+            //         $em->flush();
+            //     }
+            // }
             
-            $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 4111]);
-                if ($balance) {
-                    $mouvement = $balance->getMouvementCredit();
-                    $mouvement = $mouvement + $form->get('montant')->getData() + $mouvement + $form->get('banque')->getData();
-                    $balance->setMouvementCredit($mouvement);
-                    $em->persist($balance);
-                    $em->flush();
-                }
+            // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 4111]);
+            //     if ($balance) {
+            //         $mouvement = $balance->getMouvementCredit();
+            //         $mouvement = $mouvement + $form->get('montant')->getData() + $mouvement + $form->get('banque')->getData();
+            //         $balance->setMouvementCredit($mouvement);
+            //         $em->persist($balance);
+            //         $em->flush();
+            //     }
 
             return $this->redirectToRoute("versement_a_list");
         }

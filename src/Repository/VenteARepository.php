@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Agence;
 use App\Entity\VenteA;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -603,6 +604,26 @@ class VenteARepository extends ServiceEntityRepository
             ->andWhere('v.credit > 0')
             ->setParameter('annes',$annee)
             ->orderBy('v.client','ASC')
+            ->getQuery()
+            ->getResult(); 
+    }
+
+    public function findByVenteBySpecultation($annee,$agence,$mois) : array
+    {
+        // Créer les dates de début et fin du mois
+        return $this->createQueryBuilder('v')
+            ->select('SUM(v.prix) AS TotalVente,SUM(v.cash) as cash,
+                SUM(v.banque) AS banque, SUM(v.credit) AS credit, 
+                SUM(v.momo) AS momo, SUM(v.om) AS om,v.esperce')
+            ->where('YEAR(v.createAt) =:annes')
+            ->andWhere('MONTH(v.createAt) =:mois')
+            ->andWhere('v.agence =:agences')
+            ->andWhere('v.credit > 0')
+            ->setParameter('annes',$annee)
+            ->setParameter('mois',$mois)
+            ->setParameter('agences',$agence)
+            ->orderBy('v.esperce','ASC')
+            ->groupBy('v.esperce')
             ->getQuery()
             ->getResult(); 
     }
