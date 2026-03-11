@@ -96,35 +96,35 @@ class AchatAController extends AbstractController
                 $em->flush();
 
                 if ($type == "CASH") {
-                    $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6021]);
-                    if ($balance) {
-                        $montant = $balance->getMouvementDebit();
-                        $balance->setMouvementDebit($montant + $key["total"]);
-                    }
-                    $em->persist($balance);
-                    $em->flush();
-                    $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5111]);
-                    if ($balance) {
-                        $montant = $balance->getMouvementCredit();
-                        $balance->setMouvementCredit($montant + $key["total"]);
-                    }
-                    $em->persist($balance);
-                    $em->flush();
+                    // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6021]);
+                    // if ($balance) {
+                    //     $montant = $balance->getMouvementDebit();
+                    //     $balance->setMouvementDebit($montant + $key["total"]);
+                    // }
+                    // $em->persist($balance);
+                    // $em->flush();
+                    // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5111]);
+                    // if ($balance) {
+                    //     $montant = $balance->getMouvementCredit();
+                    //     $balance->setMouvementCredit($montant + $key["total"]);
+                    // }
+                    // $em->persist($balance);
+                    // $em->flush();
                 }elseif ($type == "BANQUE") {
-                    $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6021]);
-                    if ($balance) {
-                        $montant = $balance->getMouvementDebit();
-                        $balance->setMouvementDebit($montant + $key["total"]);
-                    }
-                    $em->persist($balance);
-                    $em->flush();
-                    $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5121]);
-                    if ($balance) {
-                        $montant = $balance->getMouvementCredit();
-                        $balance->setMouvementCredit($montant + $key["total"]);
-                    }
-                    $em->persist($balance);
-                    $em->flush();
+                    // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 6021]);
+                    // if ($balance) {
+                    //     $montant = $balance->getMouvementDebit();
+                    //     $balance->setMouvementDebit($montant + $key["total"]);
+                    // }
+                    // $em->persist($balance);
+                    // $em->flush();
+                    // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5121]);
+                    // if ($balance) {
+                    //     $montant = $balance->getMouvementCredit();
+                    //     $balance->setMouvementCredit($montant + $key["total"]);
+                    // }
+                    // $em->persist($balance);
+                    // $em->flush();
                 }
                 $data = [
                     'success' => 200,
