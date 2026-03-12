@@ -35,12 +35,13 @@
         </tr>
     </thead>
         <tbody>
+        {%  set ventesansreduction = 0 %}
         {%  set sommeVente = 0 %}
-        {%   set sommeCash = 0 %}
-        {%   set sommeOm = 0 %}
-        {%   set sommemomo = 0 %}
-        {%   set sommeCredit = 0 %}
-        {%   set sommeReduction = 0 %}
+        {%  set sommeCash = 0 %}
+        {%  set sommeOm = 0 %}
+        {%  set sommemomo = 0 %}
+        {%  set sommeCredit = 0 %}
+        {%  set sommeReduction = 0 %}
          
             {% for vente in ventes %}
                 <tr>
@@ -63,6 +64,7 @@
                         <td> {{ vente.type}} </td>
                         <td> {{ facture.createAt | date("Y-m-d")}} </td>
                     </tr>
+                    {%  set ventesansreduction = ventesansreduction + (facture.prix * facture.quantite) %}
                 {% endfor %} 
                  <tr>
                     <td>Total</td>
@@ -125,7 +127,7 @@
             </tr>
         </thead>
             <tbody>
-                <td>{{ sommeVente }}</td>
+                <td>{{ ventesansreduction }}</td>
                 <td> {{ sommeCash }}</td>
                 <td> {{ sommemomo }}</td>
                 <td> {{ sommeOm }}</td>
