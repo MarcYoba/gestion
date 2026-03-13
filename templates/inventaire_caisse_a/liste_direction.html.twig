@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Transfer{% endblock %}
+{% block title %}inventaire{% endblock %}
 {% block body %}
 <!DOCTYPE html>
 <html lang="en">
@@ -12,24 +12,23 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Transfert</title>
-    
+    <title>Inventaire Caisse</title>
 </head>
 
 <body id="page-top">
     <div id="wrapper">
-        {% include "navbarA.html.twig" %}
+        {% include "navbarC.html.twig" %}
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 {% include "topbar.html.twig" %}
                 <div class="container-fluid">
-                    <h1 class="h3 mb-2 text-gray-800">Transfert</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Inventaire Caisse</h1>
                     <p class="mb-4">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="form-group row">
                                     <div class="col-sm-6">
-                                    <h6 class="m-0 font-weight-bold text-primary">Transfert</h6>     
+                                    <h6 class="m-0 font-weight-bold text-primary">Inventaire Caisse</h6>     
                                     </div>
                                     <div class="col-sm-2">
                                         {% for tempagence in app.user.tempAgences %}
@@ -40,11 +39,16 @@
                                         {% endfor %}
                                     </div>
                                     <div class="col-sm-2"> 
-                                        <a href="{{ path('app_magasin_a')}}" class="btn btn-success">
+                                        <a href="{{ path('app_inventaire_caisse_a')}}" class="btn btn-success">
                                         <i class="fa fa-plus"></i>
                                          Ajouter
                                          </a>             
-                                    </div>  
+                                    </div> 
+                                    <div class="col-sm-2"> 
+                                        <a href="{{path('app_inventaire_excel')}}" class="btn btn-warning">
+                                            <i class="fa fa-download"></i>
+                                            EXPORTER</a>            
+                                    </div> 
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
@@ -69,10 +73,11 @@
                                        
                                         <tr>
                                             <th>id</th>
-                                            <th>Produit</th>
-                                            <th>Quantite</th>
-                                            <th>Status</th>
-                                            <th>Matricule</th>
+                                            <th>Montant vendu cash</th>
+                                            <th>Montant Caisse</th>
+                                            <th>Ecart</th>
+                                            <th>Justificatif</th>
+                                            <th>Agence</th>
                                             <th>Date</th>
                                             <th>Operation</th>
                                         </tr>
@@ -80,50 +85,29 @@
                                     <tfoot>
                                         <tr>
                                             <th>id</th>
-                                            <th>Produit</th>
-                                            <th>Quantite</th>
-                                            <th>Status</th>
-                                            <th>Matricule</th>
+                                            <th>Montant vendu cash</th>
+                                            <th>Montant Caisse</th>
+                                            <th>Ecart</th>
+                                            <th>Justificatif</th>
+                                            <th>Agence</th>
                                             <th>Date</th>
                                             <th>Operation</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        {% for transfert in transferts %}
+                                        {% for inventaire in inventaires %}
                                             <tr>
-                                                <td>{{ transfert.id}} </td>
-                                                <td>{{ transfert.produit.nom}}</td>
-                                                <td>{{ transfert.quantite}}</td>
-                                                {% if transfert.statut == "Transféré" %}
-                                                    <td class='text text-success'>{{ transfert.statut}}</td>
-                                                {% elseif transfert.statut == "Attente" %}
-                                                    <td class='text text-warning'>{{ transfert.statut}}</td>
-                                                {% elseif transfert.statut == "Annuler" %}
-                                                    <td class='text text-primary'>{{ transfert.statut}}</td>
-                                                {% else %}
-                                                    <td class='text text-danger'>{{ transfert.statut}}</td>
-                                                {% endif %}
-                                                <td>{{ transfert.matricule}}</td>
-                                                <td>{{ transfert.createtAt |date("d-m-Y")}}</td>
-                                                {% if transfert.statut == "Transféré" %}
-                                                    <td>
-                                                        {% if is_granted('ROLE_TRANSFERT_MAGASIN') %}
-                                                            <a href='{{ path('app_transfert_a_edit', {'id': transfert.id})}}' class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cette vente ?\");'>Detransfert</a>
-                                                        {% endif %}
-                                                        <a href="{{ path('app_transfert_a_details', {'id': transfert.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>
-                                                    </td>
-                                                {% elseif transfert.statut == "Attente" %}
-                                                    <td>
-                                                        {% if is_granted('ROLE_TRANSFERT_MAGASIN') %}
-                                                            <a href='{{ path('app_transfert_a_valider', {'id': transfert.id})}}' class='btn btn-warning' onclick='return confirm(\"Êtes-vous sûr de vouloir valider cette vente ?\");'>Valider</a>
-                                                        {% endif %}
-                                                        <a href="{{ path('app_transfert_a_details', {'id': transfert.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>
-                                                    </td>
-                                                {% else %}
-                                                    <td>
-                                                        <a href="{{ path('app_transfert_a_details', {'id': transfert.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>
-                                                    </td>
-                                                {% endif %}
+                                                <td>{{ inventaire.id}} </td>
+                                                <td>{{ inventaire.vente}}</td>
+                                                <td>{{ inventaire.caisse}}</td>
+                                                <td>{{ inventaire.ecart}}</td>
+                                                <td>{{ inventaire.justificatif}}</td>
+                                                <td>{{ inventaire.agence.nom}}</td>
+                                                <td>{{ inventaire.createtAt | date("d-m-Y")}}</td>
+                                                <td>
+                                                {# <a href='{{ path('app_inventaire_a_edit', {'id': inventaire.id}) }}' class='btn btn-primary'><i class='fas fa-pencil-alt'></i></a> #}
+                                                {# <a href='{{ path('app_inventaire_a_delete', {'id': inventaire.id})}}' class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cette vente ?\");'><i class='fas fa-trash-alt'></i></a> #}
+                                                </td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

@@ -65,6 +65,23 @@ class HistoriqueARepository extends ServiceEntityRepository
         return $result ? (int) $result['quantite'] : 0;
     }
 
+    public function findByDateAll($date,$produit) : int
+    {
+        $result= $this->createQueryBuilder('h')
+            ->select('h.quantite')
+            ->where('h.produitA = :produits')
+            ->andWhere('h.createtAd = :date')
+            ->setParameter('produits',$produit)
+            ->setParameter('date', $date)
+            ->orderBy('h.createtAd', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    
+        return $result ? (int) $result['quantite'] : 0;
+    }
+
     public function findByLastDate($date,$produit,$agence) : int
     {
         $datesuivant = (clone $date)->modify('+1 day');
@@ -109,6 +126,20 @@ class HistoriqueARepository extends ServiceEntityRepository
             ->andWhere('h.createtAd =:date')
             ->setParameter('produits',$produit)
             ->setParameter('agences',$agence)
+            ->setParameter('date',$date)
+            ->orderBy('h.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findByProduitAgenceAll($produit,$date) : ?HistoriqueA
+    {
+        return $this->createQueryBuilder('h')
+            ->where('h.produitA = :produits')
+            ->andWhere('h.createtAd =:date')
+            ->setParameter('produits',$produit)
             ->setParameter('date',$date)
             ->orderBy('h.id', 'DESC')
             ->setMaxResults(1)

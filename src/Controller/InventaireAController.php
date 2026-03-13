@@ -47,6 +47,14 @@ class InventaireAController extends AbstractController
             'id' =>$agence->getId(),
         ]);
     }
+    #[Route('/inventaire/a/list/direction', name: 'app_inventaire_a_list_direction')]
+    public function listDirection(EntityManagerInterface $entityManager): Response
+    {
+        $inventaires = $entityManager->getRepository(InventaireA::class)->findAll();
+        return $this->render('inventaire_a/list_direction.html.twig', [
+            'inventaires' => $inventaires,
+        ]);
+    }
     #[Route('/inventaire/a/delete/{id}', name: 'app_inventaire_a_delete')]
     public function delete(EntityManagerInterface $entityManager,InventaireA $inventaire): Response
     {

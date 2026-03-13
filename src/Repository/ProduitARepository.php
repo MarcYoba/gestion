@@ -91,6 +91,19 @@ class ProduitARepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByDatePeremptionAll() :array 
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.lots','l')
+            ->select('p.nom,p.expiration AS lot1, l.expiration As lot2')
+            ->where('p.quantite > 0')
+            ->groupBy('p.nom')
+            ->orderBy('p.nom','ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function FindByBonCommandFournisseur($fournisseur) : array {
         return $this->createQueryBuilder('p')
         ->innerJoin('p.bondCommandeAs', 'b')

@@ -69,42 +69,29 @@ class HomeController extends AbstractController
             $this->redirectToRoute('app_logout');
         }
         
-        if ($id == 0) {
-            $agence = $entityManager->getRepository(Agence::class)->findAll();
-            $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
-            dd("je suis ici");
-            if ($temoporayagence) {
-                $temoporayagence->setGenerale(1);
-                $entityManager->flush();
-            }else{
-                
+        $agence = $entityManager->getRepository(Agence::class)->findAll();
+        $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+        if ($temoporayagence) {
+            $idagence = $entityManager->getRepository(Agence::class)->find($id);
+            if (!$idagence) {
                 $idagence = $entityManager->getRepository(Agence::class)->find(1);
-                $temoporayagence = new TempAgence();
-                $temoporayagence->setUser($user);
-                $temoporayagence->setAgence($idagence);
-                $temoporayagence->setGenerale(1);
-                $entityManager->persist($temoporayagence);
-                $entityManager->flush();
             }
-            
+            $temoporayagence->setGenerale(0);
+            $temoporayagence->setAgence($idagence);
+            $entityManager->flush();
         }else{
-            $agence = $entityManager->getRepository(Agence::class)->findAll();
-            $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
-            if ($temoporayagence) {
-                $idagence = $entityManager->getRepository(Agence::class)->find($id);
-                $temoporayagence->setGenerale(0);
-                $temoporayagence->setAgence($idagence);
-                $entityManager->flush();
-            }else{
-                $idagence = $entityManager->getRepository(Agence::class)->find($id);
-                $temoporayagence = new TempAgence();
-                $temoporayagence->setUser($user);
-                $temoporayagence->setAgence($idagence);
-                $temoporayagence->setGenerale(0);
-                $entityManager->persist($temoporayagence);
-                $entityManager->flush();
+            $idagence = $entityManager->getRepository(Agence::class)->find($id);
+            if (!$idagence) {
+                $idagence = $entityManager->getRepository(Agence::class)->find(1);
             }
+            $temoporayagence = new TempAgence();
+            $temoporayagence->setUser($user);
+            $temoporayagence->setAgence($idagence);
+            $temoporayagence->setGenerale(0);
+            $entityManager->persist($temoporayagence);
+            $entityManager->flush();
         }
+        
 
         $produi = $entityManager->getRepository(Produit::class)->findAll();
         $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
@@ -147,44 +134,30 @@ class HomeController extends AbstractController
         if (!$this->getUser()) {
             $this->redirectToRoute('app_logout');
         }
-        if ($id == 0) {
-            $agence = $entityManager->getRepository(Agence::class)->findAll();
-            $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
-            //$agence = $temoporayagence->getAgence();
-            if ($temoporayagence) {
-                $idagence = $entityManager->getRepository(Agence::class)->find($id);
-                $temoporayagence->setGenerale(0);
-                $temoporayagence->setAgence($idagence);
-                $entityManager->flush();
-            }else{
+        
+        $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+            
+        if ($temoporayagence) {
+            $idagence = $entityManager->getRepository(Agence::class)->find($id);
+            if (!$idagence) {
                 $idagence = $entityManager->getRepository(Agence::class)->find(1);
-                $temoporayagence = new TempAgence();
-                $temoporayagence->setUser($user);
-                $temoporayagence->setAgence($idagence);
-                $temoporayagence->setGenerale(1);
-                $entityManager->persist($temoporayagence);
-                $entityManager->flush();
-            } 
-            
-        }else{
-            $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
-            //$agence = $temoporayagence->getAgence();
-            if ($temoporayagence) {
-                $idagence = $entityManager->getRepository(Agence::class)->find($id);
-                $temoporayagence->setGenerale(0);
-                $temoporayagence->setAgence($idagence);
-                $entityManager->flush();
-            }else{
-                $idagence = $entityManager->getRepository(Agence::class)->find($id);
-                $temoporayagence = new TempAgence();
-                $temoporayagence->setUser($user);
-                $temoporayagence->setAgence($idagence);
-                $temoporayagence->setGenerale(0);
-                $entityManager->persist($temoporayagence);
-                $entityManager->flush();
             }
-            
+            $temoporayagence->setGenerale(0);
+            $temoporayagence->setAgence($idagence);
+            $entityManager->flush();
+        }else{
+            $idagence = $entityManager->getRepository(Agence::class)->find($id);
+            if (!$idagence) {
+                $idagence = $entityManager->getRepository(Agence::class)->find(1);
+            }
+            $temoporayagence = new TempAgence();
+            $temoporayagence->setUser($user);
+            $temoporayagence->setAgence($idagence);
+            $temoporayagence->setGenerale(0);
+            $entityManager->persist($temoporayagence);
+            $entityManager->flush();
         }
+        
         $produi = $entityManager->getRepository(ProduitA::class)->findAll();
         $commandepoussin = $entityManager->getRepository(Poussin::class)->findByCommandePoussin($agence);
         $client = $entityManager->getRepository(VenteA::class)->findBy20FirstClient($agence);
@@ -226,6 +199,70 @@ class HomeController extends AbstractController
             'produitsanslinite' => count($produitsanslinite),
             'produitsansfournisseur' => count($produitsansfournisseur),
             'bontransfert' => count($bontransfert),
+        ]);
+    }
+
+    #[Route('/home/dashboard/a/direction', name: 'app_home_dashboard_a_direction')]
+    public function dashboardADirection(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        $agence = 0;
+        if (!$this->getUser()) {
+            $this->redirectToRoute('app_logout');
+        }
+        
+        $produi = $entityManager->getRepository(ProduitA::class)->findAll();
+        $commandepoussin = $entityManager->getRepository(Poussin::class)->findAll();
+        $client = $entityManager->getRepository(VenteA::class)->findBy20FirstClientAll();
+        $dateexpiration = $entityManager->getRepository(ProduitA::class)->findByDatePeremptionAll();
+        $agence = $entityManager->getRepository(Agence::class)->findAll();
+        $produitplusvendu = $entityManager->getRepository(FactureA::class)->FindByProduitPlusVendu();
+        $doublon = $entityManager->getRepository(ProduitA::class)->findByDoublon();
+        $expiration = $entityManager->getRepository(ProduitA::class)->findBy(['expiration' => '0']);
+        $lots = $entityManager->getRepository(Lots::class)->findBy(['expiration' => '0']);
+        $peramption = $entityManager->getRepository(ProduitA::class)->findByDateExpiration(6);
+        $lotsperemtion = $entityManager->getRepository(Lots::class)->findByDateExpirationLots(6);
+        $bondCommandeA = $entityManager->getRepository(BondCommandeA::class)->findBySommeBonCommande();
+        $produitsanslinite = $entityManager->getRepository(ProduitA::class)->FindbyEmptyBonCommand();
+        $produitsansfournisseur = $entityManager->getRepository(ProduitA::class)->FindbyEmptyFournisseur();
+        $bontransfert = $entityManager->getRepository(TransfertA::class)->findBy(['statut' => 'Attente']);
+
+        if (empty($expiration)) {
+            $expiration = [];
+        }  
+        if ($doublon) {
+            $doublon = [];
+        }
+        if ($peramption) {
+            $peramption =[];
+        }
+        return $this->render('home/dashboard_a_direction.html.twig', [
+            'agence' => $agence,
+            'produits' => $produi,
+            'produitplusvendu' => $produitplusvendu,
+            'doublons' => $doublon,
+            'expiration' => $expiration,
+            'lots' => $lots,
+            'perantions' => $peramption,
+            'lotsperemtion' => $lotsperemtion,
+            'clients' => $client,
+            'dateexpiration' => $dateexpiration,
+            'commandepoussins' => $commandepoussin,
+            'bondCommandeA' => $bondCommandeA,
+            'produitsanslinite' => count($produitsanslinite),
+            'produitsansfournisseur' => count($produitsansfournisseur),
+            'bontransfert' => count($bontransfert),
+        ]);
+    }
+
+    #[Route('/home/dashboard/direction', name: 'app_home_dashboard_direction')]
+    public function dashboardDirection(EntityManagerInterface $entityManager): Response
+    {
+        return $this->render('home/dashboard_direction.html.twig', [
+            // 'agence' => $agence,
         ]);
     }
 }

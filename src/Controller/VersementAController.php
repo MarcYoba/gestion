@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Agence;
 use App\Entity\BalanceA;
 use App\Entity\Clients;
 use App\Entity\TempAgence;
@@ -82,6 +83,16 @@ class VersementAController extends AbstractController
             'client' => $client,
         ]);
     }
+    #[Route('/versement/a/list_direction', name: 'versement_a_list_direction')]
+    public function listDirection(EntityManagerInterface $em) : Response {
+        $versement = $em->getRepository(VersementA::class)->findAll();
+        $client = $em->getRepository(Clients::class)->findAll();
+
+        return $this->render('versement_a/list_direction.html.twig',[
+            'versement' => $versement,
+            'client' => $client,
+        ]);
+    }
     /**
      * @Route(path="/versement/a/delete/{id}", name="versement_a_delete")
      */
@@ -155,6 +166,43 @@ class VersementAController extends AbstractController
             [
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => 'inline; filename="Inventaire.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
+    }
+
+    #[Route('/versement/a/ticket/{id}', name:'versement_a_download_ticket')]
+    public function download_ticket(EntityManagerInterface $em, $id) : Response {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+        $agence = $em->getRepository(Agence::class)->findOneBy(['id' => $id]);
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        
+        $versement = $em->getRepository(VersementA::class)->findOneBy(['id' => $id]);
+        if (!$versement) {
+            return $this->redirectToRoute('versement_a_list');
+        }
+        $html = $this->renderView('versement_a/dwonload_ticket.html.twig', [
+            'versement' => $versement,
+            'agence' => $agence,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A6', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="ticket.pdf"', // 'inline' pour affichage navigateur
             ]
         );
     }

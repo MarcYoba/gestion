@@ -1,10 +1,6 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello FournisseurController!{% endblock %}
-
+{% block title %}Fournisseur{% endblock %}
 {% block body %}
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,7 +22,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        {% include "navbarA.html.twig" %}
+        {% include "navbarC.html.twig" %}
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -89,6 +85,7 @@
                                             <th>email</th>
                                             <th>Date enregistrement</th>
                                             <th>numero facture</th>
+                                            <th>Agence</th>
                                             <th>Date achat</th>
                                             <th>Action</th>
                                             
@@ -103,6 +100,7 @@
                                             <th>email</th>
                                             <th>Date enregistrement</th>
                                             <th>numero facture</th>
+                                            <th>Agence</th>
                                             <th>Date achat</th>
                                             <th>Action</th>
                                         </tr>
@@ -117,12 +115,10 @@
                                             <td>{{ fournisseur.email }}</td>
                                             <td>{{ fournisseur.createdAt|date('d-m-Y') }}</td>
                                             <td>{{ fournisseur.numfacture }}</td>
+                                            <td>{{ fournisseur.agence.nom }}</td>
                                             <td>{{ fournisseur.dateAchat|date('d-m-Y') }}</td>
                                             <td>
-                                                <a href="{{ path('fournisseur_a_edit', {'id': fournisseur.id}) }}" class='btn btn-primary'>
-                                                    <i class='fas fa-pencil-alt'></i></a>
-                                                <a href="{{ path('fournisseur_a_delete', {'id': fournisseur.id}) }}" class='btn btn-danger' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce fournisseur ?");'>
-                                                    <i class='fas fa-trash-alt'></i></a>
+                                                
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -152,17 +148,11 @@
         <!-- End of Content Wrapper -->
 
     </div>
-    <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
 

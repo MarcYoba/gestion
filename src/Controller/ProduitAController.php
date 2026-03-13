@@ -77,6 +77,15 @@ class ProduitAController extends AbstractController
         ]);
     }
 
+    #[Route('/produit/a/list/direction', name: 'produit_a_list_direction')]
+    public function listDirection(EntityManagerInterface $em): Response
+    {
+        $produits = $em->getRepository(ProduitA::class)->findAll();
+        return $this->render('produit_a/list_direction.html.twig', [
+            'produits' => $produits,
+        ]);
+    }
+
     #[Route('/produit/a/edit/{id}', name: 'produit_a_edit')]
     public function edite(Request $request, EntityManagerInterface $em,int $id): Response
     {

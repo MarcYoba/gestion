@@ -36,4 +36,25 @@ class QuantiteStockAController extends AbstractController
             'quantitestock' => $quantiteStock,
         ]);
     }
+
+    #[Route('/quantite/stock/a/direction', name: 'app_quantite_stock_a_direction')]
+    public function direction(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+        $produit = $em->getRepository(ProduitA::class)->findAll();
+        $quantiteStock = [];
+        $date = date("Y").'-01-02';
+        $date = new DateTime($date);
+        foreach ($produit as $key => $value) {
+            $historique = $em->getRepository(HistoriqueA::class)->findByDateAll($date,$value->getId());
+            $achat = $em->getRepository(AchatA::class)->findBySommeAchatProduitAll($date->format("Y"),$value->getId(),$id);
+            $facture = $em->getRepository(FactureA::class)->findBySommeProduitAll(new \DateTimeImmutable($date->format("Y")), $value->getId());
+            array_push($quantiteStock,[$value->getNom(),$historique,$achat,$facture,$value->getQuantite(),$value->getAgence()->getNom()]);   
+        }
+        return $this->render('quantite_stock_a/list_direction.html.twig', [
+            'quantitestock' => $quantiteStock,
+        ]);
+    }
 }

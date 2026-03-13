@@ -32,6 +32,21 @@ class HistoriqueAController extends AbstractController
         ]);
     }
 
+    #[Route('/historique/a/list/direction', name: 'app_historique_a_list_direction')]
+    public function List_direction(EntityManagerInterface $em ): Response
+    {
+        $tempAgence = $em->getRepository(TempAgence::class)->findOneBy(["user"=> $this->getUser()]) ;
+        $id = $tempAgence->getAgence()->getId();
+        $client = $em->getRepository(Clients::class)->findAll();
+
+        $historique = $em->getRepository(HistoriqueA::class)->findAll();
+
+        return $this->render('historique_a/list_direction.html.twig', [
+            'client' => $client,
+            'historiques'=> $historique
+        ]);
+    }
+
     #[Route('/historique/a/download', name: 'app_historique_a_download')]
     public function download(EntityManagerInterface $em, Request $request)
     {

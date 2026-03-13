@@ -60,4 +60,14 @@ class InventaireCaisseAController extends AbstractController
             'inventaires' => $inventaires,
         ]);
     }
+
+    #[Route('/inventaire/caisse/a/list/direction', name: 'app_inventaire_caisse_a_list_direction')]
+    public function listDirection(EntityManagerInterface $em): Response
+    {
+        $inventaires = $em->getRepository(InventaireCaisseA::class)->findAll();
+
+        return $this->render('inventaire_caisse_a/liste_direction.html.twig', [
+            'inventaires' => $inventaires,
+        ]);
+    }
 }

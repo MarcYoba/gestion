@@ -113,11 +113,11 @@
                                             <div class="d-flex justify-content-between">
                                                     {% for agences in agence %}
                                                         {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" or agences.nom == "AFRICA BELEIVE GROUP SARL" %}
-                                                            <a href="{{ path('app_home_dashboardA', {'id': 0}) }}" class="btn btn-primary">
+                                                            <a href="{{ path('app_home_dashboard_a_direction') }}" class="btn btn-primary">
                                                                 Cabinet {{agences.nom }}
                                                             </a>
                                                         {% else %}
-                                                            <a href="{{ path('app_home_dashboard', {'id': 0}) }}" class="btn btn-primary">
+                                                            <a href="{{ path('app_home_dashboard_direction') }}" class="btn btn-primary">
                                                             Provenderie {{agences.nom }}
                                                             </a>
                                                         {% endif %}

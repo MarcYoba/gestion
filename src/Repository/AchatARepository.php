@@ -99,6 +99,21 @@ class AchatARepository extends ServiceEntityRepository
         return $result > 0 ? (int)$result : 0;
     }
 
+    public function findBySommeAchatProduitAll($date,$produit) : int
+    {
+        $result = $this->createQueryBuilder('a')
+            ->select('COALESCE(SUM(a.quantite), 0)')
+            ->where('YEAR(a.createdAt) = :date')
+            ->andWhere('a.produit = :val')
+            ->setParameter('date',$date)
+            ->setParameter('val', $produit)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    
+        return $result > 0 ? (int)$result : 0;
+    }
+
     public function findByIntervaleDate($first_date,$end_date,$agence) : array
     {
         $debut = new \DateTimeImmutable($first_date);
@@ -284,6 +299,21 @@ class AchatARepository extends ServiceEntityRepository
             ->setParameter('date',$date)
             ->setParameter('val', $produit)
             ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    
+        return $result != 0 ? (int)$result : 0;
+    }
+
+    public function findBySommeAchatProduitDayAll($date,$produit) : int
+    {
+        $result = $this->createQueryBuilder('a')
+            ->select('COALESCE(SUM(a.quantite), 0)')
+            ->where('YEAR(a.createdAt) = :date')
+            ->andWhere('a.produit = :val')
+            ->setParameter('date',$date)
+            ->setParameter('val', $produit)
             ->getQuery()
             ->getSingleScalarResult()
         ;
