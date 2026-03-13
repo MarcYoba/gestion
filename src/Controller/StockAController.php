@@ -23,7 +23,9 @@ class StockAController extends AbstractController
     {
         $user = $this->getUser();
         $date = date("Y"."-01"."-04");
-        
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $produits = [];
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
@@ -42,6 +44,36 @@ class StockAController extends AbstractController
         }
         
         return $this->render('stock_a/recapitulatif.html.twig', [
+            'produits' => $produit,
+            'produitsData' => $produits,
+
+        ]);
+    }
+
+    #[Route('/stock/a/recapitulatif/direction', name: 'app_stock_a_recapitulatif_direction')]
+    public function recapitulatif_direction(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        $date = date("Y"."-01"."-04");
+        
+        $produits = [];
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+        $produit = $em->getRepository(ProduitA::class)->findAll();
+        foreach ($produit as $key => $value) {
+            $historiquequatite = 0;
+            $historiques = $em->getRepository(HistoriqueA::class)->findByProduitAgenceAll($value,$date);
+            $sommeachat = $em->getRepository(AchatA::class)->findBySommeAchatProduitDayAll($date,$value);
+            $sommeventejour = $em->getRepository(FactureA::class)->findByQuantiteProduitVenduAll(new \DateTimeImmutable(), $value->getid());
+            $sommevente = $em->getRepository(FactureA::class)->findByQuantiteProduitVenduAnneAll($date, $value);
+            $magasinQt = $em->getRepository(MagasinA::class)->findOneBy(['produit' => $value, 'id' => "ASC"]);
+            if ($historiques) {
+                $historiquequatite = $historiques->getQuantite();
+            }
+            array_push($produits, [$value->getNom(),$historiquequatite, $sommeachat,$sommeventejour,$sommevente,$value->getQuantite(),empty($magasinQt)?0:$magasinQt->getQuantite(),$value->getAgence()->getNom()]);
+        }
+        
+        return $this->render('stock_a/recapitulatif_direction.html.twig', [
             'produits' => $produit,
             'produitsData' => $produits,
 
@@ -74,6 +106,38 @@ class StockAController extends AbstractController
         }
         
         return $this->render('stock_a/perte.html.twig', [
+            'produits' => $produit,
+            'produitsData' => $produits,
+
+        ]);
+    }
+
+    #[Route('/stock/a/perte/direction', name: 'app_stock_a_perte_direction')]
+    public function perteDirection(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        $date = date("Y"."-01"."-04");
+        
+        $produits = [];
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+        $produit = $em->getRepository(ProduitA::class)->findAll();
+        foreach ($produit as $key => $value) {
+            $historiquequatite = 0;
+            $historiques = $em->getRepository(HistoriqueA::class)->findByProduitAgenceAll($value,$date);
+            $sommeachat = $em->getRepository(AchatA::class)->findBySommeAchatProduitDayAll($date,$value);
+            $sommeventejour = $em->getRepository(FactureA::class)->findByQuantiteProduitVenduAll(new \DateTimeImmutable(), $value->getid());
+            $sommevente = $em->getRepository(FactureA::class)->findByQuantiteProduitVenduAnneAll($date, $value);
+            $magasinQt = $em->getRepository(MagasinA::class)->findOneBy(['produit' => $value, 'id' => "ASC"]);
+            if ($historiques) {
+                $historiquequatite = $historiques->getQuantite();
+            }
+            $stocktreel = $value->getQuantite() + (empty($magasinQt)?0:$magasinQt->getQuantite());
+            $perte = ($sommevente + $stocktreel) - ($historiquequatite + $sommeachat);
+            array_push($produits, [$value->getNom(),$historiquequatite + $sommeachat,$sommevente,$stocktreel,$perte,$value->getPrixvente(),$value->getAgence()->getNom()]);
+        }
+        
+        return $this->render('stock_a/perte_direction.html.twig', [
             'produits' => $produit,
             'produitsData' => $produits,
 

@@ -48,6 +48,16 @@ class FournisseurAController extends AbstractController
         ]);
     }
 
+    #[Route('/fournisseur/a/list/direction', name: 'fournisseur_a_list_direction')]
+    public function listDirection(EntityManagerInterface $em): Response
+    {
+        $fournisseurs = $em->getRepository(FournisseurA::class)->findAll();
+
+        return $this->render('fournisseur_a/list_direction.html.twig', [
+            'fournisseurs' => $fournisseurs,
+        ]);
+    }
+
     #[Route('/fournisseur/a/edit/{id}', name: 'fournisseur_a_edit')]
     public function edit(Request $request, EntityManagerInterface $em, FournisseurA $fournisseurA): Response
     {

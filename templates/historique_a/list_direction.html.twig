@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>AB COMPTA</title>
+
+    <!-- Custom fonts for this template -->
+
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        {% include "navbarC.html.twig" %}
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                {% include "topbar.html.twig" %}
+                <div class="container-fluid">
+                    <h1 class="h3 mb-2 text-gray-800">Historique stock</h1>
+                    <p class="mb-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="row">
+                                    <h6 class="m-0 font-weight-bold text-primary">Historique stock</h6>
+                            </div>
+                            <br>
+                            <form class="user" action="{{ path('app_historique_a_download')}}" method="post">
+                                <div class="row">
+                                    <p class="col-md-0"></p>
+                                    <div class="col-md-3"> 
+                                        <input type="search" id="recherche" onkeyup="recherduclient()"  class="form-control form-control-user" placeholder="recherche"><br>
+                                        <select id="ABCOMPTA_client"  name="ABCOMPTA_client"   class="form-control form-select" size="4" multiple aria-label="multiple select">   <!--  -->
+                                            <option value="ALL" selected>ALL</option>             
+                                                {% for clients in client %}
+                                                    <option value="{{ clients.id }}">{{ clients.nom }}</option>  
+                                                {% endfor %}
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-md-2">
+                                        <input class="form-control form-control-user" type="date" id="datedebut" name="datedebut"><br>
+                                        <input class="form-control form-control-user" type="date" id="datefin" name="datefin">   
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <button class="btn btn-warning">
+                                            <i class="fa fa-download"></i>
+                                            EXPORTER Excel
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="annee">Année recherche</label>
+                                        <select class="form-control" id="annee" name="annee" onchange="reload()">
+                                            <option >Recherche a</option>
+                                                {% for i in 2024..2040 %}
+                                                    <option value="{{ i }}">{{ i }}</option>
+                                                {% endfor %}
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-page-length='50' data-order='[[0, "desc"]]'>
+                                    <thead>
+                                       
+                                        <tr>
+                                            <th>id</th>
+                                            <th>Produit</th>
+                                            <th>Quantite</th>
+                                            <th>Mgasin</th>
+                                            <th>Agence</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>id</th>
+                                            <th>Produit</th>
+                                            <th>Quantite</th>
+                                            <th>Mgasin</th>
+                                            <th>Agence</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody id="liste">
+                                        {% for historique in historiques %}
+                                            <tr>
+                                                <th>{{ historique.produitA.id }}</th>
+                                                <th>{{ historique.produitA.nom }}</th>
+                                                <th>{{ historique.quantite }}</th>  
+                                                <th>
+                                                    {% for magasin in historique.produitA.magasins %}
+                                                        {{ magasin.quantite }}
+                                                    {% endfor %}
+                                                </th>
+                                                <th>{{ historique.produitA.agence.nom }}</th>
+                                                <th>{{ historique.createtAd | date("d-m-Y") }}</th> 
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Production &copy; {{"now" | date("Y-m-d")}}</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <script>
+        function reload() {
+            var annee = document.getElementById("annee").value;
+            window.location.href = "sctockVente.php?date=" + annee;
+        }
+    </script>
+    <script src="{{asset('js/search_client.js')}}"></script>
+</body>
+
+</html>
+{% endblock %}

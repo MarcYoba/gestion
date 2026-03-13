@@ -193,6 +193,20 @@ class ClientsController extends AbstractController
         ]);
     }
 
+    #[Route('/clients/list/direction', name:'app_cleints_a_list_direction')]
+    public function List_a_direction(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+            $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
+            $agence = $tempagence->getAgence()->getId();
+        $client = $entityManager->getRepository(Clients::class)->findAll();
+
+        return $this->render("clients/list_a_direction.html.twig",[
+            "clients" => $client,
+            "id" => $agence
+        ]);
+    }
+
     #[Route('/clients/a/creat', name:'app_client_a_create')]
     public function create(Request $request, EntityManagerInterface $entityManager,UserPasswordHasherInterface $userPasswordHasher) : Response 
     {

@@ -29,7 +29,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        {% include "navbarA.html.twig" %}
+        {% include "navbarC.html.twig" %}
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -100,6 +100,7 @@
                                             <th>id</th>
                                             <th>montant</th>
                                             <th>client</th>
+                                            <th>Agence</th>
                                             <th>date versement</th>
                                             <th>operation</th>
                                         </tr>
@@ -109,6 +110,7 @@
                                             <th>id</th>
                                             <th>montant</th>
                                             <th>client</th>
+                                            <th>Agence</th>
                                             <th>date versement</th>
                                             <th>operation</th>
                                         </tr>
@@ -119,10 +121,9 @@
                                                 <td>{{ row.id }}</td>
                                                 <td>{{ row.montant + row.om + row.banque }}</td>
                                                 <td>{{ row.client.nom }}</td>
+                                                <td>{{ row.agence.nom | default('N/A') }}</td>
                                                 <td>{{ row.createdAt|date('d/m/Y') }}</td>
                                                 <td>
-                                                    <a href="{{ path('versement_a_edit', {'id': row.id}) }}" class="btn btn-info btn-user"><i class="fas fa-pencil-alt"></i></a>
-                                                    <a href="{{ path('versement_a_delete', {'id': row.id}) }}" class="btn btn-danger btn-user"><i class="fas fa-trash-alt"></i></a>
                                                     <a href="{{ path('versement_a_download_ticket', {'id': row.id}) }}" class="btn btn-info btn-user">PDF</a>
                                                 </td>
                                             </tr>

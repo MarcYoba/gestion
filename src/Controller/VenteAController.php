@@ -790,4 +790,17 @@ class VenteAController extends AbstractController
     
     return $donnees;
     }
+
+    #[Route('/vente/a/list/direction', name: 'vente_a_direction')]
+    public function listDirection(EntityManagerInterface $em): Response
+    {
+        $ventes = $em->getRepository(VenteA::class)->findAll();
+        $produit = $em->getRepository(ProduitA::class)->findAll();
+        $client = $em->getRepository(Clients::class)->findAll();
+        return $this->render('vente_a/list.html_direction.twig', [
+            'vente' => $ventes,
+            'produit' => $produit,
+            'client' => $client,
+        ]);
+    }
 }

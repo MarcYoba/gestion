@@ -399,4 +399,17 @@ class AchatAController extends AbstractController
         $writer->save('php://output');
         exit;
     }
+
+    #[Route('/achat/a/list/direction', name: 'achat_a_list_direction')]
+    public function listDirection(EntityManagerInterface $em): Response
+    {
+        $achatA = $em->getRepository(AchatA::class)->findAll();
+        $produit = $em->getRepository(ProduitA::class)->findAll();
+        $fournisseur = $em->getRepository(FournisseurA::class)->findAll();
+        return $this->render('achat_a/list_direction.html.twig', [
+            'achats' => $achatA,
+            'produits' => $produit,
+            'fournisseurs' => $fournisseur,
+        ]);
+    }
 }

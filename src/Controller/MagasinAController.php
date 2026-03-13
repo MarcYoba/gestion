@@ -68,6 +68,18 @@ class MagasinAController extends AbstractController
             'magasins' => $magasins,
         ]);
     }
+    #[Route('/magasin/a/list/direction', name: 'app_magasin_a_list_direction')]
+    public function listDirection(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_logout');
+        }
+        $magasins = $em->getRepository(MagasinA::class)->findAll();
+        return $this->render('magasin_a/list_direction.html.twig', [
+            'magasins' => $magasins,
+        ]);
+    }
     #[Route('/magasin/edit/{id}', name: 'app_magasin_a_edit')]
     public function Edit(EntityManagerInterface $em): Response
     {

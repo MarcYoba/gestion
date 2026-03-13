@@ -82,6 +82,24 @@ class FactureARepository extends ServiceEntityRepository
         return $result > 0 ? (int)$result : 0;
     }
 
+    public function findBySommeProduitAll($date,$produit) : int
+    {
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+        $result= $this->createQueryBuilder('f')
+            ->select('COALESCE(SUM(f.quantite), 0)')
+            ->where('f.produit = :produits')
+            ->andWhere('f.createAt  BETWEEN :startDate AND :endDate')
+            ->setParameter('produits',$produit)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    
+        return $result > 0 ? (int)$result : 0;
+    }
+
     public function findByProduitVendu($date,$agence) : array 
     {
         // $date = new \DateTimeImmutable($date);
@@ -121,6 +139,24 @@ class FactureARepository extends ServiceEntityRepository
         return (int) $result;
     }
 
+    public function findByQuantiteProduitVenduAll($date, $produit): int
+    {
+        $startDate = (clone $date)->setTime(0, 0, 0);
+        $endDate = (clone $date)->setTime(23, 59, 59);
+
+        $result = $this->createQueryBuilder('f')
+            ->select('COALESCE(SUM(f.quantite), 0)')
+            ->where('f.produit = :produit')
+            ->andWhere('f.createAt BETWEEN :startDate AND :endDate')
+            ->setParameter('produit', $produit)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $result;
+    }
+
     public function findByProduitVenduSemaine($first_date,$end_date,$agence) : array 
     {
         // $date = new \DateTimeImmutable($date);
@@ -151,6 +187,21 @@ class FactureARepository extends ServiceEntityRepository
             ->setParameter('produit', $produit)
             ->setParameter('startDate', $date)
             ->setParameter('agence', $agence)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $result;
+    }
+
+    public function findByQuantiteProduitVenduAnneAll($date, $produit): int
+    {
+
+        $result = $this->createQueryBuilder('f')
+            ->select('COALESCE(SUM(f.quantite), 0)')
+            ->where('f.produit = :produit')
+            ->andWhere('YEAR(f.createAt) = :startDate')
+            ->setParameter('produit', $produit)
+            ->setParameter('startDate', $date)
             ->getQuery()
             ->getSingleScalarResult();
 

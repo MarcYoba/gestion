@@ -76,6 +76,18 @@ class TranfertAController extends AbstractController
             'transferts' => $transferts,
         ]);
     }
+    #[Route('/transfert/a/list/direction', name: 'app_transfert_a_list_direction')]
+    public function listDirection(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_logout');
+        }
+        $transferts = $em->getRepository(TransfertA::class)->findAll();
+        return $this->render('transfert_a/list_direction.html.twig', [
+            'transferts' => $transferts,
+        ]);
+    }
     #[Route('/transfert/a/detransfert/{id}', name: 'app_transfert_a_edit')]
     public function edit(EntityManagerInterface $em,TransfertA $transfert): Response
     {

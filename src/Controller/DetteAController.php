@@ -24,4 +24,14 @@ class DetteAController extends AbstractController
             'dettes' => $dette,
         ]);
     }
+
+    #[Route('/dette/a/creance/direction', name: 'app_dette_a_direction')]
+    public function indexDirection(EntityManagerInterface $em): Response
+    {
+        $dette = $em->getRepository(VenteA::class)->findRapportVenteToCreditAll();
+
+        return $this->render('dette_a/list_direction.html.twig', [
+            'dettes' => $dette,
+        ]);
+    }
 }
