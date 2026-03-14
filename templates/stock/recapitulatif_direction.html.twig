@@ -21,7 +21,7 @@
 
 <body id="page-top">
     <div id="wrapper">
-        {% include "navbarC.html.twig" %}
+        {% include "navbarD.html.twig" %}
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 {% include "topbar.html.twig" %}
@@ -100,6 +100,7 @@
                                             <th>Contoire</th>
                                             <th>Magasin</th>
                                             <th>Stock REEL</th>
+                                            <th>Agence</th>
                                             <th>Date</th>
                                         </tr>
                                     </thead>
@@ -114,6 +115,7 @@
                                             <th>Contoire</th>
                                             <th>Magasin</th>
                                             <th>Stock REEL</th>
+                                            <th>Agence</th>
                                             <th>Date</th>
                                         </tr>
                                     </tfoot>
@@ -129,6 +131,7 @@
                                                 <th>{{ produit[5] }}</th>
                                                 <th>{{ produit[6] }}</th>
                                                 <th>{{ produit[5] + produit[6] }}</th>
+                                                <th>{{ produit[7] }}</th>
                                                 <th>{{ "now" | date("Y-m-d")}}</th>
                                             </tr>
                                         {% endfor %}

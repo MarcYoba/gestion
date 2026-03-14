@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="bg-gradient-success">
+<body class="bg-gradient-primary">
 
     <div class="container" >
         
@@ -29,7 +29,7 @@
                 <!-- Nested Row within Card Body -->
                 <div class="row">
                     <div class="col-lg-2 d-none d-lg-block bg-register-image">
-                        {% include "navbarA.html.twig" %}
+                        {% include "navbar.html.twig" %}
                     </div>
                     <div class="col-lg-10">
                         <div class="p-5">
@@ -47,7 +47,7 @@
                                     </div>
                                     <div class="col-sm-2 mb-6 mb-sm-0">
                                     {% if route > 0 %}
-                                        <a href="{{ path('app_transfert_a_details', {'id': route}) }}" class="btn btn-primary btn-user btn-block">
+                                        <a href="{{ path('app_transfert_details', {'id': route}) }}" class="btn btn-primary btn-user btn-block">
                                             <i class="fas fa-arrow-left"></i> retour
                                         </a>  
                                     {% endif %}    
@@ -57,7 +57,7 @@
                                     </div>
                                     <div class="col-sm-2 mb-6 mb-sm-0">
                                         {% if next > 0 %}
-                                            <a href="{{ path('app_transfert_a_details', {'id': next}) }}" class="btn btn-primary btn-user btn-block">
+                                            <a href="{{ path('app_transfert_details', {'id': next}) }}" class="btn btn-primary btn-user btn-block">
                                                 next <i class="fas fa-arrow-right"></i>
                                             </a>  
                                         {% endif %}      

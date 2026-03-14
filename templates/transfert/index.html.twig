@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Transfer{% endblock %}
+{% block title %}Transfert{% endblock %}
 
 {% block body %}
 <!DOCTYPE html>
@@ -34,7 +34,7 @@
                     <div class="col-lg-10">
                         <div class="p-5">
                             <div class="text-center" >
-                                <h1 class="h4 text-gray-900 mb-4">Transfer</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Transfert</h1>
                             </div>
                             <div class="card-header py-3">
                                 <div class="form-group row">
@@ -58,27 +58,39 @@
                             </div>
                             {{ form_start(form) }}
                                 <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        {{ form_label(form.produit) }}
-                                        <input type="search" id="produitrecher" value="{{magasins.produit.nom}}" onkeyup="rechercheTramsfertProduit()"  class="form-control" placeholder="Recherche Produit">
-                                        {{ form_widget(form.produit, {
-                                            'attr': {
-                                                'class': 'form-control',
-                                                'size': '4',
-                                                'aria-label': 'Sélection du client'
-                                            }
-                                        }) }}
+                                    <div class="col-sm-6">
+                                        <p class="mb-1">
+                                            <strong>N° de transfert :</strong> {{ form_widget(form.matricule, {'attr': {'value': matricule}}) }}
+                                        </p>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-6">
+                                        <p class="mb-1">Date : <strong>{{ form_widget(form.createtAt) }}</strong></p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="mb-1">Magasin d'origine : <strong>{{ Agences.nom ?? 'Magasin central' }}</strong></p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="mb-1"><strong>Destination :</strong> Production, vente, etc.</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="mb-1">
+                                            Demandé par : <strong>{{ app.user.username }}</strong>
+                                            <input type="text" id="user" name="user" value="{{ app.user.id }}" class="form-control" readonly>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        Produit : <strong>{{ magasins.produit.nom }}</strong>
+                                        <input type="text" id="produit" name="produit" value="{{ magasins.produit.id }}" class="form-control" readonly>
+                                    </div>
+                                    <div class="col-sm-6">
                                         Quantité
-                                        {{ form_label(form.quantite) }}
                                         {{ form_widget(form.quantite) }}
                                     </div>
-                                    <div class="col-sm-3">
-                                        Date d'entrée
-                                        {{ form_widget(form.createtAt) }}
+                                    <div class="col-sm-6">
+                                        Approuvé par
+                                        
+                                        {{ form_widget(form.Employer) }}
                                     </div>
-                                    
                                 </div>  
                             {{ form_end(form) }}
                             

@@ -32,4 +32,19 @@ class HistoriqueController extends AbstractController
             'historiques'=> $historique
         ]);
     }
+    #[Route('/historique/direction', name: 'app_historique_direction')]
+    public function direction(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        $tempAgence = $em->getRepository(TempAgence::class)->findOneBy(["user"=> $user]) ;
+        $id = $tempAgence->getAgence()->getId();
+        $client = new Clients();
+        $historique = new Historique();
+        $client = $em->getRepository(Clients::class)->findAll();
+        $historique = $em->getRepository(Historique::class)->findAll();
+        return $this->render('historique/direction.html.twig', [
+            'client' => $client,
+            'historiques'=> $historique
+        ]);
+    }
 }

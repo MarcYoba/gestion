@@ -23,4 +23,17 @@ class DetteController extends AbstractController
             'dettes' => $dette,
         ]);
     }
+
+    #[Route('/dette/list/direction', name: 'app_dette_list_direction')]
+    public function listDirection(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $agence = $tempagence->getAgence();
+
+        $dette = $em->getRepository(Vente::class)->findRapportVenteToCreditAll();
+        return $this->render('dette/direction.html.twig', [
+            'dettes' => $dette,
+        ]);
+    }
 }

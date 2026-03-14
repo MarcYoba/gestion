@@ -38,6 +38,9 @@ class Transfert
     #[ORM\Column(length: 255)]
     private ?string $matricule = null;
 
+    #[ORM\ManyToOne(inversedBy: 'transferts')]
+    private ?Employer $employer = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,6 +138,18 @@ class Transfert
     public function setMatricule(string $matricule): static
     {
         $this->matricule = $matricule;
+
+        return $this;
+    }
+
+    public function getEmployer(): ?Employer
+    {
+        return $this->employer;
+    }
+
+    public function setEmployer(?Employer $employer): static
+    {
+        $this->employer = $employer;
 
         return $this;
     }

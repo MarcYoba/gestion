@@ -273,5 +273,20 @@ class AchatRepository extends ServiceEntityRepository
     
         return $result != 0 ? (int)$result : 0;
     }
+
+    public function findBySommeAchatProduitDayAll($date,$produit) : int
+    {
+        $result = $this->createQueryBuilder('a')
+            ->select('COALESCE(SUM(a.quantite), 0)')
+            ->where('YEAR(a.createdAt) = :date')
+            ->andWhere('a.produit = :val')
+            ->setParameter('date',$date)
+            ->setParameter('val', $produit)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    
+        return $result != 0 ? (int)$result : 0;
+    }
     
 }

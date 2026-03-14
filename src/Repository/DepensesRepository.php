@@ -74,6 +74,17 @@ class DepensesRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findBySommeDepenseAgenceAll() : array 
+    {
+        return $this->createQueryBuilder('d')
+            ->select('COALESCE(SUM(d.montant),0)')
+            ->where('YEAR(d.createdAt) =:valt')
+            ->setParameter('valt',date('Y'))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findBySommeDay($date) : float 
     {
         $date = new \DateTimeImmutable($date);

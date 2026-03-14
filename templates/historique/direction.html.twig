@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Historique{% endblock %}
+{% block title %} Historique{% endblock %}
 
 {% block body %}
 <!DOCTYPE html>
@@ -26,7 +26,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        {% include "navbar.html.twig" %}
+        {% include "navbarD.html.twig" %}
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -68,61 +68,6 @@
                                 </div> 
                             </div>
                             <br>
-                            {# <form class="user" action="getstock.php" method="post">
-                            <div class="row">
-                                
-                                <p class="col-md-0"></p>
-                                <div class="col-md-3"> 
-                                   <input type="search" id="recherche" onkeyup="recherduclient()"  class="form-control form-control-user" placeholder="recherche"><br>
-                                    <select id="ABCOMPTA_client"  name="ABCOMPTA_client"   class="form-control form-select" size="4" multiple aria-label="multiple select">   <!--  -->
-                                        <option value="ALL" selected>ALL</option>             
-                                            {% for clients in client %}
-                                                <option value="{{ clients.id }}">{{ clients.nom }}</option>  
-                                            {% endfor %}
-                                    </select>
-                                </div>
-                                
-                               <!-- <p class="col-md-2">
-                                        <select id="periode"  name="periode"  class="form-control form-select">
-                                            <option value="day">Aujourd'hui</option>
-                                            <option value="semain">Semain</option>
-                                            <option value="moi">Moi</option>
-                                        </select>
-
-                                        UPDATE historiquestock hs INNER JOIN produit p ON hs.idproduit = p.id SET hs.Nomproduit = p.nom_produit WHERE hs.idproduit BETWEEN 1 AND 60;
-                                </p>-->
-                                <p class="col-md-2">
-                                <input class="form-control form-control-user" type="date" id="date" name="date"><br>
-                                <input class="form-control form-control-user" type="date" id="date2" name="date2">   
-                                </p>
-                                <p class="col-md-2" >
-                                        <input class="form-check-input" type="checkbox" id="reel" name="reel" value="reel">
-                                            <label class="form-check-label" id="reel">Stock reel</label><br>
-                                        
-                                        <input class="form-check-input" type="checkbox" id="Achat" name="Achat" value="Achat" onclick="rediriger()">
-                                            <label class="form-check-label" id="credit">Achat</label>
-                                    </p>
-
-                                    <p class="col-md-2" >
-                                        <input class="form-check-input" type="checkbox" id="Intentaire" name="Intentaire" value="Intentaire">
-                                        <label class="form-check-label" id="Intentaire">Intentaire</label><br>
-
-                                        <input class="form-check-input" type="checkbox" id="vente" name="vente" value="vente">
-                                        <label class="form-check-label" id="vente">vente</label>
-                                    </p>
-                                <p class="col-md-2">
-                                    <button class='btn btn-info btn-user'>Affichier</button>
-                                    <br>
-                                    <label for="annee">Année recherche</label>
-                                    <select class="form-control" id="annee" name="annee" onchange="reload()">
-                                        <option >Recherche a</option>
-                                            {% for i in 2024..2040 %}
-                                                <option value="{{ i }}">{{ i }}</option>
-                                            {% endfor %}
-                                    </select>
-                                </p>
-                            </div>
-                            </form> #}
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -133,6 +78,7 @@
                                             <th>id</th>
                                             <th>Produit</th>
                                             <th>Quantite</th>
+                                            <th>Agence</th>
                                             <th>Date</th>
                                         </tr>
                                     </thead>
@@ -141,6 +87,7 @@
                                             <th>id</th>
                                             <th>Produit</th>
                                             <th>Quantite</th>
+                                            <th>Agence</th>
                                             <th>Date</th>
                                         </tr>
                                     </tfoot>
@@ -149,7 +96,8 @@
                                             <tr>
                                                 <th>{{ historique.produit.id }}</th>
                                                 <th>{{ historique.produit.nom }}</th>
-                                                <th>{{ historique.quantite }}</th>    
+                                                <th>{{ historique.quantite }}</th> 
+                                                <th>{{ historique.agance.nom }}</th>  
                                                 <th>{{ historique.createdAt | date("d-m-Y") }}</th> 
                                             </tr>
                                         {% endfor %}

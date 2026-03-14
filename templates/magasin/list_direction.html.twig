@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Transfer{% endblock %}
+{% block title %}Magasin{% endblock %}
 {% block body %}
 <!DOCTYPE html>
 <html lang="en">
@@ -12,34 +12,34 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Transfert</title>
+    <title>Magasin</title>
 </head>
 
 <body id="page-top">
     <div id="wrapper">
-        {% include "navbar.html.twig" %}
+        {% include "navbarD.html.twig" %}
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 {% include "topbar.html.twig" %}
                 <div class="container-fluid">
-                    <h1 class="h3 mb-2 text-gray-800">Transfert</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Magasin</h1>
                     <p class="mb-4">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <div class="form-group row">
                                     <div class="col-sm-6">
-                                    <h6 class="m-0 font-weight-bold text-primary">Transfer</h6>     
+                                    <h6 class="m-0 font-weight-bold text-primary">Magasin</h6>     
                                     </div>
                                     <div class="col-sm-2">
                                         {% for tempagence in app.user.tempAgences %}
-                                            <a href="{{ path('app_home_dashboardA', {'id': tempagence.agence.id}) }}" class="btn btn-success">
+                                            <a href="{{ path('app_home_dashboardA', {'id': tempagence.agence.id}) }}" class="btn btn-primary">
                                                 <i class="fa fa-home"></i>
                                                 Home
                                             </a> 
                                         {% endfor %}
                                     </div>
                                     <div class="col-sm-2"> 
-                                        <a href="{{ path('app_magasin')}}" class="btn btn-success">
+                                        <a href="{{ path('app_magasin')}}" class="btn btn-primary">
                                         <i class="fa fa-plus"></i>
                                          Ajouter
                                          </a>             
@@ -70,8 +70,7 @@
                                             <th>id</th>
                                             <th>Produit</th>
                                             <th>Quantite</th>
-                                            <th>Status</th>
-                                            <th>Matricule</th>
+                                            <th>Agence</th>
                                             <th>Date</th>
                                             <th>Operation</th>
                                         </tr>
@@ -81,44 +80,22 @@
                                             <th>id</th>
                                             <th>Produit</th>
                                             <th>Quantite</th>
-                                            <th>Status</th>
-                                            <th>Matricule</th>
+                                            <th>Agence</th>
                                             <th>Date</th>
                                             <th>Operation</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        {% for transfert in transferts %}
+                                        {% for magasin in magasins %}
                                             <tr>
-                                                <td>{{ transfert.id}} </td>
-                                                <td>{{ transfert.produit.nom}}</td>
-                                                <td>{{ transfert.quantite}}</td>
-                                                {% if transfert.statut == "Transféré" %}
-                                                    <td class='text text-success'>{{ transfert.statut}}</td>
-                                                {% elseif transfert.statut == "Attente" %}
-                                                    <td class='text text-warning'>{{ transfert.statut}}</td>
-                                                {% elseif transfert.statut == "Annuler" %}
-                                                    <td class='text text-primary'>{{ transfert.statut}}</td>
-                                                {% else %}
-                                                    <td class='text text-danger'>{{ transfert.statut}}</td>
-                                                {% endif %}
-                                                <td>{{ transfert.matricule}}</td>
-                                                <td>{{ transfert.createtAt |date("d-m-Y")}}</td>
-                                                {% if transfert.statut == "Transféré" %}
-                                                    <td>
-                                                        <a href='{{ path('app_transfert_edit', {'id': transfert.id})}}' class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cette vente ?\");'>Detransfert</a>
-                                                        <a href="{{ path('app_transfert_details', {'id': transfert.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>
-                                                    </td>
-                                                {% elseif transfert.statut == "Attente" %}
-                                                    <td>
-                                                        <a href='{{ path('app_transfert_valider', {'id': transfert.id})}}' class='btn btn-warning' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cette vente ?\");'>Valider</a>
-                                                        <a href="{{ path('app_transfert_details', {'id': transfert.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>
-                                                    </td>
-                                                {% elseif transfert.statut == "Annuler" %}
-                                                    
-                                                {% else %}
-                                                    <td></td>
-                                                {% endif %}
+                                                <td>{{ magasin.id}} </td>
+                                                <td>{{ magasin.produit.nom}}</td>
+                                                <td>{{ magasin.quantite}}</td>
+                                                <td>{{ magasin.agence.nom}}</td>
+                                                <td>{{ magasin.createtAt |date("d-m-Y")}}</td>
+                                                <td>
+                                                
+                                                </td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

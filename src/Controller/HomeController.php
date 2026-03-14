@@ -258,11 +258,42 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/home/dashboard/direction', name: 'app_home_dashboard_direction')]
+    #[Route('/home/direction/dashboard', name: 'app_home_dashboard_direction')]
     public function dashboardDirection(EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        if ($user) {
+            $this->redirectToRoute('app_logout');
+        }
+
+        $produi = $entityManager->getRepository(Produit::class)->findAll();
+        $temoporayagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+        $agence = $temoporayagence->getAgence();
+        $client = $entityManager->getRepository(Vente::class)->findBy20FirstClientAll();
+        $produitfacturer = $entityManager->getRepository(Facture::class)->findByProduitplusVenduAll();
+        $somCaisse = $entityManager->getRepository(Caisse::class)->findBySommeCaisseAgenceAll();
+        $somdepense = $entityManager->getRepository(Depenses::class)->findBySommeDepenseAgenceAll();
+        $produitfacturer = $entityManager->getRepository(Facture::class)->findByProduitplusVenduAll();
+        $bondCommande = $entityManager->getRepository(BondCommande::class)->findBySommeBonCommande();
+        $produitsanslinite = $entityManager->getRepository(Produit::class)->FindbyEmptyBonCommand();
+        $produitsansfournisseur = $entityManager->getRepository(Produit::class)->FindbyEmptyFournisseur();
+
         return $this->render('home/dashboard_direction.html.twig', [
-            // 'agence' => $agence,
+            'agence' => $agence,
+            'prosuits' => $produi,
+            'clients' => $client,
+            'produitvendu' => $produitfacturer,
+            //'somversement' => $somversement,
+            'somCaisse' => $somCaisse,
+            'somdepense' => $somdepense,
+            'produitvendu' => $produitfacturer,
+            'clients' => $client,
+            'bondCommandes' => $bondCommande,
+            'produitsanslinite' => count($produitsanslinite),
+            'produitsansfournisseur' => count($produitsansfournisseur),
         ]);
     }
 }

@@ -95,6 +95,17 @@ class VersementController extends AbstractController
         ]);
     }
 
+    #[Route('/versement/list_direction', name: 'versement_list_direction')]
+    public function listDirection(EntityManagerInterface $entityManager): Response
+    {
+        $clients = $entityManager->getRepository(Clients::class)->findAll();
+        $versement = $entityManager->getRepository(Versement::class)->findAll();
+        return $this->render('versement/list_direction.html.twig', [
+            'versement' => $versement,
+            'clients' => $clients,
+        ]);
+    }
+
     /**
      * @Route( path ="/versement/edit/{id}", name="versement_edit")
      */

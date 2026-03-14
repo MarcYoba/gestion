@@ -52,6 +52,20 @@ class FournisseurController extends AbstractController
         ]);
     }
 
+    #[Route('/fournisseur/list/direction', name: 'fournisseur_list_direction')]
+    public function listDirection(EntityManagerInterface $entityManager): Response
+    {   
+        $user = $this->getUser();
+        $fournisseur = new Fournisseur();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" => $user]);
+        $id = $tempagence->getAgence()->getId();
+        
+        $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll();
+        return $this->render('fournisseur/list_direction.html.twig', [
+            'fournisseurs' => $fournisseur,
+        ]);
+    }
+
     #[Route('/fournisseur/edit/{id}', name: 'fournisseur_edit')]
     public function edit(Request $request, EntityManagerInterface $entityManager, Fournisseur $fournisseur): Response
     {

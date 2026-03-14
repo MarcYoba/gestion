@@ -83,6 +83,20 @@ class ClientsController extends AbstractController
         ]);
     }
 
+    #[Route('/clients/list/direction', name: 'clients_list_direction')]
+    public function list_direction(EntityManagerInterface $em): Response
+    {
+        $clients = $em->getRepository(Clients::class)->findAll();
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
+        $agence = $tempagence->getAgence()->getId();
+
+        return $this->render('clients/list_direction.html.twig', [
+            'clients' => $clients,
+            'id' => $agence,
+        ]);
+    }
+
     #[Route('/clients/edit/{id}', name: 'clients_edit')]
     public function edit(EntityManagerInterface $em,Clients $client): Response
     {
@@ -193,7 +207,7 @@ class ClientsController extends AbstractController
         ]);
     }
 
-    #[Route('/clients/list/direction', name:'app_cleints_a_list_direction')]
+    #[Route('/clients/a/list/direction', name:'app_cleints_a_list_direction')]
     public function List_a_direction(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
