@@ -42,11 +42,15 @@ class Employer
     #[ORM\OneToMany(mappedBy: 'Employer', targetEntity: TransfertA::class)]
     private Collection $transfertAs;
 
+    #[ORM\OneToMany(mappedBy: 'employer', targetEntity: Transfert::class)]
+    private Collection $transferts;
+
     public function __construct()
     {
         $this->salaires = new ArrayCollection();
         $this->salaireAs = new ArrayCollection();
         $this->transfertAs = new ArrayCollection();
+        $this->transferts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -198,6 +202,36 @@ class Employer
             // set the owning side to null (unless already changed)
             if ($transfertA->getEmployer() === $this) {
                 $transfertA->setEmployer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transfert>
+     */
+    public function getTransferts(): Collection
+    {
+        return $this->transferts;
+    }
+
+    public function addTransfert(Transfert $transfert): static
+    {
+        if (!$this->transferts->contains($transfert)) {
+            $this->transferts->add($transfert);
+            $transfert->setEmployer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransfert(Transfert $transfert): static
+    {
+        if ($this->transferts->removeElement($transfert)) {
+            // set the owning side to null (unless already changed)
+            if ($transfert->getEmployer() === $this) {
+                $transfert->setEmployer(null);
             }
         }
 

@@ -80,6 +80,19 @@ class ProduitController extends AbstractController
         ]);
     }
 
+    #[Route('/produit/list/direction', name: 'produit_list_direction')]
+    public function list_direction(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $produit = new Produit();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId(); 
+        $produit = $entityManager->getRepository(Produit::class)->findAll();       
+        return $this->render('produit/list_direction.html.twig', [
+            'produits' => $produit,
+        ]);
+    }
+
     #[Route('/produit/recherche/prix', name: 'produit_prix_recherche')]
     public function RecherchePrix(EntityManagerInterface $entityManager, Request $request): Response
     {

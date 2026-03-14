@@ -203,6 +203,9 @@ class Agence
     #[ORM\OneToMany(mappedBy: 'agence', targetEntity: InventaireCaisseA::class)]
     private Collection $inventaireCaisseAs;
 
+    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Versement::class)]
+    private Collection $versements;
+
     public function __construct()
     {
         $this->employer = new ArrayCollection();
@@ -257,6 +260,7 @@ class Agence
         $this->depenseAs = new ArrayCollection();
         $this->inventaireAs = new ArrayCollection();
         $this->inventaireCaisseAs = new ArrayCollection();
+        $this->versements = new ArrayCollection();
     }
 
    
@@ -1940,6 +1944,36 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($inventaireCaisseA->getAgence() === $this) {
                 $inventaireCaisseA->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Versement>
+     */
+    public function getVersements(): Collection
+    {
+        return $this->versements;
+    }
+
+    public function addVersement(Versement $versement): static
+    {
+        if (!$this->versements->contains($versement)) {
+            $this->versements->add($versement);
+            $versement->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVersement(Versement $versement): static
+    {
+        if ($this->versements->removeElement($versement)) {
+            // set the owning side to null (unless already changed)
+            if ($versement->getAgence() === $this) {
+                $versement->setAgence(null);
             }
         }
 

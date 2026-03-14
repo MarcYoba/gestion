@@ -240,6 +240,25 @@ class VenteController extends AbstractController
             ]);
     }
 
+    #[Route('/vente/list/direction', name: 'vente_list_direction')]
+    public function list_direction(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $vente = new Vente();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
+        $id = $tempagence->getAgence()->getId();
+        
+        $vente = $entityManager->getRepository(Vente::class)->findAll();
+        
+        $produit = $entityManager->getRepository(Produit::class)->findAll();
+        $client = $entityManager->getRepository(Clients::class)->findAll();
+        return $this->render('vente/list_direction.html.twig', [
+            'vente' => $vente,
+            'produit' => $produit,
+            'client' => $client,
+            ]);
+    }
+
     #[Route('/vente/edit', name: 'vente_edit')]
     public function edit(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {

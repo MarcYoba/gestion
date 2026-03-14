@@ -59,6 +59,17 @@ class CaisseRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findBySommeCaisseAgenceAll() : array 
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COALESCE(SUM(c.montant),0)')
+            ->Where('YEAR(c.createAt) =:val')
+            ->setParameter('val', date('Y'))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findBySommeCaisseDay($date,$agence) : float
     {
         $result = $this->createQueryBuilder('c')

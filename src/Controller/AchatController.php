@@ -164,6 +164,33 @@ class AchatController extends AbstractController
         ]);
     }
 
+    #[Route('/achat/list/direction', name: 'achat_list_direction')]
+    public function listDirection(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        $produit = 0;
+        $achat = 0;
+        $fournisseur = 0;
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user" =>$user]);
+        
+        $id = $tempagence->getAgence()->getId();
+        
+        $produit = $entityManager->getRepository(Achat::class)->findAll();
+        $achat = $entityManager->getRepository(Achat::class)->findAll();
+        $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll();
+        
+        $produits = $entityManager->getRepository(Produit::class)->findAll();
+        return $this->render('achat/list_direction.html.twig', [
+            'achat' => $achat,
+            'produit' => $produit,
+            'produits' => $produits,
+            'fournisseur' => $fournisseur,
+        ]);
+    }
+
     #[Route('/achat/edit/{id}', name: 'app_achat_edit')]
     public function Edit(EntityManagerInterface $entityManager, Achat $achat) : Response 
     {

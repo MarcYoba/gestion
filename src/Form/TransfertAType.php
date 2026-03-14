@@ -51,7 +51,7 @@ class TransfertAType extends AbstractType
             ->add('button',SubmitType::class,[
                 'label' => 'Transferer pour validation',
                 'attr' => [
-                    'class' => 'btn btn-primary btn-user btn-block',
+                    'class' => 'btn btn-success btn-user btn-block',
                     'style' => 'margin-top: 1rem;' // Adds spacing to move the button to a new line
                 ]
             ])

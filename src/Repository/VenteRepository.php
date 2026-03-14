@@ -463,12 +463,38 @@ class VenteRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findBy20FirstClientAll() : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->join('v.client', 'c')
+            ->select('SUM(v.prix) AS montant,COUNT(v.client) AS achat, c.nom AS nom')
+            ->where('YEAR(v.createdAt) =:anne')
+            ->setParameter('anne', date('Y'))
+            ->groupBy('v.client','c.nom')
+            ->orderBy('SUM(v.prix)','DESC')
+            ->setMaxResults(20)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findRapportVenteToCredit($agence) : array 
     {
         return $this->createQueryBuilder('v')
             ->Where('v.agence =:agences')
             ->andWhere('v.montantcredit >:credits')
             ->setParameter('agences',$agence)
+            ->setParameter('credits',0)
+            ->getQuery()
+            ->getResult()
+        
+        ;
+    }
+
+    public function findRapportVenteToCreditAll() : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.montantcredit >:credits')
             ->setParameter('credits',0)
             ->getQuery()
             ->getResult()
