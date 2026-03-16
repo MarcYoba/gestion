@@ -151,13 +151,13 @@
                                         {% for row in vente %}
                                         <tr>
                                             <th>{{ row.id }}</th>
-                                            <th>{{ row.client.nom }}</th>
+                                            <th>{{ row.client.nom | default('N/A') }}</th>
                                             <th>{{ row.type }}</th>
                                             <th>{{ row.id }}</th>
                                             <th>{{ row.quantite }}</th>
                                             <th>{{ row.prix }}</th>
                                             <th>{{ row.statut }}</th>
-                                            <th>{{ row.agence.nom }}</th>
+                                            <th>{{ row.agence.nom | default('N/A') }}</th>
                                             <th>{{ row.createAt | date("Y-m-d")  }}</th>
                                             <th>
                                             <a href="{{ path('app_facture_a', {'id': row.id}) }}" class='btn btn-primary'><i class='fa fa-bars'></i></a>

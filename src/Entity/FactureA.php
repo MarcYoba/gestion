@@ -44,6 +44,9 @@ class FactureA
     #[ORM\ManyToOne(inversedBy: 'factureAs')]
     private ?Agence $agence = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $reference = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -165,6 +168,18 @@ class FactureA
     public function setAgence(?agence $agence): static
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    public function getReference(): ?int
+    {
+        return $this->reference;
+    }
+
+    public function setReference(int $reference): static
+    {
+        $this->reference = $reference;
 
         return $this;
     }

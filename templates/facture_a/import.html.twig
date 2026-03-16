@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}importation Vent{% endblock %}
+{% block title %}importation facture{% endblock %}
 
 {% block body %}
 <!DOCTYPE html>
@@ -38,7 +38,7 @@
                             <div class="card-header py-3">
                                 <div class="form-group row">
                                     <div class="col-sm-8 mb-3 mb-sm-0">
-                                        importation vente
+                                        importation facture
                                     </div>
                                     {% for message in app.flashes('success') %}
                                         <div class="alert alert-success alert-dismissible fade show">
@@ -74,7 +74,7 @@
                                 </div> 
                             </div>
                             <br><br>
-                            <form class="user" action="{{path('vente_a_import')}}" method="post" enctype="multipart/form-data">
+                            <form class="user" action="{{path('app_import_facture_a')}}" method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="file" class="form-control form-control-user" id="ficher"

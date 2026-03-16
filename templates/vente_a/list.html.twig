@@ -149,7 +149,7 @@
                                         {% for row in vente %}
                                         <tr>
                                             <th>{{ row.id }}</th>
-                                            <th>{{ row.client.nom }}</th>
+                                            <th>{{ row.client.nom | default('N/A') }}</th>
                                             <th>{{ row.type }}</th>
                                             <th>{{ row.id }}</th>
                                             <th>{{ row.quantite }}</th>
