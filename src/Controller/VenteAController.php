@@ -717,6 +717,14 @@ class VenteAController extends AbstractController
                             $vente = new VenteA();
                             $utilisateur = $em->getRepository(User::class)->findOneBy(['reference' => $value[16]]);
                             $client = $em->getRepository(Clients::class)->findOneBy(['reference' => $value[17]]);
+                            if (!$client) {
+                                $this->addFlash('error', 'client non trouvée pour la référence: ' . $value[17]);
+                                continue;
+                            }
+                            if (!$utilisateur) {
+                                $this->addFlash('error', 'Utilisateur non trouvée pour la référence: ' . $value[16]);
+                                continue;
+                            }
                             $agence = $tempagence->getAgence();
 
                             $vente->setReference($value[0]);
