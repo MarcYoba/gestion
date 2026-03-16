@@ -676,12 +676,16 @@ class VenteAController extends AbstractController
         
     }
 
-    #[Route('/vente/import', name:'vente_a_import')]
+    #[Route('/vente/a/import', name:'vente_a_import')]
     public function import_vente(EntityManagerInterface $em, Request $request): Response
     {
         $user = $this->getUser();
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
 
         $processed = 0;
         if ($request->isMethod('POST')) {

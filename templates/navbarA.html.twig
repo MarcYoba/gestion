@@ -57,11 +57,12 @@
         {% if  "ROLE_ADMIN_ADMIN" in app.user.roles %}
             <a class="collapse-item" href="{{ path('app_vente_a') }}" > Ajouter une vente</a>
             <a class="collapse-item" href="{{ path('vente_a_list') }}">Liste vente</a>
-            <a class="collapse-item" href="{{ path('vente_a_import') }}"> Import</a>
+            <a class="collapse-item" href="{{ path('vente_a_import') }}"> Import vente</a>
+        <h6 class="collapse-header">Operation de Facture</h6>
+            <a class="collapse-item" href="{{ path('app_import_facture_a') }}"> Import facture</a>
         {% else %}
             <a class="collapse-item" href="{{ path('app_vente_a') }}" > Ajouter une vente</a>
             <a class="collapse-item" href="{{ path('vente_a_list') }}">Liste vente</a>
-            <a class="collapse-item" href="{{ path('vente_a_import') }}"> Import</a>
         {% endif %}   
     </div>
 </div>
