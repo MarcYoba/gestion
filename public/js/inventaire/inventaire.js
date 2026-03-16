@@ -8,7 +8,7 @@ function calculeTotal(){
     let contoire = parseInt(document.getElementById("stock").value) || 0 ;
     let vendu = parseInt(document.getElementById("vendu").value) || 0 ;
     
-    document.getElementById("inventaire_a_ecart").value = (stock) - (quantite + contoire);    
+    document.getElementById("inventaire_a_ecart").value = (stock) - (contoire + quantite );    
 }
 
 function recherchequantite(){

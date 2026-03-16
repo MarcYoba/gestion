@@ -110,7 +110,11 @@
                                 <div class="col-md-2">
                                     <label for="annee">Année recherche :</label>
                                     <select class="form-control" id="annee" name="annee" onchange="reload()">
-                                        
+                                        {% for annee in 2024..2043 %}
+                                            <option value="{{ annee }}" {{ annee == anneeselect ? 'selected' : '' }}>
+                                                {{ annee }}
+                                            </option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                             </form>
@@ -198,8 +202,9 @@
    <script src="{{asset('js/produit/recherche.js')}}"></script>
     <script>
         function reload() {
-            var annee = document.getElementById("annee").value;
-            window.location.href = "liste.php?date=" + annee;
+            const annee = document.getElementById('annee').value;
+            // Redirige vers la page actuelle avec le paramètre annee
+            window.location.href = `?annee=${annee}`;
         }
     </script>
 </body>
