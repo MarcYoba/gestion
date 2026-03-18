@@ -123,8 +123,8 @@
             {% set totalGeneral = 0 %}
             {% for facture in factures %}
             <tr>
-                <td class="col-produit"><strong>{{ facture.produit.nom }}</strong></td>
-                <td class="col-qty"><strong>{{ facture.quantite }}</strong></td>
+                <td class="col-produit"><strong>{{ facture.produit.nom | default('N/A') }}</strong></td>
+                <td class="col-qty"><strong>{{ facture.quantite | default(0)}}</strong></td>
                 <td class="col-pu"><strong>{{ facture.prix|number_format(0, '', '') }}</strong></td>
                 <td class="col-total"><strong>{{ facture.montant|number_format(0, '', '') }}</strong></td>
                 <td class="col-paie"><strong>{{ facture.type|slice(0, 1) }}</strong></td> {# On ne garde que l'initiale pour gagner de la place #}
@@ -137,10 +137,14 @@
             {% endfor %}
         </tbody>
     </table>
-
     <div class="total-section">
         <div style="text-align: right; font-size: 10pt;">
-            <strong>TOTAL : {{ totalGeneral|number_format(0, '.', ' ') }} FCFA</strong>
+            <strong>Reduction : {{ vente.reduction |number_format(0, '.', ' ') }} FCFA</strong>
+        </div>
+    </div>
+    <div class="total-section">
+        <div style="text-align: right; font-size: 10pt;">
+            <strong>TOTAL : {{( totalGeneral - vente.reduction)|number_format(0, '.', ' ') }} FCFA</strong>
         </div>
     </div>
 
