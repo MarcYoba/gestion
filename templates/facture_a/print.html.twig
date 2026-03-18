@@ -137,10 +137,14 @@
             {% endfor %}
         </tbody>
     </table>
-
     <div class="total-section">
         <div style="text-align: right; font-size: 10pt;">
-            <strong>TOTAL : {{ totalGeneral|number_format(0, '.', ' ') }} FCFA</strong>
+            <strong>Reduction : {{ vente.reduction |number_format(0, '.', ' ') }} FCFA</strong>
+        </div>
+    </div>
+    <div class="total-section">
+        <div style="text-align: right; font-size: 10pt;">
+            <strong>TOTAL : {{( totalGeneral - vente.reduction)|number_format(0, '.', ' ') }} FCFA</strong>
         </div>
     </div>
 

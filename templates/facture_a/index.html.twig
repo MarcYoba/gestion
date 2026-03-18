@@ -111,8 +111,8 @@
                                         <tr>
                                             <td>Total</td>
                                             <td>-</td>
-                                            <td>{{ vente.quantite | default('N/A') }}</td>
-                                            <td>{{ vente.prix | default('N/A') }}</td>
+                                            <td>{{ vente.quantite | default(0) }}</td>
+                                            <td>{{ vente.prix  | default(0)  + (vente.reduction | default(0)) }}</td>
                                             <td>{{ (vente.prix | default(0)) + (vente.reduction | default(0)) }}</td>
                                             <td>-</td>
                                             <td>-</td>
