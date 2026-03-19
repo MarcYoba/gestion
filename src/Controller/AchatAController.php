@@ -156,11 +156,10 @@ class AchatAController extends AbstractController
     #[Route('/achat/a/list', name: 'achat_a_list')]
     public function list(EntityManagerInterface $em, Request $request): Response
     {
-        $anneeselect = $request->request->get('annee',date('Y'));
-
+        $anneeselect = $request->query->get('annee',date('Y'));
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
         $id = $tempagence->getAgence()->getId();
-        $achatA = $em->getRepository(AchatA::class)->findAll(["agence" => $id]);
+        $achatA = $em->getRepository(AchatA::class)->findByYearAgence($anneeselect,$id);
         $produit = $em->getRepository(ProduitA::class)->findBy(['agence' => $id]);
         return $this->render('achat_a/list.html.twig', [
             'achats' => $achatA,

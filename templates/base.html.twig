@@ -18,7 +18,14 @@
             {{ encore_entry_script_tags('app') }}
             {{ encore_entry_script_tags('sb-admin-2') }}
             {{ encore_entry_script_tags('datatables') }}
-            {{ encore_entry_script_tags('app') }}     
+            {{ encore_entry_script_tags('app') }}
+            <script>
+                function reload() {
+                    const annee = document.getElementById('annee').value;
+                    // Redirige vers la page actuelle avec le paramètre annee
+                    window.location.href = `?annee=${annee}`;
+                }
+            </script>     
         {% endblock %}
     </body>
 </html>
