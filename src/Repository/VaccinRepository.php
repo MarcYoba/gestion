@@ -57,4 +57,16 @@ class VaccinRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByRapelleVaccin() : array 
+    {
+       return $this->createQueryBuilder('v')
+            ->where('v.dateRapel < :pasmonth')
+            ->orWhere('MONTH(v.dateRapel) = :daymonth')
+            ->setParameter('pasmonth',date('Y-m-d'))
+            ->setParameter('daymonth',date('m'))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -46,6 +46,9 @@ class AchatA
     #[ORM\Column(nullable: true)]
     private ?array $image = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reference = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -167,6 +170,18 @@ class AchatA
     public function setImage(?array $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
 
         return $this;
     }

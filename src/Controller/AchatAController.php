@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Achat;
 use App\Entity\AchatA;
 use App\Entity\Balance;
 use App\Entity\BalanceA;
@@ -11,9 +12,12 @@ use App\Entity\Lots;
 use App\Entity\MagasinA;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Dom\Entity;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -150,8 +154,10 @@ class AchatAController extends AbstractController
     }
 
     #[Route('/achat/a/list', name: 'achat_a_list')]
-    public function list(EntityManagerInterface $em): Response
+    public function list(EntityManagerInterface $em, Request $request): Response
     {
+        $anneeselect = $request->request->get('annee',date('Y'));
+
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $this->getUser()]);
         $id = $tempagence->getAgence()->getId();
         $achatA = $em->getRepository(AchatA::class)->findAll(["agence" => $id]);
@@ -159,6 +165,7 @@ class AchatAController extends AbstractController
         return $this->render('achat_a/list.html.twig', [
             'achats' => $achatA,
             'produits' => $produit,
+            'anneeselect' => $anneeselect,
         ]);
     }
 
@@ -411,5 +418,127 @@ class AchatAController extends AbstractController
             'produits' => $produit,
             'fournisseurs' => $fournisseur,
         ]);
+    }
+
+    #[Route('/achat/a/import/anne', name: 'achat_a_import_anne')]
+    public function Achat_import(EntityManagerInterface $em,Request $request) : Response {
+       $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $processed = 0;
+        if ($request->isMethod('POST')) {
+           $file =  $request->files->get('ficher');
+           if ($file && $file->isValid()) {
+                   try {
+                    $extension = strtolower($file->getClientOriginalExtension());
+                    $extensionsAutorisees = ['xlsx', 'xls', 'csv'];
+
+                    if (!in_array($extension, $extensionsAutorisees)) {
+                        throw new \Exception('Seuls les fichiers Excel (XLSX, XLS) et CSV sont autorisés');
+                    }
+
+                    $spreadsheet = IOFactory::load($file->getPathname());
+                    $spreadsheet = IOFactory::load($file->getPathname());
+        
+                    $donnees = $this->lireFichierExcel($spreadsheet);
+                    $donnees = $donnees['Worksheet'];
+                    array_shift($donnees);
+                    $total = count($donnees);
+                    $i = 0;
+                    $trouver = 0;
+                   
+                    $this->addFlash('success', 'Importation démarrée');
+                    foreach ($donnees as $key => $value) {
+                        $preachat = $em->getRepository(AchatA::class)->findBy(['reference' => $value[0]]);
+                        if ($preachat) {
+                          $trouver = $trouver + 1;
+                        }else {
+                            $produitA = $em->getRepository(ProduitA::class)->findOneBy(['nom' => $value[1]]);
+                            $fournisseur = $em->getRepository(FournisseurA::class)->findOneBy(['nom' => $value[5]]);
+                            $utilisateur = $em->getRepository(User::class)->findOneBy(['reference' => $value[8]]);
+                            if (!$produitA) {
+                                $this->addFlash('error', 'produit non trouvée pour la référence: ' . $value[1]);
+                                continue;
+                            }
+                            if (!$fournisseur) {
+                                $this->addFlash('error', 'fournisseur non trouvée pour la référence: ' . $value[5]);
+                                continue;
+                            }
+                            if (!$utilisateur) {
+                                $this->addFlash('error', 'utilisateur non trouvée pour la référence: ' . $value[8]);
+                                continue;
+                            }
+
+                            $achat = new AchatA();
+                            $achat->setAgence($tempagence->getAgence());
+                            $achat->setCreatedAt(new \DateTimeImmutable($value[6]));
+                            $achat->setForunisseur($fournisseur);
+                            $achat->setProduit($produitA);
+                            $achat->setMontant($value[4]);
+                            $achat->setPrix($value[2]);
+                            $achat->setQuantite($value[3]);
+                            $achat->setType("CASH");
+                            $achat->setUser($utilisateur);
+                            $achat->setReference($value[0]);
+
+                            $em->persist($achat);
+                            $em->flush();
+
+                            $processed++;
+                            $progress = round(($i + 1) / $total * 100);
+                            
+                            if ($progress % 20 === 0) {
+                                $bar = str_repeat('█', $progress / 5) . str_repeat('░', 20 - ($progress / 5));
+                                $this->addFlash('success', "[$bar] $progress% - Ligne " . ($i + 1) . "/$total");
+                            }
+                            $i++;
+                        }
+                        
+                    }
+                    
+                    $this->addFlash('success', 'Importation terminée avec succès! Achat trouver : '.$trouver);
+
+                    return $this->redirectToRoute('vente_a_import');
+                } catch (\Exception $e) {
+                    $this->addFlash("error", 'Erreur lors de la lecture du fichier: ' . $e->getMessage() );
+                }
+           } else {
+            $this->addFlash("error", "echec de chargement du fichier");
+           }
+           
+
+        }
+     
+        return $this->render("achat_a/import.html.twig",[
+            "id" => $id,
+        ]); 
+    }
+
+    private function lireFichierExcel($spreadsheet): array
+    {
+        $donneesCompletes = [];
+        
+        // Parcourir toutes les feuilles
+        foreach ($spreadsheet->getSheetNames() as $sheetIndex => $sheetName) {
+            $worksheet = $spreadsheet->getSheet($sheetIndex);
+            $donneesCompletes[$sheetName] = $this->lireFeuilleExcel($worksheet);
+        }
+        
+        return $donneesCompletes;
+    }
+
+    private function lireFeuilleExcel($worksheet): array
+    {
+        $donnees = [];
+    
+    // Méthode plus simple avec toArray()
+    $donnees = $worksheet->toArray();
+    
+    return $donnees;
     }
 }

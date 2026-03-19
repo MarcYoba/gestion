@@ -79,6 +79,7 @@
         {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
             <a class="collapse-item" href="{{ path('achat_a_list') }}">liste Achat</a>
             <a class="collapse-item" href="{{ path('app_achat_a') }}" id="ajouterAchat">Ajouter un Achat</a>
+            <a class="collapse-item" href="{{ path('achat_a_import_anne')}}">Import</a>
         {% else %}
             <a class="collapse-item" href="{{ path('app_achat_a') }}" id="ajouterAchat">Ajouter un Achat</a>
             <a class="collapse-item" href="{{ path('achat_a_list') }}">liste Achat</a>

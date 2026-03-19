@@ -18,6 +18,7 @@ use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use App\Entity\TransfertA;
 use App\Entity\User;
+use App\Entity\Vaccin;
 use App\Entity\Vente;
 use App\Entity\VenteA;
 use App\Entity\Versement;
@@ -173,6 +174,7 @@ class HomeController extends AbstractController
         $produitsanslinite = $entityManager->getRepository(ProduitA::class)->FindbyEmptyBonCommand();
         $produitsansfournisseur = $entityManager->getRepository(ProduitA::class)->FindbyEmptyFournisseur();
         $bontransfert = $entityManager->getRepository(TransfertA::class)->findBy(['statut' => 'Attente']);
+        $vaccin = $entityManager->getRepository(Vaccin::class)->findByRapelleVaccin();
         
         if (empty($expiration)) {
             $expiration = [];
@@ -199,6 +201,7 @@ class HomeController extends AbstractController
             'produitsanslinite' => count($produitsanslinite),
             'produitsansfournisseur' => count($produitsansfournisseur),
             'bontransfert' => count($bontransfert),
+            'sommevaccin' => count($vaccin),
         ]);
     }
 
