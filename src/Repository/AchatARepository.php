@@ -321,4 +321,16 @@ class AchatARepository extends ServiceEntityRepository
         return $result != 0 ? (int)$result : 0;
     }
 
+    public function findByYearAgence($year,$agence) : array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('YEAR(a.createdAt) = :debut')
+            ->andWhere('a.agence = :agences')
+            ->setParameter('debut', $year)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getResult()
+       ;
+    }
+
 }
