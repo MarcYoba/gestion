@@ -7,6 +7,8 @@ use App\Entity\TempAgence;
 use App\Entity\Vaccin;
 use App\Form\VaccinType;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use PhpParser\Node\Stmt\Return_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -110,7 +112,7 @@ class VaccinController extends AbstractController
     }
 
     #[Route('/vaccin/delete/{id}', name:'app_vaccin_delete')]
-    public function FunctionName(EntityManagerInterface $entityManager, int $id) : Response 
+    public function delete(EntityManagerInterface $entityManager, int $id) : Response 
     {
         $vaccin = $entityManager->getRepository(Vaccin::class)->findOneBy(['id'=> $id]);
         if ($vaccin) {
@@ -120,5 +122,34 @@ class VaccinController extends AbstractController
           
         return $this->redirectToRoute('app_vaccin_list');
 
+    }
+
+    #[Route('/vaccin/rapelle/download', name:'app_vaccin_download')]
+    public function download(EntityManagerInterface $em) : Response
+    {
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); 
+        $dompdf = new Dompdf($options);
+        $vaccin = $em->getRepository(Vaccin::class)->findByRapelleVaccin();
+        
+        $html = $this->renderView('vaccin/download.html.twig', [
+           'vaccins' => $vaccin,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="telecharger_vaccin.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
     }
 }

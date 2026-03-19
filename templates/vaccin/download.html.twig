@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello VaccinController!{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Gestion de stock</title>
+
+    <!-- Custom fonts for this template -->
+    <style>
+        /* CSS personnalisé pour le PDF */
+        body { font-family: Arial, sans-serif; }
+        .header { color: #333; }
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
+    </style>
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+       
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Vaccin En rapelle</h1>
+                    <p class="mb-4">
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" data-page-length='25' data-order='[[0, "desc"]]'>
+                                    <thead>
+                                        <tr>
+                                            <th>Nom Sujet</th>
+                                            <th>Age</th>
+                                            <th>Race</th>
+                                            <th>Client</th>
+                                            <th>telephone</th>
+                                            <th>montant</th>
+                                            <th>Avance</th>
+                                            <th>Type vacin</th>
+                                            <th>date Vacin</th>
+                                            <th>date Rappel</th>
+                                            <th>NB Rappel</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        {% for vaccin in vaccins %}
+                                            <tr>
+                                               
+                                                <td>{{vaccin.sujet}}</td>
+                                                <td>{{vaccin.age}}</td>
+                                                <td>{{vaccin.typeSujet}}</td>
+                                                <td>{{vaccin.client.nom}}</td>
+                                                <td>{{vaccin.client.telephone}}</td>
+                                                <td>{{vaccin.montant}}</td>
+                                                <td>{{vaccin.montantNet}}</td>
+                                                <td>{{vaccin.typeVaccin}}</td>
+                                                
+                                                <td>{{vaccin.dateVaccin | date('Y-m-d')}}</td>
+                                                <td>{{vaccin.dateRapel | date("Y-m-d")}}</td>
+                                                <td>{{vaccin.rappel}}</td>
+                                                
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Production &copy; {{ "now" | date("Y-m-d")}}</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <!-- Bootstrap core JavaScript-->
+
+    <!-- Page level plugins -->
+    
+
+</body>
+
+</html>
+
+
+{% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello rowController!{% endblock %}
+{% block title %}Achat{% endblock %}
 
 {% block body %}
 
@@ -87,7 +87,11 @@
                                     </a><br>
                                     <label for="annee">Année recherche</label>
                                     <select class="form-control" id="annee" name="annee" onchange="reload()">
-                                        
+                                        {% for annee in 2024..2043 %}
+                                            <option value="{{ annee }}" {{ annee == anneeselect ? 'selected' : '' }}>
+                                                {{ annee }}
+                                            </option>
+                                        {% endfor %}
                                     </select>
                                     </p> 
                                      
