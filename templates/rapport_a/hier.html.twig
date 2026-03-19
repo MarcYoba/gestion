@@ -309,12 +309,12 @@
         </thead>
         <tbody>
             {% for versement in versements %}
-            <tr>
-                <td>{{ versement.createdAt | date("Y-m-d") }} </td>
-                <td>{{ versement.client.nom}} </td>
-                <td>{{ versement.montant + versement.om + versement.banque }}</td>
-                <td>{{ versement.description }} </td>
-            </tr>
+                <tr>
+                    <td>{{ versement.createdAt | date("Y-m-d") }} </td>
+                    <td>{{ versement.client.nom}} </td>
+                    <td>{{ versement.montant + versement.om + versement.banque }}</td>
+                    <td>{{ versement.description }} </td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
