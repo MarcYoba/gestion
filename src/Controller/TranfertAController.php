@@ -96,7 +96,7 @@ class TranfertAController extends AbstractController
             return $this->redirectToRoute('app_logout');
         }
         if ($transfert) {
-            if ($transfert->getUser() == $this->getUser()) {
+            
                 $produit = $em->getRepository(ProduitA::class)->findOneBy(['id' => $transfert->getProduit()->getId()]);
                 $produit->setQuantite($produit->getQuantite()-$transfert->getQuantite());
                 $em->persist($produit);
@@ -109,7 +109,7 @@ class TranfertAController extends AbstractController
 
                 $em->persist($transfert);
                 $em->flush();
-            }
+            
         }
         
         return $this->redirectToRoute('app_transfert_a_list');
