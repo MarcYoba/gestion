@@ -111,6 +111,18 @@ class DepenseARepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByDepenseYearAgence($year,$agence) : array
+    {
+        return $this->createQueryBuilder('d')
+            ->Where('YEAR(d.createdAt) =:debut')
+            ->andWhere('d.agence = :agences')
+            ->setParameter('debut', $year)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findByDepensesTrimestre($trimestre,$annee,$id) : int 
     {
         $debutTrimestre = null;

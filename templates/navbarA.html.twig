@@ -307,6 +307,7 @@
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('depense_a_list') }}">Liste Depense</a>
                 <a class="collapse-item" href="{{ path('app_depense_a') }}">Depense</a>
+                <a class="collapse-item" href="{{ path('depense_import_excel')}}"> Importer </a>
             {% else %}
                 <a class="collapse-item" href="{{ path('depense_a_list') }}">Liste Depense</a>
                 <a class="collapse-item" href="{{ path('app_depense_a') }}">Depense</a>

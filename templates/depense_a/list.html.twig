@@ -61,10 +61,14 @@
                                             Ajout
                                     </a>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                 <label for="annee">Année recherche</label>
                                     <select class="form-control" id="annee" name="annee" onchange="reload()">
-                                        
+                                        {% for annee in 2024..2043 %}
+                                            <option value="{{ annee }}" {{ annee == anneeselect ? 'selected' : '' }}>
+                                                {{ annee }}
+                                            </option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                             </div>
