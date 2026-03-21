@@ -6,11 +6,13 @@ use App\Entity\Clients;
 use App\Entity\Poussin;
 use App\Form\PoussinType;
 use App\Entity\TempAgence;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use chillerlan\QRCode\{QRCode, QROptions};
 use DateTime;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +36,7 @@ class PoussinController extends AbstractController
             $agence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
             $poussin->setAgence($agence->getAgence());
             $poussin->setStatus("EN COUR");
+            $poussin->setUser($user);
             $em->persist($poussin);
             $em->flush();
 
@@ -45,17 +48,20 @@ class PoussinController extends AbstractController
     }
 
     #[Route('/poussin/list', name: 'app_poussin_list')]
-    public function List(EntityManagerInterface $em): Response
+    public function List(EntityManagerInterface $em, Request $request): Response
     {
+        $anneeselect = $request->query->get('annee',date("Y"));
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_logout');
         }
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
-        $id = $tempagence->getAgence()->getId();
-        $poussin = $em->getRepository(Poussin::class)->findAll(["agence" => $id]);
+        $agence = $tempagence->getAgence()->getId();
+
+        $poussin = $em->getRepository(Poussin::class)->findCommandPoussinYear($agence,$anneeselect);
         return $this->render('poussin/list.html.twig', [
             'poussins' => $poussin,
+            'anneeselect' => $anneeselect,
         ]);
     }
 
@@ -206,7 +212,7 @@ class PoussinController extends AbstractController
         );
     }
 
-    #[Route('/poussin/update', name: 'app_poussin_update', methods:['POST'])]
+    #[Route('/poussin/mise/a/jour', name: 'app_poussin_update', methods:['POST'])]
     public function update(EntityManagerInterface $em,Request $request) : Response 
     {
        $variable = $request->request->all('poussins');
@@ -235,5 +241,125 @@ class PoussinController extends AbstractController
             }
         }
         return $this->redirectToRoute('app_poussin_list');
+    }
+
+    private function lireFichierExcel($spreadsheet): array
+    {
+        $donneesCompletes = [];
+        
+        // Parcourir toutes les feuilles
+        foreach ($spreadsheet->getSheetNames() as $sheetIndex => $sheetName) {
+            $worksheet = $spreadsheet->getSheet($sheetIndex);
+            $donneesCompletes[$sheetName] = $this->lireFeuilleExcel($worksheet);
+        }
+        
+        return $donneesCompletes;
+    }
+
+    private function lireFeuilleExcel($worksheet): array
+    {
+        $donnees = [];
+    
+    // Méthode plus simple avec toArray()
+    $donnees = $worksheet->toArray();
+    
+    return $donnees;
+    }
+
+    #[Route('/poussin/import', name: 'app_poussin_import')]
+    public function Import_poussin(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $processed = 0;
+        if ($request->isMethod('POST')) {
+           $file =  $request->files->get('ficher');
+           if ($file && $file->isValid()) {
+                   try {
+                    $extension = strtolower($file->getClientOriginalExtension());
+                    $extensionsAutorisees = ['xlsx', 'xls', 'csv'];
+
+                    if (!in_array($extension, $extensionsAutorisees)) {
+                        throw new \Exception('Seuls les fichiers Excel (XLSX, XLS) et CSV sont autorisés');
+                    }
+
+                    $spreadsheet = IOFactory::load($file->getPathname());
+                    $spreadsheet = IOFactory::load($file->getPathname());
+        
+                    $donnees = $this->lireFichierExcel($spreadsheet);
+                    $donnees = $donnees['Worksheet'];
+                    array_shift($donnees);
+                    $total = count($donnees);
+                    $i = 0;
+                    $trouver = 0;
+                   
+                    $this->addFlash('success', 'Importation démarrée');
+                    foreach ($donnees as $key => $value) {
+                        $predepense = $em->getRepository(Poussin::class)->findBy(['reference' => $value[0]]);
+                        if ($predepense) {
+                          $trouver = $trouver + 1;
+                        }else {
+                            $client = $em->getRepository(Clients::class)->findOneBy(['reference' => $value[14]]);
+                            if (!$client) {
+                                $this->addFlash('error', 'Clients non trouvée pour la référence: ' . $value[14]);
+                                continue;
+                            }
+
+                            $poussin = new Poussin();
+                            $poussin->setAgence($tempagence->getAgence());
+                            $poussin->setBanque($value[15]);
+                            $poussin->setCash($value[8]);
+                            $poussin->setClient($client);
+                            $poussin->setCredit($value[7]);
+                            $poussin->setDatecommande(new \DateTime($value[11]));
+                            $poussin->setDatelivaison(new \DateTime($value[12]));
+                            $poussin->setDaterapelle(new \DateTime($value[13]));
+                            $poussin->setMobilepay($value[6]);
+                            $poussin->setMontant($value[4]);
+                            $poussin->setPrix($value[3]);
+                            $poussin->setQuantite($value[3]);
+                            $poussin->setReste($value[9]);
+                            $poussin->setSouche($value[5]);
+                            $poussin->setStatus($value[10]);
+                            $poussin->setReference($value[0]);
+                            $poussin->setUser($user);
+
+                            $em->persist($poussin);
+                            $em->flush();
+
+                            $processed++;
+                            $progress = round(($i + 1) / $total * 100);
+                            
+                            if ($progress % 20 === 0) {
+                                $bar = str_repeat('█', $progress / 5) . str_repeat('░', 20 - ($progress / 5));
+                                $this->addFlash('success', "[$bar] $progress% - Ligne " . ($i + 1) . "/$total");
+                            }
+                            $i++;
+                        }
+                        
+                    }
+                    
+                    $this->addFlash('success', 'Importation terminée avec succès! Depense trouver : '.$trouver);
+
+                    return $this->redirectToRoute('app_poussin_import');
+                } catch (\Exception $e) {
+                    $this->addFlash("error", 'Erreur lors de la lecture du fichier: ' . $e->getMessage() );
+                }
+           } else {
+            $this->addFlash("error", "echec de chargement du fichier");
+           }
+           
+
+        }
+     
+        return $this->render("poussin/import.html.twig",[
+            "id" => $id,
+        ]);
     }
 }
