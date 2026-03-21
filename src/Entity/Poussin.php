@@ -59,6 +59,12 @@ class Poussin
     #[ORM\Column]
     private ?float $banque = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reference = null;
+
+    #[ORM\ManyToOne(inversedBy: 'poussins')]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -240,6 +246,30 @@ class Poussin
     public function setBanque(float $banque): static
     {
         $this->banque = $banque;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

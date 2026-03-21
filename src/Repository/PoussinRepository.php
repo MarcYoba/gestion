@@ -208,4 +208,16 @@ class PoussinRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findCommandPoussinYear($agence,$year) : array 
+    {
+        return $this->createQueryBuilder('p')
+            ->Where('YEAR(p.datecommande) = :startDate')
+            ->andWhere('p.agence =:agences')
+            ->setParameter('agences',$agence)
+            ->setParameter('startDate',$year)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

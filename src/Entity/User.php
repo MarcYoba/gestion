@@ -212,6 +212,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: InventaireCaisseA::class)]
     private Collection $inventaireCaisseAs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Poussin::class)]
+    private Collection $poussins;
+
     
 
     public function __construct() {
@@ -269,6 +272,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->transferts = new ArrayCollection();
         $this->inventaireAs = new ArrayCollection();
         $this->inventaireCaisseAs = new ArrayCollection();
+        $this->poussins = new ArrayCollection();
         
     }
 
@@ -1984,6 +1988,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($inventaireCaisseA->getUser() === $this) {
                 $inventaireCaisseA->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Poussin>
+     */
+    public function getPoussins(): Collection
+    {
+        return $this->poussins;
+    }
+
+    public function addPoussin(Poussin $poussin): static
+    {
+        if (!$this->poussins->contains($poussin)) {
+            $this->poussins->add($poussin);
+            $poussin->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePoussin(Poussin $poussin): static
+    {
+        if ($this->poussins->removeElement($poussin)) {
+            // set the owning side to null (unless already changed)
+            if ($poussin->getUser() === $this) {
+                $poussin->setUser(null);
             }
         }
 
