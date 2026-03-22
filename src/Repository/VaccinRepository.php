@@ -58,6 +58,18 @@ class VaccinRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByVaccinYear($agence,$anne) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->where('YEAR(v.createtAD) = :anne')
+            ->andWhere('v.agence = :agences')
+            ->setParameter('anne',$anne)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findByRapelleVaccin() : array 
     {
        return $this->createQueryBuilder('v')

@@ -345,7 +345,7 @@ class PoussinController extends AbstractController
                         
                     }
                     
-                    $this->addFlash('success', 'Importation terminée avec succès! Depense trouver : '.$trouver);
+                    $this->addFlash('success', 'Importation terminée avec succès! Poussin trouver : '.$trouver);
 
                     return $this->redirectToRoute('app_poussin_import');
                 } catch (\Exception $e) {

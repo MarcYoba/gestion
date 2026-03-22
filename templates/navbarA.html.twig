@@ -385,6 +385,7 @@
         {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
             <a class="collapse-item" href="{{path('app_vaccin')}}" >Adminitrer un Vaccin</a>
             <a class="collapse-item" href="{{path('app_vaccin_list')}}">Liste Vaccin</a>
+            <a class="collapse-item" href="{{ path('app_vaccin_import')}}"> Importe </a>
         {% else %}
             <a class="collapse-item" href="{{path('app_vaccin')}}" >Adminitrer un Vaccin</a>
             <a class="collapse-item" href="{{path('app_vaccin_list')}}">Liste Vaccin</a>

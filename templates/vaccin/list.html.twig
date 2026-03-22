@@ -70,9 +70,10 @@
                                 <div class="col-md-3" style="float:right;">
                                 <label for="annee">Année recherche :</label>
                                     <select class="form-control" id="annee" name="annee" onchange="reload()">
-                                        <option >Recherche a</option>
-                                        {% for currentYear in 2024..2040 %}
-                                            <option value="{{ currentYear }}"> {{ currentYear }} </option>
+                                        {% for annee in 2024..2043 %}
+                                            <option value="{{ annee }}" {{ annee == anneeselect ? 'selected' : '' }}>
+                                                {{ annee }}
+                                            </option>
                                         {% endfor %}
                                     </select>
                                 </div>
