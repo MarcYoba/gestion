@@ -565,7 +565,7 @@ function saveedite(){
                             }else{
                                 window.location.href = 'list'
                             }
-                            enregistrementBD();
+                            enregistrementEdite()
                         }
                         //document.getElementById("verificatiobDonne").innerHTML = '<p class="bg-warning"> vous deviez enregistrer le montant OM/MOMO ou CASH ou Credit</p>';
 

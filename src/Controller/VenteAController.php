@@ -314,6 +314,9 @@ class VenteAController extends AbstractController
                     if ($lignevente["Banque"] > 0) {
                         $type = "BANQUE";
                     }
+                    if ($lignevente['om'] > 0) {
+                        $type = "OM";
+                    }
                     if ($lignevente["cash"] > 0) {
                         if (empty($type)) {
                             $type = "CASH";
@@ -323,9 +326,9 @@ class VenteAController extends AbstractController
                     }
                     if ($lignevente["momo"] > 0) {
                         if (empty($type)) {
-                            $type = "OM";
+                            $type = "momo";
                         }else{
-                            $type += "OM";
+                            $type += "momo";
                         }
                     }
                     if ($lignevente["credit"] > 0) {
@@ -344,6 +347,7 @@ class VenteAController extends AbstractController
                     $vente->setBanque($lignevente["Banque"]);
                     $vente->setCredit($lignevente["credit"]);
                     $vente->setMomo($lignevente["momo"]);
+                    $vente->setOm($lignevente['om']);
                     $vente->setReduction($lignevente["reduction"]);
                     $vente->setStatut($lignevente["statusvente"]);
 
