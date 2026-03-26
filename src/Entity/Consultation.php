@@ -95,6 +95,9 @@ class Consultation
     #[ORM\Column(length: 255)]
     private ?string $docteur = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reference = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -420,6 +423,18 @@ class Consultation
     public function setDocteur(string $docteur): static
     {
         $this->docteur = $docteur;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
 
         return $this;
     }
