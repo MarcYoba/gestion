@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Employer;
+use App\Entity\Magasin;
 use App\Entity\Produit;
 use App\Entity\TempAgence;
 use App\Form\ProduitType;
@@ -323,5 +324,18 @@ class ProduitController extends AbstractController
                 'Content-Disposition' => 'attachment; filename="' . $name . '"',
             ]
         );
+    }
+
+    #[Route('/produit/stock/vider/{id}', name: 'app_produit_stock_vider')]
+    public function vider_stock(EntityManagerInterface $em,Produit $produit) : Response 
+    {
+        if ($produit) {
+            $produit->setQuantite(0);
+            $em->persist($produit);
+        }
+        
+        $em->flush();
+
+        return $this->redirectToRoute("produit_list");
     }
 }
