@@ -94,6 +94,9 @@
                                                 <a href='{{ path('app_magasin_edit', {'id': magasin.id}) }}' class='btn btn-primary'><i class='fas fa-pencil-alt'></i></a>
                                                 <a href='{{ path('app_magasin_delete', {'id': magasin.id})}}' class='btn btn-danger' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cette vente ?\");'><i class='fas fa-trash-alt'></i></a>
                                                 <a href='{{ path('app_transfert', {'id': magasin.id})}}' class='btn btn-warning'><i class='fas fa-battery-three-quarters" aria-hidden="true"'> transfer</i></a>
+                                                <a href="{{ path('app_magasin_vider', {'id': magasin.id}) }}" class='btn btn-warning' onclick='return confirm("Êtes-vous sûr de vouloir supprimer ce stock de produit ?");'>
+                                                    Vider
+                                                </a>
                                                 </td>
                                             </tr>
                                         {% endfor %}

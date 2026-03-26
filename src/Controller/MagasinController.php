@@ -90,6 +90,7 @@ class MagasinController extends AbstractController
             'controller_name' => 'MagasinController',
         ]);
     }
+
     #[Route('/magasin/delete/{id}', name: 'app_magasin_delete')]
     public function Delete(EntityManagerInterface $em,Magasin $magasin): Response
     {
@@ -99,6 +100,21 @@ class MagasinController extends AbstractController
         }
         if ($magasin) {
             $em->remove($magasin);
+            $em->flush();
+        }
+       return $this->redirectToRoute('app_magasin_list');
+    }
+
+    #[Route('/magasin/vider/{id}', name: 'app_magasin_vider')]
+    public function vider_stock(EntityManagerInterface $em,Magasin $magasin): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_logout');
+        }
+        if ($magasin) {
+            $magasin->setQuantite(0);
+            $em->persist($magasin);
             $em->flush();
         }
        return $this->redirectToRoute('app_magasin_list');
