@@ -80,4 +80,15 @@ class ConsultationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function findByAgenceYear($agence,$anne) : array 
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.agence =:agences')
+            ->andWhere('YEAR(c.createtAd) = :anne')
+            ->setParameter('agences', $agence)
+            ->setParameter('anne',$anne)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

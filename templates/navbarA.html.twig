@@ -373,11 +373,13 @@
             <a class="collapse-item" href="{{ path('app_suivi')}}" >fiche suivi </a>
             <a class="collapse-item" href="{{ path('app_consultation_list')}}" >liste Consultation</a> 
             <a class="collapse-item" href="{{path('app_suivi_list')}}" >liste des suivi</a>
+            <a class="collapse-item" href="{{ path('app_consultation_import_year')}}"> Import</a>
         {% else %}
             <a class="collapse-item" href="{{ path('app_consultation')}}" >Consultation</a> 
             <a class="collapse-item" href="{{ path('app_suivi')}}" >fiche suivi </a>
             <a class="collapse-item" href="{{ path('app_consultation_list')}}" >liste Consultation</a> 
-            <a class="collapse-item" href="{{path('app_suivi_list')}}" >liste des suivi</a>
+            <a class="collapse-item" href="{{ path('app_suivi_list')}}" >liste des suivi</a>
+            <a class="collapse-item" href="{{ path('app_consultation_import_year')}}"> Import</a>
         {% endif %}
         <div class="dropdown-divider"></div>
         <h6 class="collapse-header"> Vaccin:</h6>
