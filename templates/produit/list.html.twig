@@ -74,6 +74,7 @@
                                             <th>Prix vente</th>
                                             <th>Prix achat</th>
                                             <th>Quantite</th>
+                                            <th>Magasin</th>
                                             <th>Date</th>
                                             <th>operation</th>
                                         </tr>
@@ -85,6 +86,7 @@
                                             <th>Prix vente</th>
                                             <th>Prix achat</th>
                                             <th>Quantite</th>
+                                            <th>Magasin</th>
                                             <th>Date</th>
                                             <th>operation1</th>
                                         </tr>
@@ -98,6 +100,11 @@
                                                         <td>{{ produit.prixvente }}</td>
                                                         <td>{{ produit.prixachat }}</td>
                                                         <td>{{ produit.quantite }}</td>
+                                                        {% for magasin in produit.magasins|default([]) %}
+                                                            <td>{{ magasin.quantite|default(0) }}</td>
+                                                        {% else %}
+                                                            <td>0</td>
+                                                        {% endfor %}
                                                         <td>{{ produit.createdAt|date("d-m-Y") }}</td>
                                                         <td>
                                                             <a href="{{ path('produit_edit', {'id': produit.id}) }}" class='btn btn-primary'>
@@ -116,6 +123,11 @@
                                                         <td>{{ produit.prixvente }}</td>
                                                         <td>{{ produit.prixachat }}</td>
                                                         <td>{{ produit.quantite }}</td>
+                                                        {% for magasin in produit.magasins|default([]) %}
+                                                            <td>{{ magasin.quantite|default(0) }}</td>
+                                                        {% else %}
+                                                            <td>0</td>
+                                                        {% endfor %}
                                                         <td>{{ produit.createdAt|date("d-m-Y") }}</td>
                                                         {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                                                         <td>
