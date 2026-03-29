@@ -75,4 +75,39 @@ class InventaireARepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findBySommeMois($agence,$moi,$anne,$produit) : int
+    {
+        $resultut = $this-> createQueryBuilder('i')
+            ->select('SUM(i.ecart)')
+            ->where('i.agence =:agences')
+            ->andWhere('MONTH(i.createtAt) =:moi')
+            ->andWhere('YEAR(i.createtAt) =:anne')
+            ->andWhere('i.produit =:produit')
+            ->setParameter('agences',$agence)
+            ->setParameter('moi',$moi)
+            ->setParameter('anne',$anne)
+            ->setParameter('produit',$produit)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+        return empty($resultut) ? 0 : $resultut;
+    }
+
+    public function findBySommeDate($agence,$moi,$anne) : array 
+    {
+        return $this-> createQueryBuilder('i')
+            ->select('SUM(i.ecart)')
+            ->where('i.agence =:agences')
+            ->andWhere('MONTH(i.createtAt) =:moi')
+            ->andWhere('YEAR(i.createtAt) =:anne')
+            ->setParameter('agences',$agence)
+            ->setParameter('moi',$moi)
+            ->setParameter('anne',$anne)
+            ->groupBy('i.createtAt')
+            ->orderBy('i.createtAt','ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

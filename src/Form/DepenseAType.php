@@ -41,6 +41,7 @@ class DepenseAType extends AbstractType
                 'attr' => ['class' => 'form-control form-control-user'],
             ])
             ->add('createdAt', DateType::class,[
+                'label' => 'Date de creation',
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
                 'attr' => ['class' => 'form-control form-control-user'],

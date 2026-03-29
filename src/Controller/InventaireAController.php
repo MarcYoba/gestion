@@ -144,6 +144,19 @@ class InventaireAController extends AbstractController
             $cle = $cle + 2;
             $sheet->setCellValue($colString.$cle, $value->getEcart());
         }
+
+        $colString = chr($letter);
+        $fiscolString  = $colString . '1';
+        $sheet->setCellValue($fiscolString, "Total generale");
+
+        foreach ($produits as $key => $value) {
+            $cle = array_search($value->getProduit()->getNom(),$inventaire);
+            $cle = $cle + 2;
+            $quantite = $em->getRepository(InventaireA::class)->findBySommeMois($id,$moi,$anne,$value->getProduit()->getId());
+            $sheet->setCellValue($colString.$cle, $quantite);
+        }
+        
+        $letter ++;
         $colString = chr($letter);
         $fiscolString  = $colString . '1';
         $sheet->setCellValue($fiscolString, "Prix de vente");
@@ -152,6 +165,34 @@ class InventaireAController extends AbstractController
             $cle = array_search($value->getProduit()->getNom(),$inventaire);
             $cle = $cle + 2;
             $sheet->setCellValue($colString.$cle, $value->getProduit()->getPrixvente());
+        }
+
+        $letter ++;
+        $colString = chr($letter);
+        $fiscolString  = $colString . '1';
+        $sheet->setCellValue($fiscolString, "Total perte");
+
+        foreach ($produits as $key => $value) {
+            $cle = array_search($value->getProduit()->getNom(),$inventaire);
+            $cle = $cle + 2;
+            $quantite = $em->getRepository(InventaireA::class)->findBySommeMois($id,$moi,$anne,$value->getProduit()->getId());
+            $sheet->setCellValue($colString.$cle, ($value->getProduit()->getPrixvente() * $quantite));
+        }
+
+        $row = count($produits) + 2;
+        $fiscolString  = 'A' . $row;
+        $sheet->setCellValue($fiscolString, "Total Journaliere");
+
+        $tabjour = $em->getRepository(InventaireA::class)->findBySommeDate($id,$moi,$anne);
+        
+        $letter = ord('B');
+
+        foreach ($tabjour as $key => $value) {
+            
+            $colString = chr($letter);
+            $fiscolString  = $colString . $row;
+            $sheet->setCellValue($fiscolString, $value[1]);
+            $letter ++;
         }
 
         // Générer le fichier Excel et le retourner en réponse

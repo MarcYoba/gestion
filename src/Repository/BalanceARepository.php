@@ -45,4 +45,29 @@ class BalanceARepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findBdyDateAgence($year,$agence) : array 
+    {
+        return $this->createQueryBuilder('b')
+            ->where('YEAR(b.createtAt) =:dates')
+            ->andWhere('b.agence =:agences')
+            ->setParameter('dates',$year)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getResult()
+        ;   
+    }
+
+    public function findByCompteYearAgence($compte,$year,$agence) : ?BalanceA 
+    {
+        return $this->createQueryBuilder('b')
+            ->where('YEAR(b.createtAt) =:dates')
+            ->andWhere('b.Compte =:comptes')
+            ->andWhere('b.agence =:agences')
+            ->setParameter('dates',$year)
+            ->setParameter('comptes',$compte)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
