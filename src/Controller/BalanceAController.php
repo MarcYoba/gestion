@@ -111,17 +111,20 @@ class BalanceAController extends AbstractController
     }
 
     #[Route('/balance/a/list', name:'app_balance_list_a')]
-    public function lis(EntityManagerInterface $entityManager) : Response 
+    public function lis(EntityManagerInterface $entityManager, Request $request) : Response 
     {
         $user  = $this->getUser();
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
 
-        $balance = $entityManager->getRepository(BalanceA::class)->findBy(['agence'=>$id]);
+        $anneeselect = $request->query->get('annee',date('Y'));
+
+        $balance = $entityManager->getRepository(BalanceA::class)->findBdyDateAgence($anneeselect,$id);
 
         return $this->render('balance_a/list.html.twig', [
             'id' => $id,
             'balances' => $balance,
+            'anneeselect' => $anneeselect,
         ]);
     }
 

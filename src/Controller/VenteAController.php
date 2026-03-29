@@ -170,35 +170,35 @@ class VenteAController extends AbstractController
                     }
 
                     if ($lignevente['cash'] > 0) {
-                        // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5111]);
-                        // if ($balance) {
-                        //     $mouvement = $balance->getMouvementDebit();
-                        //     $mouvement = $mouvement + $lignevente['cash'];
-                        //     $balance->setMouvementDebit($mouvement);
-                        //     $em->persist($balance);
-                        //     $em->flush();
-                        // }
+                        $balance = $em->getRepository(BalanceA::class)->findByCompteYearAgence(4111000,date('Y'),$tempagence->getAgence()->getId());
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementCredit();
+                            $mouvement = $mouvement + $lignevente['cash'];
+                            $balance->setMouvementCredit($mouvement);
+                            $em->persist($balance);
+                            $em->flush();
+                        }
                     }
 
                     if ($lignevente['Banque'] > 0) {
-                        // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 5121]);
-                        // if ($balance) {
-                        //     $mouvement = $balance->getMouvementDebit();
-                        //     $mouvement = $mouvement + $lignevente['Banque'];
-                        //     $balance->setMouvementDebit($mouvement);
-                        //     $em->persist($balance);
-                        //     $em->flush();
-                        // }
+                        $balance = $em->getRepository(BalanceA::class)->findByCompteYearAgence(4111000,date('Y'),$tempagence->getAgence()->getId());
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementCredit();
+                            $mouvement = $mouvement + $lignevente['Banque'];
+                            $balance->setMouvementCredit($mouvement);
+                            $em->persist($balance);
+                            $em->flush();
+                        }
                     }
 
-                    // $balance = $em->getRepository(BalanceA::class)->findOneBy(['Compte' => 7021]);
-                    //     if ($balance) {
-                    //         $mouvement = $balance->getMouvementCredit();
-                    //         $mouvement = $mouvement + $lignevente['Banque'] + $lignevente['credit'] + $lignevente['cash'];
-                    //         $balance->setMouvementCredit($mouvement);
-                    //         $em->persist($balance);
-                    //         $em->flush();
-                    //     }
+                    $balance = $em->getRepository(BalanceA::class)->findByCompteYearAgence(4111000,date('Y'),$tempagence->getAgence()->getId());
+                        if ($balance) {
+                            $mouvement = $balance->getMouvementDebit();
+                            $mouvement = $mouvement + $lignevente['Banque'] + $lignevente['credit'] + $lignevente['cash'];
+                            $balance->setMouvementDebit($mouvement);
+                            $em->persist($balance);
+                            $em->flush();
+                        }
 
                 } catch (\Throwable $th) {
                     return $this->json([
