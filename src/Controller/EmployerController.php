@@ -32,6 +32,8 @@ class EmployerController extends AbstractController
                 $this->addFlash('error', 'Le nom d\'utilisateur existe déjà. Veuillez en choisir un autre.');
                 return $this->redirectToRoute('app_employer');
             }else {
+                $user = $form->get('user')->getData();
+                $role = $user->getRoles();
                 $role[] = $form->get('poste')->getData();
                 $emplyer->setNom($emplyer->getUser()->getUsername());
                 $user = $emplyer->getUser();
@@ -136,6 +138,10 @@ class EmployerController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->get('user')->getData();
+            $role = $user->getRoles();
+            $role[] = $form->get('poste')->getData();
+            $user->setRoles($role);
             $entityManager->flush();
 
             return $this->redirectToRoute('employer_list');
