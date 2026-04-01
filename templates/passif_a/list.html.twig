@@ -56,9 +56,11 @@
                                     <button class="btn btn-info btn-user btn-block">Bilan au </button>
                                 </div>
                                 <div class="col-md-3">
-                                    <select class="form-control" id="annee" name="annee" onchange="AnnePassif()">
-                                        {% for currentYear in 2022..2040 %}
-                                            <option value="{{ currentYear }}"> {{ currentYear }} </option>
+                                    <select class="form-control" id="annee" name="annee" onchange="reload()">
+                                        {% for annee in 2024..2043 %}
+                                            <option value="{{ annee }}" {{ annee == anneeselect ? 'selected' : '' }}>
+                                                {{ annee }}
+                                            </option>
                                         {% endfor %}
                                     </select>
                                 </div>

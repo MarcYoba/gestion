@@ -509,7 +509,7 @@ Administrateur
                 <a class="collapse-item" href="{{ path('app_passif_a') }}">
                     <i class="fas fa-fw fa-arrow-right mr-2"></i>Passif - Ajouter
                 </a>
-                <a class="collapse-item" href="{{ path('app_passif_a_list', {'date': 'now'| date("Y")}) }}">
+                <a class="collapse-item" href="{{ path('app_passif_a_list') }}">
                     <i class="fas fa-fw fa-list mr-2"></i>Passif - Liste
                 </a>
             {% endif %}
@@ -518,7 +518,7 @@ Administrateur
                 <a class="collapse-item" href="{{ path('app_actif_a') }}">
                     <i class="fas fa-fw fa-arrow-left mr-2"></i>Actif - Ajouter
                 </a>
-                <a class="collapse-item" href="{{ path('app_actif_a_list', {'date': 'now'| date("Y")}) }}">
+                <a class="collapse-item" href="{{ path('app_actif_a_list')}}">
                     <i class="fas fa-fw fa-list mr-2"></i>Actif - Liste
                 </a>
                 <a class="collapse-item" href="{{ path('app_immobilisation_a') }}">
