@@ -45,15 +45,16 @@ class ActifAController extends AbstractController
         ]);
     }
 
-    #[Route('/actif/a/list/{date}', name:'app_actif_a_list')]
-    public function list(EntityManagerInterface $em,string $date): Response
+    #[Route('/actif/a/list', name:'app_actif_a_list')]
+    public function list(EntityManagerInterface $em, Request $request): Response
     {
+        $anneeselect = $request->query->get('annee', date("Y"));
         $tempAgence = $em->getRepository(TempAgence::class)->findOneBy(["user"=> $this->getUser()]) ;
         $id = $tempAgence->getAgence()->getId();
-        $Actif =  $em->getRepository(ActifA::class)->findBy(["agence"=> $id]);
+        $Actif =  $em->getRepository(ActifA::class)->findByYearAgence($anneeselect, $id);
         return $this->render('actif_a/list.html.twig', [
             'Actifs' => $Actif,
-            'date' => $date,
+            'anneeselect' => $anneeselect,
         ]);
     }
 

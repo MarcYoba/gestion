@@ -47,9 +47,10 @@ class PassifAController extends AbstractController
         ]);
     }
 
-    #[Route('passif/a/list/{date}', name:'app_passif_a_list')]
-    public function list(EntityManagerInterface $entityManager,int $date) : Response
+    #[Route('passif/a/list', name:'app_passif_a_list')]
+    public function list(EntityManagerInterface $entityManager, Request $request) : Response
     {
+        $anneeselect = $request->query->get('annee', date("Y"));
         $user = $this->getUser();
         $agence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $agence->getAgence()->getId();
@@ -58,7 +59,7 @@ class PassifAController extends AbstractController
 
         return $this->render('passif_a/list.html.twig', [
             'passifs' => $passif,
-            'date' => $date,
+            'anneeselect' => $anneeselect,
             'id' => $id
         ]);
     }

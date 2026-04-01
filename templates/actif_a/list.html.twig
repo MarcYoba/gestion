@@ -51,13 +51,12 @@
                             <h6 class="m-0 font-weight-bold text-primary">Structure du bilan</h6>
                             <br>
                             <div class=" form-group row">
-                                <div class="col-md-2" >
-                                    <button class="btn btn-info btn-user btn-block">Bilan au </button>
-                                </div>
                                 <div class="col-md-2">
-                                    <select class="form-control" id="annee" name="annee" onchange="AnneBilan_a()">
-                                        {% for currentYear in 2022..2040 %}
-                                            <option value="{{ currentYear }}"> {{ currentYear }} </option>
+                                    <select class="form-control" id="annee" name="annee" onchange="reload()">
+                                        {% for annee in 2024..2043 %}
+                                            <option value="{{ annee }}" {{ annee == anneeselect ? 'selected' : '' }}>
+                                                {{ annee }}
+                                            </option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -71,8 +70,9 @@
                                     <form class="user" action="{{ path('actif_a_download') }}" method="post">
                                         <button class="btn btn-primary btn-user">
                                             <i class="fas fa-download"></i> Telechager
+                                            <input class=" btn-user"  type="text" value="{{ anneeselect}}" name="date">
                                         </button>
-                                        <input class=" btn-user"  type="text" value="{{ date}}" name="date">
+                                        
                                     </form>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                                         <tr>
                                             <th rowspan="2" style="text-align: center;">REF</th>
                                             <th rowspan="2" style="text-align: center;">Actif</th>
-                                            <th colspan="4" style="text-align: center;" id="date">{{ date}}</th>
+                                            <th colspan="4" style="text-align: center;" id="date">{{ anneeselect}}</th>
                                             <th style="text-align: center;">EXERCICE N-1</th>
                                         </tr>
                                         <tr>
