@@ -110,4 +110,15 @@ class ActifRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByYearAgence($year,$agence) : array {
+        return $this->createQueryBuilder('a')
+            ->where('YEAR(a.created) = :date')
+            ->andWhere('a.agence = :agence')
+            ->setParameter('date', $year)
+            ->setParameter('agence', $agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

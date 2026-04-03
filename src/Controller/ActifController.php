@@ -41,22 +41,24 @@ class ActifController extends AbstractController
             $em->flush();
 
             $this->addFlash('success','');
-            return $this->redirectToRoute('app_actif_list', ['date' => date("Y")]);
+            return $this->redirectToRoute('app_actif_list');
         }
         return $this->render('actif/index.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/actif/list/{date}', name:'app_actif_list')]
-    public function list(EntityManagerInterface $em,string $date): Response
+    #[Route('/actif/list', name:'app_actif_list')]
+    public function list(EntityManagerInterface $em,Request $request): Response
     {
+        $anneeselect = $request->query->get('annee', date("Y"));
+
         $tempAgence = $em->getRepository(TempAgence::class)->findOneBy(["user"=> $this->getUser()]) ;
         $id = $tempAgence->getAgence()->getId();
-        $Actif =  $em->getRepository(Actif::class)->findAll(["agence"=> $id]);
+        $Actif =  $em->getRepository(Actif::class)->findByYearAgence($anneeselect,$id);
         return $this->render('actif/list.html.twig', [
             'Actifs' => $Actif,
-            'date' => $date,
+            'anneeselect' => $anneeselect,
         ]);
     }
 
@@ -233,7 +235,7 @@ class ActifController extends AbstractController
             $entityManager->persist($Actif);
             $entityManager->flush();
             
-            return $this->redirectToRoute('app_actif_list', ['date' => date("Y")]);
+            return $this->redirectToRoute('app_actif_list');
         }
 
         return $this->render('actif/edit.html.twig', [
@@ -246,7 +248,7 @@ class ActifController extends AbstractController
        $Actif = $entityManager->getRepository(Actif::class)->findOneBy(["id" => $id]);
        $entityManager->remove($Actif);
        $entityManager->flush();
-        return $this->redirectToRoute('app_actif_list', ['date' => date("Y")]);
+        return $this->redirectToRoute('app_actif_list');
     }
 
     #[Route('/actif/download', name: 'actif_download')]

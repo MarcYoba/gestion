@@ -80,4 +80,16 @@ class PassifARepository extends ServiceEntityRepository
         ;
 
     }
+
+    public function findByYearAgence($anne, $agence) : array 
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('YEAR(a.createdAt) = :date')
+            ->andWhere('a.agence = :agence')
+            ->setParameter('date',$anne)
+            ->setParameter('agence',$agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

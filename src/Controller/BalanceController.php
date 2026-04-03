@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Actif;
 use App\Entity\Balance;
+use App\Entity\Passif;
 use App\Entity\TempAgence;
 use App\Form\BalanceType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -134,10 +136,13 @@ class BalanceController extends AbstractController
         if (!$balance) {
             return $this->redirectToRoute('app_balance_list');
         }
-
+        $actif = $entityManager->getRepository(Actif::class)->findByYearAgence($balance->getCreatetAt()->format('Y'), $id);
+        $passif = $entityManager->getRepository(Passif::class)->findByYearAgence($balance->getCreatetAt()->format('Y'), $id);
         return $this->render('balance/edit.html.twig', [
             'id' => $id,
             'balance' => $balance,
+            'actifs' => $actif,
+            'passifs' => $passif,
         ]);
 
     }
@@ -200,6 +205,8 @@ class BalanceController extends AbstractController
         foreach ($balancesData as $key => $value) {
             $balance = $entityManager->getRepository(Balance::class)->find($key);
             if ($balance) {
+                $actif = $entityManager->getRepository(Actif::class)->find($value['PosteActif']);
+                $passif = $entityManager->getRepository(Passif::class)->find($value['PostePassif']);
                 $balance->setClasse($value['Classe'] ?? 0);
                 $balance->setCompte($value['Compte'] ?? 0);
                 $balance->setIntitule($value['intitule'] ?? 0);
@@ -210,6 +217,8 @@ class BalanceController extends AbstractController
                 $balance->setSoldeFinalDebit((float) ($value['SoldeFinalDebit'] ?? 0));
                 $balance->setSoldFinalCredit((float) ($value['SoldFinalCredit'] ?? 0));
                 $balance->setSoldeGlobal((float) ($value['SoldeGlobal'] ?? 0));
+                $balance->setActif($actif);
+                $balance->setPassif($passif);
                 $balance->setUser($user);
             }else{
                 return $this->redirectToRoute('app_balance_list');

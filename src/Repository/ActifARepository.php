@@ -111,7 +111,7 @@ class ActifARepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByYearAgence($year,$agence)
+    public function findByYearAgence($year,$agence): array
     {
         return $this->createQueryBuilder('a')
             ->where('YEAR(a.created) = :annee')

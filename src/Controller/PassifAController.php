@@ -39,7 +39,7 @@ class PassifAController extends AbstractController
             $entityManager->persist($passif);
             $entityManager->flush();
 
-            return $this->redirectToRoute("app_passif_a_list",['date'=>date('Y')]);
+            return $this->redirectToRoute("app_passif_a_list");
         }
         return $this->render('passif_a/index.html.twig', [
             'form' => $form->createView(),
@@ -79,7 +79,7 @@ class PassifAController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            return $this->redirectToRoute("app_passif_a_list",['date'=>date('Y')]);
+            return $this->redirectToRoute("app_passif_a_list");
         }
         return $this->render('passif_a/edite.html.twig', [
             "form" => $form->createView(),
@@ -97,7 +97,7 @@ class PassifAController extends AbstractController
             $entityManager->flush();
         }
         
-      return $this->redirectToRoute("app_passif_a_list",['date'=>date('Y')]);   
+      return $this->redirectToRoute("app_passif_a_list");   
     }
 
     #[Route('/passif/a/update', name: 'app_passif_a_update')]
