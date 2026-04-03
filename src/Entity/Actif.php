@@ -49,9 +49,13 @@ class Actif
     #[ORM\OneToMany(mappedBy: 'actif', targetEntity: DepenseActif::class)]
     private Collection $depenseActifs;
 
+    #[ORM\OneToMany(mappedBy: 'actif', targetEntity: Balance::class)]
+    private Collection $balances;
+
     public function __construct()
     {
         $this->depenseActifs = new ArrayCollection();
+        $this->balances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -203,6 +207,36 @@ class Actif
             // set the owning side to null (unless already changed)
             if ($depenseActif->getActif() === $this) {
                 $depenseActif->setActif(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Balance>
+     */
+    public function getBalances(): Collection
+    {
+        return $this->balances;
+    }
+
+    public function addBalance(Balance $balance): static
+    {
+        if (!$this->balances->contains($balance)) {
+            $this->balances->add($balance);
+            $balance->setActif($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBalance(Balance $balance): static
+    {
+        if ($this->balances->removeElement($balance)) {
+            // set the owning side to null (unless already changed)
+            if ($balance->getActif() === $this) {
+                $balance->setActif(null);
             }
         }
 

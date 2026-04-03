@@ -3,9 +3,6 @@
 {% block title %}Passif!{% endblock %}
 
 {% block body %}
-<?php require_once("../connexion.php"); 
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,9 +56,11 @@
                                     <button class="btn btn-info btn-user btn-block">Bilan au </button>
                                 </div>
                                 <div class="col-md-3">
-                                    <select class="form-control" id="annee" name="annee" onchange="AnnePassif()">
-                                        {% for currentYear in 2022..2040 %}
-                                            <option value="{{ currentYear }}"> {{ currentYear }} </option>
+                                    <select class="form-control" id="annee" name="annee" onchange="reload()">
+                                        {% for annee in 2024..2043 %}
+                                            <option value="{{ annee }}" {{ annee == anneeselect ? 'selected' : '' }}>
+                                                {{ annee }}
+                                            </option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -81,7 +80,7 @@
                                         <button class="btn btn-primary btn-user">
                                             <i class="fas fa-download"></i> Telecharger
                                         </button>
-                                        <input class=" btn-user"  type="text" value="{{ date}}" name="date">
+                                        <input class=" btn-user"  type="text" value="{{ anneeselect}}" name="date">
                                     </form>
                                 </div>
                             </div>
@@ -95,8 +94,8 @@
                                         <tr>
                                             <th rowspan="2" style="text-align: center;">Passif</th>
                                                 <th rowspan="2" style="text-align: center;">REF</th>
-                                                <th colspan="2" style="text-align: center;" id="date">{{ date }}</th>';
-                                                <th style="text-align: center;" id="seconddate">{{date - 1}}</th>
+                                                <th colspan="2" style="text-align: center;" id="date">{{ anneeselect }}</th>';
+                                                <th style="text-align: center;" id="seconddate">{{anneeselect - 1}}</th>
                                         </tr>
                                         <tr>
                                             <th>NET</th>

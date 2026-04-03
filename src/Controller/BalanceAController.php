@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\ActifA;
 use App\Entity\BalanceA;
+use App\Entity\PassifA;
 use App\Entity\TempAgence;
 use App\Form\BalanceAType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -120,6 +122,7 @@ class BalanceAController extends AbstractController
         $anneeselect = $request->query->get('annee',date('Y'));
 
         $balance = $entityManager->getRepository(BalanceA::class)->findBdyDateAgence($anneeselect,$id);
+        
 
         return $this->render('balance_a/list.html.twig', [
             'id' => $id,
@@ -137,10 +140,13 @@ class BalanceAController extends AbstractController
         if (!$balance) {
             return $this->redirectToRoute('app_balance_list_a');
         }
-
+        $actifs = $entityManager->getRepository(ActifA::class)->findByYearAgence($balance->getCreatetAt()->format('Y'),$id);
+        $passifs = $entityManager->getRepository(PassifA::class)->findByYearAgence($balance->getCreatetAt()->format('Y'),$id);
         return $this->render('balance_a/edit.html.twig', [
             'id' => $id,
             'balance' => $balance,
+            'actifs' => $actifs,
+            'passifs' => $passifs,
         ]);
 
     }
@@ -203,6 +209,10 @@ class BalanceAController extends AbstractController
         foreach ($balancesData as $key => $value) {
             $balance = $entityManager->getRepository(BalanceA::class)->find($key);
             if ($balance) {
+                $actif = $entityManager->getRepository(ActifA::class)->find($value['PosteActif']);
+                $passif = $entityManager->getRepository(PassifA::class)->find($value['PostePassif']);
+                $balance->setActifA($actif);
+                $balance->setPassifA($passif);   
                 $balance->setClasse($value['Classe'] ?? 0);
                 $balance->setCompte($value['Compte'] ?? 0);
                 $balance->setIntitule($value['intitule'] ?? 0);

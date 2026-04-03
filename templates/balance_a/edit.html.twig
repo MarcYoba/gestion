@@ -136,6 +136,8 @@
                                         Solde final Débit
                                         <input type="number" name="balances[{{ balance.id }}][SoldeFinalDebit]" 
                                             value="{{ balance.SoldeFinalDebit }}" step="0.01" class="form-control">
+                                    </div>        
+                                </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6">
                                         Solde final Crédit
@@ -147,6 +149,27 @@
                                         <input type="number" name="balances[{{ balance.id }}][SoldeGlobal]" 
                                             value="{{ balance.SoldeGlobal }}" step="0.01" class="form-control">
                                     
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        Poste Actif
+                                        <select name="balances[{{ balance.id }}][PosteActif]" class="form-control">
+                                            <option value="NULL" selected>NULL</option>
+                                            {% for actif in actifs %}
+                                                <option value="{{ actif.id }}" >{{actif.libelle}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                               
+                                    <div class="col-sm-6">
+                                        Poste Passif
+                                        <select name="balances[{{ balance.id }}][PostePassif]" class="form-control">
+                                            <option value="NULL" selected>NULL</option>
+                                            {% for passif in passifs %}
+                                                <option value="{{ passif.id }}" >{{passif.libelle}}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                 </div>
                                 <hr>

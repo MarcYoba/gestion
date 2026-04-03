@@ -53,6 +53,12 @@ class BalanceA
     #[ORM\ManyToOne(inversedBy: 'balanceAs')]
     private ?Agence $agence = null;
 
+    #[ORM\ManyToOne(inversedBy: 'balanceAs')]
+    private ?ActifA $ActifA = null;
+
+    #[ORM\ManyToOne(inversedBy: 'balanceAs')]
+    private ?PassifA $passifA = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -210,6 +216,30 @@ class BalanceA
     public function setAgence(?Agence $agence): static
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    public function getActifA(): ?ActifA
+    {
+        return $this->ActifA;
+    }
+
+    public function setActifA(?ActifA $ActifA): static
+    {
+        $this->ActifA = $ActifA;
+
+        return $this;
+    }
+
+    public function getPassifA(): ?PassifA
+    {
+        return $this->passifA;
+    }
+
+    public function setPassifA(?PassifA $passifA): static
+    {
+        $this->passifA = $passifA;
 
         return $this;
     }

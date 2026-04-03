@@ -7,6 +7,8 @@ use App\Entity\ProduitA;
 use App\Entity\TempAgence;
 use App\Form\InventaireAType;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -211,4 +213,42 @@ class InventaireAController extends AbstractController
         );
     }
     
+    #[Route('/inventaire/a/pdf', name: 'app_inventaire_pdf')]
+    public function Inventaire_PDF(EntityManagerInterface $em,Request $request) : Response {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+        
+       if ($request->isMethod('POST')) {
+        $anne = $request->request->get('annee');
+        $moi = $request->request->get('moi');
+       }
+                
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+
+        
+
+        $html = $this->renderView('inventaire_a/dwonload.html.twig', [
+            
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="tri.pdf"', // 'inline' pour affichage navigateur
+            ]
+        );
+    }
 }

@@ -43,9 +43,13 @@ class PassifA
     #[ORM\OneToMany(mappedBy: 'passif', targetEntity: DepensePassifA::class)]
     private Collection $depensePassifAs;
 
+    #[ORM\OneToMany(mappedBy: 'passifA', targetEntity: BalanceA::class)]
+    private Collection $balanceAs;
+
     public function __construct()
     {
         $this->depensePassifAs = new ArrayCollection();
+        $this->balanceAs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -173,6 +177,36 @@ class PassifA
             // set the owning side to null (unless already changed)
             if ($depensePassifA->getPassif() === $this) {
                 $depensePassifA->setPassif(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BalanceA>
+     */
+    public function getBalanceAs(): Collection
+    {
+        return $this->balanceAs;
+    }
+
+    public function addBalanceA(BalanceA $balanceA): static
+    {
+        if (!$this->balanceAs->contains($balanceA)) {
+            $this->balanceAs->add($balanceA);
+            $balanceA->setPassifA($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBalanceA(BalanceA $balanceA): static
+    {
+        if ($this->balanceAs->removeElement($balanceA)) {
+            // set the owning side to null (unless already changed)
+            if ($balanceA->getPassifA() === $this) {
+                $balanceA->setPassifA(null);
             }
         }
 

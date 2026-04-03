@@ -53,6 +53,12 @@ class Balance
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $createtAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'balances')]
+    private ?Actif $actif = null;
+
+    #[ORM\ManyToOne(inversedBy: 'balances')]
+    private ?Passif $passif = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -210,6 +216,30 @@ class Balance
     public function setCreatetAt(\DateTimeInterface $createtAt): static
     {
         $this->createtAt = $createtAt;
+
+        return $this;
+    }
+
+    public function getActif(): ?Actif
+    {
+        return $this->actif;
+    }
+
+    public function setActif(?Actif $actif): static
+    {
+        $this->actif = $actif;
+
+        return $this;
+    }
+
+    public function getPassif(): ?passif
+    {
+        return $this->passif;
+    }
+
+    public function setPassif(?passif $passif): static
+    {
+        $this->passif = $passif;
 
         return $this;
     }

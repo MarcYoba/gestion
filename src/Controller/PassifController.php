@@ -41,7 +41,7 @@ class PassifController extends AbstractController
             $entityManager->persist($passif);
             $entityManager->flush();
 
-            return $this->redirectToRoute("app_passif_list",['date'=>date('Y')]);
+            return $this->redirectToRoute("app_passif_list");
         }
         return $this->render('passif/index.html.twig', [
             'form' => $form->createView(),
@@ -49,18 +49,19 @@ class PassifController extends AbstractController
         ]);
     }
 
-    #[Route('passif/list/{date}', name:'app_passif_list')]
-    public function list(EntityManagerInterface $entityManager,int $date) : Response
+    #[Route('passif/list', name:'app_passif_list')]
+    public function list(EntityManagerInterface $entityManager,Request $request) : Response
     {
+        $anneeselect = $request->query->get('annee', date('Y'));
         $user = $this->getUser();
         $agence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $agence->getAgence()->getId();
 
-        $passif = $entityManager->getRepository(Passif::class)->findBy(["agence" => $id]);
+        $passif = $entityManager->getRepository(Passif::class)->findByYearAgence($anneeselect,$id);
 
         return $this->render('passif/list.html.twig', [
             'passifs' => $passif,
-            'date' => $date,
+            'anneeselect' => $anneeselect,
             'id' => $id
         ]);
     }
@@ -80,7 +81,7 @@ class PassifController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            return $this->redirectToRoute("app_passif_list",['date'=>date('Y')]);
+            return $this->redirectToRoute("app_passif_list");
         }
         return $this->render('passif/edite.html.twig', [
             "form" => $form->createView(),
@@ -98,7 +99,7 @@ class PassifController extends AbstractController
             $entityManager->flush();
         }
         
-      return $this->redirectToRoute("app_passif_list",['date'=>date('Y')]);   
+      return $this->redirectToRoute("app_passif_list");   
     }
 
     #[Route('/passif/update', name: 'app_passif_update')]
