@@ -16,16 +16,9 @@
 
     <title>GESTION DE STOCK</title>
 
-    <!-- Custom fonts for this template-->
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-
 </head>
 
-<body class="bg-gradient-success">
+<body class="bg-gradient-primary">
 
     <div class="container" >
         
@@ -34,7 +27,7 @@
                 <!-- Nested Row within Card Body -->
                 <div class=" form-group row">
                     <div class="col-lg-2 d-none d-lg-block bg-register-image">
-                        {% include "navbarA.html.twig" %}
+                        {% include "navbar.html.twig" %}
                     </div>
                     <div class="col-lg-10">
                         <div class="p-5">
@@ -62,14 +55,14 @@
                                     {% endfor %}
                                     <div class="col-sm-2 mb-3 mb-sm-0">
                                         {% for tempagence in app.user.tempAgences %}
-                                            <a href="{{ path('app_home_dashboardA', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
+                                            <a href="{{ path('app_home_dashboard', {'id': tempagence.agence.id}) }}" class="btn btn-primary btn-user btn-block">
                                                 <i class="fas fa-home"></i>
                                                 home
                                             </a>  
                                         {% endfor %}
                                     </div>
                                     <div class="col-sm-2 mb-3 mb-sm-0">
-                                        <a href="{{ path('vente_a_list') }}" class="btn btn-success btn-user btn-block">
+                                        <a href="{{ path('vente_list') }}" class="btn btn-success btn-user btn-block">
                                             <i class="fas fa-list"></i>
                                             List
                                         </a>
@@ -77,7 +70,7 @@
                                 </div> 
                             </div>
                             <br><br>
-                            <form class="user" action="{{path('vente_a_import')}}" method="post" enctype="multipart/form-data">
+                            <form class="user" action="{{path('vente_import_year')}}" method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="file" class="form-control form-control-user" id="ficher"

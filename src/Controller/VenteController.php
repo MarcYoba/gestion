@@ -11,10 +11,12 @@ use App\Entity\Historique;
 use App\Entity\Produit;
 use App\Entity\Quantiteproduit;
 use App\Entity\TempAgence;
+use App\Entity\User;
 use App\Form\VenteType;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\Request;
@@ -681,6 +683,133 @@ class VenteController extends AbstractController
         $writer->save('php://output');
         exit;
         
+    }
+
+    #[Route('/vente/import/year', name: 'vente_import_year')]
+    public function import_year(Request $request, EntityManagerInterface $em) : Response
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $processed = 0;
+        if ($request->isMethod('POST')) {
+           $file =  $request->files->get('ficher');
+           if ($file && $file->isValid()) {
+                   try {
+                    $extension = strtolower($file->getClientOriginalExtension());
+                    $extensionsAutorisees = ['xlsx', 'xls', 'csv'];
+
+                    if (!in_array($extension, $extensionsAutorisees)) {
+                        throw new \Exception('Seuls les fichiers Excel (XLSX, XLS) et CSV sont autorisés');
+                    }
+
+                    $spreadsheet = IOFactory::load($file->getPathname());
+                    $spreadsheet = IOFactory::load($file->getPathname());
+        
+                    $donnees = $this->lireFichierExcel($spreadsheet);
+                    $donnees = $donnees['Worksheet'];
+                    array_shift($donnees);
+                    $total = count($donnees);
+                    $i = 0;
+                    $trouver = 0;
+                    
+                    $this->addFlash('success', 'Importation démarrée');
+                    foreach ($donnees as $key => $value) {
+                        $prevente = $em->getRepository(Vente::class)->findBy(['reference' => $value[0]]);
+                        if ($prevente) {
+                          $trouver = $trouver + 1;
+                        }else {
+                            
+                            $utilisateur = $em->getRepository(User::class)->findOneBy(['reference' => $value[5]]);
+                            $client = $em->getRepository(Clients::class)->findOneBy(['reference' => $value[4]]);
+                            if (!$client) {
+                                $this->addFlash('error', 'client non trouvée pour la référence: ' . $value[4]);
+                                continue;
+                            }
+                            if (!$utilisateur) {
+                                $this->addFlash('error', 'Utilisateur non trouvée pour la référence: ' . $value[5]);
+                                continue;
+                            }
+                            $agence = $tempagence->getAgence();
+                            $vente = new Vente();
+
+                            $vente->setReference($value[0]);
+                            $vente->setAgence($agence);
+                            $vente->setClient($client);
+                            $vente->setUser($utilisateur);
+                            $vente->setType($value[7]);
+                            $vente->setQuantite($value[2]);
+                            $vente->setPrix($value[3]);
+                            $vente->setCreatedAt(new \DateTimeImmutable($value[6]));
+                            $vente->setStatusvente($value[16]);
+                            $vente->setMontantcash($value[8]);
+                            $vente->setMontantcredit($value[9]);
+                            $vente->setOm($value[10]);
+                            $vente->setReduction($value[11]);
+                            $vente->setMontantbanque($value[12]);
+                            $vente->setMontantmomo($value[17]);
+                            $vente->setEsperce($value[13]);
+                            $vente->setAliment($value[14]);
+                            $vente->setHeure($value[15]);
+
+                            $em->persist($vente);
+                            $em->flush();
+
+                            $processed++;
+                            $progress = round(($i + 1) / $total * 100);
+                            // Messages avec barre de progression ASCII
+                            if ($progress % 20 === 0) {
+                                $bar = str_repeat('█', $progress / 5) . str_repeat('░', 20 - ($progress / 5));
+                                $this->addFlash('success', "[$bar] $progress% - Ligne " . ($i + 1) . "/$total");
+                            }
+                            $i++;
+                        }
+                        
+                    }
+                    
+                    $this->addFlash('success', 'Importation terminée avec succès! Vente trouver : '.$trouver);
+
+                    return $this->redirectToRoute('vente_import_year');
+                } catch (\Exception $e) {
+                    $this->addFlash("error", 'Erreur lors de la lecture du fichier: ' . $e->getMessage() );
+                }
+           } else {
+            $this->addFlash("error", "echec de chargement du fichier");
+           }
+           
+
+        }
+        return $this->render('vente/import.html.twig', [
+            
+        ]);
+    }
+
+    private function lireFichierExcel($spreadsheet): array
+    {
+        $donneesCompletes = [];
+        
+        // Parcourir toutes les feuilles
+        foreach ($spreadsheet->getSheetNames() as $sheetIndex => $sheetName) {
+            $worksheet = $spreadsheet->getSheet($sheetIndex);
+            $donneesCompletes[$sheetName] = $this->lireFeuilleExcel($worksheet);
+        }
+        
+        return $donneesCompletes;
+    }
+
+    private function lireFeuilleExcel($worksheet): array
+    {
+        $donnees = [];
+    
+    // Méthode plus simple avec toArray()
+    $donnees = $worksheet->toArray();
+    
+    return $donnees;
     }
     
 }
