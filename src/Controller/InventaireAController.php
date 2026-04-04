@@ -219,10 +219,7 @@ class InventaireAController extends AbstractController
         $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
         $id = $tempagence->getAgence()->getId();
         
-       if ($request->isMethod('POST')) {
-        $anne = $request->request->get('annee');
-        $moi = $request->request->get('moi');
-       }
+       if ($request->isMethod('POST')) {}
                 
 
         $options = new Options();
