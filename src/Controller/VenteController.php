@@ -222,23 +222,23 @@ class VenteController extends AbstractController
     }
 
     #[Route('/vente/list', name: 'vente_list')]
-    public function list(EntityManagerInterface $entityManager): Response
+    public function list(EntityManagerInterface $entityManager, Request $request): Response
     {
         $user = $this->getUser();
-        $vente = new Vente();
+        
         $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(["user"=>$user]);
         $id = $tempagence->getAgence()->getId();
-        if ($tempagence->isGenerale()== 1) {
-            $vente = $entityManager->getRepository(Vente::class)->findAll();
-        }else{
-            $vente = $entityManager->getRepository(Vente::class)->findBy(["agence" => $id]);
-        }
+        $anneeselect = $request->query->get('annee',date("Y"));
+        
+        $vente = $entityManager->getRepository(Vente::class)->findByYearAgence($anneeselect,$id);
+
         $produit = $entityManager->getRepository(Produit::class)->findAll();
         $client = $entityManager->getRepository(Clients::class)->findAll();
         return $this->render('vente/list.html.twig', [
             'vente' => $vente,
             'produit' => $produit,
             'client' => $client,
+            'anneeselect' => $anneeselect
             ]);
     }
 
@@ -742,7 +742,7 @@ class VenteController extends AbstractController
                             $vente->setAgence($agence);
                             $vente->setClient($client);
                             $vente->setUser($utilisateur);
-                            $vente->setType($value[7]);
+                            $vente->setType($value[1]);
                             $vente->setQuantite($value[2]);
                             $vente->setPrix($value[3]);
                             $vente->setCreatedAt(new \DateTimeImmutable($value[6]));
