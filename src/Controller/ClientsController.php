@@ -314,9 +314,8 @@ class ClientsController extends AbstractController
                         
                         if ($clientExist) {
                             $trouver++;
-                            $user = new User();
-                            $user->getClients()->setReference($value[0]);
-                            $entityManager->persist($user);
+                            $clientExist->setReference($value[0]);
+                            $entityManager->persist($clientExist);
                             continue; // On passe au suivant s'il existe
                         }
 
