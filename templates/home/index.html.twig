@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
 
@@ -112,7 +112,7 @@
                                             <p class="card-text text-center">Bienvenue dans votre agence. Veuillez accéder à vos services.</p>
                                             <div class="d-flex justify-content-between">
                                                     {% for agences in agence %}
-                                                        {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" or agences.nom == "AFRICA BELEIVE GROUP SARL" %}
+                                                        {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA"  %}
                                                             <a href="{{ path('app_home_dashboard_a_direction') }}" class="btn btn-primary">
                                                                 Cabinet {{agences.nom }}
                                                             </a>
@@ -141,7 +141,7 @@
                                                         </a>
                                                     {% else %}
                                                         
-                                                        {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" or agences.nom == "AFRICA BELEIVE GROUP SARL" %}
+                                                        {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA"  %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
                                                                 Cabinet {{agences.nom }}
                                                             </a>
@@ -191,7 +191,7 @@
                                                         Provenderie
                                                     </a>
                                                 {% else %}
-                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" or agences.nom == "AFRICA BELEIVE GROUP SARL" %}
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA"  %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
                                                                 Cabinet {{agences.nom }}
                                                             </a>
@@ -222,7 +222,7 @@
                                                         Provenderie
                                                     </a>
                                                 {% else %}
-                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" or agences.nom == "AFRICA BELEIVE GROUP SARL" %}
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA"  %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
                                                                 Cabinet {{agences.nom }}
                                                             </a>
@@ -251,7 +251,7 @@
                                                         Provenderie
                                                     </a>
                                                 {% else %}
-                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" or agences.nom == "AFRICA BELEIVE GROUP SARL" %}
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA"  %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
                                                                 Cabinet {{agences.nom }}
                                                             </a>
@@ -280,7 +280,7 @@
                                                     <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Provenderie
                                                     </a>
-                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" or agences.nom == "AFRICA BELEIVE GROUP SARL" %}
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA"  %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
                                                                 Cabinet {{agences.nom }}
                                                             </a>
@@ -305,7 +305,7 @@
                                                     <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Provenderie
                                                     </a>
-                                                   {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" or agences.nom == "AFRICA BELEIVE GROUP SARL" %}
+                                                   {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA"  %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
                                                                 Cabinet {{agences.nom }}
                                                             </a>
@@ -327,7 +327,7 @@
                                                 <h5 class="card-title text-center">{{ agences.nom}}</h5>
                                                 <p class="card-text text-center">Bienvenue dans votre agence. Veuillez accéder à vos services.</p>
                                                 <div class="d-flex justify-content-between">
-                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" or agences.nom == "AFRICA BELEIVE GROUP SARL" %}
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA"  %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
                                                                 Cabinet {{agences.nom }}
                                                             </a>
@@ -352,7 +352,7 @@
                                                     <a href="{{ path('app_home_dashboard', {'id': agences.id}) }}" class="btn btn-primary">
                                                         Provenderie
                                                     </a>
-                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA" or agences.nom == "AFRICA BELEIVE GROUP SARL" %}
+                                                    {% if agences.nom == "CVD SOA" or agences.nom == "KATAMGA"  %}
                                                             <a href="{{ path('app_home_dashboardA', {'id': agences.id}) }}" class="btn btn-primary">
                                                                 Cabinet {{agences.nom }}
                                                             </a>
