@@ -185,9 +185,9 @@ class ProduitController extends AbstractController
                             $produits->setAgence($tempagence->getAgence());
                             $produits->setUser($user);
                             $produits->setNom($value[0]);
-                            $produits->setQuantite(0);
-                            $produits->setStockdebut(0);
-                            $produits->setPrixachat(0);
+                            $produits->setQuantite($value[1]);
+                            $produits->setStockdebut($value[1]);
+                            $produits->setPrixachat($value[3]);
                             $produits->setPrixvente($value[2]);
                             $produits->setGain(0);
                             $produits->setType($value[4]);
