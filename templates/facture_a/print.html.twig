@@ -104,7 +104,7 @@
     </div>
     <div class="info-client">
         <strong>Vente N°:</strong> {{ vente.id }}<br>
-        <strong>Date:</strong> {{ "now"|date("d/m/Y H:i") }}<br>
+        <strong>Date:{{ "now"|date("d/m/Y H:i") }} </strong> <br>
         <strong>Client: {{ client.nom|upper }}<br></strong>
         <strong>Tel: {{ client.user.telephone }}</strong>
     </div>

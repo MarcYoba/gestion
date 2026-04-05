@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Facture;
+use App\Entity\Produit;
 use App\Entity\TempAgence;
+use App\Entity\Vente;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +21,8 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Symfony\Component\HttpFoundation\Request;
 
 class FactureController extends AbstractController
 {
@@ -100,5 +104,115 @@ class FactureController extends AbstractController
                 'Content-Disposition' => 'inline; filename="Facture.pdf"', // 'inline' pour affichage navigateur
             ]
         );
+    }
+
+    #[Route('/facture/import/year', name:'app_import_facture')]
+    public function import(EntityManagerInterface $em, Request $request): Response
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $processed = 0;
+        if ($request->isMethod('POST')) {
+           $file =  $request->files->get('ficher');
+           if ($file && $file->isValid()) {
+                   try {
+                    $extension = strtolower($file->getClientOriginalExtension());
+                    $extensionsAutorisees = ['xlsx', 'xls', 'csv'];
+
+                    if (!in_array($extension, $extensionsAutorisees)) {
+                        throw new \Exception('Seuls les fichiers Excel (XLSX, XLS) et CSV sont autorisés');
+                    }
+
+                    $spreadsheet = IOFactory::load($file->getPathname());
+                    $spreadsheet = IOFactory::load($file->getPathname());
+        
+                    $donnees = $this->lireFichierExcel($spreadsheet);
+                    $donnees = $donnees['Worksheet'];
+                    
+                    array_shift($donnees);
+                    
+                    $total = count($donnees);
+                    $i = 0;
+                    $trouver = 0;
+                    
+                    $this->addFlash('success', 'Importation démarrée');
+                    foreach ($donnees as $key => $value) {
+                        $prefacture = $em->getRepository(Facture::class)->findBy(['reference' => $value[0]]);
+                        if ($prefacture) {
+                          $trouver = $trouver + 1;
+                        }else {
+                            $vente = $em->getRepository(Vente::class)->findOneBy(['reference' => $value[9]]);
+                            $produit = $em->getRepository(Produit::class)->findOneBy(['nom' => $value[1]]);
+                            if (!$vente) {
+                                $this->addFlash('error', 'Vente non trouvée pour la référence: ' . $value[9]);
+                                continue;
+                            }
+                            if (!$produit) {
+                                $this->addFlash('error', 'Produit non trouvé pour le nom: ' . $value[1]);
+                                $produit =$em->getRepository(Produit::class)->findOneBy(['nom' => "IMPORTATION"]);
+                            }
+                            $facture = new Facture();
+                            
+
+                            $em->persist($facture);
+                            $em->flush();
+
+                            $processed++;
+                            $progress = round(($i + 1) / $total * 100);
+                            // Messages avec barre de progression ASCII
+                            if ($progress % 20 === 0) {
+                                $bar = str_repeat('█', $progress / 5) . str_repeat('░', 20 - ($progress / 5));
+                                $this->addFlash('success', "[$bar] $progress% - Ligne " . ($i + 1) . "/$total");
+                            }
+                            $i++;
+                        }
+                        
+                    }
+                    
+                    $this->addFlash('success', 'Importation terminée avec succès! Facture trouver : '.$trouver);
+
+                    return $this->redirectToRoute('app_import_facture');
+                } catch (\Exception $e) {
+                    $this->addFlash("error", 'Erreur lors de la lecture du fichier: ' . $e->getMessage() );
+                }
+           } else {
+            $this->addFlash("error", "echec de chargement du fichier");
+           }
+           
+
+        }
+     
+        return $this->render("facture/import.html.twig",[
+            "id" => $id,
+        ]);
+    }
+
+    private function lireFichierExcel($spreadsheet): array
+    {
+        $donneesCompletes = [];
+        
+        // Parcourir toutes les feuilles
+        foreach ($spreadsheet->getSheetNames() as $sheetIndex => $sheetName) {
+            $worksheet = $spreadsheet->getSheet($sheetIndex);
+            $donneesCompletes[$sheetName] = $this->lireFeuilleExcel($worksheet);
+        }
+        
+        return $donneesCompletes;
+    }
+
+    private function lireFeuilleExcel($worksheet): array
+    {
+        $donnees = [];
+    
+    // Méthode plus simple avec toArray()
+    $donnees = $worksheet->toArray();
+    
+    return $donnees;
     }
 }

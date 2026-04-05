@@ -61,14 +61,14 @@
                                     
                                         
 
-                                    <p class="col-md-2"> Nom Client : {{client.nom}}</p>
-                                    <p class="col-md-2"> Telephone : {{ client.user.telephone }} </p>
+                                    <p class="col-md-2"> Nom Client : {{client.nom | default('N/A')}} </p>
+                                    <p class="col-md-2"> Telephone : {{ client.user.telephone | default('N/A') }} </p>
                                     
                                     <p class='col-md-2 '> <a href="{{ path('app_print_facture', {'id':id}) }}" class='btn btn-info btn-user'>Imprimer</a></p>  
                                     {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}  
                                     <p class='col-md-1 '> <button  class='btn btn-warning btn-user' onclick="editefacture()">Edite</button></p> 
                                     <p class='col-md-2 '> <button  class='btn btn-danger btn-user' onclick=''>Supprimer</button></p>
-                                    <p class='col-md-2 '> <a href='modifiction.php?id=" . $_GET["id"] . "' class='btn btn-secondary btn-user'>changer client</a></p>
+                                    <p class='col-md-2 '> <a href='#' class='btn btn-secondary btn-user'>changer client</a></p>
                                     {% endif %}
                                     <span class='cacher' id='id'>{{ id }}</span>
 
@@ -95,21 +95,21 @@
                                     <tbody>
                                         {% for row in facture %}
                                             <tr>
-                                                <td>{{ row.id }}</td>
-                                                <td>{{ row.produit.nom }}</td>
-                                                <td>{{ row.quantite }}</td>
-                                                <td>{{ row.prix }}</td>
-                                                <td>{{ row.montant }}</td>
-                                                <td>{{ row.typepaiement }}</td>
+                                                <td>{{ row.id | default('N/A')}}</td>
+                                                <td>{{ row.produit.nom | default('N/A') }}</td>
+                                                <td>{{ row.quantite | default(0) }}</td>
+                                                <td>{{ row.prix | default(0) }}</td>
+                                                <td>{{ row.montant | default(0) }}</td>
+                                                <td>{{ row.typepaiement | default('N/A') }}</td>
                                             </tr>
                                         {% endfor %}
                                         
                                         <tr>
                                             <td>Total</td>
                                             <td>-</td>
-                                            <td>{{ vente.quantite }}</td>
-                                            <td>{{ vente.prix }}</td>
-                                            <td>{{ vente.prix + vente.reduction }}</td>
+                                            <td>{{ vente.quantite | default(0) }}</td>
+                                            <td>{{ vente.prix | default(0) }}</td>
+                                            <td>{{ vente.prix | default(0)  + vente.reduction | default(0) }}</td>
                                             <td>-</td>
                                         </tr>
                                     </tbody>
@@ -145,27 +145,6 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap core JavaScript-->
     
     <script src="{{ asset('js/vente.js') }}"></script>
 
