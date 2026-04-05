@@ -518,4 +518,16 @@ class VenteRepository extends ServiceEntityRepository
         
         ;
     }
+
+    public function findByYearAgence($annee,$agence) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->where('YEAR(v.createdAt) =:anne')
+            ->andWhere('v.agence =:agences')
+            ->setParameter('anne', $annee)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
