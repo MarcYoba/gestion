@@ -91,20 +91,19 @@
         <h1 class="bold">
             <strong>{{agences.nom}}</strong>
             <br>
-            <br>
            <strong>{{agences.Activite}}</strong> <br>
             <strong>{{ agences.adress }}</strong><br>
             <strong>NUI:{{ agences.contribuable }}</strong><strong>RCCM:{{ agences.rccm }}</strong>
         </h1>
         <small></small>
     </div>
-    <div class=" header center text-center">
+    <div class=" center text-center">
         <img src="{{ qrCode }}" alt="QR Code">
     </div>
     <div class="info-client">
         <small></small>
         <strong>Vente N°:</strong> {{ vente.id }}<br>
-        <strong>Date:</strong> {{ "now"|date("d/m/Y H:i") }}<br>
+        <strong>Date:{{ "now"|date("d/m/Y H:i") }} </strong> <br>
         <strong>Client: {{ client.nom|upper }}<br></strong>
         <strong>Tel: {{ client.user.telephone }}</strong>
     </div>
@@ -112,7 +111,7 @@
     <table>
         <thead>
             <tr>
-                <th class="col-produit">Item</th>
+                <th class="col-produit">Produit</th>
                 <th class="col-qty">Qt</th>
                 <th class="col-pu">P.U</th>
                 <th class="col-total">Mt</th>
@@ -123,11 +122,11 @@
             {% set totalGeneral = 0 %}
             {% for facture in factures %}
             <tr>
-                <td class="col-produit"><strong>{{ facture.produit.nom }}</strong></td>
-                <td class="col-qty"><strong>{{ facture.quantite }}</strong></td>
-                <td class="col-pu"><strong>{{ facture.prix|number_format(0, '', '') }}</strong></td>
-                <td class="col-total"><strong>{{ facture.montant|number_format(0, '', '') }}</strong></td>
-                <td class="col-paie"><strong>{{ facture.Typepaiement|slice(0, 1) }}</strong></td> {# On ne garde que l'initiale pour gagner de la place #}
+                <td class="col-produit" style="font-size: 10pt;"><strong>{{ facture.produit.nom }}</strong></td>
+                <td class="col-qty" style="font-size: 10pt;"><strong>{{ facture.quantite }}</strong></td>
+                <td class="col-pu" style="font-size: 10pt;"><strong>{{ facture.prix|number_format(0, '', '') }}</strong></td>
+                <td class="col-total" style="font-size: 10pt;"><strong>{{ facture.montant|number_format(0, '', '') }}</strong></td>
+                <td class="col-paie" style="font-size: 10pt;"><strong>{{ facture.Typepaiement }}</strong></td> {# On ne garde que l'initiale pour gagner de la place #}
             </tr>
             {% set totalGeneral = totalGeneral + facture.montant %}
             {% else %}
@@ -139,7 +138,7 @@
     </table>
 
     <div class="total-section">
-        <div style="text-align: right; font-size: 10pt;">
+        <div style="text-align: right; font-size: 12pt;">
             <strong>TOTAL : {{ totalGeneral|number_format(0, '.', ' ') }} FCFA</strong>
         </div>
     </div>
