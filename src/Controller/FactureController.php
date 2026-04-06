@@ -148,8 +148,10 @@ class FactureController extends AbstractController
                         if ($prefacture) {
                           $trouver = $trouver + 1;
                         }else {
+                            $mot = $value[1];
+                            $resultat = ltrim($mot);
                             $vente = $em->getRepository(Vente::class)->findOneBy(['reference' => $value[9]]);
-                            $produit = $em->getRepository(Produit::class)->findOneBy(['nom' => $value[1]]);
+                            $produit = $em->getRepository(Produit::class)->findOneBy(['nom' => $resultat]);
                             if (!$vente) {
                                 $this->addFlash('error', 'vente non trouvée pour la référence: ' . $value[9]);
                                 continue;
