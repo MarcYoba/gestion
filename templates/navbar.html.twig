@@ -81,6 +81,7 @@
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('achat_list') }}">Liste Achat</a>
                 <a class="collapse-item" href="{{ path('app_achat') }}" >Ajouter un Achat</a>
+                <a class="collapse-item" href="{{ path('achat_import_anne') }}" >Import Achat</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_achat') }}" >Ajouter un Achat</a>
                 <a class="collapse-item" href="{{ path('achat_list') }}">Liste Achat</a>
@@ -166,8 +167,9 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Operation des Fournisseurs</h6>
                 {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
-                <a class="collapse-item" href="{{ path('app_fournisseur') }}" id="ajouterFourniseur">ajouter un Fournisseur</a>
+                    <a class="collapse-item" href="{{ path('app_fournisseur') }}" id="ajouterFourniseur">ajouter un Fournisseur</a>
                     <a class="collapse-item" href="{{ path('fournisseur_list') }}">liste Fournisseur</a>
+                    <a class="collapse-item" href="{{ path('fournisseur_import_anne') }}">fournisseur import<a/>
                 {% else %}
                     <a class="collapse-item" href="{{ path('app_fournisseur') }}" id="ajouterFourniseur">ajouter un Fournisseur</a>
                     <a class="collapse-item" href="{{ path('fournisseur_list') }}">liste Fournisseur</a>

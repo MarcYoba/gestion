@@ -50,6 +50,9 @@ class Fournisseur
     #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'fournisseurs')]
     private Collection $produit;
 
+    #[ORM\Column(length: 255)]
+    private ?string $reference = null;
+
     public function __construct()
     {
         $this->achat = new ArrayCollection();
@@ -219,6 +222,18 @@ class Fournisseur
     public function removeProduit(Produit $produit): static
     {
         $this->produit->removeElement($produit);
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): static
+    {
+        $this->reference = $reference;
 
         return $this;
     }
