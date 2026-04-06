@@ -134,7 +134,7 @@ class AchatController extends AbstractController
     }
 
     #[Route('/achat/list', name: 'achat_list')]
-    public function list(EntityManagerInterface $entityManager): Response
+    public function list(EntityManagerInterface $entityManager, Request $request): Response
     {
         $user = $this->getUser();
         $produit = 0;
@@ -146,23 +146,26 @@ class AchatController extends AbstractController
         // if (Empty($tempagence)) {
         //     $this->redirectToRoute('app_logout');
         // }
-        
+        $anneeselect = $request->query->get('annee',date('Y'));
+
         $id = $tempagence->getAgence()->getId();
         if ($tempagence->isGenerale()== 1) {
             $produit = $entityManager->getRepository(Achat::class)->findAll();
-            $achat = $entityManager->getRepository(Achat::class)->findAll();
+            $achat = $entityManager->getRepository(Achat::class)->findByYearAgence($anneeselect,$id);
             $fournisseur = $entityManager->getRepository(Fournisseur::class)->findAll();
         }else{
             $produit = $entityManager->getRepository(Achat::class)->findBy(["agence" => $id]);
-            $achat = $entityManager->getRepository(Achat::class)->findBy(["agence" => $id]);
+            $achat = $entityManager->getRepository(Achat::class)->findByYearAgence($anneeselect,$id);
             $fournisseur = $entityManager->getRepository(Fournisseur::class)->findBy(["agence" => $id]);
         }
+
         $produits = $entityManager->getRepository(Produit::class)->findBy(["agence" => $id]);
         return $this->render('achat/list.html.twig', [
             'achat' => $achat,
             'produit' => $produit,
             'produits' => $produits,
             'fournisseur' => $fournisseur,
+            'anneeselect' => $anneeselect,
         ]);
     }
 
