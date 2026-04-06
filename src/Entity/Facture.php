@@ -48,7 +48,7 @@ class Facture
     #[ORM\ManyToOne(inversedBy: 'factures')]
     private ?Agence $agence = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $reference = null;
 
     public function getId(): ?int

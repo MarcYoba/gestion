@@ -77,7 +77,7 @@ class Vente
     #[ORM\Column]
     private ?float $om = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $reference = null;
 
     public function __construct()
