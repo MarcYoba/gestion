@@ -143,6 +143,7 @@ class FactureController extends AbstractController
                     
                     $this->addFlash('success', 'Importation démarrée');
                     foreach ($donnees as $key => $value) {
+                        
                         $prefacture = $em->getRepository(Facture::class)->findBy(['reference' => $value[0]]);
                         if ($prefacture) {
                           $trouver = $trouver + 1;
@@ -150,16 +151,27 @@ class FactureController extends AbstractController
                             $vente = $em->getRepository(Vente::class)->findOneBy(['reference' => $value[9]]);
                             $produit = $em->getRepository(Produit::class)->findOneBy(['nom' => $value[1]]);
                             if (!$vente) {
-                                $this->addFlash('error', 'Vente non trouvée pour la référence: ' . $value[9]);
+                                $this->addFlash('error', 'vente non trouvée pour la référence: ' . $value[9]);
                                 continue;
                             }
                             if (!$produit) {
                                 $this->addFlash('error', 'Produit non trouvé pour le nom: ' . $value[1]);
                                 $produit =$em->getRepository(Produit::class)->findOneBy(['nom' => "IMPORTATION"]);
                             }
-                            $facture = new Facture();
                             
-
+                            $facture = new Facture();
+                            $facture->setReference($value[0]);
+                            $facture->setProduit($produit);
+                            $facture->setQuantite($value[2]);
+                            $facture->setPrix($value[3]);
+                            $facture->setMontant($value[4]);
+                            $facture->setTypepaiement($value[5]);
+                            $facture->setClient($vente->getClient());
+                            $facture->setUser($vente->getUser());
+                            $facture->setCreatedAt(new \DateTimeImmutable($value[8]));
+                            $facture->setAgence($vente->getAgence());
+                            $facture->setVente($vente);
+                            
                             $em->persist($facture);
                             $em->flush();
 
