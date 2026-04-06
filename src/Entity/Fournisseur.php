@@ -50,7 +50,7 @@ class Fournisseur
     #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'fournisseurs')]
     private Collection $produit;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $reference = null;
 
     public function __construct()
