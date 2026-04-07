@@ -64,6 +64,7 @@ class AchatController extends AbstractController
                     $achat->setAgence($tempagence->getAgence());
                     $achat->setFournisseur($fournisseur);
                     $achat->setProduit($produit);
+                    $achat->setReference(0);
                     $fournisseur->addProduit($produit);
                     $entityManager->persist($fournisseur);
 
@@ -91,35 +92,35 @@ class AchatController extends AbstractController
                 $entityManager->flush();
 
                 if ($type == "CASH") {
-                    $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6021]);
-                    if ($balance) {
-                        $montant = $balance->getMouvementDebit();
-                        $balance->setMouvementDebit($montant + $key["total"]);
-                    }
-                    $entityManager->persist($balance);
-                    $entityManager->flush();
-                    $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5111]);
-                    if ($balance) {
-                        $montant = $balance->getMouvementCredit();
-                        $balance->setMouvementCredit($montant + $key["total"]);
-                    }
-                    $entityManager->persist($balance);
-                    $entityManager->flush();
+                    // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6021]);
+                    // if ($balance) {
+                    //     $montant = $balance->getMouvementDebit();
+                    //     $balance->setMouvementDebit($montant + $key["total"]);
+                    // }
+                    // $entityManager->persist($balance);
+                    // $entityManager->flush();
+                    // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5111]);
+                    // if ($balance) {
+                    //     $montant = $balance->getMouvementCredit();
+                    //     $balance->setMouvementCredit($montant + $key["total"]);
+                    // }
+                    // $entityManager->persist($balance);
+                    // $entityManager->flush();
                 }elseif ($type == "BANQUE") {
-                    $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6021]);
-                    if ($balance) {
-                        $montant = $balance->getMouvementDebit();
-                        $balance->setMouvementDebit($montant + $key["total"]);
-                    }
-                    $entityManager->persist($balance);
-                    $entityManager->flush();
-                    $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5121]);
-                    if ($balance) {
-                        $montant = $balance->getMouvementCredit();
-                        $balance->setMouvementCredit($montant + $key["total"]);
-                    }
-                    $entityManager->persist($balance);
-                    $entityManager->flush();
+                    // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 6021]);
+                    // if ($balance) {
+                    //     $montant = $balance->getMouvementDebit();
+                    //     $balance->setMouvementDebit($montant + $key["total"]);
+                    // }
+                    // $entityManager->persist($balance);
+                    // $entityManager->flush();
+                    // $balance = $entityManager->getRepository(Balance::class)->findOneBy(['Compte' => 5121]);
+                    // if ($balance) {
+                    //     $montant = $balance->getMouvementCredit();
+                    //     $balance->setMouvementCredit($montant + $key["total"]);
+                    // }
+                    // $entityManager->persist($balance);
+                    // $entityManager->flush();
                 }
                 return $this->json(['success' => true], 200);
             } catch (\Throwable $th) {
