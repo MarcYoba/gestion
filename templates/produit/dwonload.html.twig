@@ -32,13 +32,15 @@
     <table class="table table-bordered" id="tableactif" width="100%" cellspacing="0" data-page-length='50' >
         <thead>
             <tr>
-                <th colspan="4" style="text-align: center;">Inventaire du {{ 'now' | date("Y-m-d")}}</th>
+                <th colspan="6" style="text-align: center;">Inventaire du {{ 'now' | date("Y-m-d")}}</th>
             </tr>
             <tr>
                 <th style="text-align: center;">Id</th>
                 <th style="text-align: center;">Produit</th>
-                <th  style="text-align: center;">Quantite</th>
+                <th  style="text-align: center;">Q.production</th>
+                <th  style="text-align: center;">Q.magasin</th>
                 <th  style="text-align: center;">Stock du {{'now' | date("Y-m-d")}}</th>
+                <th  style="text-align: center;">Ecart ou perte</th>
             </tr>
         </thead>
         <tbody>
@@ -47,7 +49,13 @@
                     <td style="">{{ produit.id }}</td>   
                     <td style="">{{ produit.nom }}</td>
                     <td style="">{{ produit.quantite }}</td>
-                    <td></td>        
+                    {% for magasin in produit.magasins %}
+                        <td style="">{{ magasin.quantite }}</td>
+                    {% else %}
+                        <td style="">0</td>
+                    {% endfor %}
+                    <td></td>
+                    <td></td>         
                 </tr>
             {% endfor %}
         </tbody>
