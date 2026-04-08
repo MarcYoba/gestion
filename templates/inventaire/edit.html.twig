@@ -30,7 +30,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        {% include "navbarA.html.twig" %}
+        {% include "navbar.html.twig" %}
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -74,7 +74,7 @@
                                             {% endfor %}
                                         </div>
                                         <div class="col-sm-2 mb-3 mb-sm-0">
-                                            <a href="{{ path('app_inventaire_a_list') }}" class="btn btn-success btn-user btn-block">
+                                            <a href="{{ path('app_inventaire_list') }}" class="btn btn-success btn-user btn-block">
                                                 <i class="fas fa-list"></i>
                                                 List
                                             </a>
@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                                 
-                            <form class="user" action="{{path('app_inventaire_a_update')}}" method="post" enctype="multipart/form-data">    
+                            <form class="user" action="{{path('app_inventaire_update')}}" method="post" enctype="multipart/form-data">    
                                 <div class="form-group row">
                                     <div class="col-sm-6">
                                         Date
@@ -148,7 +148,7 @@
         <!-- End of Content Wrapper -->
 
     </div>
-    <script src="{{ asset('js/inventaire/inventaire.js') }}"></script>
+    <script src="{{ asset('js/inventaire/inventair.js') }}"></script>
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
