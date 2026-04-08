@@ -197,6 +197,33 @@
     </div>
     </li>
     <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#inventaire"
+        aria-expanded="true" aria-controls="magasin">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Inventaire Hebdomadaie</span>
+    </a>
+    <div id="inventaire" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Inventaire Hebdomadaie</h6>
+                {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                    <a class="collapse-item" href="{{ path('app_inventaire_list_vente') }}">Inventaire</a>
+                    <a class="collapse-item" href="{{ path('app_inventaire_list') }}" >List</a>
+                {% else %}
+                    <a class="collapse-item" href="{{ path('app_inventaire_list_vente') }}">Inventaire</a>
+                    <a class="collapse-item" href="{{ path('app_inventaire_list') }}">List</a>
+                {% endif %}
+            {# <h6 class="collapse-header">Inventaire Caisse</h6>
+            {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
+                    <a class="collapse-item" href="{{ path('app_inventaire_caisse_a') }}">Inventaire</a>
+                    <a class="collapse-item" href="{{ path('app_inventaire_caisse_a_list') }}" >List</a>
+                {% else %}
+                    <a class="collapse-item" href="{{ path('app_inventaire_caisse_a') }}">Inventaire</a>
+                    <a class="collapse-item" href="{{ path('app_inventaire_caisse_a_list') }}">List</a>
+                {% endif %} #}
+        </div>
+    </div>
+    </li>
+    <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsestock"
         aria-expanded="true" aria-controls="collapsestock">
         <i class="fas fa-fw fa-folder"></i>

@@ -138,8 +138,11 @@
     </table>
 
     <div class="total-section">
+        <div style="text-align: left; font-size: 9pt;">
+            <strong> Reduction : {{ vente.reduction|number_format(0, '.', ' ') }} </strong>
+        </div>
         <div style="text-align: right; font-size: 12pt;">
-            <strong>TOTAL : {{ totalGeneral|number_format(0, '.', ' ') }} FCFA</strong>
+            <strong>TOTAL : {{ totalGeneral - vente.reduction|number_format(0, '.', ' ') }} FCFA</strong>
         </div>
     </div>
 

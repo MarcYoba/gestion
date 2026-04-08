@@ -25,7 +25,7 @@ class Inventaire
     private ?float $inventaire = null;
 
     #[ORM\ManyToOne(inversedBy: 'inventaireAs')]
-    private ?ProduitA $produit = null;
+    private ?Produit $produit = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $createtAt = null;
@@ -66,12 +66,12 @@ class Inventaire
         return $this;
     }
 
-    public function getProduit(): ?ProduitA
+    public function getProduit(): ?Produit
     {
         return $this->produit;
     }
 
-    public function setProduit(?ProduitA $produit): static
+    public function setProduit(?Produit $produit): static
     {
         $this->produit = $produit;
 
