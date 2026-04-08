@@ -12,14 +12,18 @@ class EntrepriseAController extends AbstractController
     #[Route('/entreprise/a', name: 'app_entreprise_a')]
     public function index(ManagerRegistrY $doctrine): Response
     {
-        $entreprise = $doctrine->getConnection('secondary');
+        // $entreprise = $doctrine->getConnection('secondary');
 
-        if (!$entreprise) {
-            throw $this->createNotFoundException('No database connection found for "secondary".');
-        }
+        // if ($entreprise) {
+            
+        // }else{
+
+        // }
 
         return $this->render('entreprise_a/index.html.twig', [
             'controller_name' => 'EntrepriseAController',
         ]);
     }
+
+
 }
