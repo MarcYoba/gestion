@@ -101,6 +101,10 @@
                     {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                         <a class="collapse-item" href="{{ path('app_magasin_a_list_direction') }}" >Liste produit</a>
                         <a class="collapse-item" href="{{ path('app_transfert_a_list_direction') }}" >Liste Transfert</a>
+
+                        <h6 class="collapse-header">Tranfert inter-agence</h6>
+
+                        <a class="collapse-item" href="{{ path('app_entreprise_a') }}" >Tranfert inter-agence</a>
                     {% else %}
                         
                     {% endif %}
