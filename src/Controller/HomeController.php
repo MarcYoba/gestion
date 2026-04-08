@@ -16,6 +16,7 @@ use App\Entity\Poussin;
 use App\Entity\Produit;
 use App\Entity\ProduitA;
 use App\Entity\TempAgence;
+use App\Entity\Transfert;
 use App\Entity\TransfertA;
 use App\Entity\User;
 use App\Entity\Vaccin;
@@ -107,6 +108,7 @@ class HomeController extends AbstractController
         $bondCommande = $entityManager->getRepository(BondCommande::class)->findBySommeBonCommande();
         $produitsanslinite = $entityManager->getRepository(Produit::class)->FindbyEmptyBonCommand();
         $produitsansfournisseur = $entityManager->getRepository(Produit::class)->FindbyEmptyFournisseur();
+        $bontransfert = $entityManager->getRepository(Transfert::class)->findBy(['statut' => 'Attente']);
 
         return $this->render('home/dashboard.html.twig', [
             'agence' => $agence,
@@ -121,6 +123,7 @@ class HomeController extends AbstractController
             'bondCommandes' => $bondCommande,
             'produitsanslinite' => count($produitsanslinite),
             'produitsansfournisseur' => count($produitsansfournisseur),
+            'bontransfert' => count($bontransfert),
         ]);
     }
 
