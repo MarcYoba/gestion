@@ -54,11 +54,16 @@
                 <div class="col-sm-4">
                     Produit sans Fournisseurs : {{ produitsansfournisseur | default(0) }}
                 </div>
+                <div class="col-sm-4">
+                    Bon de Transfert : {{ bontransfert | default(0) }}
+                </div>
             </div>
         </div>
         <div class="modal-footer">
             <a href="{{path('app_bond_commande_liste_fourisseur')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Bond de Commande</a>
+            <a href="{{path('app_transfert_list')}}" type="button" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i>Bond de Transfert</a>
         </div>
+        
         </div>
     </div>
     </div>
