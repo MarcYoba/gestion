@@ -545,4 +545,24 @@ class VenteRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findBySommeVenteToWeek($date_debut, $date_fin,$agence) : float
+    {
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+    
+        $query = $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0) AS Montant')
+            ->where('v.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence =:agences')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->getQuery()
+        ;
+
+        $result = $query->getSingleScalarResult();
+
+        return $result > 0 ? (float)$result : 0;
+    }
 }

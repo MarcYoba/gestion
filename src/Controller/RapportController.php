@@ -482,4 +482,93 @@ class RapportController extends AbstractController
             ]
         );
     }
+
+    #[Route(path: '/rapport/annee', name: 'rapport_annee')]
+    public function rapport_annee(EntityManagerInterface $em,Request $request): Response
+    {
+
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+           if(empty($anne))
+           {
+                $this->addFlash("error", "Vous deviez selectiion aune date valide");
+                return $this->redirectToRoute("app_rapport_a");
+           }
+        }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+        
+        $ventemoi = [];
+        $venteSemain = [];
+        $moi = 1;
+        while ($moi <= 12) {
+            array_push($ventemoi,$em->getRepository(Vente::class)->findByMontantMonth($moi,$anne,$id));
+            $moi ++;
+        }
+        // Trouver le premier lundi de l'année
+        $premierJour = new DateTime("$anne-01-01");
+        
+        // Ajuster au premier lundi de l'année
+        if ($premierJour->format('N') != 1) { // N = 1 pour lundi
+            $premierJour->modify('next monday');
+        }
+        
+        // Calculer le nombre de semaines dans l'année
+        $dernierJour = new DateTime("$anne-12-31");
+        $nombreSemaines = $dernierJour->format('W');
+        
+        // Générer chaque semaine
+        for ($semaine = 1; $semaine <= $nombreSemaines; $semaine++) {
+            // Calculer le lundi de la semaine
+            $lundi = clone $premierJour;
+            $lundi->modify('+' . ($semaine - 1) . ' weeks');
+            
+            // Calculer le dimanche de la semaine
+            $dimanche = clone $lundi;
+            $dimanche->modify('+6 days');
+            
+            // Vérifier si la semaine est dans l'année
+            if ($lundi->format('Y') <= $anne || $dimanche->format('Y') >= $anne) {
+                $val = $em->getRepository(Vente::class)->findBySommeVenteToWeek(
+                    new \DateTimeImmutable($lundi->format('Y-m-d')), 
+                    new \DateTimeImmutable($dimanche->format('Y-m-d')),
+                    $id);
+                array_push($venteSemain,[$semaine,$val]);
+                
+            }
+        }
+        $html = $this->renderView('rapport/anne.html.twig', [
+        'annees' => $anne,
+        'ventes' => $ventemoi,
+        'semains' => $venteSemain,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+        $document = "rapport_annee_".$anne.".pdf";
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="'.$document.'"', // 'inline' pour affichage navigateur
+            ]
+        );
+    }
 }
