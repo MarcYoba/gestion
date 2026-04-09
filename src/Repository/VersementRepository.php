@@ -90,5 +90,22 @@ class VersementRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByMonthAgence($mois, $anne, $agence): array
+    {
+       return $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.montant),0) AS Montant, 
+            CONCAT(\',\',v.description) AS Description, 
+            COALESCE(SUM(v.Om),0) AS Om, COALESCE(SUM(v.banque),0) AS banque')
+            ->Where('MONTH(v.createdAd) = :val')
+            ->andWhere('YEAR(v.createdAd) = :anne')
+            ->andWhere('v.agence = :agence')
+            ->setParameter('val', $mois)
+            ->setParameter('anne', $anne)
+            ->setParameter('agence', $agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
 

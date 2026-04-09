@@ -530,4 +530,19 @@ class VenteRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByMonthAgence($mois, $annee, $agence) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->select('v.prix, v.reduction, v.montantcredit, v.montantcash, v.montantbanque, v.montantmomo, v.om, v.quantite')
+            ->where('MONTH(v.createdAt) =:mois')
+            ->andWhere('YEAR(v.createdAt) =:annee')
+            ->andWhere('v.agence =:agences')
+            ->setParameter('mois', $mois)
+            ->setParameter('annee', $annee)
+            ->setParameter('agences', $agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

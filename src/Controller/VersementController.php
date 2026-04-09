@@ -25,9 +25,13 @@ class VersementController extends AbstractController
         $versement = new Versement();
         $form = $this->createForm(VersementType::class,$versement);
         $form->handleRequest($request);
+        $user = $this->getUser();
+        $tempagence = $entityManager->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $agence = $tempagence->getAgence()->getId();
         if($form->isSubmitted() && $form->isValid()){
             $user = $this->getUser();
             $versement->setUser($user);
+            $versement->setAgence($tempagence->getAgence());
             $entityManager->persist($versement);
             $entityManager->flush();
 

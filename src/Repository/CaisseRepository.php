@@ -113,4 +113,21 @@ class CaisseRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByMonthAgence($mois, $annee, $agence) : array 
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COALESCE(SUM(c.montant),0) AS somme, 
+            CONCAT(\',\', c.motif) AS Motif, 
+            CONCAT(\',\', c.operation) AS element') 
+            ->where('MONTH(c.createAt) = :mois AND YEAR(c.createAt) = :annee')
+            ->andWhere('c.Agence =:agences')
+            ->setParameter('mois', $mois)
+            ->setParameter('annee', $annee)
+            ->setParameter('agences', $agence)
+            ->getQuery()
+            ->getResult()
+        
+        ;
+    }
 }

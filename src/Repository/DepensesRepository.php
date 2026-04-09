@@ -137,4 +137,21 @@ class DepensesRepository extends ServiceEntityRepository
     
         return (float) $result;
     }
+
+    public function findByMonthAgence($moi,$anne,$agence): array
+    {
+        return $this->createQueryBuilder('d')
+            ->select('COALESCE(SUM(d.montant),0) AS Montant, 
+            CONCAT(\',\',d.type) AS Type, 
+            CONCAT(\',\',d.description) AS Description')
+            ->Where('MONTH(d.createdAt) = :val')
+            ->andWhere('YEAR(d.createdAt) = :anne')
+            ->andWhere('d.agence = :agences')
+            ->setParameter('val', $moi)
+            ->setParameter('anne', $anne)
+            ->setParameter('agences', $agence)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

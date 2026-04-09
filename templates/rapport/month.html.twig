@@ -1,0 +1,192 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rapport du jour{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rapport Mensuelle</title>
+    <style>
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        @Page {
+                    footer {
+                       position: fixed;
+                        bottom: 0cm;
+                        left: 0cm;
+                        right: 0cm;
+                        height: 2cm;
+                        text-align: center;
+                    }
+                }
+</style>
+</head>
+<body>
+<h1 style="text-align: center;">Rapport Mensuelle</h1>
+<h2 style="text-align: center;">Mois: {{mois}}</h2>
+<img src="php/pdf/image.jpg" alt="Logo" />
+<p style="text-align: center;">Anne: {{anne}}</p>
+
+
+<br><br><br> <table style="width:100%">
+        <thead>
+        
+        
+        </thead>
+        <tbody>
+        <tr> 
+            <td scope="col" colspan="8" align="center">Rapport Mensuel</td>
+        </tr>
+        <tr>
+            <th scope="col">Q.Total</th>
+            <th scope="col">M.Total</th>
+            <th scope="col">M.Cash</th>
+            <th scope="col">M.Dette</th>
+            <th scope="col">M.OM</th>
+            <th scope="col">M.MOMO</th>
+            <th scope="col">Reduction</th>
+            <th scope="col">M.Banque</th>
+        </tr>
+        {% for vente in ventes %}
+            <tr>
+                <td>{{vente.quantite}}</td>
+                <td>{{vente.prix}}</td>
+                <td>{{vente.montantcash}}</td>
+                <td>{{vente.montantcredit}}</td>
+                <td>{{vente.om}}</td>
+                <td>{{vente.montantmomo}}</td>
+                <td>{{vente.reduction}}</td>
+                <td>{{vente.montantbanque}}</td>
+            </tr>
+        {% endfor %}
+        
+        </tbody>
+    </table>
+
+    <br><br><br> <table style="width:100%">
+        <thead>
+        
+        
+        </thead>
+        <tbody>
+        <tr> 
+        <td scope="col" colspan="8" align="center">Rapport Mensuel Achat</td>
+        
+        </tr>
+            <tr>
+            <th scope="col">Date Achat</th>
+            <th scope="col">Liste prix</th>
+            <th scope="col">P.Total</th>
+            <th scope="col">Liste quantite</th>
+            <th scope="col">Q.Total </th>
+            <th scope="col">Liste Montant </th>
+            <th scope="col">M.Total </th>
+            <th scope="col">Produit </th>
+            
+        </tr>
+        {% for achat in achats %}
+            <tr>
+                <td>-</td>
+                <td>{{achat.Prixtelist}}</td>
+                <td>{{achat.Prix}}</td>
+                <td>{{achat.quantitelist}}</td>
+                <td>{{achat.Quantite}}</td>
+                <td>{{achat.montanttelist}}</td>
+                <td>{{achat.Montant}}</td>
+                <td></td>
+            </tr>  
+        {% endfor %}
+        
+        </tbody>
+    </table>
+
+
+    <br><br><br> <table style="width:100%">
+        <thead>
+        
+        
+        </thead>
+        <tbody>
+        <tr> 
+        <td scope="col" colspan="4" align="center">Rapport Mensuel Caisse</td>
+        
+        </tr>
+            <tr>
+                <th scope="col">Date </th>
+                <th scope="col">Operation </th>
+                <th scope="col">Liste opration</th>
+                <th scope="col">M.Total</th>
+            </tr>
+        <tr>
+            {% for caisse in caisses %}
+                <td>-</td>
+                <td>{{caisse.element}}</td>
+                <td>{{caisse.Motif}}</td>
+                <td>{{ caisse.somme}}</td>
+            {% endfor %}
+            
+        </tr>
+        </tbody>
+    </table>
+
+    <br><br><br> <table style="width:100%">
+        <thead>
+        
+        
+        </thead>
+        <tbody>
+        <tr> 
+        <td scope="col" colspan="4" align="center">Rapport Mensuel Depense</td>
+        </tr>
+            <tr>
+            <th scope="col">Date </th>
+            <th scope="col">Operation </th>
+            <th scope="col">M.Total</th>
+            <th scope="col">Liste opration</th>
+        </tr>
+        <tr>
+        {% for depense in depenses %}
+            
+            <td>-</td>
+            <td>{{depense.Type}}</td>
+            <td>{{depense.Montant}}</td>
+            <td>{{depense.Description}}</td>
+            
+        {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+
+    <br><br><br> 
+    <table style="width:100%">
+        <thead>
+        </thead>
+        <tbody>
+            <tr> 
+                <td scope="col" colspan="5" align="center">Rapport Mensuel Versement</td>
+            </tr>
+            <tr>
+                <th scope="col">Date Versement </th>
+                <th scope="col">Liste Montant </th>
+                <th scope="col">M.CASH</th>
+                <th scope="col">M.BANQUE</th>
+                <th scope="col">M.OM/MOMO</th>
+            </tr>
+            {% for versement in versements %}
+                <tr>
+                    <td>-</td>
+                    <td>{{versement.Description}}</td>
+                    <td>{{versement.Montant}}</td>
+                    <td>{{versement.Om}}</td>
+                    <td>{{versement.banque}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
+{% endblock %}
