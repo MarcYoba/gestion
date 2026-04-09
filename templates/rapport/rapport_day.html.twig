@@ -329,6 +329,39 @@
                 {% endfor %}
             </tbody>
     </table>
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="7" align="center"> Tableau Inventaire  : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th colspan="7" align="center"> Recapitulatif Inventaire : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th scope="col">Produit</th>
+                <th scope="col">Contoire</th>
+                <th scope="col">Ecart precedent</th>
+                <th scope="col">Inventaire</th>
+                <th scope="col">Ecart</th>
+                <th scope="col">Justificatif</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inventaire in inventaires %}
+                <tr>
+                    <td>{{inventaire[0].produit.nom}}</td>
+                    <td>{{inventaire[0].quantite }}</td>
+                    <td>{{inventaire[1]}}</td>
+                    <td>{{inventaire[0].inventaire}}</td>
+                    <td>{{inventaire[0].ecart}}</td>
+                    <td>{{inventaire[0].justificatif}}</td>
+                    <td>{{inventaire[0].createtAt | date("Y-m-d")}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
         <br><br><br> 
         <table style="width:100%">
