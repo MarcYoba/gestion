@@ -533,9 +533,12 @@ class VenteController extends AbstractController
                 
                 if (isset($produit['OM']) && isset($produit['credit']) && isset($produit['cash'])) {
                     
-                    if(!empty($produit['date']) && !empty($produit['date2'])){
-                        $vente = $em->getRepository(Vente::class)->findRapportVenteToWeek(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id);
-                    }else{
+                    if(!empty($produit['date']) && !empty($produit['date2'] && $produit["client"] == "ALL" && $produit["nomProduit"] == "ALL")){
+                        $vente = $em->getRepository(Vente::class)->findRapportVenteToSemain(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id);
+                    }elseif(!empty($produit['date']) && !empty($produit['date2'] && $produit["client"] != "ALL" && $produit["nomProduit"] == "ALL")) {
+                        $vente = $em->getRepository(Vente::class)->findRapportVenteClientToSemain(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id,$produit["client"]);
+                    }
+                    else{
                         $vente = $em->getRepository(Vente::class)->findRapportToDay($date);
                     }
                 }else if (isset($produit['credit']) && isset($produit['OM'])) {   
@@ -574,7 +577,7 @@ class VenteController extends AbstractController
                 
             } else {
                 if(!empty($produit['date']) && !empty($produit['date2'])){
-                    $vente = $em->getRepository(Vente::class)->findRapportVenteToWeek($produit['date'],$produit['date2'],$id);
+                    $vente = $em->getRepository(Vente::class)->findRapportVenteToSemain($produit['date'],$produit['date2'],$id);
                 }else{
                     $vente = $em->getRepository(Vente::class)->findRapportToDay($date);
                 }   
@@ -586,17 +589,27 @@ class VenteController extends AbstractController
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
 
-        $produit = $em->getRepository(Facture::class)->findByProduitVendu($date,$id);
+        if ($produit["client"] == "ALL") {
+            $tableau = $em->getRepository(Facture::class)->findByProduitVendu($date,$id);
+        }else{
+            $tableau = $em->getRepository(Facture::class)->findByProduitVenduClient(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']),$id,$produit["client"]);
+        }
+        
         $historique = [];
-        foreach ($produit as $key => $value) {
-            $hist = $em->getRepository(Historique::class)->findByDate($date,$value->getProduit()->getId(),$id);
-            $fact = $em->getRepository(Facture::class)->findBySommeProduit($date,$value->getProduit()->getId(),$id);
+        foreach ($tableau as $key => $value) {
+            $hist = $em->getRepository(Historique::class)->findByDate($produit['date'],$value->getProduit()->getId(),$id);
+            if ($produit["client"] == "ALL") {
+                $fact = $em->getRepository(Facture::class)->findByQuantiteProduitVenduSemaine(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']), $value->getProduit()->getId(), $id);
+            }else{
+                $fact = $em->getRepository(Facture::class)->findByQuantiteProduitVenduClient(new \DateTimeImmutable($produit['date']),new \DateTimeImmutable($produit['date2']), $value->getProduit()->getId(), $id, $produit["client"]);
+            }   
             array_push($historique,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite()]);
         }
 
         $html = $this->renderView('vente/tri.html.twig', [
             'ventes' => $vente,
-            'date' => $date,
+            'date' => $produit['date'],
+            'date2' => $produit['date2'],
             'historiques' => $historique,
         ]);
 

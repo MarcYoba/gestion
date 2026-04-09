@@ -98,6 +98,28 @@ class FactureRepository extends ServiceEntityRepository
 
     }
 
+    public function findByProduitVenduClient($datedebut,$datefin,$agence,$client) : array 
+    {
+        // $date = new \DateTimeImmutable($date);
+        $startDate = (clone $datedebut)->setTime(0, 0, 0);
+        $endDate = (clone $datefin)->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('f')
+            ->where('f.createdAt  BETWEEN :startDate AND :endDate')
+            ->andWhere('f.agence = :agences')
+            ->andWhere('f.client = :client')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->setParameter('client',$client)
+            ->orderBy('f.produit','ASC')
+            ->groupBy('f.produit')
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
+
     public function findByProduitVenduAll($date) : array 
     {
         // $date = new \DateTimeImmutable($date);
@@ -164,6 +186,28 @@ class FactureRepository extends ServiceEntityRepository
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
             ->setParameter('agence', $agence)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (float) $result;
+    }
+
+    public function findByQuantiteProduitVenduClient($datedebut,$date_fin, $produit, $agence,$client): float
+    {
+        $startDate = (clone $datedebut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+
+        $result = $this->createQueryBuilder('f')
+            ->select('COALESCE(SUM(f.quantite), 0)')
+            ->where('f.produit = :produit')
+            ->andWhere('f.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('f.agence = :agence')
+            ->andWhere('f.client = :client')
+            ->setParameter('produit', $produit)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agence', $agence)
+            ->setParameter('client', $client)
             ->getQuery()
             ->getSingleScalarResult();
 
