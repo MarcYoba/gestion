@@ -410,4 +410,76 @@ class RapportController extends AbstractController
             ]
         );
     }
+
+    #[Route(path:'/rapport/trimestre', name:'rapport_trimestre')]
+    public function rapport_trimestre(EntityManagerInterface $em,Request $request): Response
+    {
+        $user = $this->getUser();
+        
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+        }else{
+            $anne = date("Y");
+        }
+
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $agence = $tempagence->getAgence()->getId();
+        $id = $agence;
+        $vente = [];
+        $achat = [];
+        $depense = [];
+        $versement = [];
+        $achatsemetre = [];
+        $ventesemetre = [];
+        $depensesemetre = [];
+        $versementsemestre = [];
+
+        $trimestre = 1;
+        while ($trimestre <= 4) {
+            array_push($vente,$em->getRepository(Vente::class)->findByMontantTrimestre($trimestre,$anne,$id));
+            array_push($depense,$em->getRepository(Depenses::class)->findByDepensesTrimestre($trimestre,$anne,$id));
+            array_push($achat,$em->getRepository(Achat::class)->findByMontantTrimestre($trimestre,$anne,$id));
+            array_push($versement,$em->getRepository(Versement::class)->findByVersementTrimestre($trimestre,$anne,$id));
+            if ($trimestre <= 2) {
+                array_push($achatsemetre,$em->getRepository(Achat::class)->findByMontantSemestre($trimestre,$anne,$id));
+                array_push($ventesemetre,$em->getRepository(Vente::class)->findByMontantSemestre($trimestre,$anne,$id));
+                array_push($depensesemetre,$em->getRepository(Depenses::class)->findByDepensesSemestre($trimestre,$anne,$id));
+                array_push($versementsemestre,$em->getRepository(Versement::class)->findByVersementSemestre($trimestre,$anne,$id));
+            }
+            $trimestre ++;
+        }
+
+        // Générer le PDF comme dans les autres méthodes
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+
+        $html = $this->renderView('rapport/trimestre.html.twig', [
+            'annees' => $anne,
+            'ventes' => $vente,
+            'achats' => $achat,
+            'depenses' => $depense,
+            'versements' => $versement,
+            'achatsemetres' => $achatsemetre,
+            'ventessemetres' => $ventesemetre,
+            'depensesemestres' => $depensesemetre,
+            'versementsemestre' => $versementsemestre,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+        $document = "rapport_du_mois_".$anne."_".$anne.".pdf";
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="'.$document.'"', // 'inline' pour affichage navigateur
+            ]
+        );
+    }
 }
