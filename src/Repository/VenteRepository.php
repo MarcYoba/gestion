@@ -102,7 +102,7 @@ class VenteRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
 
-        return $result > 0 ? (int)$result : 0; 
+        return empty($result) ? 0 : (int)$result; 
     }
     
     public function findByMontantSemestre($trimestre,$annee,$agence) : int 
@@ -134,7 +134,7 @@ class VenteRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
 
-        return $result > 0 ? (int)$result : 0; 
+        return empty($result) ? 0 : (int)$result; 
     }
 
     public function findByMontantMonth($moi,$annee,$agence) : int 
@@ -151,7 +151,7 @@ class VenteRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
 
-        return $result > 0 ? (int)$result : 0; 
+        return empty($result) ? 0 : (int)$result; 
     }
 
     public function findVentesByWeekWithDaysPrix($date): float
@@ -519,6 +519,25 @@ class VenteRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findRapportVenteClientToSemain($date_debut, $date_fin,$agence,$client) : array 
+    {
+        $startDate = (clone $date_debut)->setTime(0, 0, 0);
+        $endDate = (clone $date_fin)->setTime(23, 59, 59);
+    
+        return $this->createQueryBuilder('v')
+            ->where('v.createdAt BETWEEN :startDate AND :endDate')
+            ->andWhere('v.agence =:agences')
+            ->andWhere('v.client =:client')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->setParameter('client',$client)
+            ->getQuery()
+            ->getResult()
+        
+        ;
+    }
+
     public function findByYearAgence($annee,$agence) : array 
     {
         return $this->createQueryBuilder('v')
@@ -564,5 +583,73 @@ class VenteRepository extends ServiceEntityRepository
         $result = $query->getSingleScalarResult();
 
         return $result > 0 ? (float)$result : 0;
+    }
+
+    public function findByVenteDetteSemestre($trimestre,$annee,$agence) : array 
+    {
+        $debutTrimestre = null;
+        $finTrimestre = null;
+        
+        switch($trimestre) {
+            case 1:
+                $debutTrimestre = new \DateTimeImmutable("$annee-01-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-06-30 23:59:59");
+                break;
+            case 2:
+                $debutTrimestre = new \DateTimeImmutable("$annee-07-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-12-31 23:59:59");
+                break;
+            default:
+                throw new \InvalidArgumentException("Trimestre invalide : doit être entre 1 et 3");
+        }
+
+        return $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0) , c.nom , v.type ')
+            ->leftJoin('v.client','c')
+            ->where('v.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('v.agence = :agences')
+            ->andWhere('v.montantcredit > 0')
+            ->setParameter('debut',$debutTrimestre)
+            ->setParameter('fin',$finTrimestre)
+            ->setParameter('agences',$agence)
+            ->groupBy('v.client')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByVenteDetteSemestreSpeculation($semestre,$speculation,$annee,$agence) : array 
+    {
+        $debutTrimestre = null;
+        $finTrimestre = null;
+        
+        switch($semestre) {
+            case 1:
+                $debutTrimestre = new \DateTimeImmutable("$annee-01-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-06-30 23:59:59");
+                break;
+            case 2:
+                $debutTrimestre = new \DateTimeImmutable("$annee-07-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-12-31 23:59:59");
+                break;
+            default:
+                throw new \InvalidArgumentException("Trimestre invalide : doit être entre 1 et 3");
+        }
+
+        return $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0) , c.nom , v.type ')
+            ->leftJoin('v.client','c')
+            ->where('v.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('v.agence = :agences')
+            ->andWhere('v.montantcredit > 0')
+            ->andWhere('v.esperce = :speculation')
+            ->setParameter('debut',$debutTrimestre)
+            ->setParameter('fin',$finTrimestre)
+            ->setParameter('agences',$agence)
+            ->setParameter('speculation',$speculation)
+            ->groupBy('v.client')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

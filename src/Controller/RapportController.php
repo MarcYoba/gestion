@@ -18,11 +18,13 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpParser\Node\Stmt\Foreach_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class RapportController extends AbstractController
 {
@@ -570,5 +572,76 @@ class RapportController extends AbstractController
                 'Content-Disposition' => 'inline; filename="'.$document.'"', // 'inline' pour affichage navigateur
             ]
         );
+    }
+
+    #[Route('/rapport/dette/client', name:'rapport_dette_client_prov')]
+    public function rapport_dette_client(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'semestre');
+        $sheet->setCellValue('B1', 'CLIENT');
+        $sheet->setCellValue('C1', 'TYPE VENTE');
+        $sheet->setCellValue('D1', 'TOTAL');
+
+            $i = 2;
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+           $semestre = $request->request->get('semestre');
+           $speculation = $request->request->get('speculation');
+            $ventespeculation = [];
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+           
+           if ($semestre == "ALL" || $speculation == "ALL") {
+                $trimestre = 1;
+                while ($trimestre <= 2) {
+                    $ventesemetre = $em->getRepository(Vente::class)->findByVenteDetteSemestre($trimestre,$anne,$id);
+                    foreach ($ventesemetre as $key => $value) {
+                        $sheet->setCellValue('A'.$i, "semestre".$trimestre);
+                        $sheet->setCellValue('B'.$i,  $value['nom']);
+                        $sheet->setCellValue('C'.$i, $value['type']);
+                        $sheet->setCellValue('D'.$i,  $value[1]);
+                        $i =$i+1;
+                    }
+                    $trimestre ++;
+                }
+           }else{
+                $ventespeculation = $em->getRepository(Vente::class)->findByVenteDetteSemestreSpeculation($semestre,$speculation,$anne,$id);
+                foreach ($ventespeculation as $key => $value) {
+                    $sheet->setCellValue('A'.$i, "semestre".$semestre);
+                    $sheet->setCellValue('B'.$i,  $value['nom']);
+                    $sheet->setCellValue('C'.$i, $value['type']);
+                    $sheet->setCellValue('D'.$i,  $value[1]);
+                    $i =$i+1;
+                }
+           }
+        }
+        
+        $fileName = "Export_dette_".$anne.".xlsx";  
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$fileName.'"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
     }
 }

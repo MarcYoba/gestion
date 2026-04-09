@@ -202,7 +202,7 @@
             <div class="col-xl-6 col-md-6 mb-4">
                 <div class="card border-left-info shadow h-100 py-2">
                     <div class="card-body">
-                        <form action="#" method="post">
+                        <form action="{{ path('rapport_dette_client_prov') }}" method="post">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
@@ -212,14 +212,14 @@
                                     <div class="form-group row mt-2">
                                         <div class="col-sm-4">
                                             <select class="form-control form-control-sm" name="semestre">
-                                                <option value="">ALL Semestres</option>
+                                                <option value="ALL">ALL Semestres</option>
                                                 <option value="1">1er Semestre</option>
                                                 <option value="2">2ème Semestre</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
                                             <select class="form-control form-control-sm" name="speculation">
-                                                <option value="">ALL Spéculations</option>
+                                                <option value="ALL">ALL Spéculations</option>
                                                 <option value="CHAIRE">CHAIRE</option>
                                                 <option value="PONDEUSE">PONDEUSE</option>
                                                 <option value="PORC">PORC</option>
