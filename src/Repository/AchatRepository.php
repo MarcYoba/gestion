@@ -159,11 +159,14 @@ class AchatRepository extends ServiceEntityRepository
         $debut = new \DateTimeImmutable($first_date);
         $fin = new \DateTimeImmutable($end_date);
 
+        $startDate = (clone $debut)->setTime(0, 0, 0);
+        $endDate = (clone $fin)->setTime(23, 59, 59);
+
         return $this->createQueryBuilder('a')
             ->where('a.createdAt BETWEEN :debut AND :fin')
             ->andWhere('a.agence = :agences')
-            ->setParameter('debut', $debut)
-            ->setParameter('fin', $fin)
+            ->setParameter('debut', $startDate)
+            ->setParameter('fin', $endDate)
             ->setParameter('agences',$agence)
             ->orderBy('a.id', 'ASC')
             ->getQuery()
@@ -301,4 +304,22 @@ class AchatRepository extends ServiceEntityRepository
         ;
     }
     
+    public function findByMonthAgence($mois,$annee,$agence) : array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('COALESCE(SUM(a.quantite), 0) AS Quantite, 
+            CONCAT(\',\', a.quantite) AS quantitelist, COALESCE(SUM(a.prix), 0) AS Prix,
+            CONCAT(\',\', a.prix) AS Prixtelist,COALESCE(SUM(a.montant), 0) AS Montant,
+            CONCAT(\',\', a.montant) AS montanttelist')
+            ->where('MONTH(a.createdAt) = :mois')
+            ->andWhere('YEAR(a.createdAt) = :annee')
+            ->andWhere('a.agence = :agence')
+            ->setParameter('mois', $mois)
+            ->setParameter('annee', $annee)
+            ->setParameter('agence', $agence)
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
 }

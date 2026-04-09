@@ -263,7 +263,7 @@ class RapportController extends AbstractController
     }
 
     #[Route(path: '/rapport/semain', name: 'rapport_semain')]
-    public function rapport_month(EntityManagerInterface $em,Request $request): Response
+    public function rapport_semain(EntityManagerInterface $em,Request $request): Response
     {
         $user = $this->getUser();
         $date = date("Y-m-d");
@@ -284,14 +284,13 @@ class RapportController extends AbstractController
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
+        
 
         $vente = $em->getRepository(Vente::class)->findRapportVenteToSemain(new \DateTimeImmutable($datedebutsemain), new \DateTimeImmutable($datefinsemain),$agence);
         $depense = $em->getRepository(Depenses::class)->findBySommeDepenseSemaine(new \DateTimeImmutable($datedebutsemain),new \DateTimeImmutable($datefinsemain),$agence);
         $sommeDepense = $em->getRepository(Depenses::class)->findBySommeSemaine(new \DateTimeImmutable($datedebutsemain),new \DateTimeImmutable($datefinsemain),$agence);
         $sommeversement = $em->getRepository(Versement::class)->findBysommeSomme(new \DateTime($datedebutsemain),new \DateTime($datefinsemain),$agence);
-        
-        
-        
+        $achat = $em->getRepository(Achat::class)->findByFirstAndLastDay(($datedebutsemain),($datefinsemain),$agence);
         
         $sommecaisse = $em->getRepository(Caisse::class)->findBySommeCaisseSemaine(new \DateTime($datedebutsemain),new \DateTime($datefinsemain),$agence);
         $transfert = $em->getRepository(Transfert::class)->findByTransfertSemaine(new \DateTime($datedebutsemain),new \DateTime($datefinsemain),$agence);
@@ -339,6 +338,7 @@ class RapportController extends AbstractController
         'histoiques' => $histoiques,
         'magasins' => $transfert,
         'benefices' => $benefice,
+        'achats' => $achat,
         ]);
 
         $dompdf->loadHtml($html);
@@ -347,6 +347,59 @@ class RapportController extends AbstractController
         // 5. Rendre le PDF
         $dompdf->render();
         $document = "rapport_du_".$datedebutsemain."au".$datefinsemain.".pdf";
+        // 6. Retourner le PDF dans la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="'.$document.'"', // 'inline' pour affichage navigateur
+            ]
+        );
+    }
+
+    #[Route(path: '/rapport/month', name: 'rapport_month')]
+    public function rapport_month(EntityManagerInterface $em,Request $request): Response
+    {
+        $user = $this->getUser();
+        
+        if ($request->isMethod('POST')) {
+           $mois = $request->request->get('mois');
+           $anne = $request->request->get('anne');
+        }else{
+            $mois = date("m");
+            $anne = date("Y");
+        }
+
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $agence = $tempagence->getAgence()->getId();
+
+        $vente = $em->getRepository(Vente::class)->findByMonthAgence($mois, $anne, $agence);
+        $achat = $em->getRepository(Achat::class)->findByMonthAgence($mois,$anne,$agence);
+        $caisse = $em->getRepository(Caisse::class)->findByMonthAgence($mois, $anne, $agence);
+        $depense = $em->getRepository(Depenses::class)->findByMonthAgence($mois,$anne,$agence);
+        $versement = $em->getRepository(Versement::class)->findByMonthAgence($mois,$anne,$agence);
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
+        $dompdf = new Dompdf($options);
+
+        $html = $this->renderView('rapport/month.html.twig', [
+            'ventes' => $vente,
+            'achats' => $achat,
+            'caisses' => $caisse,
+            'depenses' => $depense,
+            'versements' => $versement,
+            'mois' => $mois,
+            'anne' => $anne,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 5. Rendre le PDF
+        $dompdf->render();
+        $document = "rapport_du_mois_".$mois."_".$anne.".pdf";
         // 6. Retourner le PDF dans la réponse
         return new Response(
             $dompdf->output(),
