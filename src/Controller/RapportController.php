@@ -7,6 +7,7 @@ use App\Entity\Caisse;
 use App\Entity\Depenses;
 use App\Entity\Facture;
 use App\Entity\Historique;
+use App\Entity\Inventaire;
 use App\Entity\Magasin;
 use App\Entity\TempAgence;
 use App\Entity\Transfert;
@@ -73,17 +74,25 @@ class RapportController extends AbstractController
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
+        $inventaire = [];
 
         $vente = $em->getRepository(Vente::class)->findByDay($date);
         $depense = $em->getRepository(Depenses::class)->findByDay($date);
         $sommeDepense = $em->getRepository(Depenses::class)->findBySommeDay($date);
         $sommeversement = $em->getRepository(Versement::class)->findBysommeDay($date);
         $achat = $em->getRepository(Achat::class)->findByRapportDay($date,$agence);
+        $tableau = $em->getRepository(Inventaire::class)->findBy(["createtAt" => new \DateTime($date)]);
+        foreach ($tableau as $key => $value) {
+            $ecar = $em->getRepository(Inventaire::class)->findBy(['produit' => $value->getProduit()->getId()],['id' => 'DESC'],2);
+            $ecar = array_pop($ecar);
+            array_push($inventaire,[$value,$ecar->getEcart()]);
+        }
         
         
         $date  = new DateTime($date);
         $sommecaisse = $em->getRepository(Caisse::class)->findBySommeCaisseDay($date,$agence);
         $transfert = $em->getRepository(Transfert::class)->findBy(['createtAt' => $date]);
+        
 
         $histoiques = [];
         $benefice = [];
@@ -130,6 +139,7 @@ class RapportController extends AbstractController
         'magasins' => $transfert,
         'benefices' => $benefice,
         'achats' => $achat,
+        'inventaires' => $inventaire,
         ]);
 
         $dompdf->loadHtml($html);
@@ -168,11 +178,19 @@ class RapportController extends AbstractController
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
+        $inventaire = [];
 
         $vente = $em->getRepository(Vente::class)->findByDay($date);
         $depense = $em->getRepository(Depenses::class)->findByDay($date);
         $sommeDepense = $em->getRepository(Depenses::class)->findBySommeDay($date);
         $sommeversement = $em->getRepository(Versement::class)->findBysommeDay($date);
+        $achat = $em->getRepository(Achat::class)->findByRapportDay($date,$agence);
+        $tableau = $em->getRepository(Inventaire::class)->findBy(["createtAt" => new \DateTime($date)]);
+        foreach ($tableau as $key => $value) {
+            $ecar = $em->getRepository(Inventaire::class)->findBy(['produit' => $value->getProduit()->getId()],['id' => 'DESC'],2);
+            $ecar = array_pop($ecar);
+            array_push($inventaire,[$value,$ecar->getEcart()]);
+        }
         
         
         
@@ -223,6 +241,8 @@ class RapportController extends AbstractController
         'histoiques' => $histoiques,
         'magasins' => $transfert,
         'benefices' => $benefice,
+        'achats' => $achat,
+        'inventaires' => $inventaire,
         ]);
 
         $dompdf->loadHtml($html);

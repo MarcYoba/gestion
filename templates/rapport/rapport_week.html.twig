@@ -241,6 +241,45 @@
 
     <br><br><br> 
     <table style="width:100%">
+        <thead>
+            <tr><th colspan="5" align="center"> Tableau Achat : {{date}}</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td colspan="5" align="center"> Recapitulatif Operation d'achat </td>
+                </tr>
+                    <tr>
+                    <th scope="col">Produit</th>
+                    <th scope="col">Quantite</th>
+                    <th scope="col">prix</th>
+                    <th scope="col">Montant</th>
+                    <th scope="col">Date</th>
+                </tr>
+                {% set sommecaisse = 0 %}
+                {% for achat in achats %}
+                <tr>
+                    <td>{{achat.produit.nom}}</td>
+                    <td>{{achat.quantite}}</td>
+                    <td>{{achat.prix}}</td>
+                    <td>{{achat.montant}}</td>
+                    <td>{{achat.createdAt | date("Y-m-d")}}</td>
+                </tr>
+                {% set sommecaisse = sommecaisse +  achat.montant %}
+                {% endfor %}
+                
+                <tr>
+                <td>-----</td>
+                <td>-----</td>
+                <td>-----</td>
+                <td>{{ sommecaisse}}</td>
+                <td>{{date}}</td>
+            </tr> 
+            
+            </tbody>
+        </table>
+
+    <br><br><br> 
+    <table style="width:100%">
             <thead>
             <tr><th colspan="3" align="center"> Tableau depense : {{date}}</th></tr>
             </thead>
@@ -289,6 +328,39 @@
                 </tr>
                 {% endfor %}
             </tbody>
+    </table>
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="7" align="center"> Tableau Inventaire  : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th colspan="7" align="center"> Recapitulatif Inventaire : {{ "now" | date("Y-m-d")}} </th>
+            </tr>
+            <tr>
+                <th scope="col">Produit</th>
+                <th scope="col">Contoire</th>
+                <th scope="col">Ecart precedent</th>
+                <th scope="col">Inventaire</th>
+                <th scope="col">Ecart</th>
+                <th scope="col">Justificatif</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inventaire in inventaires %}
+                <tr>
+                    <td>{{inventaire[0].produit.nom}}</td>
+                    <td>{{inventaire[0].quantite }}</td>
+                    <td>{{inventaire[1]}}</td>
+                    <td>{{inventaire[0].inventaire}}</td>
+                    <td>{{inventaire[0].ecart}}</td>
+                    <td>{{inventaire[0].justificatif}}</td>
+                    <td>{{inventaire[0].createtAt | date("Y-m-d")}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
     {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
         <br><br><br> 
