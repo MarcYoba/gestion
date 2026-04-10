@@ -347,6 +347,8 @@
             {% if "ROLE_ADMIN_ADMIN" in app.user.roles %}
                 <a class="collapse-item" href="{{ path('depenses_list',{'id': app.request.get('id')}) }}">Liste Depense</a>
                 <a class="collapse-item" href="{{ path('app_depenses') }}"> Ajouter Depenses</a>
+                <h6 class="collapse-header">Import Depense</h6>
+                <a class="collapse-item" href="{{ path('depense_import_anne') }}"> Import Depense</a>
             {% else %}
                 <a class="collapse-item" href="{{ path('app_depenses') }}">Ajouter Depenses</a>
                 <a class="collapse-item" href="{{ path('depenses_list') }}">Liste Depense</a>
