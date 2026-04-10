@@ -604,11 +604,43 @@ class VenteRepository extends ServiceEntityRepository
         }
 
         return $this->createQueryBuilder('v')
-            ->select('COALESCE(SUM(v.prix),0) , c.nom , v.type ')
+            ->select('COALESCE(SUM(v.prix),0) , c.nom , v.type ,v.esperce')
             ->leftJoin('v.client','c')
             ->where('v.createdAt BETWEEN :debut AND :fin')
             ->andWhere('v.agence = :agences')
             ->andWhere('v.montantcredit > 0')
+            ->setParameter('debut',$debutTrimestre)
+            ->setParameter('fin',$finTrimestre)
+            ->setParameter('agences',$agence)
+            ->groupBy('v.client')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByVenteSemestre($trimestre,$annee,$agence) : array 
+    {
+        $debutTrimestre = null;
+        $finTrimestre = null;
+        
+        switch($trimestre) {
+            case 1:
+                $debutTrimestre = new \DateTimeImmutable("$annee-01-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-06-30 23:59:59");
+                break;
+            case 2:
+                $debutTrimestre = new \DateTimeImmutable("$annee-07-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-12-31 23:59:59");
+                break;
+            default:
+                throw new \InvalidArgumentException("Trimestre invalide : doit être entre 1 et 3");
+        }
+
+        return $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0) , c.nom , v.type,v.esperce')
+            ->leftJoin('v.client','c')
+            ->where('v.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('v.agence = :agences')
             ->setParameter('debut',$debutTrimestre)
             ->setParameter('fin',$finTrimestre)
             ->setParameter('agences',$agence)
@@ -637,7 +669,7 @@ class VenteRepository extends ServiceEntityRepository
         }
 
         return $this->createQueryBuilder('v')
-            ->select('COALESCE(SUM(v.prix),0) , c.nom , v.type ')
+            ->select('COALESCE(SUM(v.prix),0) , c.nom , v.type,v.esperce ')
             ->leftJoin('v.client','c')
             ->where('v.createdAt BETWEEN :debut AND :fin')
             ->andWhere('v.agence = :agences')
@@ -648,6 +680,42 @@ class VenteRepository extends ServiceEntityRepository
             ->setParameter('agences',$agence)
             ->setParameter('speculation',$speculation)
             ->groupBy('v.client')
+            ->orderBy('v.esperce')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByVenteSemestreSpeculation($semestre,$speculation,$annee,$agence) : array 
+    {
+        $debutTrimestre = null;
+        $finTrimestre = null;
+        
+        switch($semestre) {
+            case 1:
+                $debutTrimestre = new \DateTimeImmutable("$annee-01-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-06-30 23:59:59");
+                break;
+            case 2:
+                $debutTrimestre = new \DateTimeImmutable("$annee-07-01 00:00:00");
+                $finTrimestre = new \DateTimeImmutable("$annee-12-31 23:59:59");
+                break;
+            default:
+                throw new \InvalidArgumentException("Trimestre invalide : doit être entre 1 et 3");
+        }
+
+        return $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0) , c.nom , v.type ,v.esperce ')
+            ->leftJoin('v.client','c')
+            ->where('v.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('v.agence = :agences')
+            ->andWhere('v.esperce = :speculation')
+            ->setParameter('debut',$debutTrimestre)
+            ->setParameter('fin',$finTrimestre)
+            ->setParameter('agences',$agence)
+            ->setParameter('speculation',$speculation)
+            ->groupBy('v.client')
+            ->orderBy('v.esperce')
             ->getQuery()
             ->getResult()
         ;

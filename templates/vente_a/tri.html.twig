@@ -31,7 +31,7 @@
 <table style="width:100%">
     <thead>
         <tr>
-            <th colspan="6" align="center"> trie de Vente du : {{ date | date("Y-m-d") }} </th>
+            <th colspan="6" align="center"> trie de Vente du : {{ date | date("Y-m-d") }} ou {{ date2 | date("Y-m-d")}}</th>
         </tr>
     </thead>
         <tbody>
@@ -40,6 +40,7 @@
         {%   set sommeOm = 0 %}
         {%   set sommeCredit = 0 %}
         {%   set sommeReduction = 0 %}
+        {%   set sommeQuantite = 0 %}
          
             {% for vente in ventes %}
                 {% if clients == "ALL" %}
@@ -64,6 +65,8 @@
                             <td> {{ vente.type}} </td>
                             <td> {{ facture.createAt | date("Y-m-d")}} </td>
                         </tr>
+                        {%   set sommeQuantite = sommeQuantite + facture.quantite %}
+        
                     {% endfor %} 
                     <tr>
                         <td>Total</td>
@@ -119,6 +122,7 @@
                             <td> {{ facture.prix * facture.quantite}} </td>
                             <td> {{ vente.type}} </td>
                             <td> {{ facture.createAt | date("Y-m-d")}} </td>
+                            {%   set sommeQuantite = sommeQuantite + facture.quantite %}
                         </tr>
                     {% endfor %} 
                     <tr>
@@ -163,16 +167,14 @@
     <table style="width:100%">
         <thead>
             <tr>
-                <th colspan="5" align="center"> Quantite Pour chaque produit : {{ date | date("Y-m-d") }} </th>
+                <th colspan="3" align="center"> Quantite Pour chaque produit : {{ date | date("Y-m-d") }} ou {{ date2 | date("Y-m-d")}} </th>
             </tr>
             <tr>
-                <th colspan="5" align="center"> Recapitulatif Quantite Vendue </th>
+                <th colspan="3" align="center"> Recapitulatif Quantite Vendue </th>
             </tr>
             <tr>
                 <th scope="col">Mon du produit </th>
-                <th scope="col">Quantite debut</th>
                 <th scope="col">Quantite</th>
-                <th scope="col">Quantite fin</th>
                 <th scope="col">Date</th>
             </tr>
         </thead>
@@ -181,11 +183,36 @@
                 <tr>
                     <th scope="col">{{historiqueA[0]}}</th>
                     <th scope="col">{{historiqueA[1]}}</th>
-                    <th scope="col">{{historiqueA[2]}}</th>
-                    <th scope="col">{{historiqueA[3]}}</th>
-                    <th scope="col">{{ date | date("Y-m-d")}}</th>
+                    <th scope="col">{{ date | date("Y-m-d")}} ou {{ date2 | date("Y-m-d")}}</th>
                 </tr>
             {% endfor %}
+            </tbody>
+        </thead>
+    </table>
+
+    <br><br><br>
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th colspan="3" align="center"> Rapport General : {{ date | date("Y-m-d") }} ou {{ date2 | date("Y-m-d") }} </th>
+            </tr>
+            <tr>
+                <th colspan="3" align="center"> Recapitulatif Quantite / Montant </th>
+            </tr>
+            <tr>
+                <th scope="col">Quantite </th>
+                <th scope="col">Montant</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+            <tbody>
+            
+                <tr>
+                    <th scope="col">{{sommeQuantite}}</th>
+                    <th scope="col">{{sommeVente}}</th>
+                    <th scope="col">{{ date | date("Y-m-d")}} ou {{ date2 | date("Y-m-d")}}</th>
+                </tr>
+            
             </tbody>
         </thead>
     </table>

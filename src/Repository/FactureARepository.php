@@ -139,6 +139,48 @@ class FactureARepository extends ServiceEntityRepository
         return (int) $result;
     }
 
+    public function findByQuantiteProduitVenduSemaine($dateDebut, $dateFin, $produit, $agence): int
+    {
+        $startDate = (clone $dateDebut)->setTime(0, 0, 0);
+        $endDate = (clone $dateFin)->setTime(23, 59, 59);
+
+        $result = $this->createQueryBuilder('f')
+            ->select('COALESCE(SUM(f.quantite), 0)')
+            ->where('f.produit = :produit')
+            ->andWhere('f.createAt BETWEEN :startDate AND :endDate')
+            ->andWhere('f.agence = :agence')
+            ->setParameter('produit', $produit)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agence', $agence)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $result;
+    }
+
+    public function findByQuantiteProduitVenduSemaineClient($dateDebut, $dateFin, $produit, $agence, $client): int
+    {
+        $startDate = (clone $dateDebut)->setTime(0, 0, 0);
+        $endDate = (clone $dateFin)->setTime(23, 59, 59);
+
+        $result = $this->createQueryBuilder('f')
+            ->select('COALESCE(SUM(f.quantite), 0)')
+            ->where('f.produit = :produit')
+            ->andWhere('f.createAt BETWEEN :startDate AND :endDate')
+            ->andWhere('f.agence = :agence')
+            ->andWhere('f.client = :client')
+            ->setParameter('produit', $produit)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agence', $agence)
+            ->setParameter('client', $client)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $result;
+    }
+
     public function findByQuantiteProduitVenduAll($date, $produit): int
     {
         $startDate = (clone $date)->setTime(0, 0, 0);
@@ -169,6 +211,27 @@ class FactureARepository extends ServiceEntityRepository
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
             ->setParameter('agences',$agence)
+            ->orderBy('f.produit','ASC')
+            ->groupBy('f.produit')
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    public function findByProduitVenduSemaineClient($first_date,$end_date,$agence,$client) : array 
+    {
+        // $date = new \DateTimeImmutable($date);
+        $startDate = (clone $first_date)->setTime(0, 0, 0);
+        $endDate = (clone $end_date)->setTime(23, 59, 59);
+
+       return $this->createQueryBuilder('f')
+            ->where('f.createAt  BETWEEN :startDate AND :endDate')
+            ->andWhere('f.agence = :agences')
+            ->andWhere('f.client = :client')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('agences',$agence)
+            ->setParameter('client', $client)
             ->orderBy('f.produit','ASC')
             ->groupBy('f.produit')
             ->getQuery()
