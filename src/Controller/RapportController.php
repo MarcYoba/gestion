@@ -722,4 +722,66 @@ class RapportController extends AbstractController
         exit;       
     }
 
+    #[Route('/rapport/depenses/post', name:'app_rapport_depenses_post')]
+    public function rapport_depense_poste(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'semestre');
+        $sheet->setCellValue('B1', 'Depense');
+        $sheet->setCellValue('C1', 'Montant total');
+        $sheet->setCellValue('D1', 'Type depense');
+
+            $i = 2;
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+           $semestre = $request->request->get('semestre');
+           $speculation = $request->request->get('poste_depense');
+            $ventespeculation = [];
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+           
+           if ($semestre == "ALL" || $speculation == "ALL") {
+                $trimestre = 1;
+                while ($trimestre <= 2) {
+                    $ventesemetre = $em->getRepository(Depenses::class)->findByDepensesParPost($trimestre,$anne,$id);
+                    
+                    foreach ($ventesemetre as $key => $value) {
+                        $sheet->setCellValue('A'.$i, "semestre".$trimestre);
+                        $sheet->setCellValue('B'.$i,  $value['Montant']);
+                        $sheet->setCellValue('C'.$i, $value['type']);
+                        $i =$i+1;
+                    }
+                    $trimestre ++;
+                }
+           }
+        }
+
+            
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_depesne_poste.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
+    }
+
 }
