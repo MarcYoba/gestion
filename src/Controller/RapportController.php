@@ -590,6 +590,7 @@ class RapportController extends AbstractController
         $sheet->setCellValue('B1', 'CLIENT');
         $sheet->setCellValue('C1', 'TYPE VENTE');
         $sheet->setCellValue('D1', 'TOTAL');
+        $sheet->setCellValue('E1', 'Espèce');
 
             $i = 2;
 
@@ -615,6 +616,7 @@ class RapportController extends AbstractController
                         $sheet->setCellValue('B'.$i,  $value['nom']);
                         $sheet->setCellValue('C'.$i, $value['type']);
                         $sheet->setCellValue('D'.$i,  $value[1]);
+                        $sheet->setCellValue('E'.$i,  $value['esperce']);
                         $i =$i+1;
                     }
                     $trimestre ++;
@@ -626,6 +628,7 @@ class RapportController extends AbstractController
                     $sheet->setCellValue('B'.$i,  $value['nom']);
                     $sheet->setCellValue('C'.$i, $value['type']);
                     $sheet->setCellValue('D'.$i,  $value[1]);
+                    $sheet->setCellValue('E'.$i,  $value['esperce']);
                     $i =$i+1;
                 }
            }
@@ -644,4 +647,79 @@ class RapportController extends AbstractController
         $writer->save('php://output');
         exit;       
     }
+
+    #[Route('/rapport/speculation/client', name:'rapport_speculation_client')]
+    public function rapport_speculation_client(EntityManagerInterface $em, Request $request) : Response 
+    {
+        $user = $this->getUser();
+        $tempagence = $em->getRepository(TempAgence::class)->findOneBy(['user' => $user]);
+        $id = $tempagence->getAgence()->getId();
+
+        $spreadsheet = new Spreadsheet();
+        // Sélectionner la feuille active (par défaut, la première)
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Écrire des données dans une cellule
+        $sheet->setCellValue('A1', 'semestre');
+        $sheet->setCellValue('B1', 'CLIENT');
+        $sheet->setCellValue('C1', 'TYPE VENTE');
+        $sheet->setCellValue('D1', 'TOTAL');
+        $sheet->setCellValue('E1', 'Espèce');
+
+            $i = 2;
+
+        $anne = date("Y");
+        if ($request->isMethod('POST')) {
+           $anne = $request->request->get('anne');
+           $semestre = $request->request->get('semestre');
+           $speculation = $request->request->get('speculation');
+            $ventespeculation = [];
+            
+           if (empty($anne)) {
+                if (!empty($anne)) {
+                    $anne = date('Y');
+                }
+           }
+           
+           if ($semestre == "ALL" || $speculation == "ALL") {
+                $trimestre = 1;
+                while ($trimestre <= 2) {
+                    $ventesemetre = $em->getRepository(Vente::class)->findByVenteSemestre($trimestre,$anne,$id);
+                    foreach ($ventesemetre as $key => $value) {
+                        $sheet->setCellValue('A'.$i, "semestre".$trimestre);
+                        $sheet->setCellValue('B'.$i,  $value['nom']);
+                        $sheet->setCellValue('C'.$i, $value['type']);
+                        $sheet->setCellValue('D'.$i,  $value[1]);
+                        $sheet->setCellValue('E'.$i,  $value['esperce']);
+                        $i =$i+1;
+                    }
+                    $trimestre ++;
+                }
+           }else{
+                $ventespeculation = $em->getRepository(Vente::class)->findByVenteSemestreSpeculation($semestre,$speculation,$anne,$id);
+                foreach ($ventespeculation as $key => $value) {
+                    $sheet->setCellValue('A'.$i, "semestre".$semestre);
+                    $sheet->setCellValue('B'.$i,  $value['nom']);
+                    $sheet->setCellValue('C'.$i, $value['type']);
+                    $sheet->setCellValue('D'.$i,  $value[1]);
+                    $sheet->setCellValue('E'.$i,  $value['esperce']);
+                    $i =$i+1;
+                }
+           }
+        }
+        
+        $fileName = "Export_speculation_".$anne.".xlsx";  
+        // Créer un writer pour le format XLSX
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$fileName.'"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
+        $writer->save('php://output');
+        exit;       
+    }
+
 }

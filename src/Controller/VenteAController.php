@@ -577,18 +577,28 @@ class VenteAController extends AbstractController
         $options = new Options();
         $options->set('isRemoteEnabled', true); // Permet les assets distants (CSS/images)
         $dompdf = new Dompdf($options);
-
-        $produit = $em->getRepository(FactureA::class)->findByProduitVenduSemaine($first_date,$end_date,$id);
+        if ($clients == 'ALL') {
+            $produit = $em->getRepository(FactureA::class)->findByProduitVenduSemaine($first_date,$end_date,$id);
+        }else{
+            $produit = $em->getRepository(FactureA::class)->findByProduitVenduSemaineClient($first_date,$end_date,$id,$clients);
+        }
+        
         $historiqueA = [];
         foreach ($produit as $key => $value) {
-            $hist = $em->getRepository(HistoriqueA::class)->findByDate($first_date,$value->getProduit()->getId(),$id);
-            $fact = $em->getRepository(FactureA::class)->findBySommeProduit($first_date,$value->getProduit()->getId(),$id);
-            array_push($historiqueA,[$value->getProduit()->getNom(),$hist,$fact,$value->getProduit()->getQuantite()]);
+            //$hist = $em->getRepository(HistoriqueA::class)->findByDate($first_date,$value->getProduit()->getId(),$id);
+            if ($clients == 'ALL') {
+                $fact = $em->getRepository(FactureA::class)->findByQuantiteProduitVenduSemaine($first_date,$end_date,$value->getProduit()->getId(),$id);
+            }else{
+                $fact = $em->getRepository(FactureA::class)->findByQuantiteProduitVenduSemaineClient($first_date,$end_date,$value->getProduit()->getId(),$id,$clients);
+            }
+            
+            array_push($historiqueA,[$value->getProduit()->getNom(),$fact,$value->getProduit()->getQuantite()]);
         }
 
         $html = $this->renderView('vente_a/tri.html.twig', [
             'ventes' => $vente,
-            'date' => $date,
+            'date' => $first_date,
+            'date2' => $end_date,
             'historiqueAs' => $historiqueA,
             'produits' => $nomProduit,
             'clients' => $clients,
