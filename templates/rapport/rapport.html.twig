@@ -292,7 +292,7 @@
             <div class="col-xl-6 col-md-6 mb-4">
                 <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
-                        <form action="#" method="post">
+                        <form action="{{ path('app_rapport_depenses_post') }}" method="post">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
@@ -302,14 +302,14 @@
                                     <div class="form-group row mt-2">
                                         <div class="col-sm-3">
                                             <select class="form-control form-control-sm" name="semestre">
-                                                <option value="">ALL Semestres</option>
+                                                <option value="ALL">ALL Semestres</option>
                                                 <option value="1">1er Semestre</option>
                                                 <option value="2">2ème Semestre</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-5">
                                             <select class="form-control form-control-sm" name="speculation">
-                                                <option value="">ALL Postes</option>
+                                                <option value="ALL">ALL Postes</option>
                                                 <option value="Autres achats">Autres achats</option>
                                                 <option value="service exterieur">Charges générales</option>
                                                 <option value="impots et taxes">Impôts et taxes</option>
