@@ -3,10 +3,10 @@ const rechercheproduit = document.getElementById("inventaire_a_inventaire");
 rechercheproduit.addEventListener('input',calculeTotal);
 
 function calculeTotal(){
-    let quantite = parseInt(document.getElementById("quantite").value) || 0 ;
-    let stock = parseInt(document.getElementById("inventaire_a_inventaire").value) || 0 ;
-    let contoire = parseInt(document.getElementById("stock").value) || 0 ;
-    let vendu = parseInt(document.getElementById("vendu").value) || 0 ;
+    let quantite = parseFloat(document.getElementById("quantite").value) || 0 ;
+    let stock = parseFloat(document.getElementById("inventaire_a_inventaire").value) || 0 ;
+    let contoire = parseFloat(document.getElementById("stock").value) || 0 ;
+    let vendu = parseFloat(document.getElementById("vendu").value) || 0 ;
     
     document.getElementById("inventaire_a_ecart").value = (stock) - (contoire + quantite );    
 }
