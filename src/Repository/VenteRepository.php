@@ -553,7 +553,10 @@ class VenteRepository extends ServiceEntityRepository
     public function findByMonthAgence($mois, $annee, $agence) : array 
     {
         return $this->createQueryBuilder('v')
-            ->select('v.prix, v.reduction, v.montantcredit, v.montantcash, v.montantbanque, v.montantmomo, v.om, v.quantite')
+            ->select('COALESCE(SUM(v.prix),0) AS prix, COALESCE(SUM(v.reduction),0) AS reduction, 
+            COALESCE(SUM(v.montantcredit),0) AS montantcredit, COALESCE(SUM(v.montantcash),0) AS montantcash, 
+            COALESCE(SUM(v.montantbanque),0) AS montantbanque, COALESCE(SUM(v.montantmomo),0) AS montantmomo, 
+            COALESCE(SUM(v.om),0) AS om, COALESCE(SUM(v.quantite),0) AS quantite')
             ->where('MONTH(v.createdAt) =:mois')
             ->andWhere('YEAR(v.createdAt) =:annee')
             ->andWhere('v.agence =:agences')
@@ -715,6 +718,27 @@ class VenteRepository extends ServiceEntityRepository
             ->setParameter('agences',$agence)
             ->setParameter('speculation',$speculation)
             ->groupBy('v.client')
+            ->orderBy('v.esperce')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByVentePartSpeculation($annee,$agence) : array 
+    {
+        
+        $debutTrimestre = new \DateTimeImmutable("$annee-01-01 00:00:00");
+        $finTrimestre = new \DateTimeImmutable("$annee-12-31 23:59:59");
+
+        return $this->createQueryBuilder('v')
+            ->select('COALESCE(SUM(v.prix),0) , v.type ,v.esperce')
+            ->where('v.createdAt BETWEEN :debut AND :fin')
+            ->andWhere('v.agence = :agences')
+            ->andWhere('v.montantcredit > 0')
+            ->setParameter('debut',$debutTrimestre)
+            ->setParameter('fin',$finTrimestre)
+            ->setParameter('agences',$agence)
+            ->groupBy('v.esperce')
             ->orderBy('v.esperce')
             ->getQuery()
             ->getResult()
