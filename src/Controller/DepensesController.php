@@ -240,9 +240,9 @@ class DepensesController extends AbstractController
                             $depenses->setCreatedAt(new \DateTimeImmutable($value[4]));
                             $depenses->setDescription($value[1]);
                             $depenses->setAgence($tempagence->getAgence());
-                            $depenses->setImageName("pas d'image");
+                            $depenses->setImageName("pas image");
                             $depenses->setImageSize(0);
-                            
+
                             $em->persist($depenses);
                             $em->flush();
                             $processed++;

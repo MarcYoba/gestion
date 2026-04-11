@@ -156,6 +156,23 @@ class FactureRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findBySommeProduitVendu($year,$agence) : array 
+    {
+
+        return $this->createQueryBuilder('f')
+            ->join('f.produit','p')
+            ->select(' COALESCE(SUM(f.quantite),0) AS quantite, COALESCE(SUM(f.prix),0) AS prix, COALESCE(SUM(f.montant),0) AS montant, p.nom AS nom')
+            ->where('YEAR(f.createdAt)  =:anne')
+            ->andWhere('f.agence = :agences')
+            ->setParameter('anne', $year)
+            ->setParameter('agences',$agence)
+            ->groupBy('f.produit')
+            ->orderBy('f.produit')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findByProduitplusVenduAll() : array 
     {
 
