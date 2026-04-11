@@ -171,5 +171,30 @@ class VersementRepository extends ServiceEntityRepository
         ;
         return $result > 0 ? (float)$result : 0;
     }
+
+    public function findByclient($annee): array
+    {
+        return $this->createQueryBuilder('v')
+            ->select('c.nom,COALESCE(SUM(v.montant + v.Om +v.banque),0) AS montant')
+            ->innerJoin('v.clients', 'c')
+            ->andWhere('YEAR(v.createdAd) = :anne')
+            ->setParameter('anne', $annee)
+            ->orderBy('v.clients')
+            ->groupBy('v.clients')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByclientDate($annee): array
+    {
+        return $this->createQueryBuilder('v')
+            ->andWhere('YEAR(v.createdAd) = :anne')
+            ->setParameter('anne', $annee)
+            ->orderBy('v.clients')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
 

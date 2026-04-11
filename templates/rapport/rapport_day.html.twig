@@ -403,13 +403,49 @@
                         </tr>
                     {% endfor %}
                     <tr> 
-                        <th scope="col">Total</th>
+                        <th scope="col">Total benefices</th>
                         <th scope="col">{{beneficequantite}}</th>
                         <th scope="col">{{beneficevente}}</th>
                         <th scope="col">{{beneficeachat}}</th>
                         <th scope="col">{{beneficemontant}}</th>
                         <th scope="col">{{beneficetotal}}</th>
                         <th scope="col">{{date}}</th>
+                    </tr>
+                    <tr> 
+                        <th scope="col">Total perte</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                    </tr>
+                    <tr> 
+                        <th scope="col">Total reduction</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                    </tr>
+                    <tr> 
+                        <th scope="col">Charges journalières</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">17730</th>
+                        <th scope="col">0</th>
+                    </tr>
+                    <tr> 
+                        <th scope="col">Total Generale</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">0</th>
+                        <th scope="col">{{beneficetotal - 17730}}</th>
                     </tr>
                 </tbody>
         </table>
