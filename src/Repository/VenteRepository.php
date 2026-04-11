@@ -188,6 +188,33 @@ class VenteRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByClientCreditYear($anne) : array 
+    {
+       return $this->createQueryBuilder('v')
+            ->where('YEAR(v.createdAt) = :anne')
+            ->andWhere('v.montantcredit > :credit')
+            ->setParameter('anne', $anne)
+            ->setParameter('credit', 0)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByClientCreditTotalYear($anne) : array 
+    {
+       return $this->createQueryBuilder('v')
+            ->join('v.client', 'c')
+            ->select('SUM(v.prix) AS montant,COUNT(v.client) AS achat, c.nom AS nom')
+            ->where('YEAR(v.createdAt) = :anne')
+            ->andWhere('v.montantcredit > :credit')
+            ->setParameter('anne', $anne)
+            ->setParameter('credit', 0)
+            ->groupBy('v.client')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findVentesByWeekWithDaysQuantite($date): float
     {
         $date = new \DateTimeImmutable($date);
@@ -458,6 +485,24 @@ class VenteRepository extends ServiceEntityRepository
             ->groupBy('v.client','c.nom')
             ->orderBy('SUM(v.prix)','DESC')
             ->setMaxResults(20)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByClientMonth($mois,$annee,$agence) : array 
+    {
+        return $this->createQueryBuilder('v')
+            ->join('v.client', 'c')
+            ->select('SUM(v.prix) AS montant,COUNT(v.client) AS achat, c.nom AS nom')
+            ->where('YEAR(v.createdAt) =:anne')
+            ->andWhere('v.agence =:agences')
+            ->andWhere('MONTH(v.createdAt) =:mois')
+            ->setParameter('anne', $annee)
+            ->setParameter('agences',$agence)
+            ->setParameter('mois', $mois)
+            ->groupBy('v.client','c.nom')
+            ->orderBy('SUM(v.prix)','DESC')
             ->getQuery()
             ->getResult()
         ;
