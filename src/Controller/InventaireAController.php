@@ -9,6 +9,7 @@ use App\Form\InventaireAType;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -128,24 +129,24 @@ class InventaireAController extends AbstractController
             $row++;
         }
 
-        $liste = $em->getRepository(InventaireA::class)->findByQuantiteProduit($id,$moi,$anne);
-        $row = 2;
-        $letter = ord('B');
-        $lastdate = 0;
-        //Remplir les données des produits
-        foreach ($liste as $key => $value) {
-            $newdate = $value->getCreatetAt()->format("Y-m-d");
-            if ($lastdate != $newdate) {
-                $lastdate = $value->getCreatetAt()->format("Y-m-d");
-                $colString = chr($letter);
-                $fiscolString  = $colString . '1';
-                $sheet->setCellValue($fiscolString, $lastdate);
-                $letter ++;
-            }
-            $cle = array_search($value->getProduit()->getNom(),$inventaire);
-            $cle = $cle + 2;
-            $sheet->setCellValue($colString.$cle, $value->getEcart());
-        }
+        // $liste = $em->getRepository(InventaireA::class)->findByQuantiteProduit($id,$moi,$anne);
+        // $row = 2;
+        // $letter = ord('B');
+        // $lastdate = 0;
+        // //Remplir les données des produits
+        // foreach ($liste as $key => $value) {
+        //     $newdate = $value->getCreatetAt()->format("Y-m-d");
+        //     if ($lastdate != $newdate) {
+        //         $lastdate = $value->getCreatetAt()->format("Y-m-d");
+        //         $colString = chr($letter);
+        //         $fiscolString  = $colString . '1';
+        //         $sheet->setCellValue($fiscolString, $lastdate);
+        //         $letter ++;
+        //     }
+        //     $cle = array_search($value->getProduit()->getNom(),$inventaire);
+        //     $cle = $cle + 2;
+        //     $sheet->setCellValue($colString.$cle, $value->getEcart());
+        // }
 
         // $colString = chr($letter);
         // $fiscolString  = $colString . '1';
@@ -198,19 +199,16 @@ class InventaireAController extends AbstractController
         // }
 
         // Générer le fichier Excel et le retourner en réponse
-        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
-        ob_start();
+         $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Export_perte.xlsx"'); 
+
+        header('Cache-Control: max-age=0');
+
+        // Sauvegarder le fichier directement dans la sortie
         $writer->save('php://output');
-        $excelContent = ob_get_clean();
-        $name = "stock_perte_cabinet_" . date('Y-m-d') . ".xlsx";
-        return new Response(
-            $excelContent,
-            Response::HTTP_OK,
-            [
-                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Content-Disposition' => 'attachment; filename="' . $name . '"',
-            ]
-        );
+        exit; 
     }
     
     #[Route('/inventaire/a/pdf', name: 'app_inventaire_pdf')]
