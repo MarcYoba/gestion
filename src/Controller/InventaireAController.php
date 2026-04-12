@@ -148,27 +148,27 @@ class InventaireAController extends AbstractController
             $sheet->setCellValue($colString.$cle, $value->getEcart());
         }
 
-        // $colString = chr($letter);
-        // $fiscolString  = $colString . '1';
-        // $sheet->setCellValue($fiscolString, "Total generale");
+        $colString = chr($letter);
+        $fiscolString  = $colString . '1';
+        $sheet->setCellValue($fiscolString, "Total generale");
 
-        // foreach ($produits as $key => $value) {
-        //     $cle = array_search($value->getProduit()->getNom(),$inventaire);
-        //     $cle = $cle + 2;
-        //     $quantite = $em->getRepository(InventaireA::class)->findBySommeMois($id,$moi,$anne,$value->getProduit()->getId());
-        //     $sheet->setCellValue($colString.$cle, $quantite);
-        // }
+        foreach ($produits as $key => $value) {
+            $cle = array_search($value->getProduit()->getNom(),$inventaire);
+            $cle = $cle + 2;
+            $quantite = $em->getRepository(InventaireA::class)->findBySommeMois($id,$moi,$anne,$value->getProduit()->getId());
+            $sheet->setCellValue($colString.$cle, $quantite);
+        }
         
-        // $letter ++;
-        // $colString = chr($letter);
-        // $fiscolString  = $colString . '1';
-        // $sheet->setCellValue($fiscolString, "Prix de vente");
+        $letter ++;
+        $colString = chr($letter);
+        $fiscolString  = $colString . '1';
+        $sheet->setCellValue($fiscolString, "Prix de vente");
 
-        // foreach ($produits as $key => $value) {
-        //     $cle = array_search($value->getProduit()->getNom(),$inventaire);
-        //     $cle = $cle + 2;
-        //     $sheet->setCellValue($colString.$cle, $value->getProduit()->getPrixvente());
-        // }
+        foreach ($produits as $key => $value) {
+            $cle = array_search($value->getProduit()->getNom(),$inventaire);
+            $cle = $cle + 2;
+            $sheet->setCellValue($colString.$cle, $value->getProduit()->getPrixvente());
+        }
 
         // $letter ++;
         // $colString = chr($letter);
