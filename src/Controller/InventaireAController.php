@@ -181,21 +181,21 @@ class InventaireAController extends AbstractController
             $sheet->setCellValue($colString.$cle, ($value->getProduit()->getPrixvente() * $quantite));
         }
 
-        $row = count($produits) + 2;
-        $fiscolString  = 'A' . $row;
-        $sheet->setCellValue($fiscolString, "Total Journaliere");
+        // $row = count($produits) + 2;
+        // $fiscolString  = 'A' . $row;
+        // $sheet->setCellValue($fiscolString, "Total Journaliere");
 
-        $tabjour = $em->getRepository(InventaireA::class)->findBySommeDate($id,$moi,$anne);
+        // $tabjour = $em->getRepository(InventaireA::class)->findBySommeDate($id,$moi,$anne);
         
-        $letter = ord('B');
+        // $letter = ord('B');
 
-        foreach ($tabjour as $key => $value) {
+        // foreach ($tabjour as $key => $value) {
             
-            $colString = chr($letter);
-            $fiscolString  = $colString . $row;
-            $sheet->setCellValue($fiscolString, $value[1]);
-            $letter ++;
-        }
+        //     $colString = chr($letter);
+        //     $fiscolString  = $colString . $row;
+        //     $sheet->setCellValue($fiscolString, $value[1]);
+        //     $letter ++;
+        // }
 
         // Générer le fichier Excel et le retourner en réponse
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
