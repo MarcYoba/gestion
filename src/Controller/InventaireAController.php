@@ -129,24 +129,24 @@ class InventaireAController extends AbstractController
             $row++;
         }
 
-        // $liste = $em->getRepository(InventaireA::class)->findByQuantiteProduit($id,$moi,$anne);
-        // $row = 2;
-        // $letter = ord('B');
-        // $lastdate = 0;
-        // //Remplir les données des produits
-        // foreach ($liste as $key => $value) {
-        //     $newdate = $value->getCreatetAt()->format("Y-m-d");
-        //     if ($lastdate != $newdate) {
-        //         $lastdate = $value->getCreatetAt()->format("Y-m-d");
-        //         $colString = chr($letter);
-        //         $fiscolString  = $colString . '1';
-        //         $sheet->setCellValue($fiscolString, $lastdate);
-        //         $letter ++;
-        //     }
-        //     $cle = array_search($value->getProduit()->getNom(),$inventaire);
-        //     $cle = $cle + 2;
-        //     $sheet->setCellValue($colString.$cle, $value->getEcart());
-        // }
+        $liste = $em->getRepository(InventaireA::class)->findByQuantiteProduit($id,$moi,$anne);
+        $row = 2;
+        $letter = ord('B');
+        $lastdate = 0;
+        //Remplir les données des produits
+        foreach ($liste as $key => $value) {
+            $newdate = $value->getCreatetAt()->format("Y-m-d");
+            if ($lastdate != $newdate) {
+                $lastdate = $value->getCreatetAt()->format("Y-m-d");
+                $colString = chr($letter);
+                $fiscolString  = $colString . '1';
+                $sheet->setCellValue($fiscolString, $lastdate);
+                $letter ++;
+            }
+            $cle = array_search($value->getProduit()->getNom(),$inventaire);
+            $cle = $cle + 2;
+            $sheet->setCellValue($colString.$cle, $value->getEcart());
+        }
 
         // $colString = chr($letter);
         // $fiscolString  = $colString . '1';
