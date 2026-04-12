@@ -169,17 +169,17 @@ class InventaireAController extends AbstractController
             $sheet->setCellValue($colString.$cle, $value->getProduit()->getPrixvente());
         }
 
-        $letter ++;
-        $colString = chr($letter);
-        $fiscolString  = $colString . '1';
-        $sheet->setCellValue($fiscolString, "Total perte");
+        // $letter ++;
+        // $colString = chr($letter);
+        // $fiscolString  = $colString . '1';
+        // $sheet->setCellValue($fiscolString, "Total perte");
 
-        foreach ($produits as $key => $value) {
-            $cle = array_search($value->getProduit()->getNom(),$inventaire);
-            $cle = $cle + 2;
-            $quantite = $em->getRepository(InventaireA::class)->findBySommeMois($id,$moi,$anne,$value->getProduit()->getId());
-            $sheet->setCellValue($colString.$cle, ($value->getProduit()->getPrixvente() * $quantite));
-        }
+        // foreach ($produits as $key => $value) {
+        //     $cle = array_search($value->getProduit()->getNom(),$inventaire);
+        //     $cle = $cle + 2;
+        //     $quantite = $em->getRepository(InventaireA::class)->findBySommeMois($id,$moi,$anne,$value->getProduit()->getId());
+        //     $sheet->setCellValue($colString.$cle, ($value->getProduit()->getPrixvente() * $quantite));
+        // }
 
         // $row = count($produits) + 2;
         // $fiscolString  = 'A' . $row;
